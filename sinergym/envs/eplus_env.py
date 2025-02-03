@@ -443,7 +443,7 @@ class EplusEnv(gym.Env):
         # Check context_values concistency with context variables
         try:
             assert len(context_values) == len(self.context)
-        except AssertionError as err:
+        except AssertionError:
             self.logger.warning(
                 'Context values must have the same length than context variables specified, and values must be in the same order.')
 

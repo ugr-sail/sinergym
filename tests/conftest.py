@@ -138,6 +138,21 @@ def ACTUATORS_5ZONE():
 
 
 @pytest.fixture(scope='function')
+def CONTEXT_5ZONE():
+    return {
+        'Occupancy': (
+            'Schedule:Compact',
+            'Schedule Value',
+            'OCCUPY-1')
+    }
+
+
+@pytest.fixture(scope='function')
+def INITIAL_CONTEXT():
+    return [1.0]
+
+
+@pytest.fixture(scope='function')
 def ACTION_SPACE_DISCRETE_5ZONE():
     return gym.spaces.Discrete(10)
 
@@ -240,7 +255,9 @@ def env_demo(
         TIME_VARIABLES,
         VARIABLES_5ZONE,
         METERS_5ZONE,
-        ACTUATORS_5ZONE):
+        ACTUATORS_5ZONE,
+        CONTEXT_5ZONE,
+        INITIAL_CONTEXT):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -249,6 +266,8 @@ def env_demo(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
+        context=CONTEXT_5ZONE,
+        initial_context=INITIAL_CONTEXT,
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
@@ -384,7 +403,9 @@ def env_5zone(
         TIME_VARIABLES,
         VARIABLES_5ZONE,
         METERS_5ZONE,
-        ACTUATORS_5ZONE):
+        ACTUATORS_5ZONE,
+        CONTEXT_5ZONE,
+        INITIAL_CONTEXT):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -393,6 +414,8 @@ def env_5zone(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
+        context=CONTEXT_5ZONE,
+        initial_context=INITIAL_CONTEXT,
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
@@ -515,7 +538,7 @@ def building_5zone(json_path_5zone):
 
 
 @pytest.fixture(scope='function')
-def model_5zone(VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE):
+def model_5zone(VARIABLES_5ZONE, METERS_5ZONE):
 
     return ModelJSON(
         env_name='TESTCONFIG',
@@ -523,7 +546,6 @@ def model_5zone(VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE):
         weather_files=['USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'],
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
-        actuators=ACTUATORS_5ZONE,
         max_ep_store=10,
         extra_config={
             'timesteps_per_hour': 2,
@@ -534,8 +556,7 @@ def model_5zone(VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE):
 @pytest.fixture(scope='function')
 def model_5zone_several_weathers(
         VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE):
+        METERS_5ZONE):
     return ModelJSON(
         env_name='TESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
@@ -544,7 +565,6 @@ def model_5zone_several_weathers(
             'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'],
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
-        actuators=ACTUATORS_5ZONE,
         max_ep_store=10,
         extra_config={
             'timesteps_per_hour': 2,
