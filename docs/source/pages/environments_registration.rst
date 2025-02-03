@@ -31,6 +31,10 @@ This section outlines the structure of these JSON configuration files. Moreover,
 +----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | actuators            | No           | ``actuators`` dict definition.                                                                                                                                            |
 +----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| context              | No           | ``context`` dict definition.                                                                                                                                              |
++----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| initial_context      | Yes          | Initial values for specified ``context`` dict. If not specified, it is initialized with the default values provided by the building's definition.                         |
++----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | action_space         | No           | Gymnasium action space definition.                                                                                                                                        |
 +----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | action_space_discrete| Yes          | Allows the creation of discrete action-space versions of the environments.                                                                                                |
@@ -95,7 +99,7 @@ The ``variables`` field follows a specific format to efficiently define all obse
 
 |
 
-During registration, *Sinergym* parses the information introduced in the ``variables`` parameter to the environment constructor, previously adapting it to the format used by the EnergyPlus Python API. A similar process is followed with the ``meters`` and ``actuators`` fields.
+During registration, *Sinergym* parses the information introduced in the ``variables`` parameter to the environment constructor, previously adapting it to the format used by the EnergyPlus Python API. A similar process is followed with the ``meters``, ``actuators`` and ``context`` fields.
 
 
 
