@@ -38,7 +38,7 @@ Usage
 Model training
 ~~~~~~~~~~~~~~
 
-If you are looking to train a DRL agent using *Sinergym*, we provide the script `sinergym/scripts/train/train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent.py>`__. which can be easily adapted to custom experiments.
+If you are looking to train a DRL agent using *Sinergym*, we provide the script `sinergym/scripts/train/train_agent_local_conf.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_local_conf.py>`__. which can be easily adapted to custom experiments.
 
 The following are some key points to consider:
 
@@ -53,7 +53,7 @@ The following are some key points to consider:
 
 * **Sequential / curriculum learning** can be implemented by adding a valid model path to the ``model`` parameter. In this way, the script will load and re-train an existing model.
 
-The ``train_agent.py`` script requires a single parameter (``-conf``), which is the JSON file containing the experiment configuration. A sample JSON structure is detailed in `sinergym/scripts/train/train_agent_PPO.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_PPO.json>`__.
+The ``train_agent_local_conf.py`` script requires a single parameter (``-conf``), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in `sinergym/scripts/train/local_confs/train_agent_PPO.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_PPO.yaml>`__.
 
 We distinguish between *mandatory* and *optional* parameters:
 
@@ -68,11 +68,11 @@ Once executed, the script performs the following steps:
 
   2. Sets environment parameters if specified.
 
-  3. Applies specified wrappers from the JSON configuration.
+  3. Applies specified wrappers from the YAML configuration.
 
   4. Saves all experiment's hyperparameters in WandB if a session is detected.
 
-  5. Defines the model algorithm with the specified hyperparameters.
+  5. Defines the model algorithm with the specified hyperparameters. If a model has been specified, loads it and continues training.
 
   6. Calculates training timesteps from the number of episodes.
 
@@ -89,12 +89,12 @@ Model loading
 
 To load and evaluate/execute an previously trained model, use the script `sinergym/scripts/eval/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py>`__. 
 
-The ``load_agent.py`` script requires a single parameter, ``-conf``, indicating the JSON file with the evaluation configuration. See the JSON structure in 
-`sinergym/scripts/eval/load_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.json>`__ for a reference example of this configuration file.
+The ``load_agent.py`` script requires a single parameter, ``-conf``, indicating the YAML file with the evaluation configuration. See the YAML structure in 
+`sinergym/scripts/eval/load_agent_example.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.yaml>`__ for a reference example of this configuration file.
 
 Again, we distinguish between *mandatory* and *optional* parameters:
 
-* **Mandatory**: environment, evaluation episodes, algorithm (name only), and model to load. If the model is stored locally, specify it using the key ``model``. If it is stored in the cloud, use the ``wandb_model`` key. The model field can be a *local path*, a *bucket url* in the form ``gs://``, or a WandB artifact path for stored models.
+* **Mandatory**: environment, evaluation episodes, algorithm (name only), and model to load. The model field can be a *local path*, a *bucket url* in the form ``gs://``, or a WandB artifact path for stored models.
 
 * **Optional**: environment parameters (which overwrite defaults if specified), experiment identifier, wrappers (in order), and cloud options.
 
