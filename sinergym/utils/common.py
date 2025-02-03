@@ -10,6 +10,11 @@ import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
 
+try:
+    from stable_baselines3.common.noise import NormalActionNoise
+except ImportError:
+    pass
+
 import sinergym
 from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
@@ -19,7 +24,9 @@ logger = TerminalLogger().getLogger(
     name='COMMON',
     level=LOG_COMMON_LEVEL)
 
-# --------------------------------- Wrappers --------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                                   WRAPPERS                                   #
+# ---------------------------------------------------------------------------- #
 
 
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
@@ -49,7 +56,9 @@ def unwrap_wrapper(env: gym.Env,
         env_tmp = env_tmp.env
     return None
 
-# ----------------------------- Building modeling ---------------------------- #
+# ---------------------------------------------------------------------------- #
+#                               BUILDING MODELING                              #
+# ---------------------------------------------------------------------------- #
 
 
 def get_delta_seconds(
@@ -182,7 +191,9 @@ def export_schedulers_to_excel(
         object_num += 1
     workbook.close()
 
-# ------------------------ Ornstein Unhelbeck Process ------------------------ #
+# ---------------------------------------------------------------------------- #
+#                          ORNSTEIN UHLENBECK PROCCESS                         #
+# ---------------------------------------------------------------------------- #
 
 
 def ornstein_uhlenbeck_process(
@@ -229,7 +240,9 @@ def ornstein_uhlenbeck_process(
 
     return data_mod
 
-# ------------------ Reading JSON environment configuration ------------------ #
+# ---------------------------------------------------------------------------- #
+#                    READING JSON ENVIRONMENT CONFIGURATION                    #
+# ---------------------------------------------------------------------------- #
 
 
 def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
@@ -271,7 +284,8 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(specification['variable_names']) == len(
+                assert len(
+                    specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
@@ -406,6 +420,69 @@ def convert_conf_to_env_parameters(
             configurations[id] = env_kwargs
 
     return configurations
+
+# ---------------------------------------------------------------------------- #
+#                          Process YAML configurations                         #
+# ---------------------------------------------------------------------------- #
+
+
+def process_environment_parameters(env_params: dict) -> dict:
+    # Transform required str's into Callables or lists in tuples
+    if env_params.get('action_space'):
+        env_params['action_space'] = eval(
+            env_params['action_space'])
+
+    if env_params.get('variables'):
+        for variable_name, components in env_params['variables'].items():
+            env_params['variables'][variable_name] = tuple(components)
+
+    if env_params.get('actuators'):
+        for actuator_name, components in env_params['actuators'].items():
+            env_params['actuators'][actuator_name] = tuple(components)
+
+    if env_params.get('weather_variability'):
+        env_params['weather_variability'] = {
+            var_name: tuple(
+                tuple(param) if isinstance(param, list) else param
+                for param in var_params
+            )
+            for var_name, var_params in env_params['weather_variability'].items()
+        }
+
+    if env_params.get('reward'):
+        env_params['reward'] = eval(env_params['reward'])
+
+    if env_params.get('reward_kwargs'):
+        for reward_param_name, reward_value in env_params.items():
+            if reward_param_name in [
+                'range_comfort_winter',
+                'range_comfort_summer',
+                'summer_start',
+                    'summer_final']:
+                env_params['reward_kwargs'][reward_param_name] = tuple(
+                    reward_value)
+
+    if env_params.get('config_params'):
+        if env_params['config_params'].get('runperiod'):
+            env_params['config_params']['runperiod'] = tuple(
+                env_params['config_params']['runperiod'])
+    # Add more keys if needed...
+
+    return env_params
+
+
+def process_algorithm_parameters(alg_params: dict):
+
+    # Transform required str's into Callables or list in tuples
+    if alg_params.get('train_freq') and isinstance(
+            alg_params.get('train_freq'), list):
+        alg_params['train_freq'] = tuple(alg_params['train_freq'])
+
+    if alg_params.get('action_noise'):
+        alg_params['action_noise'] = eval(alg_params['action_noise'])
+    # Add more keys if needed...
+
+    return alg_params
 
  # --------------------- Functions that are no longer used -------------------- #
 

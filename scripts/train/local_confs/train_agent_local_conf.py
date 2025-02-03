@@ -1,5 +1,4 @@
 import argparse
-import json
 import sys
 import traceback
 from datetime import datetime
@@ -7,7 +6,9 @@ from datetime import datetime
 import gymnasium as gym
 import numpy as np
 import wandb
+import yaml
 from stable_baselines3 import *
+from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
@@ -17,78 +18,12 @@ from stable_baselines3.common.noise import NormalActionNoise
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
-from sinergym.utils.common import is_wrapped
+from sinergym.utils.common import (is_wrapped, process_algorithm_parameters,
+                                   process_environment_parameters)
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-
-# ---------------------------------------------------------------------------- #
-#                       Function to process configuration                      #
-# ---------------------------------------------------------------------------- #
-
-
-def process_environment_parameters(env_params: dict) -> dict:
-
-    # Transform required str's into Callables or lists in tuples
-    if env_params.get('action_space'):
-        env_params['action_space'] = eval(
-            env_params['action_space'])
-
-    if env_params.get('variables'):
-        for variable_name, components in env_params['variables'].items():
-            env_params['variables'][variable_name] = tuple(components)
-
-    if env_params.get('actuators'):
-        for actuator_name, components in env_params['actuators'].items():
-            env_params['actuators'][actuator_name] = tuple(components)
-
-    if env_params.get('weather_variability'):
-        env_params['weather_variability'] = {
-            var_name: tuple(
-                tuple(param) if isinstance(param, list) else param
-                for param in var_params
-            )
-            for var_name, var_params in env_params['weather_variability'].items()
-        }
-
-    if env_params.get('reward'):
-        env_params['reward'] = eval(env_params['reward'])
-
-    if env_params.get('reward_kwargs'):
-        for reward_param_name, reward_value in env_params.items():
-            if reward_param_name in [
-                'range_comfort_winter',
-                'range_comfort_summer',
-                'summer_start',
-                    'summer_final']:
-                env_params['reward_kwargs'][reward_param_name] = tuple(
-                    reward_value)
-
-    if env_params.get('config_params'):
-        if env_params['config_params'].get('runperiod'):
-            env_params['config_params']['runperiod'] = tuple(
-                env_params['config_params']['runperiod'])
-
-    # Add more keys if needed
-
-    return env_params
-
-
-def process_algorithm_parameters(alg_params: dict):
-
-    # Transform required str's into Callables or list in tuples
-    if alg_params.get('train_freq') and isinstance(
-            alg_params.get('train_freq'), list):
-        alg_params['train_freq'] = tuple(alg_params['train_freq'])
-
-    if alg_params.get('action_noise'):
-        alg_params['action_noise'] = eval(alg_params['action_noise'])
-
-    # Add more keys if needed
-
-    return alg_params
-
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #
@@ -100,17 +35,17 @@ parser.add_argument(
     required=True,
     type=str,
     dest='configuration',
-    help='Path to experiment configuration (JSON file)'
+    help='Path to experiment configuration (YAML file)'
 )
 args = parser.parse_args()
 # ------------------------------------------------------------------------------#
 
 # ---------------------------------------------------------------------------- #
-#                             Read json parameters                             #
+#                             Read yaml parameters                             #
 # ---------------------------------------------------------------------------- #
 
-with open(args.configuration) as json_conf:
-    conf = json.load(json_conf)
+with open(args.configuration, 'r') as yaml_conf:
+    conf = yaml.safe_load(yaml_conf)
 
 try:
     # ---------------------------------------------------------------------------- #
@@ -174,95 +109,79 @@ try:
         'parameters', {'policy': 'MlpPolicy'})
     alg_params = process_algorithm_parameters(alg_params)
 
+    # --------------------------- Training from scratch -------------------------- #
     if conf.get('model') is None:
-
-        # --------------------------------------------------------#
-        #                           DQN                          #
-        # --------------------------------------------------------#
-        if alg_name == 'SB3-DQN':
-
-            model = DQN(env=env,
-                        ** alg_params)
-        # --------------------------------------------------------#
-        #                           DDPG                         #
-        # --------------------------------------------------------#
-        elif alg_name == 'SB3-DDPG':
-            model = DDPG(env=env,
-
-                         ** alg_params)
-        # --------------------------------------------------------#
-        #                           A2C                          #
-        # --------------------------------------------------------#
-        elif alg_name == 'SB3-A2C':
-            model = A2C(env=env,
-                        ** alg_params)
-        # --------------------------------------------------------#
-        #                           PPO                          #
-        # --------------------------------------------------------#
-        elif alg_name == 'SB3-PPO':
-            model = PPO(env=env,
-                        ** alg_params)
-        # --------------------------------------------------------#
-        #                           SAC                          #
-        # --------------------------------------------------------#
-        elif alg_name == 'SB3-SAC':
-            model = SAC(env=env,
-                        ** alg_params)
-        # --------------------------------------------------------#
-        #                           TD3                          #
-        # --------------------------------------------------------#
-        elif alg_name == 'SB3-TD3':
-            model = TD3(env=env,
-                        ** alg_params)
-        # --------------------------------------------------------#
-        #                           Error                        #
-        # --------------------------------------------------------#
-        else:
-            raise RuntimeError(
-                F'Algorithm specified [{alg_name} ] is not registered.')
+        try:
+            model = eval(alg_name)(env=env, ** alg_params)
+        except NameError:
+            raise NameError(
+                'Algorithm {} does not exists. It must be a valid SB3 algorithm.'.format(alg_name))
 
         # Register hyperparameters in wandb if wrapped
         if is_wrapped(env, WandBLogger):
             experiment_params = {
                 'sinergym-version': sinergym.__version__,
-                'python-version': sys.version
+                'python-version': sys.version,
+                'stable-baselines3-version': sb3_version
             }
             experiment_params.update(conf)
             env.get_wrapper_attr('wandb_run').config.update(experiment_params)
 
+    # ------------------------ Training from a given model ----------------------- #
     else:
-        model_path = ''
-        if 'gs://' in conf['model']:
+        # ------------------------ Weights and Bias model path ----------------------- #
+        if conf['model'].get('entity'):
+            # Get wandb run or generate a new one
+            if is_wrapped(env, WandBLogger):
+                wandb_run = env.get_wrapper_attr('wandb_run')
+            else:
+                wandb_run = wandb.init()
+
+            # Get model path
+            artifact_tag = conf['model'].get(
+                'artifact_tag', 'latest')
+            wandb_path = conf['model']['entity'] + '/' + conf['model']['project'] + \
+                '/' + conf['model']['artifact_name'] + ':' + artifact_tag
+
+            # Download artifact
+            artifact = wandb_run.use_artifact(wandb_path)
+            artifact.download(
+                path_prefix=conf['model']['artifact_path'],
+                root='./')
+
+            # Set model path to local wandb downloaded file
+            model_path = './' + conf['model']['model_path']
+
+        # -------------------------- Google cloud model path ------------------------- #
+        if conf['model'].get('bucket_path'):
             # Download from given bucket (gcloud configured with privileges)
             client = gcloud.init_storage_client()
-            bucket_name = conf['model'].split('/')[2]
-            model_path = conf['model'].split(bucket_name + '/')[-1]
+            bucket_name = conf['model']['bucket_path'].split('/')[2]
+            model_path = conf['model']['bucket_path'].split(
+                bucket_name + '/')[-1]
             gcloud.read_from_bucket(client, bucket_name, model_path)
             model_path = './' + model_path
-        else:
-            model_path = conf['model']
+
+        # ----------------------------- Local model path ----------------------------- #
+        if conf['model'].get('local_path'):
+            model_path = conf['model']['local_path']
+
+        # ---------- Load calibration of normalization for model if required --------- #
+        if conf['model'].get('normalization') and is_wrapped(
+                env, NormalizeObservation):
+            # Update calibrations
+            env.get_wrapper_attr('set_mean')(
+                conf['model']['normalization']['mean'])
+            env.get_wrapper_attr('set_var')(
+                conf['model']['normalization']['var'])
 
         model = None
-        if alg_name == 'SB3-DQN':
-            model = DQN.load(
+        try:
+            model = eval(alg_name).load(
                 model_path)
-        elif alg_name == 'SB3-DDPG':
-            model = DDPG.load(
-                model_path)
-        elif alg_name == 'SB3-A2C':
-            model = A2C.load(
-                model_path)
-        elif alg_name == 'SB3-PPO':
-            model = PPO.load(
-                model_path)
-        elif alg_name == 'SB3-SAC':
-            model = SAC.load(
-                model_path)
-        elif alg_name == 'SB3-TD3':
-            model = TD3.load(
-                model_path)
-        else:
-            raise RuntimeError('Algorithm specified is not registered.')
+        except NameError:
+            raise NameError(
+                'Algorithm {} does not exists. It must be a valid SB3 algorithm.'.format(alg_name))
 
         model.set_env(env)
 
@@ -330,19 +249,13 @@ try:
                 src_path=env.get_wrapper_attr('workspace_path'),
                 dest_bucket_name=conf['cloud']['remote_store'],
                 dest_path=experiment_name)
-            if conf.get('evaluation'):
-                gcloud.upload_to_bucket(
-                    client,
-                    src_path='best_model/' + experiment_name + '/',
-                    dest_bucket_name=conf['cloud']['remote_store'],
-                    dest_path='best_model/' + experiment_name + '/')
         # ---------------------------------------------------------------------------- #
         #                   Autodelete option if is a cloud resource                   #
         # ---------------------------------------------------------------------------- #
         if conf['cloud'].get('auto_delete'):
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                conf['cloud']['group_name'], token)
+                conf['cloud']['auto_delete']['group_name'], token)
 
 # If there is some error in the code, delete remote container if exists
 # include KeyboardInterrupt
@@ -362,5 +275,5 @@ except (Exception, KeyboardInterrupt) as err:
             print('Deleting remote container')
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                conf['cloud']['group_name'], token)
+                conf['cloud']['auto_delete']['group_name'], token)
     raise err

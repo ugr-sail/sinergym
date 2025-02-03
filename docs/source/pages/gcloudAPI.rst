@@ -77,7 +77,7 @@ It is also required to enable **Google Cloud services** in the *API library*. Yo
 
 |
 
-If *Sinergym* and *Sinergym extras* are installed, the **Google Cloud SDK must be linked with other Python modules** for some functionalities to work. Execute the following command in your terminal:
+If *Sinergym* and optional dependencias such as SB3 are installed, the **Google Cloud SDK must be linked with other Python modules** for some functionalities to work. Execute the following command in your terminal:
 
 .. code:: sh
 
@@ -86,7 +86,7 @@ If *Sinergym* and *Sinergym extras* are installed, the **Google Cloud SDK must b
 Use the predefined container in Google Cloud
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our *Sinergym* container is currently uploaded to the **Container Registry** as a public image.  
+Our *Sinergym* container is currently uploaded to the **Artifact Registry** as a public image.  
 You can use it **locally** or on a **GCE VM**.
 
 .. code:: sh
@@ -117,41 +117,28 @@ We also have containers available in Docker Hub. You can consult them in our `re
 Use your own container
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If you have forked this repository and want to upload **your own container to Google Cloud** and use it, you can utilize ``cloudbuild.yaml`` along with our ``Dockerfile`` for this purpose:
+If you have forked this repository and want to upload **your own container to Google Cloud** and use it, you can utilize ``cloudbuild.sh`` along with our ``Dockerfile`` for this purpose:
 
-.. literalinclude:: ../../../cloudbuild.yaml
-    :language: yaml
+.. literalinclude:: ../../../cloudbuild.sh
+    :language: sh
 
 The following actions are performed:
 
-    1. **Writes in cache** for quick updates (if an older container has already been uploaded).  
-    2. **Builds** the image (using the cache if available).  
-    3. **Pushes** the built image to the Container Registry.  
-    4. Makes the container **public** within the Container Registry.
+    1. **Authenticate** with Google Cloud SDK.
+    2. **Builds** the image locally, with parameters definition.  
+    3. **Pushes** the built image to the Artifact Registry.  
 
 Do not confuse the options section at the end of the file with the virtual machine configuration. Google Cloud uses a helper VM to build everything mentioned above. We use this *YAML* file to upgrade our container because the ``PROJECT_ID`` environment variable is defined by the Google Cloud SDK, so its value corresponds to your current project in the Google Cloud global configuration.
 
-.. warning:: Just like the VM needs more memory, Google Cloud Build needs at least 10GB to work 
-             correctly. Otherwise, it may fail.
+.. warning:: If your local computer does not have enough free space, it might report the same error explained in the previous section.
 
-.. warning:: If your local computer does not have enough free space, it might report the same error.
-
-In order to use the configuration in ``cloudbuild.yaml``, do the following:
+In order to use the configuration in ``cloudbuild.sh``, do the following:
 
 .. code:: sh
 
-    $ gcloud builds submit --region europe-west1 \
-        --config ./cloudbuild.yaml .
+    $ ./cloudbuild.sh -p PROJECT_ID -r REGION -R REPOSITORY -i IMAGE_NAME -t TAG -e EXTRAS
 
-You can use ``--substitutions`` to configure build parameters if needed.
-
-.. note:: The "." in ``--config`` refers to the **Dockerfile**, which is necessary to build the container 
-          image (see `build-config <https://cloud.google.com/build/docs/build-config>`__).
-
-.. note:: In `cloudbuild.yaml`, there is a variable named *PROJECT_ID*. However, it is not defined 
-          in substitutions. This is because it is a predefined variable by Google Cloud. When the 
-          build begins, *$PROJECT_ID* is set to the current value in the gcloud configuration 
-          (see `substitutions-variables <https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values>`__).
+``-e`` option is the optional available package groups in Sinergym. By default, the container is built with the value ``'drl gcloud'``.
 
 Create your VM or MIG
 ~~~~~~~~~~~~~~~~~~~~~

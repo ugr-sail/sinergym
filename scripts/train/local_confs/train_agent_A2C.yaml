@@ -1,0 +1,95 @@
+# ---------------------------------- BASICS ---------------------------------- #
+id: A2C_training
+environment: Eplus-5zone-hot-continuous-stochastic-v1
+episodes: 5
+seed: null
+
+# ------------------------------- SB3 ALGORITHM ------------------------------ #
+algorithm:
+  name: A2C
+  log_interval: 1
+  parameters:
+    policy: MlpPolicy
+    learning_rate: 0.0007
+    n_steps: 5
+    gamma: 0.99
+    gae_lambda: 1.0
+    ent_coef: 0.0
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+    rms_prop_eps: 1.0e-5
+    use_rms_prop: true
+    use_sde: false
+    sde_sample_freq: -1
+    rollout_buffer_class: null
+    rollout_buffer_kwargs: null
+    normalize_advantage: false
+    stats_window_size: 100
+    tensorboard_log: null
+    policy_kwargs: null
+    verbose: 1
+    seed: null
+    device: auto
+    _init_setup_model: true
+
+# -------------------------------- EVALUATION -------------------------------- #
+evaluation:
+  eval_freq: 2
+  eval_length: 1
+
+# -------------------------------- ENVIRONMENT ------------------------------- #
+env_params:
+  reward: LinearReward
+# ... other environment parameters
+
+# ---------------------------------- WRAPPER --------------------------------- #
+wrappers:
+  NormalizeAction: {}
+  NormalizeObservation: {}
+  LoggerWrapper:
+    storage_class: sinergym.utils.logger.LoggerStorage
+  CSVLogger: {}
+  WandBLogger:
+    entity: sail_ugr
+    project_name: test-project
+
+# --------------------------- INITIAL STATE (MODEL) -------------------------- #
+# Model from scratch:
+model: null
+
+# Local Path:
+# model: 
+#   local_path: </path/to/model>
+# load model normalization if needed
+#   normalization:
+#     mean: Sinergym_output/evaluation/mean.txt
+#     var: Sinergym_output/evaluation/var.txt
+
+# Google Bucket Path:
+# model: 
+#   bucket_path: gs://<path_to_model_google_bucket>
+# load model normalization if needed
+#   normalization:
+#     mean: <<path_to_model_google_bucket_mean.txt>
+#     var: <<path_to_model_google_bucket_var.txt>
+
+# WANDB model path:
+# model:
+#   project: test-project
+#   entity: sail_ugr
+#   artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPOExperimentExample_2025-02-02_18-31_9jau51uy
+#   artifact_type: output
+#   artifact_tag: v0
+#   artifact_path: Sinergym_output/evaluation/
+#   model_path: Sinergym_output/evaluation/best_model.zip
+#   # load model normalization if needed
+#   normalization:
+#     mean: Sinergym_output/evaluation/mean.txt
+#     var: Sinergym_output/evaluation/var.txt
+
+# -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
+cloud: 
+  remote_store: null # remote bucket name
+  auto_delete: null # Delete remote instance when finish experiment
+  # auto_delete:
+  #   group_name: group-example
