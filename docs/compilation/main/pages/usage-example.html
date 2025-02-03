@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usage example &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -116,14 +116,14 @@
   <section id="usage-example">
 <h1>Usage example<a class="headerlink" href="#usage-example" title="Link to this heading"></a></h1>
 <p>Once <em>Sinergym</em> has been installed (either manually or via Docker), you can use the <code class="docutils literal notranslate"><span class="pre">try_env.py</span></code> script to test that everything is working correctly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">TerminalLogger</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CSVLogger</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeAction</span><span class="p">,</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">TerminalLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">CSVLogger</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeAction</span><span class="p">,</span>
                                      <span class="n">NormalizeObservation</span><span class="p">)</span>
 
 <span class="c1"># Logger</span>

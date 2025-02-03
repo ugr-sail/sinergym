@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Google Cloud integration &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -188,14 +188,14 @@ $<span class="w"> </span>gcloud<span class="w"> </span>services<span class="w"> 
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>If <em>Sinergym</em> and <em>Sinergym extras</em> are installed, the <strong>Google Cloud SDK must be linked with other Python modules</strong> for some functionalities to work. Execute the following command in your terminal:</p>
+<p>If <em>Sinergym</em> and optional dependencias such as SB3 are installed, the <strong>Google Cloud SDK must be linked with other Python modules</strong> for some functionalities to work. Execute the following command in your terminal:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>login
 </pre></div>
 </div>
 </section>
 <section id="use-the-predefined-container-in-google-cloud">
 <h3>Use the predefined container in Google Cloud<a class="headerlink" href="#use-the-predefined-container-in-google-cloud" title="Link to this heading"></a></h3>
-<p>Our <em>Sinergym</em> container is currently uploaded to the <strong>Container Registry</strong> as a public image.
+<p>Our <em>Sinergym</em> container is currently uploaded to the <strong>Artifact Registry</strong> as a public image.
 You can use it <strong>locally</strong> or on a <strong>GCE VM</strong>.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>eu.gcr.io/sinergym/sinergym:latest
 </pre></div>
@@ -226,86 +226,58 @@ container. This results in a silent error for Google Cloud Build.</p>
 </section>
 <section id="use-your-own-container">
 <h3>Use your own container<a class="headerlink" href="#use-your-own-container" title="Link to this heading"></a></h3>
-<p>If you have forked this repository and want to upload <strong>your own container to Google Cloud</strong> and use it, you can utilize <code class="docutils literal notranslate"><span class="pre">cloudbuild.yaml</span></code> along with our <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> for this purpose:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Write in cache for quick updates</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
-<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bash&quot;</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">[</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;docker</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">eu.gcr.io/${PROJECT_ID}/sinergym:latest</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="c1"># Build image (using cache if it&#39;s possible)</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
-<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">[</span>
-<span class="w">        </span><span class="s">&quot;build&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;-t&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;--cache-from&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;--build-arg&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;SINERGYM_EXTRAS=[DRL,gcloud]&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">        </span><span class="s">&quot;.&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">      </span><span class="p p-Indicator">]</span>
+<p>If you have forked this repository and want to upload <strong>your own container to Google Cloud</strong> and use it, you can utilize <code class="docutils literal notranslate"><span class="pre">cloudbuild.sh</span></code> along with our <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> for this purpose:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
-<span class="w">    </span><span class="c1"># Push image built to container registry</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
-<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;push&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+<span class="c1"># Default values</span>
+<span class="nv">PROJECT_ID</span><span class="o">=</span><span class="s2">&quot;sinergym&quot;</span>
+<span class="nv">REGION</span><span class="o">=</span><span class="s2">&quot;europe-west1&quot;</span>
+<span class="nv">REPOSITORY</span><span class="o">=</span><span class="s2">&quot;sinergym&quot;</span>
+<span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="s2">&quot;sinergym-image&quot;</span>
+<span class="nv">TAG</span><span class="o">=</span><span class="s2">&quot;latest&quot;</span>
+<span class="nv">EXTRAS</span><span class="o">=</span><span class="s2">&quot;drl gcloud&quot;</span>
 
-<span class="w">    </span><span class="c1"># This container is going to be public (Change command in other case)</span>
-<span class="w">  </span><span class="c1"># - name: &quot;gcr.io/cloud-builders/gsutil&quot;</span>
-<span class="w">  </span><span class="c1">#   args:</span>
-<span class="w">  </span><span class="c1">#     [</span>
-<span class="w">  </span><span class="c1">#       &quot;iam&quot;,</span>
-<span class="w">  </span><span class="c1">#       &quot;ch&quot;,</span>
-<span class="w">  </span><span class="c1">#       &quot;AllUsers:objectViewer&quot;,</span>
-<span class="w">  </span><span class="c1">#       &quot;gs://artifacts.${PROJECT_ID}.appspot.com&quot;,</span>
-<span class="w">  </span><span class="c1">#     ]</span>
-<span class="c1">#Other options for execute build (not container)</span>
-<span class="nt">options</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">diskSizeGb</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
-<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400s</span>
-<span class="nt">images</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+<span class="c1"># Override default values with provided arguments</span>
+<span class="k">while</span><span class="w"> </span><span class="nb">getopts</span><span class="w"> </span>p:r:R:i:t:e:<span class="w"> </span>flag
+<span class="k">do</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">flag</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">in</span>
+<span class="w">        </span>p<span class="o">)</span><span class="w"> </span><span class="nv">PROJECT_ID</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">        </span>r<span class="o">)</span><span class="w"> </span><span class="nv">REGION</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">        </span>R<span class="o">)</span><span class="w"> </span><span class="nv">REPOSITORY</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">        </span>i<span class="o">)</span><span class="w"> </span><span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">        </span>t<span class="o">)</span><span class="w"> </span><span class="nv">TAG</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">        </span>e<span class="o">)</span><span class="w"> </span><span class="nv">EXTRAS</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span>
+<span class="w">    </span><span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="c1"># Authenticate with Google Cloud</span>
+gcloud<span class="w"> </span>auth<span class="w"> </span>configure-docker<span class="w"> </span><span class="si">${</span><span class="nv">REGION</span><span class="si">}</span>-docker.pkg.dev
+
+<span class="c1"># Build the container image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span><span class="si">${</span><span class="nv">REGION</span><span class="si">}</span>-docker.pkg.dev/<span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span>/<span class="si">${</span><span class="nv">REPOSITORY</span><span class="si">}</span>/<span class="si">${</span><span class="nv">IMAGE_NAME</span><span class="si">}</span>:<span class="si">${</span><span class="nv">TAG</span><span class="si">}</span><span class="w"> </span>--build-arg<span class="w"> </span><span class="s2">&quot;SINERGYM_EXTRAS=</span><span class="si">${</span><span class="nv">EXTRAS</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>.
+
+<span class="c1"># Push the image to Artifact Registry</span>
+docker<span class="w"> </span>push<span class="w"> </span><span class="si">${</span><span class="nv">REGION</span><span class="si">}</span>-docker.pkg.dev/<span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span>/<span class="si">${</span><span class="nv">REPOSITORY</span><span class="si">}</span>/<span class="si">${</span><span class="nv">IMAGE_NAME</span><span class="si">}</span>:<span class="si">${</span><span class="nv">TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 <p>The following actions are performed:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p><strong>Writes in cache</strong> for quick updates (if an older container has already been uploaded).</p></li>
-<li><p><strong>Builds</strong> the image (using the cache if available).</p></li>
-<li><p><strong>Pushes</strong> the built image to the Container Registry.</p></li>
-<li><p>Makes the container <strong>public</strong> within the Container Registry.</p></li>
+<li><p><strong>Authenticate</strong> with Google Cloud SDK.</p></li>
+<li><p><strong>Builds</strong> the image locally, with parameters definition.</p></li>
+<li><p><strong>Pushes</strong> the built image to the Artifact Registry.</p></li>
 </ol>
 </div></blockquote>
 <p>Do not confuse the options section at the end of the file with the virtual machine configuration. Google Cloud uses a helper VM to build everything mentioned above. We use this <em>YAML</em> file to upgrade our container because the <code class="docutils literal notranslate"><span class="pre">PROJECT_ID</span></code> environment variable is defined by the Google Cloud SDK, so its value corresponds to your current project in the Google Cloud global configuration.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Just like the VM needs more memory, Google Cloud Build needs at least 10GB to work
-correctly. Otherwise, it may fail.</p>
+<p>If your local computer does not have enough free space, it might report the same error explained in the previous section.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If your local computer does not have enough free space, it might report the same error.</p>
-</div>
-<p>In order to use the configuration in <code class="docutils literal notranslate"><span class="pre">cloudbuild.yaml</span></code>, do the following:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>builds<span class="w"> </span>submit<span class="w"> </span>--region<span class="w"> </span>europe-west1<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--config<span class="w"> </span>./cloudbuild.yaml<span class="w"> </span>.
+<p>In order to use the configuration in <code class="docutils literal notranslate"><span class="pre">cloudbuild.sh</span></code>, do the following:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./cloudbuild.sh<span class="w"> </span>-p<span class="w"> </span>PROJECT_ID<span class="w"> </span>-r<span class="w"> </span>REGION<span class="w"> </span>-R<span class="w"> </span>REPOSITORY<span class="w"> </span>-i<span class="w"> </span>IMAGE_NAME<span class="w"> </span>-t<span class="w"> </span>TAG<span class="w"> </span>-e<span class="w"> </span>EXTRAS
 </pre></div>
 </div>
-<p>You can use <code class="docutils literal notranslate"><span class="pre">--substitutions</span></code> to configure build parameters if needed.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The “.” in <code class="docutils literal notranslate"><span class="pre">--config</span></code> refers to the <strong>Dockerfile</strong>, which is necessary to build the container
-image (see <a class="reference external" href="https://cloud.google.com/build/docs/build-config">build-config</a>).</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In <cite>cloudbuild.yaml</cite>, there is a variable named <em>PROJECT_ID</em>. However, it is not defined
-in substitutions. This is because it is a predefined variable by Google Cloud. When the
-build begins, <em>$PROJECT_ID</em> is set to the current value in the gcloud configuration
-(see <a class="reference external" href="https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values">substitutions-variables</a>).</p>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">-e</span></code> option is the optional available package groups in Sinergym. By default, the container is built with the value <code class="docutils literal notranslate"><span class="pre">'drl</span> <span class="pre">gcloud'</span></code>.</p>
 </section>
 <section id="create-your-vm-or-mig">
 <h3>Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Link to this heading"></a></h3>

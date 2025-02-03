@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2. Usage example &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -129,11 +129,11 @@ In any case, we start from the point that you have at your disposal a terminal w
 <section id="simplest-example">
 <h2><span class="section-number">2.1. </span>Simplest example<a class="headerlink" href="#simplest-example" title="Link to this heading"></a></h2>
 <p>Let’s start with the simplest use case for the Sinergym tool. In the root repository we have the script <strong>try_env.py</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerWrapper</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -171,11 +171,11 @@ In any case, we start from the point that you have at your disposal a terminal w
 <section id="adding-a-reward">
 <h2><span class="section-number">2.2. </span>Adding a reward<a class="headerlink" href="#adding-a-reward" title="Link to this heading"></a></h2>
 <p>By default, all our environment ID’s make use of a default (linear) reward. But this reward can be changed by adding this parameter to the constructor of our environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.rewards</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
                                                                     <span class="s1">&#39;temperature_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
@@ -215,11 +215,11 @@ If you run the code you can see the difference in the values obtained for the re
 <section id="adding-wrappers">
 <h2><span class="section-number">2.3. </span>Adding wrappers<a class="headerlink" href="#adding-wrappers" title="Link to this heading"></a></h2>
 <p>By default, the ID’s of our environments do not include any wrapper, but we can add them after the creation of the environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -254,11 +254,11 @@ For more information about how Sinergym displays its output, please visit the se
 <section id="using-a-rule-based-controller">
 <h2><span class="section-number">2.4. </span>Using a rule-based controller<a class="headerlink" href="#using-a-rule-based-controller" title="Link to this heading"></a></h2>
 <p>You can replace the random actions we have used in the previous examples with one of our rule-based controllers for that type of environment (5Zone IDF):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RBC5Zone</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.controllers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBC5Zone</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">)</span>
 
@@ -298,11 +298,11 @@ it is possible to substitute other default values of the environment ID.</p>
 <p>You can change the weather file, the number of timesteps an action repeats (default 1),
 the last n episodes you want to be stored in the Sinergym output folder (default 10),
 the name of the environment or the variability in stochastic environments:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RBCDatacenter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.controllers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBCDatacenter</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
                 <span class="n">weather_file</span><span class="o">=</span><span class="s1">&#39;ESP_Granada.084190_SWEC.epw&#39;</span><span class="p">,</span>
@@ -341,10 +341,10 @@ the name of the environment or the variability in stochastic environments:</p>
 <p>By default, the IDs of the predefined environments in <em>Sinergym</em> already have a space of actions and observations set.</p>
 <p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the
 <strong>variables</strong>, and on the other hand, the definition of the <strong>spaces</strong> (and an <strong>action mapping</strong> if it is a discrete environment).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
 
 <span class="n">new_observation_variables</span><span class="o">=</span><span class="p">[</span>
     <span class="s1">&#39;Site Outdoor Air Drybulb Temperature(Environment)&#39;</span><span class="p">,</span>
@@ -431,10 +431,10 @@ of the simulation.</p>
 <p>For this purpose, the <em>Sinergym</em> <strong>action definition</strong> is available. With a dictionary we can
 build a definition of what we want to be controlled in the building and how to control
 it using the action space of the environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
 
 <span class="n">new_action_definition</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;ThermostatSetpoint:DualSetpoint&#39;</span><span class="p">:</span> <span class="p">[{</span>
@@ -491,10 +491,10 @@ Otherwise, Sinergym will show the inconsistency.</p>
 used in the simulations (or overwrite an existing one).</p>
 <p>This new IDF version, which also adapts to the new weather you put in, is saved in the <em>Sinergym</em>
 output folder, leaving the original intact:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
 
 <span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;timesteps_per_hour&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>

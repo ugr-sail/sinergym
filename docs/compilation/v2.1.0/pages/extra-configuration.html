@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Extra Configuration in Sinergym simulations &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -113,8 +113,8 @@
 in simulator, we have the possibility to set up some <strong>details of context</strong> in our simulation.
 This let us to amplify the context of each experiment and have more parameters to investigate.
 To use this functionality easily, you can provide this extra parameters in <strong>environment constructor</strong> in this way:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">sinergym</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
 
 <span class="n">extra_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;timesteps_per_hour&#39;</span> <span class="p">:</span> <span class="mi">6</span>
               <span class="s1">&#39;runperiod&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1997</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1998</span><span class="p">)}</span>

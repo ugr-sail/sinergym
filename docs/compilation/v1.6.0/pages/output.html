@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Output format &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -137,7 +137,7 @@ time_elapsed(seconds)</em>. This file only exists when environment has been wrap
 all the interactions that are carried out in a simulation,
 regardless of the training technique which may be being used or any other external factor.</p>
 <p>Recording is managed by a instance of the class <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> which is present as a environment attribute and is called in each timestep and in the end of a episode:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CSVLogger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CSVLogger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;CSV Logger for agent interaction with environment.</span>
 
 <span class="sd">        :param monitor_header: CSV header for sub_run_N/monitor.csv which record interaction step by step.</span>
@@ -153,7 +153,7 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">monitor_header</span><span class="p">,</span>
             <span class="n">progress_header</span><span class="p">,</span>
@@ -178,7 +178,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comfort_violation_timesteps</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">log_step</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">,</span>
             <span class="n">date</span><span class="p">,</span>
@@ -222,7 +222,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">log_step_normalize</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_step_normalize</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">,</span>
             <span class="n">date</span><span class="p">,</span>
@@ -241,7 +241,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">log_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Log episode main information using steps_data param.</span>
 
 <span class="sd">        Args:</span>
@@ -311,7 +311,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_log_file</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_log_file</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Change log_file path for monitor.csv when an episode ends.</span>
 
 <span class="sd">        Args:</span>
@@ -326,7 +326,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">_store_step_information</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_store_step_information</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">reward</span><span class="p">,</span>
             <span class="n">power</span><span class="p">,</span>
@@ -358,7 +358,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="n">simulation_time</span>
 
-    <span class="k">def</span> <span class="nf">_reset_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reset_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset relevant data to next episode summary in progress.csv.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
@@ -371,12 +371,12 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comfort_violation_timesteps</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Activate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Deactivate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>

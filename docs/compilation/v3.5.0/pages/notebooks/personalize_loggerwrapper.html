@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>23. Logger Wrapper personalization/configuration &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
@@ -126,10 +126,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">CSVLogger</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">CSVLogger</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -141,16 +141,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">LoggerStorage</span><span class="p">,</span> <span class="n">TerminalLogger</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">LOG_WRAPPERS_LEVEL</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerStorage</span><span class="p">,</span> <span class="n">TerminalLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG_WRAPPERS_LEVEL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
 
-<span class="k">class</span> <span class="nc">CustomLoggerWrapper</span><span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomLoggerWrapper</span><span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">):</span>
 
     <span class="n">logger</span> <span class="o">=</span> <span class="n">TerminalLogger</span><span class="p">()</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WRAPPER CustomLoggerWrapper&#39;</span><span class="p">,</span>
                                         <span class="n">level</span><span class="o">=</span><span class="n">LOG_WRAPPERS_LEVEL</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span>
             <span class="n">logger_class</span> <span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">LoggerStorage</span><span class="p">):</span>
@@ -162,7 +162,7 @@
 
     <span class="c1"># DEFINE ABSTRACT METHODS FOR METRICS CALCULATION</span>
 
-    <span class="k">def</span> <span class="nf">calculate_custom_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_custom_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                  <span class="n">obs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                                  <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
                                  <span class="n">reward</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -172,7 +172,7 @@
         <span class="c1"># Variables combining information</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">reward</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">get_episode_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_episode_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="c1"># Get information from logger</span>
         <span class="n">power_demands</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_demand&#39;</span><span class="p">]</span>
                          <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_logger</span><span class="o">.</span><span class="n">infos</span><span class="p">]</span>

@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>10. Rewards &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -183,13 +183,13 @@ environment’s info dictionary. The structure typically matches the diagram bel
 <h2><span class="section-number">10.2. </span>Custom Rewards<a class="headerlink" href="#custom-rewards" title="Link to this heading"></a></h2>
 <p>Defining custom reward functions is also straightforward. For instance, a reward signal that always returns
 -1 can be implemented as shown:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">BaseReward</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.rewards</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseReward</span>
 
-<span class="k">class</span> <span class="nc">CustomReward</span><span class="p">(</span><span class="n">BaseReward</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomReward</span><span class="p">(</span><span class="n">BaseReward</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Naive reward function.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CustomReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">{}</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">CustomReward</span><span class="p">)</span>

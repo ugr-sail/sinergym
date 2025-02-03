@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deep Reinforcement Learning integration &mdash; Sinergym  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
 
@@ -147,7 +147,7 @@
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <section id="model-training">
 <h3>Model training<a class="headerlink" href="#model-training" title="Link to this heading"></a></h3>
-<p>If you are looking to train a DRL agent using <em>Sinergym</em>, we provide the script <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent.py">sinergym/scripts/train/train_agent.py</a>. which can be easily adapted to custom experiments.</p>
+<p>If you are looking to train a DRL agent using <em>Sinergym</em>, we provide the script <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_local_conf.py">sinergym/scripts/train/local_confs/train_agent_local_conf.py</a>. which can be easily adapted to custom experiments.</p>
 <p>The following are some key points to consider:</p>
 <ul class="simple">
 <li><p>Models are built using an algorithm constructor, each with its own <strong>specific parameters</strong>. Defaults are used if none are defined.</p></li>
@@ -157,7 +157,7 @@
 <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, and <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> are specified there.</p></li>
 <li><p><strong>Sequential / curriculum learning</strong> can be implemented by adding a valid model path to the <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter. In this way, the script will load and re-train an existing model.</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code> script requires a single parameter (<code class="docutils literal notranslate"><span class="pre">-conf</span></code>), which is the JSON file containing the experiment configuration. A sample JSON structure is detailed in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_PPO.json">sinergym/scripts/train/train_agent_PPO.json</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">train_agent_local_conf.py</span></code> script requires a single parameter (<code class="docutils literal notranslate"><span class="pre">-conf</span></code>), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_PPO.yaml">sinergym/scripts/train/local_confs/train_agent_PPO.yaml</a>.</p>
 <p>We distinguish between <em>mandatory</em> and <em>optional</em> parameters:</p>
 <ul class="simple">
 <li><p><strong>Mandatory</strong>: environment, training episodes, and algorithm (plus any non-default algorithm parameters).</p></li>
@@ -169,9 +169,9 @@ model to load, experiment ID, wrappers (in order), training evaluation, and clou
 <div><ol class="arabic simple">
 <li><p>Names the experiment following the format: <code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;-&lt;environment_name&gt;-episodes&lt;episodes&gt;-seed&lt;seed_value&gt;(&lt;experiment_date&gt;)</span></code>.</p></li>
 <li><p>Sets environment parameters if specified.</p></li>
-<li><p>Applies specified wrappers from the JSON configuration.</p></li>
+<li><p>Applies specified wrappers from the YAML configuration.</p></li>
 <li><p>Saves all experiment’s hyperparameters in WandB if a session is detected.</p></li>
-<li><p>Defines the model algorithm with the specified hyperparameters.</p></li>
+<li><p>Defines the model algorithm with the specified hyperparameters. If a model has been specified, loads it and continues training.</p></li>
 <li><p>Calculates training timesteps from the number of episodes.</p></li>
 <li><p>Sets up an evaluation callback if specified.</p></li>
 <li><p>Trains the model with the environment.</p></li>
@@ -183,11 +183,11 @@ model to load, experiment ID, wrappers (in order), training evaluation, and clou
 <section id="model-loading">
 <h3>Model loading<a class="headerlink" href="#model-loading" title="Link to this heading"></a></h3>
 <p>To load and evaluate/execute an previously trained model, use the script <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py">sinergym/scripts/eval/load_agent.py</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> script requires a single parameter, <code class="docutils literal notranslate"><span class="pre">-conf</span></code>, indicating the JSON file with the evaluation configuration. See the JSON structure in
-<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.json">sinergym/scripts/eval/load_agent_example.json</a> for a reference example of this configuration file.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> script requires a single parameter, <code class="docutils literal notranslate"><span class="pre">-conf</span></code>, indicating the YAML file with the evaluation configuration. See the YAML structure in
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.yaml">sinergym/scripts/eval/load_agent_example.yaml</a> for a reference example of this configuration file.</p>
 <p>Again, we distinguish between <em>mandatory</em> and <em>optional</em> parameters:</p>
 <ul class="simple">
-<li><p><strong>Mandatory</strong>: environment, evaluation episodes, algorithm (name only), and model to load. If the model is stored locally, specify it using the key <code class="docutils literal notranslate"><span class="pre">model</span></code>. If it is stored in the cloud, use the <code class="docutils literal notranslate"><span class="pre">wandb_model</span></code> key. The model field can be a <em>local path</em>, a <em>bucket url</em> in the form <code class="docutils literal notranslate"><span class="pre">gs://</span></code>, or a WandB artifact path for stored models.</p></li>
+<li><p><strong>Mandatory</strong>: environment, evaluation episodes, algorithm (name only), and model to load. The model field can be a <em>local path</em>, a <em>bucket url</em> in the form <code class="docutils literal notranslate"><span class="pre">gs://</span></code>, or a WandB artifact path for stored models.</p></li>
 <li><p><strong>Optional</strong>: environment parameters (which overwrite defaults if specified), experiment identifier, wrappers (in order), and cloud options.</p></li>
 </ul>
 <p>The script loads the model and executes it the specified environment. Relevant data is collected and sent to remote storage if specified, otherwise it is stored locally.</p>
