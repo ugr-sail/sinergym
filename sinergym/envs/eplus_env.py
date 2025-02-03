@@ -42,6 +42,8 @@ class EplusEnv(gym.Env):
         variables: Dict[str, Tuple[str, str]] = {},
         meters: Dict[str, str] = {},
         actuators: Dict[str, Tuple[str, str, str]] = {},
+        context: Dict[str, Tuple[str, str, str]] = {},
+        initial_context: Optional[List[float]] = None,
         weather_variability: Optional[Dict[str, Tuple[
             Union[float, Tuple[float, float]],
             Union[float, Tuple[float, float]],
@@ -63,6 +65,8 @@ class EplusEnv(gym.Env):
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
+            context (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Context. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. These values are processed as real-time building configuration instead of real-time control. Defaults to empty dict.
+            initial_context (Optional[List[float]]): Initial context values to be set in the building model. Defaults to None.
             weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Ranges can be specified to and a value will be select randomly for each episode. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
@@ -99,6 +103,7 @@ class EplusEnv(gym.Env):
         self.variables = variables
         self.meters = meters
         self.actuators = actuators
+        self.context = context
 
         # ---------------------------------------------------------------------------- #
         #                    Define observation and action variables                   #
@@ -107,6 +112,7 @@ class EplusEnv(gym.Env):
         self.observation_variables = self.time_variables + \
             list(self.variables.keys()) + list(self.meters.keys())
         self.action_variables = list(self.actuators.keys())
+        self.context_variables = list(self.context.keys())
 
         # ---------------------------------------------------------------------------- #
         #                               Building modeling                              #
@@ -132,23 +138,33 @@ class EplusEnv(gym.Env):
         self.obs_queue = Queue(maxsize=1)
         self.info_queue = Queue(maxsize=1)
         self.act_queue = Queue(maxsize=1)
+        self.context_queue = Queue(maxsize=1)
         # last obs, action and info
         self.last_obs: Optional[Dict[str, float]] = None
         self.last_info: Optional[Dict[str, Any]] = None
         self.last_action: Optional[List[float]] = None
+        self.last_context: Optional[Queue] = None
 
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
+
+        # Set initial context if exists
+        if initial_context is not None:
+            self.update_context(initial_context)
+
+        # EnergyPlus simulator
         self.energyplus_simulator = EnergyPlus(
             name=env_name,
             obs_queue=self.obs_queue,
             info_queue=self.info_queue,
             act_queue=self.act_queue,
+            context_queue=self.context_queue,
             time_variables=self.time_variables,
             variables=self.variables,
             meters=self.meters,
-            actuators=self.actuators
+            actuators=self.actuators,
+            context=self.context
         )
 
         # ---------------------------------------------------------------------------- #
@@ -364,6 +380,7 @@ class EplusEnv(gym.Env):
             timeout = 2
             try:
                 self.act_queue.put(action, timeout=timeout)
+                self.last_action = action
                 self.last_obs = obs = self.obs_queue.get(timeout=timeout)
                 self.last_info = info = self.info_queue.get(
                     timeout=timeout)
@@ -413,6 +430,31 @@ class EplusEnv(gym.Env):
         self.logger.info('Environment closed. [{}]'.format(self.name))
 
     # ---------------------------------------------------------------------------- #
+    #                       REAL-TIME BUILDING CONTEXT UPDATE                      #
+    # ---------------------------------------------------------------------------- #
+    def update_context(self,
+                       context_values: Union[np.ndarray,
+                                             List[float]]) -> None:
+        """Update real-time building context (actuators which are not controlled by the agent).
+
+        Args:
+            context_values (Union[np.ndarray, List[float]]): List of values to be updated in the building model.
+        """
+        # Check context_values concistency with context variables
+        try:
+            assert len(context_values) == len(self.context)
+        except AssertionError as err:
+            self.logger.warning(
+                'Context values must have the same length than context variables specified, and values must be in the same order.')
+
+        try:
+            self.context_queue.put(context_values, block=False)
+            self.last_context = context_values
+        except (Full):
+            self.logger.warning(
+                'Context queue is full, context update will be skipped.')
+
+    # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
 
@@ -443,12 +485,14 @@ class EplusEnv(gym.Env):
                 """Validate weather variability parameters."""
                 if not (isinstance(params, tuple)):
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {
+                            params}. "
                         "It must be a tuple of 3 elements."
                     )
                 if len(params) != 3:
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {
+                            params}. "
                         "It must have exactly 3 values."
                     )
 
@@ -461,12 +505,14 @@ class EplusEnv(gym.Env):
                             float)
                     ):
                         raise ValueError(
-                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {
+                                param}. "
                             "It must be a tuple of two values (range), or a float."
                         )
                     if (isinstance(param, tuple)) and len(param) != 2:
                         raise ValueError(
-                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {
+                                param}. "
                             "Tuples must have exactly two values (range)."
                         )
 
@@ -491,7 +537,7 @@ class EplusEnv(gym.Env):
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_action_space')
 
-    @action_space.setter  # pragma: no cover
+    @ action_space.setter  # pragma: no cover
     def action_space(self, space: gym.spaces.Space[Any]):
         self._action_space = space
 
@@ -501,7 +547,7 @@ class EplusEnv(gym.Env):
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_observation_space')
 
-    @observation_space.setter  # pragma: no cover
+    @ observation_space.setter  # pragma: no cover
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
 
@@ -530,6 +576,10 @@ class EplusEnv(gym.Env):
     @property  # pragma: no cover
     def actuator_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.actuator_handlers
+
+    @property  # pragma: no cover
+    def context_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.context_handlers
 
     @property  # pragma: no cover
     def available_handlers(self) -> Optional[str]:
@@ -640,7 +690,7 @@ class EplusEnv(gym.Env):
     - Actuators: {}
     - Variables: {}
     - Meters: {}
-    - Internal Variables: None
+    - Internal Context: {}
 
     """.format(
             self.name,
@@ -665,5 +715,6 @@ class EplusEnv(gym.Env):
             self.available_handlers,
             self.actuator_handlers,
             self.var_handlers,
-            self.meter_handlers)
+            self.meter_handlers,
+            self.context_handlers)
         )
