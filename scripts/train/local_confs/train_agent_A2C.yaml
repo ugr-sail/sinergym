@@ -17,7 +17,7 @@ algorithm:
     ent_coef: 0.0
     vf_coef: 0.5
     max_grad_norm: 0.5
-    rms_prop_eps: 1e-5
+    rms_prop_eps: 1.0e-5
     use_rms_prop: true
     use_sde: false
     sde_sample_freq: -1
