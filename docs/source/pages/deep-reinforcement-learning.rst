@@ -38,7 +38,7 @@ Usage
 Model training
 ~~~~~~~~~~~~~~
 
-If you are looking to train a DRL agent using *Sinergym*, we provide the script `sinergym/scripts/train/train_agent_local_conf.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_local_conf.py>`__. which can be easily adapted to custom experiments.
+If you are looking to train a DRL agent using *Sinergym*, we provide the script `sinergym/scripts/train/local_confs/train_agent_local_conf.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_local_conf.py>`__. which can be easily adapted to custom experiments.
 
 The following are some key points to consider:
 
