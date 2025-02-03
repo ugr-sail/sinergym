@@ -24,6 +24,7 @@
       ExpReward
       HourlyLinearReward
       LinearReward
+      MultiZoneReward
       NormalizedLinearReward
    
    
