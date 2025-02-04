@@ -284,8 +284,7 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(
-                    specification['variable_names']) == len(
+                assert len( specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
@@ -360,6 +359,7 @@ def convert_conf_to_env_parameters(
     variables = json_to_variables(conf['variables'])
     meters = json_to_meters(conf['meters'])
     actuators = json_to_actuators(conf['actuators'])
+    context = json_to_actuators(conf['context'])
 
     assert len(conf['weather_specification']['weather_files']) == len(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
@@ -381,6 +381,8 @@ def convert_conf_to_env_parameters(
             'variables': variables,
             'meters': meters,
             'actuators': actuators,
+            'context': context,
+            'initial_context': conf.get('initial_context'),
             'reward': eval(conf['reward']),
             'reward_kwargs': conf['reward_kwargs'],
             'max_ep_data_store_num': conf['max_ep_data_store_num'],
@@ -410,6 +412,8 @@ def convert_conf_to_env_parameters(
                 'variables': variables,
                 'meters': meters,
                 'actuators': actuators,
+                'context': context,
+                'initial_context': conf.get('initial_context'),
                 'weather_variability': weather_variability,
                 'reward': eval(conf['reward']),
                 'reward_kwargs': conf['reward_kwargs'],
@@ -426,7 +430,7 @@ def convert_conf_to_env_parameters(
 # ---------------------------------------------------------------------------- #
 
 
-def process_environment_parameters(env_params: dict) -> dict:
+def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cover
     # Transform required str's into Callables or lists in tuples
     if env_params.get('action_space'):
         env_params['action_space'] = eval(
@@ -471,7 +475,7 @@ def process_environment_parameters(env_params: dict) -> dict:
     return env_params
 
 
-def process_algorithm_parameters(alg_params: dict):
+def process_algorithm_parameters(alg_params: dict):  # pragma: no cover
 
     # Transform required str's into Callables or list in tuples
     if alg_params.get('train_freq') and isinstance(

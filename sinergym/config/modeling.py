@@ -28,7 +28,6 @@ class ModelJSON(object):
         :param _idd: IDD eppy object to set up Epm.
         :param _variables: Output:Variable(s) information about building model.
         :param _meters: Output:Meter(s) information about building model.
-        :param _actuators: Actuators information about building model.
         :param experiment_path: Path for Sinergym experiment output.
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
         :param max_ep_store: Number of episodes directories will be stored in experiment_path.
@@ -55,10 +54,9 @@ class ModelJSON(object):
             weather_files: List[str],
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
-            actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
             extra_config: Dict[str, Any]):
-        """Constructor. Variables, meters and actuators are required to update building model scheme.
+        """Constructor. Variables and meters are required to update building model scheme.
 
         Args:
             env_name (str): Name of the environment, required for Sinergym output management.
@@ -66,7 +64,6 @@ class ModelJSON(object):
             weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
-            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name.
             max_ep_store (int): Number of episodes directories will be stored in experiment_path.
             extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
         """
@@ -115,7 +112,6 @@ class ModelJSON(object):
         self.config = extra_config
 
         # Input/Output varibles
-        self._actuators = actuators
         self._variables = variables
         self._meters = meters
 

@@ -189,6 +189,29 @@ The argument called ``actuators`` is a dictionary in which we specify the actuat
 .. note:: For more information about the available actuators in an environment, execute a default control with
           *Sinergym* directly (i.e., with an empty action space) and check the file ``data_available.txt`` generated.
 
+Context
+=========
+
+The argument called ``context`` is a dictionary where actuators are also specified in the same way as in :ref:`Actuators`. However, the internal processing differs for the actuators defined here.
+
+These values will not be changed by the actions sent from the agent to the environment using ``step(a)`` method, as happens in Gymnasium's interaction flow. Instead, these actuators can be modified at any time, outside the control flow, using the ``update_context(List[float])`` method whenever needed.
+
+This allows internal variables within the building to be configured in real time. For example, if we want to enforce specific occupancy levels or lighting conditions that are not part of the building's control optimization process.
+
+.. code-block:: python
+
+  contexts = {
+    # <custom_actuator_name> : (<actuator_type>,<actuator_value>,<actuator_original_name>),
+    # ...
+  }
+
+Initial context
+===============
+
+It is a list containing the initial values of the context variables defined in the previous section. If not specified, it is initialized with the default values provided by the building's definition.
+
+This list must include the initial values in the same order as defined in the context dictionary and, of course, with the same number of elements.
+
 Action space
 ============
 

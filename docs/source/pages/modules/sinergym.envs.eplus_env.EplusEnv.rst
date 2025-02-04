@@ -24,6 +24,7 @@
       ~EplusEnv.reset
       ~EplusEnv.set_wrapper_attr
       ~EplusEnv.step
+      ~EplusEnv.update_context
    
    
 
@@ -37,6 +38,7 @@
       ~EplusEnv.actuator_handlers
       ~EplusEnv.available_handlers
       ~EplusEnv.building_path
+      ~EplusEnv.context_handlers
       ~EplusEnv.ddy_path
       ~EplusEnv.episode_length
       ~EplusEnv.episode_path

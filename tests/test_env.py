@@ -105,6 +105,26 @@ def test_render(env_5zone):
     env_5zone.render()
 
 
+def test_update_context(env_5zone):
+    env_5zone.reset()
+    a = env_5zone.action_space.sample()
+    obs, _, _, _, _ = env_5zone.step(a)
+    # Check if obs has the occupancy value of initial context
+    obs_dict = dict(
+        zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    # Context occupancy is a percentage of 20 people
+    assert obs_dict['people_occupant'] == env_5zone.get_wrapper_attr(
+        'last_context')[-1] * 20
+    # Try to update context with a new value
+    env_5zone.update_context([0.5])
+    obs, _, _, _, _ = env_5zone.step(a)
+    # Check if obs has the new occupancy value
+    obs_dict = dict(
+        zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    assert obs_dict['people_occupant'] == 10
+    assert env_5zone.get_wrapper_attr('last_context')[-1] == 0.5
+
+
 def test_all_environments():
 
     envs_id = [env_id for env_id in gym.envs.registration.registry.keys(

@@ -93,6 +93,10 @@
         }
     },
 
+    "context"               : {},
+
+    "initial_context"       : [],
+
     "action_space"          : "gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)",
 
     "action_space_discrete" : "gym.spaces.Discrete(10)",
