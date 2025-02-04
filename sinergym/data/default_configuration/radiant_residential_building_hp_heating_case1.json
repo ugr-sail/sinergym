@@ -198,6 +198,36 @@
         }
     },
 
+    "context": {
+        "Heating SP LIVING_SCHED"                : {
+            "variable_name" : "htg_setpoint_living",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        },
+        "Heating SP KITCHEN_SCHED"                : {
+            "variable_name" : "htg_setpoint_kitchen",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        },
+        "Heating SP BEDROOM1_SCHED"                : {
+            "variable_name" : "htg_setpoint_bed1",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        },
+        "Heating SP BEDROOM2_SCHED"                : {
+            "variable_name" : "htg_setpoint_bed2",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        },
+        "Heating SP BEDROOM3_SCHED"                : {
+            "variable_name" : "htg_setpoint_bed3",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        }
+    },
+
+    "initial_context": [20.0,20.0,20.0,20.0,20.0],
+
     "action_space"          : "gym.spaces.Box(low=np.array([25.0], dtype=np.float32), high=np.array([45.0], dtype=np.float32), shape=(1,), dtype=np.float32)",
 
     "only_discrete": false,
