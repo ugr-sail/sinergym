@@ -13,6 +13,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone.var_handlers is None
     assert simulator_5zone.meter_handlers is None
     assert simulator_5zone.actuator_handlers is None
+    assert simulator_5zone.context_handlers is None
     assert simulator_5zone.available_data is None
     assert simulator_5zone.energyplus_thread is None
     assert simulator_5zone.energyplus_state is None
@@ -58,6 +59,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone.var_handlers is None
     assert simulator_5zone.meter_handlers is None
     assert simulator_5zone.actuator_handlers is None
+    assert simulator_5zone.context_handlers is None
     assert simulator_5zone.available_data is None
     assert not simulator_5zone.initialized_handlers
     assert not simulator_5zone.system_ready
@@ -76,6 +78,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone.var_handlers is not None
     assert simulator_5zone.meter_handlers is not None
     assert simulator_5zone.actuator_handlers is not None
+    assert simulator_5zone.context_handlers is not None
     assert simulator_5zone.available_data is not None
     assert simulator_5zone.initialized_handlers
     assert simulator_5zone.system_ready
@@ -139,6 +142,10 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
         'false_actuator_type',
         'false_actuator_type_name',
         'false_actuator_name')
+    simulator_5zone.context['false_context'] = (
+        'false_actuator_type',
+        'false_actuator_type_name',
+        'false_actuator_name')
     # Start simulation
     simulator_5zone.start(
         building_path=os.path.join(
@@ -155,6 +162,7 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
     assert simulator_5zone.var_handlers is None
     assert simulator_5zone.meter_handlers is None
     assert simulator_5zone.actuator_handlers is None
+    assert simulator_5zone.context_handlers is None
     assert simulator_5zone.available_data is None
     # We have false handlers after observation
     obs = simulator_5zone.obs_queue.get()
@@ -168,6 +176,8 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
     assert simulator_5zone.var_handlers is not None
     assert simulator_5zone.meter_handlers is not None
     assert simulator_5zone.actuator_handlers is not None
+    assert simulator_5zone.context_handlers is not None
     assert simulator_5zone.var_handlers['false_variable'] <= 0
     assert simulator_5zone.meter_handlers['false_meter'] <= 0
     assert simulator_5zone.actuator_handlers['false_actuator'] <= 0
+    assert simulator_5zone.context_handlers['false_context'] <= 0

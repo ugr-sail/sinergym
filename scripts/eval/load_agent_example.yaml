@@ -1,0 +1,65 @@
+# ---------------------------------- BASICS ---------------------------------- #
+id: LoadExample
+environment: Eplus-5zone-hot-continuous-stochastic-v1
+episodes: 5
+seed: null
+
+# ------------------------------- SB3 ALGORITHM ------------------------------ #
+algorithm:
+  name: PPO
+
+# --------------------------- MODEL FOR EVALUATION --------------------------- #
+# Local Path:
+# model: 
+#   local_path: </path/to/model>
+# load model normalization if needed
+#   normalization:
+#     mean: Sinergym_output/evaluation/mean.txt
+#     var: Sinergym_output/evaluation/var.txt
+
+# Google Bucket Path:
+# model: 
+#   bucket_path: gs://<path_to_model_google_bucket>
+# load model normalization if needed
+#   normalization:
+#     mean: Sinergym_output/evaluation/mean.txt
+#     var: Sinergym_output/evaluation/var.txt
+
+# WANDB model path:
+model:
+  project: test-project
+  entity: sail_ugr
+  artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPOExperimentExample_2025-02-02_18-31_9jau51uy
+  artifact_type: output
+  artifact_tag: v0
+  artifact_path: Sinergym_output/evaluation/
+  model_path: Sinergym_output/evaluation/best_model.zip
+  # load model normalization if needed
+  normalization:
+    mean: Sinergym_output/evaluation/mean.txt
+    var: Sinergym_output/evaluation/var.txt
+
+
+# -------------------------------- EVALUATION -------------------------------- #
+
+# -------------------------------- ENVIRONMENT ------------------------------- #
+env_params:
+  reward: LinearReward
+
+# --------------------------------- WRAPPERS --------------------------------- #
+wrappers:
+  NormalizeAction: {}
+  NormalizeObservation:
+    mean: null
+    var: null
+    automatic_update: false
+  LoggerWrapper:
+    storage_class: sinergym.utils.logger.LoggerStorage
+  CSVLogger: {}
+
+# -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
+cloud: 
+  remote_store: null # remote bucket name
+  auto_delete: null # Delete remote instance when finish experiment
+  # auto_delete:
+  #   group_name: group-example

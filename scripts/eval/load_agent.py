@@ -1,17 +1,18 @@
 import argparse
-import json
 import logging
 import sys
 
 import gymnasium as gym
 import numpy as np
 import wandb
+import yaml
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.monitor import Monitor
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-from sinergym.utils.common import is_wrapped
+from sinergym.utils.common import (is_wrapped, process_algorithm_parameters,
+                                   process_environment_parameters)
 from sinergym.utils.constants import *
 from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.rewards import *
@@ -28,7 +29,7 @@ parser.add_argument(
     required=True,
     type=str,
     dest='configuration',
-    help='Path to experiment configuration (JSON file)'
+    help='Path to experiment configuration (YAML file)'
 )
 args = parser.parse_args()
 
@@ -41,11 +42,11 @@ logger = terminal_logger.getLogger(
 )
 
 # ---------------------------------------------------------------------------- #
-#                             Read json parameters                             #
+#                             Read yaml parameters                             #
 # ---------------------------------------------------------------------------- #
 
-with open(args.configuration) as json_conf:
-    conf = json.load(json_conf)
+with open(args.configuration, 'r') as yaml_conf:
+    conf = yaml.safe_load(yaml_conf)
 
 try:
     # ---------------------------------------------------------------------------- #
@@ -62,13 +63,7 @@ try:
     env_params = {}
     # Transform required str's into Callables
     if conf.get('env_params'):
-        if conf['env_params'].get('reward'):
-            conf['env_params']['reward'] = eval(conf['env_params']['reward'])
-        if conf['env_params'].get('action_space'):
-            conf['env_params']['action_space'] = eval(
-                conf['env_params']['action_space'])
-
-        env_params = conf['env_params']
+        env_params = process_environment_parameters(conf['env_params'])
 
     # ---------------------------------------------------------------------------- #
     #                            Environment definition                            #
@@ -81,7 +76,6 @@ try:
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
-
     if conf.get('wrappers'):
         for key, parameters in conf['wrappers'].items():
             wrapper_class = eval(key)
@@ -96,53 +90,59 @@ try:
     # ---------------------------------------------------------------------------- #
     #                                  Load Agent                                  #
     # ---------------------------------------------------------------------------- #
+
     # ------------------------ Weights and Bias model path ----------------------- #
-    if conf.get('wandb_model'):
+    if conf['model'].get('entity'):
         # Get wandb run or generate a new one
         if is_wrapped(env, WandBLogger):
             wandb_run = env.get_wrapper_attr('wandb_run')
         else:
             wandb_run = wandb.init()
+
         # Get model path
-        artifact_tag = conf['wandb_model'].get(
+        artifact_tag = conf['model'].get(
             'artifact_tag', 'latest')
-        wandb_path = conf['wandb_model']['entity'] + '/' + conf['wandb_model']['project'] + \
-            '/' + conf['wandb_model']['artifact_name'] + ':' + artifact_tag
+        wandb_path = conf['model']['entity'] + '/' + conf['model']['project'] + \
+            '/' + conf['model']['artifact_name'] + ':' + artifact_tag
+
         # Download artifact
         artifact = wandb_run.use_artifact(wandb_path)
-        artifact.get_path(conf['wandb_model']
-                          ['artifact_path']).download('.')
+        artifact.download(
+            path_prefix=conf['model']['artifact_path'],
+            root='./')
+
         # Set model path to local wandb downloaded file
-        model_path = './' + conf['wandb_model']['artifact_path']
+        model_path = './' + conf['model']['model_path']
 
     # -------------------------- Google cloud model path ------------------------- #
-    elif 'gs://' in conf['model']:
+    if conf['model'].get('bucket_path'):
         # Download from given bucket (gcloud configured with privileges)
         client = gcloud.init_storage_client()
-        bucket_name = conf['model'].split('/')[2]
-        model_path = conf['model'].split(bucket_name + '/')[-1]
+        bucket_name = conf['model']['bucket_path'].split('/')[2]
+        model_path = conf['model']['bucket_path'].split(bucket_name + '/')[-1]
         gcloud.read_from_bucket(client, bucket_name, model_path)
         model_path = './' + model_path
+
     # ----------------------------- Local model path ----------------------------- #
-    else:
-        model_path = conf['model']
+    if conf['model'].get('local_path'):
+        model_path = conf['model']['local_path']
+
+    # ---------- Load calibration of normalization for model if required --------- #
+    if conf['model'].get('normalization') and is_wrapped(
+            env, NormalizeObservation):
+        # Update calibrations
+        env.get_wrapper_attr('set_mean')(
+            conf['model']['normalization']['mean'])
+        env.get_wrapper_attr('set_var')(
+            conf['model']['normalization']['var'])
 
     model = None
-    algorithm_name = conf['algorithm']['name']
-    if algorithm_name == 'SB3-DQN':
-        model = DQN.load(model_path)
-    elif algorithm_name == 'SB3-DDPG':
-        model = DDPG.load(model_path)
-    elif algorithm_name == 'SB3-A2C':
-        model = A2C.load(model_path)
-    elif algorithm_name == 'SB3-PPO':
-        model = PPO.load(model_path)
-    elif algorithm_name == 'SB3-SAC':
-        model = SAC.load(model_path)
-    elif algorithm_name == 'SB3-TD3':
-        model = TD3.load(model_path)
-    else:
-        raise RuntimeError('Algorithm specified is not registered.')
+    alg_name = conf['algorithm']['name']
+    try:
+        model = eval(alg_name).load(model_path)
+    except NameError:
+        raise NameError(
+            'Algorithm {} does not exists. It must be a valid SB3 algorithm.'.format(alg_name))
 
     # ---------------------------------------------------------------------------- #
     #                             Execute loaded agent                             #
@@ -159,10 +159,10 @@ try:
 
     env.close()
 
-    # ---------------------------------------------------------------------------- #
-    #                                 Store results                                #
-    # ---------------------------------------------------------------------------- #
     if conf.get('cloud'):
+        # ---------------------------------------------------------------------------- #
+        #                                 Store results                                #
+        # ---------------------------------------------------------------------------- #
         if conf['cloud'].get('remote_store'):
             # Initiate Google Cloud client
             client = gcloud.init_storage_client()
@@ -180,7 +180,7 @@ try:
             print('Deleting remote container')
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                conf['cloud']['group_name'], token)
+                conf['cloud']['auto_delete']['group_name'], token)
 
 except (Exception, KeyboardInterrupt) as err:
     print("Error or interruption in process detected")
@@ -193,5 +193,5 @@ except (Exception, KeyboardInterrupt) as err:
             print('Deleting remote container')
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                conf['cloud']['group_name'], token)
+                conf['cloud']['auto_delete']['group_name'], token)
     raise err
