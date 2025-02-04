@@ -169,6 +169,14 @@
 <td><p>No</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">actuators</span></code> dict definition.</p></td>
 </tr>
+<tr class="row-even"><td><p>context</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">context</span></code> dict definition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>initial_context</p></td>
+<td><p>Yes</p></td>
+<td><p>Initial values for specified <code class="docutils literal notranslate"><span class="pre">context</span></code> dict. If not specified, it is initialized with the default values provided by the building’s definition.</p></td>
+</tr>
 <tr class="row-even"><td><p>action_space</p></td>
 <td><p>No</p></td>
 <td><p>Gymnasium action space definition.</p></td>
@@ -296,6 +304,8 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
 
+<span class="w">    </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+
 <span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
 
 <span class="w">    </span><span class="nt">&quot;action_space_discrete&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Discrete(10)&quot;</span><span class="p">,</span>
@@ -350,7 +360,7 @@ named as <code class="docutils literal notranslate"><span class="pre">DEFAULT_&l
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>During registration, <em>Sinergym</em> parses the information introduced in the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter to the environment constructor, previously adapting it to the format used by the EnergyPlus Python API. A similar process is followed with the <code class="docutils literal notranslate"><span class="pre">meters</span></code> and <code class="docutils literal notranslate"><span class="pre">actuators</span></code> fields.</p>
+<p>During registration, <em>Sinergym</em> parses the information introduced in the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter to the environment constructor, previously adapting it to the format used by the EnergyPlus Python API. A similar process is followed with the <code class="docutils literal notranslate"><span class="pre">meters</span></code>, <code class="docutils literal notranslate"><span class="pre">actuators</span></code> and <code class="docutils literal notranslate"><span class="pre">context</span></code> fields.</p>
 </section>
 </section>
 
