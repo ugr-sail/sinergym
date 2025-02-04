@@ -7306,6 +7306,91 @@
             ],
             "schedule_type_limits_name": "Any Number"
         },
+        "Heating SP LIVING_SCHED": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 20
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Heating SP KITCHEN_SCHED": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 20
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Heating SP BEDROOM1_SCHED": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 20
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Heating SP BEDROOM2_SCHED": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 20
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Heating SP BEDROOM3_SCHED": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 20
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
         "Heating UFH high water temperature schedule": {
             "data": [
                 {
@@ -9222,10 +9307,10 @@
     },
     "ThermostatSetpoint:SingleHeating": {
         "FirstFloor:Kitchen SimpleHeating SP": {
-            "setpoint_temperature_schedule_name": "Heating SP SCHED"
+            "setpoint_temperature_schedule_name": "Heating SP KITCHEN_SCHED"
         },
         "FirstFloor:LivingRoom SimpleHeating SP": {
-            "setpoint_temperature_schedule_name": "Heating SP SCHED"
+            "setpoint_temperature_schedule_name": "Heating SP LIVING_SCHED"
         },
         "SecondFloor:Bath SimpleHeating SP": {
             "setpoint_temperature_schedule_name": "Heating SP SCHED"
@@ -9237,13 +9322,13 @@
             "setpoint_temperature_schedule_name": "Heating SP SCHED"
         },
         "SecondFloor:Bedroom01 SimpleHeating SP": {
-            "setpoint_temperature_schedule_name": "Heating SP SCHED"
+            "setpoint_temperature_schedule_name": "Heating SP BEDROOM1_SCHED"
         },
         "SecondFloor:Bedroom02 SimpleHeating SP": {
-            "setpoint_temperature_schedule_name": "Heating SP SCHED"
+            "setpoint_temperature_schedule_name": "Heating SP BEDROOM2_SCHED"
         },
         "SecondFloor:Bedroom03 SimpleHeating SP": {
-            "setpoint_temperature_schedule_name": "Heating SP SCHED"
+            "setpoint_temperature_schedule_name": "Heating SP BEDROOM3_SCHED"
         }
     },
     "Timestep": {
@@ -11173,7 +11258,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "fraction_of_autosized_heating_design_capacity": 1,
-            "heating_control_temperature_schedule_name": "Heating SP SCHED",
+            "heating_control_temperature_schedule_name": "Heating SP KITCHEN_SCHED",
             "heating_control_throttling_range": 0.5,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
@@ -11190,7 +11275,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "fraction_of_autosized_heating_design_capacity": 1,
-            "heating_control_temperature_schedule_name": "Heating SP SCHED",
+            "heating_control_temperature_schedule_name": "Heating SP LIVING_SCHED",
             "heating_control_throttling_range": 0.5,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
@@ -11207,7 +11292,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "fraction_of_autosized_heating_design_capacity": 1,
-            "heating_control_temperature_schedule_name": "Heating SP SCHED",
+            "heating_control_temperature_schedule_name": "Heating SP BEDROOM1_SCHED",
             "heating_control_throttling_range": 0.5,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
@@ -11224,7 +11309,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "fraction_of_autosized_heating_design_capacity": 1,
-            "heating_control_temperature_schedule_name": "Heating SP SCHED",
+            "heating_control_temperature_schedule_name": "Heating SP BEDROOM2_SCHED",
             "heating_control_throttling_range": 0.5,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
@@ -11241,7 +11326,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "fraction_of_autosized_heating_design_capacity": 1,
-            "heating_control_temperature_schedule_name": "Heating SP SCHED",
+            "heating_control_temperature_schedule_name": "Heating SP BEDROOM3_SCHED",
             "heating_control_throttling_range": 0.5,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
