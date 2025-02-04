@@ -5,7 +5,7 @@ Class for connecting EnergyPlus with Python using pyenergyplus API.
 import sys
 import threading
 from pathlib import Path
-from queue import Queue, Empty
+from queue import Empty, Queue
 from typing import Any, Dict, List, Optional, Tuple
 
 from pyenergyplus.api import EnergyPlusAPI
