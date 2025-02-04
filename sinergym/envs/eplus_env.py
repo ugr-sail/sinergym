@@ -142,8 +142,9 @@ class EplusEnv(gym.Env):
         # last obs, action and info
         self.last_obs: Optional[Dict[str, float]] = None
         self.last_info: Optional[Dict[str, Any]] = None
-        self.last_action: Optional[List[float]] = None
-        self.last_context: Optional[Queue] = None
+        self.last_action: Optional[Union[List[float],
+                                         np.ndarray, Tuple[Any], float, int]] = None
+        self.last_context: Optional[Union[List[float], np.ndarray]] = None
 
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
@@ -537,7 +538,7 @@ class EplusEnv(gym.Env):
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_action_space')
 
-    @ action_space.setter  # pragma: no cover
+    @action_space.setter  # pragma: no cover
     def action_space(self, space: gym.spaces.Space[Any]):
         self._action_space = space
 
@@ -547,7 +548,7 @@ class EplusEnv(gym.Env):
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_observation_space')
 
-    @ observation_space.setter  # pragma: no cover
+    @observation_space.setter  # pragma: no cover
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
 
