@@ -795,6 +795,19 @@ def normalized_linear_reward():
         max_comfort_penalty=12,
     )
 
+
+@pytest.fixture(scope='function')
+def multizone_reward():
+    return MultiZoneReward(
+        energy_variables=['HVAC_electricity_demand_rate'],
+        temperature_and_setpoints_conf={
+            'air_temperature1': 'setpoint_temperature1',
+            'air_temperature2': 'setpoint_temperature2'},
+        comfort_threshold=0.5,
+        energy_weight=0.5,
+        lambda_energy=1.0,
+        lambda_temperature=1.0)
+
 # ---------------------------------------------------------------------------- #
 #                         WHEN TESTS HAVE BEEN FINISHED                        #
 # ---------------------------------------------------------------------------- #

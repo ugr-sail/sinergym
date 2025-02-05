@@ -92,3 +92,56 @@ def test_custom_reward(custom_reward):
     assert R == -1.0
     assert isinstance(terms, dict)
     assert len(terms) == 0
+
+
+def test_multizone_reward(multizone_reward):
+    # Fictional observation variables (threshold +/-0.5)
+    obs_dict = {'air_temperature1': 20.3,
+                'air_temperature2': 21.6,
+                'setpoint_temperature1': 20.0,
+                'setpoint_temperature2': 21.0,
+                'HVAC_electricity_demand_rate': 0}
+    R, terms = multizone_reward(obs_dict)
+    assert round(R, 2) == -0.05  # 0.5 * 0.1
+    assert isinstance(terms, dict)
+    assert round(terms['air_temperature1_violation'], 2) == 0.0
+    assert round(terms['air_temperature2_violation'], 2) == 0.1
+    # Diferrent setpoints (threshold +/-1.0)
+    multizone_reward.comfort_threshold = 1.0
+    obs_dict = {'air_temperature1': 21.2,
+                'air_temperature2': 19.7,
+                'setpoint_temperature1': 19.0,
+                'setpoint_temperature2': 22.0,
+                'HVAC_electricity_demand_rate': 0}
+    R, terms = multizone_reward(obs_dict)
+    assert round(R, 2) == -1.25  # 0.5 * (1.2 + 1.3)
+    assert isinstance(terms, dict)
+    assert round(terms['air_temperature1_violation'], 2) == 1.2
+    assert round(terms['air_temperature2_violation'], 2) == 1.3
+
+    # Tests exceptions
+    multizone_reward.comfort_threshold = 0.5
+    # Forcing unknown reward temp variables
+    obs_dict = {'unknown': 20.3,
+                'air_temperature2': 21.6,
+                'setpoint_temperature1': 20.0,
+                'setpoint_temperature2': 21.0,
+                'HVAC_electricity_demand_rate': 0}
+    with pytest.raises(AssertionError):
+        multizone_reward(obs_dict)
+    # Forcing unknown reward setpoint variable
+    obs_dict = {'air_temperature1': 20.3,
+                'air_temperature2': 21.6,
+                'unknown': 20.0,
+                'setpoint_temperature2': 21.0,
+                'HVAC_electricity_demand_rate': 0}
+    with pytest.raises(AssertionError):
+        multizone_reward(obs_dict)
+    # Forcing unknown reward energy variable
+    obs_dict = {'air_temperature1': 20.3,
+                'air_temperature2': 21.6,
+                'setpoint_temperature1': 20.0,
+                'setpoint_temperature2': 21.0,
+                'unknown': 0}
+    with pytest.raises(AssertionError):
+        multizone_reward(obs_dict)
