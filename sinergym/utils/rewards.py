@@ -655,16 +655,6 @@ class NormalizedLinearReward(LinearReward):
 
 
 class MultiZoneReward(BaseReward):
-    """A linear reward function for multi-zone environments. Instead of having a fixed and common comfort range
-    for the entire building, each zone has its own comfort range, which is directly obtained from the setpoints
-    established in the building. This function is designed for buildings where temperature setpoints are not
-    controlled directly but rather used as targets to be achieved, while other actuators are controlled to reach
-    these setpoints. A setpoint observation variable can be assigned per zone if it is available in the specific building, if only
-    one setpoint variable is specified, it will be used for all zones.
-
-    Args:
-        BaseReward (class): Base reward class.
-    """
 
     def __init__(
         self,
@@ -676,8 +666,13 @@ class MultiZoneReward(BaseReward):
         lambda_temperature: float = 1.0
     ):
         """
-        Linear reward function. The process is the same than LinearReward, but the comfort range is different for each zone, read from the setpoints
-        variables instead of fixed interval.
+        A linear reward function for environments with different comfort ranges in each zone. Instead of having
+        a fixed and common comfort range for the entire building, each zone has its own comfort range, which is
+        directly obtained from the setpoints established in the building. This function is designed for buildings
+        where temperature setpoints are not controlled directly but rather used as targets to be achieved, while
+        other actuators are controlled to reach these setpoints. A setpoint observation variable can be assigned
+        per zone if it is available in the specific building. It is also possible to assign the same setpoint
+        variable to multiple air temperature zones.
 
         Args:
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
