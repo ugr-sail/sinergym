@@ -131,8 +131,7 @@ class LinearReward(BaseReward):
             Tuple[float, List[float]]: Total energy consumed (sum of variables) and List with energy consumed in each energy variable.
         """
 
-        energy_values = [
-            v for k, v in obs_dict.items() if k in self.energy_names]
+        energy_values = [obs_dict[v] for v in self.energy_names]
 
         # The total energy is the sum of energies
         total_energy = sum(energy_values)
@@ -167,8 +166,7 @@ class LinearReward(BaseReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temp_values = [
-            v for k, v in obs_dict.items() if k in self.temp_names]
+        temp_values = [obs_dict[v] for v in self.temp_names]
         total_temp_violation = 0.0
         temp_violations = []
         for T in temp_values:
@@ -700,8 +698,7 @@ class MultiZoneReward(BaseReward):
             Tuple[float, List[float]]: Total energy consumed (sum of variables) and List with energy consumed in each energy variable.
         """
 
-        energy_values = [
-            v for k, v in obs_dict.items() if k in self.energy_names]
+        energy_values = [obs_dict[v] for v in self.energy_names]
 
         # The total energy is the sum of energies
         total_energy = sum(energy_values)
