@@ -343,27 +343,20 @@ class EplusEnv(gym.Env):
         try:
             assert self._action_space.contains(
                 action)
-        except AssertionError as err:
-            self.logger.warning(
+        except AssertionError:
+            self.logger.error(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
-
-        # Check if episode existed and is not terminated or truncated
-        try:
-            assert self.energyplus_simulator.energyplus_state is not None
-        except AssertionError as err:
-            self.logger.critical(
-                'Step: Environment requires to be reset before.')
-            raise err
+            raise TypeError
 
         # check for simulation errors
         try:
             assert not self.energyplus_simulator.failed()
-        except AssertionError as err:
+        except AssertionError:
             self.logger.critical(
                 'EnergyPlus failed with exit code {}'.format(
                     self.energyplus_simulator.sim_results['exit_code']))
-            raise err
+            raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
             self.logger.debug(
