@@ -196,7 +196,7 @@ The argument called ``context`` is a dictionary where actuators are also specifi
 
 These values will not be changed by the actions sent from the agent to the environment using ``step(a)`` method, as happens in Gymnasium's interaction flow. Instead, these actuators can be modified at any time, outside the control flow, using the ``update_context(List[float])`` method whenever needed.
 
-This allows internal variables within the building to be configured in real time. For example, if we want to enforce specific occupancy levels or lighting conditions that are not part of the building's control optimization process.
+This allows internal variables within the building to be configured in real time. For example, if we want to enforce either specific occupancy levels or lighting conditions or setpoints values that are not part of the building's control optimization process.
 
 .. code-block:: python
 

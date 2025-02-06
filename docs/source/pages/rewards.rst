@@ -49,6 +49,17 @@ Different types of reward functions are already pre-defined in *Sinergym*:
 
    .. warning:: This function is used internally by the :ref:`EnergyCostWrapper` and it is not intended to be used otherwise.
 
+- ``MultiZoneReward``: a linear reward function for environments with **different comfort ranges in each zone**. Instead 
+  of having a fixed and common comfort range for the entire building, each zone has its own comfort range, which is 
+  directly obtained from the setpoints established in the building. This function is designed for buildings where 
+  temperature setpoints are not controlled directly but rather used as targets to be achieved, while other actuators 
+  are controlled to reach these setpoints. A setpoint observation variable can be assigned per zone if it is available 
+  in the specific building. It is also possible to assign the same setpoint variable to multiple air temperature zones.
+
+  Depending on the defined threshold, the comfort ranges for each zone are calculated based on this value and the setpoints 
+  received as observations from the environment. Therefore, this function is recommended to be used in combination with real-time contexts.
+  See the :ref:`Context` section for more information.
+
 It should be noted that the reward functions have parameters in their constructors, the values of which may vary based on the building used or other factors. The default setting is the ``LinearReward`` function with the standard parameters for each building. Please refer to the example in :ref:`Adding a new reward` for further details on how to define custom rewards.
 
 .. warning:: When specifying a reward other than the default reward for a given environment ID, it is necessary to specify the
