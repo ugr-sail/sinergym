@@ -8,7 +8,8 @@ from gymnasium.spaces import Dict, Discrete
 
 from sinergym.utils.constants import *
 from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
-from sinergym.utils.env_checker import check_env
+# from sinergym.utils.env_checker import check_env
+from gymnasium.utils.env_checker import check_env
 from sinergym.utils.wrappers import DiscretizeEnv
 
 
@@ -146,10 +147,16 @@ def test_all_environments():
 # -------------------------- Exceptions or rare test cases ------------------------- #
 
 
-def test_step_without_reset(env_5zone):
-    # If step without reset, it should be raised an AssertionError
-    with pytest.raises(AssertionError):
-        env_5zone.step(env_5zone.action_space.sample())
+@pytest.mark.parametrize('action',
+                         [(np.array([17.5], dtype=np.float32)),
+                          (np.array([5.5, 22.5], dtype=np.float32)),
+                          (np.array([5.5, 22.5, 22.5], dtype=np.float32))
+                          ])
+def test_wrong_action_space(env_5zone, action):
+    env_5zone.reset()
+    # Forcing wrong action for current action space
+    with pytest.raises(TypeError):
+        env_5zone.step(action)
 
 
 def test_energyplus_thread_error(env_5zone):
@@ -157,7 +164,7 @@ def test_energyplus_thread_error(env_5zone):
     env_5zone.reset()
     # Forcing error in EnergyPlus thread
     env_5zone.energyplus_simulator.sim_results['exit_code'] = 1
-    with pytest.raises(AssertionError):
+    with pytest.raises(RuntimeError):
         env_5zone.step(env_5zone.action_space.sample())
 
 

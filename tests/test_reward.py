@@ -59,7 +59,7 @@ def test_rewards_temperature_exception(reward_name, env_name, request):
 
     # Forcing unknown reward temp variables
     reward.temp_names.append('Unknown_temp_variable')
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyError):
         reward(obs_dict)
 
 
@@ -83,7 +83,7 @@ def test_rewards_energy_exception(reward_name, env_name, request):
 
     # Forcing unknown energy temp variables
     reward.energy_names.append('Unknown_energy_variable')
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyError):
         reward(obs_dict)
 
 
@@ -127,7 +127,7 @@ def test_multizone_reward(multizone_reward):
                 'setpoint_temperature1': 20.0,
                 'setpoint_temperature2': 21.0,
                 'HVAC_electricity_demand_rate': 0}
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyError):
         multizone_reward(obs_dict)
     # Forcing unknown reward setpoint variable
     obs_dict = {'air_temperature1': 20.3,
@@ -135,7 +135,7 @@ def test_multizone_reward(multizone_reward):
                 'unknown': 20.0,
                 'setpoint_temperature2': 21.0,
                 'HVAC_electricity_demand_rate': 0}
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyError):
         multizone_reward(obs_dict)
     # Forcing unknown reward energy variable
     obs_dict = {'air_temperature1': 20.3,
@@ -143,5 +143,5 @@ def test_multizone_reward(multizone_reward):
                 'setpoint_temperature1': 20.0,
                 'setpoint_temperature2': 21.0,
                 'unknown': 0}
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyError):
         multizone_reward(obs_dict)
