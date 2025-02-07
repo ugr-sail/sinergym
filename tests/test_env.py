@@ -170,6 +170,8 @@ def test_global_reproducibility():
             action1 = env.action_space.sample()
             action2 = env.action_space.sample()
 
+            # Set the same seed in reset to check that global seed disable
+            # reset seed
             obs_0_reset_0, _ = env.reset(seed=0)
             obs_0_step1_0, _, _, _, _ = env.step(action1)
             obs_0_step2_0, _, _, _, _ = env.step(action2)
@@ -178,10 +180,9 @@ def test_global_reproducibility():
             obs_1_step1_0, _, _, _, _ = env.step(action1)
             obs_1_step2_0, _, _, _, _ = env.step(action2)
 
-            if 'stochastic' in env.get_wrapper_attr('name'):
-                assert not np.allclose(obs_0_reset_0, obs_1_reset_0, atol=1e-6)
-                assert not np.allclose(obs_0_step1_0, obs_1_step1_0, atol=1e-6)
-                assert not np.allclose(obs_0_step2_0, obs_1_step2_0, atol=1e-6)
+            assert not np.allclose(obs_0_reset_0, obs_1_reset_0, atol=1e-6)
+            assert not np.allclose(obs_0_step1_0, obs_1_step1_0, atol=1e-6)
+            assert not np.allclose(obs_0_step2_0, obs_1_step2_0, atol=1e-6)
 
             return [
                 obs_0_reset_0,
