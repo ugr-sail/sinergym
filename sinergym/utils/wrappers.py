@@ -2,7 +2,6 @@
 
 import csv
 import os
-import random
 from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
@@ -2036,6 +2035,6 @@ class OfficeGridStorageSmoothingActionConstraintsWrapper(
             # -1.0 is 0.0 when action space transformation to simulator action space.
             null_value = -1.0
         if act[2] > null_value and act[3] > null_value:
-            random_rate_index = random.randint(2, 3)
+            random_rate_index = np.random.randint(2, 4)
             act[random_rate_index] = null_value
         return act
