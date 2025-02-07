@@ -8,9 +8,9 @@ from gymnasium.spaces import Dict, Discrete
 
 from sinergym.utils.constants import *
 from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
-# from sinergym.utils.env_checker import check_env
-from gymnasium.utils.env_checker import check_env
+from sinergym.utils.env_checker import check_env
 from sinergym.utils.wrappers import DiscretizeEnv
+from sinergym.utils.wrappers import NormalizeObservation
 
 
 @pytest.mark.parametrize('env_name',
@@ -126,6 +126,90 @@ def test_update_context(env_5zone):
     assert env_5zone.get_wrapper_attr('last_context')[-1] == 0.5
 
 
+def test_reset_reproducibility():
+
+    # Disable environment global seed
+    env = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='TESTGYM',
+        seed=None)
+
+    # Check that the environment is reproducible
+    action1 = env.action_space.sample()
+    action2 = env.action_space.sample()
+    # Case 1 (seed 0)
+    obs_0_reset, _ = env.reset(seed=0)
+    obs_0_step1, _, _, _, _ = env.step(action1)
+    obs_0_step2, _, _, _, _ = env.step(action2)
+    # Case 2 (seed 0)
+    obs_1_reset, _ = env.reset(seed=0)
+    obs_1_step1, _, _, _, _ = env.step(action1)
+    obs_1_step2, _, _, _, _ = env.step(action2)
+
+    assert np.allclose(obs_0_reset, obs_1_reset, atol=1e-6)
+    assert np.allclose(obs_0_step1, obs_1_step1, atol=1e-6)
+    assert np.allclose(obs_0_step2, obs_1_step2, atol=1e-6)
+
+    # Case 3 (seed 1)
+    obs_2_reset, _ = env.reset(seed=1)
+    obs_2_step1, _, _, _, _ = env.step(action1)
+    obs_2_step2, _, _, _, _ = env.step(action2)
+
+    assert not np.allclose(obs_0_reset, obs_2_reset, atol=1e-6)
+    assert not np.allclose(obs_0_step1, obs_2_step1, atol=1e-6)
+    assert not np.allclose(obs_0_step2, obs_2_step2, atol=1e-6)
+
+
+def test_global_reproducibility():
+
+    def _check_reset_reproducibility_with_seed(
+            env: gym.Env) -> Union[List[float], bool]:
+        # Check seed is available
+        if env.get_wrapper_attr('seed') is not None:
+            # Store environment interaction info
+            action1 = env.action_space.sample()
+            action2 = env.action_space.sample()
+
+            obs_0_reset_0, _ = env.reset(seed=0)
+            obs_0_step1_0, _, _, _, _ = env.step(action1)
+            obs_0_step2_0, _, _, _, _ = env.step(action2)
+
+            obs_1_reset_0, _ = env.reset(seed=0)
+            obs_1_step1_0, _, _, _, _ = env.step(action1)
+            obs_1_step2_0, _, _, _, _ = env.step(action2)
+
+            if 'stochastic' in env.get_wrapper_attr('name'):
+                assert not np.allclose(obs_0_reset_0, obs_1_reset_0, atol=1e-6)
+                assert not np.allclose(obs_0_step1_0, obs_1_step1_0, atol=1e-6)
+                assert not np.allclose(obs_0_step2_0, obs_1_step2_0, atol=1e-6)
+
+            return [
+                obs_0_reset_0,
+                obs_0_step1_0,
+                obs_0_step2_0,
+                obs_1_reset_0,
+                obs_1_step1_0,
+                obs_1_step2_0]
+
+    # With seed 1234
+    env1 = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='TESTGYM',
+        seed=1234)
+    env1 = NormalizeObservation(env1)
+    values1 = _check_reset_reproducibility_with_seed(env1)
+    env2 = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='TESTGYM',
+        seed=1234)
+    env2 = NormalizeObservation(env2)
+    values2 = _check_reset_reproducibility_with_seed(env2)
+
+    # Check first and second execution have the same results
+    for i in range(6):
+        assert np.allclose(values1[0], values2[0], atol=1e-6)
+
+
 def test_all_environments():
 
     envs_id = [env_id for env_id in gym.envs.registration.registry.keys(
@@ -136,7 +220,7 @@ def test_all_environments():
         # Create env with TEST name
         env = gym.make(env_id)
 
-        check_env(env, warn=False)
+        check_env(env)
 
         # Rename directory with name TEST for future remove
         os.rename(env.get_wrapper_attr('workspace_path'), 'Eplus-env-TEST' +
