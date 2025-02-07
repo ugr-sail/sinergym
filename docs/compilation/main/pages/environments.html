@@ -80,6 +80,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#initial-context">Initial context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#action-space">Action space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extra-configuration">Extra configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#seed">Seed</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-weathers">Adding new weathers</a></li>
@@ -350,6 +351,14 @@ users are encouraged to explore and experiment with these spaces. For guidance, 
 <section id="extra-configuration">
 <h3>Extra configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
 <p>Parameters related to the building model and simulation, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, and <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, can be set as extra configurations. These parameters are specified in the <code class="docutils literal notranslate"><span class="pre">config_params</span></code> argument, a Python Dictionary. For additional information on extra configurations in <em>Sinergym</em>, refer to <a class="reference internal" href="extra-configuration.html#extra-configuration-in-sinergym-simulations"><span class="std std-ref">Extra configuration in Sinergym simulations</span></a>.</p>
+</section>
+<section id="seed">
+<h3>Seed<a class="headerlink" href="#seed" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter is used to set the random seed for the global environment. This ensures reproducibility in the simulation results, including weather noise and/or dynamic normalization. If not specified, the seed is randomly generated.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you define this global seed, the seed feature for reset will be disabled.</p>
+</div>
 </section>
 </section>
 <section id="adding-new-weathers">

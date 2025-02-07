@@ -22,6 +22,7 @@
       ~EplusEnv.info
       ~EplusEnv.render
       ~EplusEnv.reset
+      ~EplusEnv.set_seed
       ~EplusEnv.set_wrapper_attr
       ~EplusEnv.step
       ~EplusEnv.update_context
