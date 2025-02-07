@@ -9,8 +9,7 @@ from gymnasium.spaces import Dict, Discrete
 from sinergym.utils.constants import *
 from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
 from sinergym.utils.env_checker import check_env
-from sinergym.utils.wrappers import DiscretizeEnv
-from sinergym.utils.wrappers import NormalizeObservation
+from sinergym.utils.wrappers import DiscretizeEnv, NormalizeObservation
 
 
 @pytest.mark.parametrize('env_name',

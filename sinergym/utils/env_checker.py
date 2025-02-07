@@ -1,6 +1,6 @@
 """Env checker functionality, adapted from Stable-Baselines: https://github.com/DLR-RM/stable-baselines3"""
 import warnings
-from typing import Union, List
+from typing import Union
 
 import gymnasium as gym
 import numpy as np
