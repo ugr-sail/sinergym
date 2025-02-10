@@ -113,6 +113,7 @@ class EplusEnv(gym.Env):
         self.meters = meters
         self.actuators = actuators
         self.context = context
+        self.initial_context = initial_context
 
         # ---------------------------------------------------------------------------- #
         #                    Define observation and action variables                   #
@@ -160,8 +161,8 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
 
         # Set initial context if exists
-        if initial_context is not None:
-            self.update_context(initial_context)
+        if self.initial_context is not None:
+            self.update_context(self.initial_context)
 
         # EnergyPlus simulator
         self.energyplus_simulator = EnergyPlus(
