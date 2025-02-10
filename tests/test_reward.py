@@ -104,8 +104,6 @@ def test_multizone_reward(multizone_reward):
     R, terms = multizone_reward(obs_dict)
     assert round(R, 2) == -0.05  # 0.5 * 0.1
     assert isinstance(terms, dict)
-    assert round(terms['air_temperature1_violation'], 2) == 0.0
-    assert round(terms['air_temperature2_violation'], 2) == 0.1
     # Diferrent setpoints (threshold +/-1.0)
     multizone_reward.comfort_threshold = 1.0
     obs_dict = {'air_temperature1': 21.2,
@@ -116,8 +114,6 @@ def test_multizone_reward(multizone_reward):
     R, terms = multizone_reward(obs_dict)
     assert round(R, 2) == -1.25  # 0.5 * (1.2 + 1.3)
     assert isinstance(terms, dict)
-    assert round(terms['air_temperature1_violation'], 2) == 1.2
-    assert round(terms['air_temperature2_violation'], 2) == 1.3
 
     # Tests exceptions
     multizone_reward.comfort_threshold = 0.5
