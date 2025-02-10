@@ -1336,6 +1336,8 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         """
         pass
 
+# ---------------------------------------------------------------------------- #
+
 
 class LoggerWrapper(BaseLoggerWrapper):
 
@@ -1437,6 +1439,8 @@ class LoggerWrapper(BaseLoggerWrapper):
             'truncated': self.data_logger.truncateds[-1],
         }
         return data_summary
+
+# ---------------------------------------------------------------------------- #
 
 
 class CSVLogger(gym.Wrapper):
@@ -2000,6 +2004,126 @@ class ReduceObservationWrapper(gym.Wrapper):
             key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
 
         return np.array(list(reduced_obs_dict.values())), info
+
+# ---------------------------------------------------------------------------- #
+#                      Real-time building context wrappers                     #
+# ---------------------------------------------------------------------------- #
+
+
+class VariabilityContextWrapper(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER VariabilityContextWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 context_space: gym.spaces.Box,
+                 delta_value: float = 1.0,
+                 step_frequency_range: Tuple[int, int] = (96, 96 * 7),
+                 ):
+        """Wrapper that modifies the environment's context variables at random intervals.
+
+        Args:
+            env (Env): The environment to wrap.
+            context_space (gym.spaces.Box): The space defining valid context variable values.
+            delta_value (float): Maximum absolute change applied to context variables at each update.
+            step_frequency_range (Tuple[int, int], optional): Range for the number of steps before each update. Defaults to (96, 96 * 7).
+        """
+        super().__init__(env)
+
+        # Definition checks
+        try:
+            assert context_space.shape[0] == len(
+                self.get_wrapper_attr('context_variables'))
+        except AssertionError as err:
+            self.logger.error(
+                'Context space shape is not coherent with environment context variables.')
+            raise err
+
+        try:
+            assert delta_value > 0
+        except AssertionError as err:
+            self.logger.error(
+                'Delta temperature must be greater than 0.')
+            raise err
+
+        try:
+            assert step_frequency_range[0] > 0 and step_frequency_range[0] < step_frequency_range[1]
+        except AssertionError as err:
+            self.logger.error(
+                'Step frequency range invalid.')
+            raise err
+
+        # Initialization
+        self.context_space = context_space
+        self.delta_context = (-delta_value, delta_value)
+        self.step_frequency_range = step_frequency_range
+
+        if self.get_wrapper_attr('initial_context') is not None:
+            self.current_context = np.array(
+                self.get_wrapper_attr('initial_context'), np.float32)
+        else:
+            self.current_context = np.random.uniform(
+                self.context_space.low,
+                self.context_space.high,
+                size=self.context_space.shape[0]).astype(np.float32)
+
+        self.next_context_values, self.next_step_update = self._generate_context_values()
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Sends action to the environment. Complete...
+
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+        """
+
+        # Discount frequency
+        self.next_step_update -= 1
+        if self.next_step_update == 0:
+            # Update context
+            self.get_wrapper_attr('update_context')(self.next_context_values)
+            self.current_context = self.next_context_values
+            self.logger.info('Context updated with values: {}'.format(
+                self.next_context_values))
+            # Calculate next update
+            self.next_context_values, self.next_step_update = self._generate_context_values()
+
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        return obs, reward, terminated, truncated, info
+
+    def _generate_context_values(self) -> Tuple[np.ndarray, int]:
+        """Generates new context values and determines the next update step.
+
+        Returns:
+            Tuple[np.ndarray, int]:
+                - The new context values after applying random deltas.
+                - The number of steps until the next update.
+        """
+        # Generate random delta context values
+        delta_context_values = np.random.uniform(
+            self.delta_context[0],
+            self.delta_context[1],
+            size=self.current_context.shape[0]).astype(np.float32)
+        # Apply delta values and clip with context space
+        next_context_values = np.clip(
+            self.current_context +
+            delta_context_values,
+            self.context_space.low,
+            self.context_space.high).astype(np.float32)
+
+        # Generate random step frequency
+        next_step_update = np.random.randint(
+            self.step_frequency_range[0], self.step_frequency_range[1])
+
+        return next_context_values, next_step_update
 
 # ---------------------------------------------------------------------------- #
 #                         Specific environment wrappers                        #
