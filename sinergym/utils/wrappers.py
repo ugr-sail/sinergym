@@ -1980,9 +1980,6 @@ class ReduceObservationWrapper(gym.Wrapper):
             zip(self.env.get_wrapper_attr('observation_variables'), obs))
         reduced_obs_dict = {
             key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
-        removed_obs_dict = {key: obs_dict[key] for key in self.get_wrapper_attr(
-            'removed_observation_variables')}
-        info['removed_observation'] = removed_obs_dict
 
         return np.array(list(reduced_obs_dict.values())
                         ), reward, terminated, truncated, info
@@ -2001,9 +1998,6 @@ class ReduceObservationWrapper(gym.Wrapper):
             zip(self.env.get_wrapper_attr('observation_variables'), obs))
         reduced_obs_dict = {
             key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
-        removed_obs_dict = {key: obs_dict[key] for key in self.get_wrapper_attr(
-            'removed_observation_variables')}
-        info['removed_observation'] = removed_obs_dict
 
         return np.array(list(reduced_obs_dict.values())), info
 

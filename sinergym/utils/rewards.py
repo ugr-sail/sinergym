@@ -676,14 +676,6 @@ class MultiZoneReward(BaseReward):
             'comfort_threshold': self.comfort_threshold
         }
 
-        # Add temp_violations per zone
-        reward_terms.update(
-            {
-                f'{temperature_variable}_violation': temp_violation for temperature_variable,
-                temp_violation in zip(
-                    self.comfort_configuration.keys(),
-                    temp_violations)})
-
         return reward, reward_terms
 
     def _get_energy_consumed(self, obs_dict: Dict[str,
