@@ -234,3 +234,18 @@ It requires that the air temperature and setpoints variables are defined in the 
 If the environment has a unique setpoint variable for all zones, you can specify a single setpoint variable. Otherwise, you can specify a list of variables, one for each zone.
 
 .. important:: The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.
+
+**************************
+VariabilityContextWrapper
+**************************
+
+This wrapper introduces context changes (see :ref:`Context`) at specific steps based on a uniform distribution.
+
+When the event is triggered, delta values for the context variables and a time (in steps) for the change to occur are randomly determined based on the specified arguments.
+
+The configurable arguments include the space of the context variables, the range of possible delta values, and the range of steps in which the event can take place.
+
+If applying the deltas results in values outside the defined space, they will be clipped to remain within bounds before being applied.
+
+.. important:: If initial context values were not provided in environment initialization, initial context values will be selected randomly for this wrapper.
+
