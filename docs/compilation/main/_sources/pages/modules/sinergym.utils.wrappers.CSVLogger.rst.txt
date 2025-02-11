@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.CSVLogger
+sinergym.utils.wrappers.CSVLogger
 =================================
 
 .. currentmodule:: sinergym.utils.wrappers

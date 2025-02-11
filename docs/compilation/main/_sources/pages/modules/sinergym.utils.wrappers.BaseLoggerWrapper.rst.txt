@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.BaseLoggerWrapper
+sinergym.utils.wrappers.BaseLoggerWrapper
 =========================================
 
 .. currentmodule:: sinergym.utils.wrappers

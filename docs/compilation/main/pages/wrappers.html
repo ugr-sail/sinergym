@@ -84,6 +84,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#weatherforecastingwrapper">WeatherForecastingWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#energycostwrapper">EnergyCostWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deltatempwrapper">DeltaTempWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variabilitycontextwrapper">VariabilityContextWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
@@ -301,6 +302,17 @@ for login.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.</p>
+</div>
+</section>
+<section id="variabilitycontextwrapper">
+<h2>VariabilityContextWrapper<a class="headerlink" href="#variabilitycontextwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper introduces context changes (see <a class="reference internal" href="environments.html#context"><span class="std std-ref">Context</span></a>) at specific steps based on a uniform distribution.</p>
+<p>When the event is triggered, delta values for the context variables and a time (in steps) for the change to occur are randomly determined based on the specified arguments.</p>
+<p>The configurable arguments include the space of the context variables, the range of possible delta values, and the range of steps in which the event can take place.</p>
+<p>If applying the deltas results in values outside the defined space, they will be clipped to remain within bounds before being applied.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If initial context values were not provided in environment initialization, initial context values will be selected randomly for this wrapper.</p>
 </div>
 </section>
 </section>
