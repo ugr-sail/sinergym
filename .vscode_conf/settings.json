@@ -3,7 +3,10 @@
     "editor.formatOnSave": true,
     "window.zoomLevel": 0,
     "python.testing.pytestArgs": [
-        "tests"
+        "--cov=.",
+        "tests/",
+        "--cov-report",
+        "xml:cov.xml"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,

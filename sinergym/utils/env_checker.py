@@ -15,40 +15,6 @@ def _is_numpy_array_space(space: spaces.Space) -> bool:
     return not isinstance(space, (spaces.Dict, spaces.Tuple))
 
 
-def _check_unsupported_spaces(
-        env: gym.Env,
-        observation_space: spaces.Space,
-        action_space: spaces.Space) -> None:
-    """Emit warnings when the observation space or action space used is not supported by Stable-Baselines."""
-
-    if isinstance(observation_space, spaces.Dict):
-        nested_dict = False
-        for space in observation_space.spaces.values():
-            if isinstance(space, spaces.Dict):
-                nested_dict = True
-        if nested_dict:
-            warnings.warn(
-                "Nested observation spaces are not supported by Stable Baselines3 "
-                "(Dict spaces inside Dict space). "
-                "You should flatten it to have only one level of keys."
-                "For example, `dict(space1=dict(space2=Box(), space3=Box()), spaces4=Discrete())` "
-                "is not supported but `dict(space2=Box(), spaces3=Box(), spaces4=Discrete())` is.")
-
-    if isinstance(observation_space, spaces.Tuple):
-        warnings.warn(
-            "The observation space is a Tuple,"
-            "this is currently not supported by Stable Baselines3. "
-            "However, you can convert it to a Dict observation space "
-            "(cf. https://github.com/openai/gym/blob/master/gym/spaces/dict.py). "
-            "which is supported by SB3.")
-
-    if not _is_numpy_array_space(action_space):
-        warnings.warn(
-            "The action space is not based off a numpy array. Typically this means it's either a Dict or Tuple space. "
-            "This type of action space is currently not supported by Stable Baselines 3. You should try to flatten the "
-            "action using a wrapper.")
-
-
 def _check_obs(obs: Union[tuple,
                           dict,
                           np.ndarray,
@@ -181,9 +147,11 @@ def _check_render(env: gym.Env, warn: bool = True, headless: bool = False) -> No
         env.close()
 
 
+# ---------------------------------------------------------------------------- #
+#                                 MAIN FUNCTION                                #
+# ---------------------------------------------------------------------------- #
 def check_env(
         env: gym.Env,
-        warn: bool = True,
         skip_render_check: bool = True) -> None:
     """
     Check that an environment follows Gym API.
@@ -204,45 +172,21 @@ def check_env(
         env, gym.Env
     ), "Your environment must inherit from the gym.Env class cf https://github.com/openai/gym/blob/master/gym/core.py"
 
-    # ============= Check the spaces (observation and action) ================
+    # ---------------------------------------------------------------------------- #
+    #                   Check the spaces (observation and action)                  #
+    # ---------------------------------------------------------------------------- #
     _check_spaces(env)
-
-    # Define aliases for convenience
+    # ---------------------- Define aliases for convenience ---------------------- #
     observation_space = env.observation_space
     action_space = env.action_space
 
-    # Warn the user if needed.
-    # A warning means that the environment may run but not work properly with
-    # Stable Baselines algorithms
-    if warn:
-        _check_unsupported_spaces(env, observation_space, action_space)
-
-        # Check for the action space, it may lead to hard-to-debug issues
-        if isinstance(action_space, spaces.Box) and (
-            np.any(np.abs(action_space.low) != np.abs(action_space.high))
-            or np.any(action_space.low != -1)
-            or np.any(action_space.high != 1)
-        ):
-            warnings.warn(
-                "We recommend you to use a symmetric and normalized Box action space (range=[-1, 1]) "
-                "cf https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html")
-
-        if isinstance(action_space, spaces.Box):
-            assert np.all(
-                np.isfinite(np.array([action_space.low, action_space.high]))
-            ), "Continuous action space must have a finite lower and upper bound"
-
-        if isinstance(
-                action_space,
-                spaces.Box) and action_space.dtype != np.dtype(
-                np.float32):
-            warnings.warn(
-                f"Your action space has dtype {
-                    action_space.dtype}, we recommend using np.float32 to avoid cast errors.")
-
-    # ============ Check the returned values ===============
+    # ---------------------------------------------------------------------------- #
+    #                           Check the returned values                          #
+    # ---------------------------------------------------------------------------- #
     _check_returned_values(env, observation_space, action_space)
 
-    # ==== Check the render method and the declared render modes ====
+    # ---------------------------------------------------------------------------- #
+    #             Check the render method and the declared render modes            #
+    # ---------------------------------------------------------------------------- #
     if not skip_render_check:
-        _check_render(env, warn=warn)  # pragma: no cover
+        _check_render(env)  # pragma: no cover

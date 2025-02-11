@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.NormalizeAction
+sinergym.utils.wrappers.NormalizeAction
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers

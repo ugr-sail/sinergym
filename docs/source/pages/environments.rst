@@ -242,6 +242,13 @@ Extra configuration
 
 Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``config_params`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 
+Seed
+====
+
+The ``seed`` parameter is used to set the random seed for the global environment. This ensures reproducibility in the simulation results, including weather noise and/or dynamic normalization. If not specified, the seed is randomly generated.
+
+.. warning:: If you define this global seed, the seed feature for reset will be disabled.
+
 *******************
 Adding new weathers
 *******************

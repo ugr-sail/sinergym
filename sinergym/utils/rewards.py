@@ -94,22 +94,6 @@ class LinearReward(BaseReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
-        # Check variables to calculate reward are available
-        try:
-            assert all(temp_name in list(obs_dict.keys())
-                       for temp_name in self.temp_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the temperature variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(energy_name in list(obs_dict.keys())
-                       for energy_name in self.energy_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the energy variables specified are not present in observation.')
-            raise err
-
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
         energy_penalty = self._get_energy_penalty(energy_values)
@@ -147,8 +131,7 @@ class LinearReward(BaseReward):
             Tuple[float, List[float]]: Total energy consumed (sum of variables) and List with energy consumed in each energy variable.
         """
 
-        energy_values = [
-            v for k, v in obs_dict.items() if k in self.energy_names]
+        energy_values = [obs_dict[v] for v in self.energy_names]
 
         # The total energy is the sum of energies
         total_energy = sum(energy_values)
@@ -183,8 +166,7 @@ class LinearReward(BaseReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temp_values = [
-            v for k, v in obs_dict.items() if k in self.temp_names]
+        temp_values = [obs_dict[v] for v in self.temp_names]
         total_temp_violation = 0.0
         temp_violations = []
         for T in temp_values:
@@ -309,29 +291,6 @@ class EnergyCostLinearReward(LinearReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
-        # Check variables to calculate reward are available
-        try:
-            assert all(temp_name in list(obs_dict.keys())
-                       for temp_name in self.temp_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the temperature variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(energy_name in list(obs_dict.keys())
-                       for energy_name in self.energy_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the energy variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(energy_cost_name in list(obs_dict.keys())
-                       for energy_cost_name in self.energy_cost_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the energy cost variables specified are not present in observation.')
-            raise err
-
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
         energy_penalty = self._get_energy_penalty(energy_values)
@@ -537,22 +496,6 @@ class HourlyLinearReward(LinearReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
-        # Check variables to calculate reward are available
-        try:
-            assert all(temp_name in list(obs_dict.keys())
-                       for temp_name in self.temp_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the temperature variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(energy_name in list(obs_dict.keys())
-                       for energy_name in self.energy_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the energy variables specified are not present in observation.')
-            raise err
-
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
         energy_penalty = self._get_energy_penalty(energy_values)
@@ -709,29 +652,6 @@ class MultiZoneReward(BaseReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
-        # Check variables to calculate reward are available
-        try:
-            assert all(temp_name in list(obs_dict.keys())
-                       for temp_name in self.comfort_configuration.keys())
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the temperature variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(setpoint_name in list(obs_dict.keys())
-                       for setpoint_name in self.comfort_configuration.values())
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the temperature variables specified are not present in observation.')
-            raise err
-        try:
-            assert all(energy_name in list(obs_dict.keys())
-                       for energy_name in self.energy_names)
-        except AssertionError as err:
-            self.logger.critical(
-                'Some of the energy variables specified are not present in observation.')
-            raise err
-
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
         energy_penalty = self._get_energy_penalty(energy_values)
@@ -756,14 +676,6 @@ class MultiZoneReward(BaseReward):
             'comfort_threshold': self.comfort_threshold
         }
 
-        # Add temp_violations per zone
-        reward_terms.update(
-            {
-                f'{temperature_variable}_violation': temp_violation for temperature_variable,
-                temp_violation in zip(
-                    self.comfort_configuration.keys(),
-                    temp_violations)})
-
         return reward, reward_terms
 
     def _get_energy_consumed(self, obs_dict: Dict[str,
@@ -778,8 +690,7 @@ class MultiZoneReward(BaseReward):
             Tuple[float, List[float]]: Total energy consumed (sum of variables) and List with energy consumed in each energy variable.
         """
 
-        energy_values = [
-            v for k, v in obs_dict.items() if k in self.energy_names]
+        energy_values = [obs_dict[v] for v in self.energy_names]
 
         # The total energy is the sum of energies
         total_energy = sum(energy_values)

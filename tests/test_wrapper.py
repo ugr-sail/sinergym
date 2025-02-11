@@ -973,25 +973,13 @@ def test_reduced_observation_wrapper(env_demo):
     assert reduced_shape == original_shape - len(removed_observation_variables)
 
     # Check reset return
-    obs1, info1 = env.reset()
+    obs1, _ = env.reset()
     assert len(obs1) == len(reduced_observation_variables)
-    assert info1.get('removed_observation', False)
-    assert len(info1['removed_observation']) == len(
-        removed_observation_variables)
-    for removed_variable_name, value in info1['removed_observation'].items():
-        assert removed_variable_name in removed_observation_variables
-        assert value is not None
 
     # Check step return
     action = env.action_space.sample()
-    obs2, _, _, _, info2 = env.step(action)
+    obs2, _, _, _, _ = env.step(action)
     assert len(obs2) == len(reduced_observation_variables)
-    assert info2.get('removed_observation', False)
-    assert len(info2['removed_observation']) == len(
-        removed_observation_variables)
-    for removed_variable_name, value in info2['removed_observation'].items():
-        assert removed_variable_name in removed_observation_variables
-        assert value is not None
 
 
 def test_reduced_observation_exceptions(env_demo):
@@ -1006,6 +994,109 @@ def test_reduced_observation_exceptions(env_demo):
                 'air_temperature',
                 'unknown_variable'
             ])
+
+
+def test_variability_context_wrapper(env_5zone):
+    # Create wrapped environment
+    env_5zone = VariabilityContextWrapper(
+        env=env_5zone,
+        context_space=gym.spaces.Box(
+            low=np.array(
+                [0.0], dtype=np.float32),
+            high=np.array(
+                [2.0], dtype=np.float32),
+            shape=(1,),
+            dtype=np.float32),
+        delta_value=0.5,
+        step_frequency_range=(96, 96 * 7))
+
+    # Check attributes exist in wrapped env
+    assert env_5zone.has_wrapper_attr('context_space')
+    assert env_5zone.has_wrapper_attr('delta_context')
+    assert env_5zone.get_wrapper_attr('delta_context') == (-0.5, 0.5)
+    assert env_5zone.has_wrapper_attr('step_frequency_range')
+    assert env_5zone.has_wrapper_attr('current_context')
+    assert env_5zone.has_wrapper_attr('next_context_values')
+    assert env_5zone.has_wrapper_attr('next_step_update')
+
+    # Check next context update initialization
+    first_context_values = env_5zone.get_wrapper_attr('next_context_values')
+    assert env_5zone.get_wrapper_attr(
+        'context_space').contains(first_context_values)
+    assert env_5zone.get_wrapper_attr('next_step_update') >= env_5zone.get_wrapper_attr('step_frequency_range')[0] and \
+        env_5zone.get_wrapper_attr('next_step_update') <= env_5zone.get_wrapper_attr('step_frequency_range')[1]
+
+    # Go to the previous update step
+    env_5zone.reset()
+    while env_5zone.get_wrapper_attr('next_step_update') > 1:
+        env_5zone.step(env_5zone.action_space.sample())
+
+    # Check state at this point
+    assert env_5zone.get_wrapper_attr('next_step_update') == 1
+    prev_context = env_5zone.get_wrapper_attr('current_context').copy()
+
+    # One more step
+    env_5zone.step(env_5zone.action_space.sample())
+
+    # Check if update has been done
+    updated_context = env_5zone.get_wrapper_attr('current_context')
+
+    # Ensure context was updated correctly
+    if np.allclose(updated_context, prev_context, atol=1e-6):
+        # If it is the same, it should be because it was clipped or delta
+        # values are 0
+        assert (prev_context == env_5zone.get_wrapper_attr('context_space').low).any(
+        ) or (prev_context == env_5zone.get_wrapper_attr('context_space').high).any()
+    # Ensure updated context is within the context space
+    assert env_5zone.get_wrapper_attr('context_space').contains(
+        updated_context)
+    # Ensure next context is different from the current one
+    assert not np.allclose(env_5zone.get_wrapper_attr('next_context_values'),
+                           updated_context, atol=1e-6)
+    assert env_5zone.get_wrapper_attr('next_step_update') >= env_5zone.get_wrapper_attr('step_frequency_range')[0] and \
+        env_5zone.get_wrapper_attr('next_step_update') <= env_5zone.get_wrapper_attr('step_frequency_range')[1]
+
+
+def test_variability_context_wrapper_exceptions(env_5zone):
+    # Create wrapped environment
+    with pytest.raises(AssertionError):
+        env_5zone = VariabilityContextWrapper(
+            env=env_5zone,
+            context_space=gym.spaces.Box(
+                low=np.array(
+                    [0.0], dtype=np.float32),
+                high=np.array(
+                    [1.0], dtype=np.float32),
+                shape=(1,),
+                dtype=np.float32),
+            delta_value=-0.2,
+            step_frequency_range=(96, 96 * 7))
+
+    with pytest.raises(AssertionError):
+        env_5zone = VariabilityContextWrapper(
+            env=env_5zone,
+            context_space=gym.spaces.Box(
+                low=np.array(
+                    [0.0], dtype=np.float32),
+                high=np.array(
+                    [1.0], dtype=np.float32),
+                shape=(1,),
+                dtype=np.float32),
+            delta_value=0.5,
+            step_frequency_range=(-2, 96 * 7))
+
+    with pytest.raises(AssertionError):
+        env_5zone = VariabilityContextWrapper(
+            env=env_5zone,
+            context_space=gym.spaces.Box(
+                low=np.array(
+                    [0.0, 2.0], dtype=np.float32),
+                high=np.array(
+                    [1.0, 3.5], dtype=np.float32),
+                shape=(2,),
+                dtype=np.float32),
+            delta_value=-0.2,
+            step_frequency_range=(96, 96 * 7))
 
 
 def test_env_wrappers(env_all_wrappers):

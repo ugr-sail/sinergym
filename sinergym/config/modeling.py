@@ -2,7 +2,6 @@
 import fcntl
 import json
 import os
-import random
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -83,7 +82,8 @@ class ModelJSON(object):
 
         # Select one weather randomly (if there are more than one)
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+            self.pkg_data_path, 'weather', np.random.choice(
+                self.weather_files))
 
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
@@ -374,7 +374,8 @@ class ModelJSON(object):
         """When this method is called, weather file is changed randomly and building model is adapted to new one.
         """
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+            self.pkg_data_path, 'weather', np.random.choice(
+                self.weather_files))
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data.read(self._weather_path)

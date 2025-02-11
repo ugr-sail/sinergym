@@ -35,6 +35,7 @@
       OfficeGridStorageSmoothingActionConstraintsWrapper
       PreviousObservationWrapper
       ReduceObservationWrapper
+      VariabilityContextWrapper
       WandBLogger
       WeatherForecastingWrapper
    

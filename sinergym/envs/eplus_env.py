@@ -54,7 +54,8 @@ class EplusEnv(gym.Env):
         reward_kwargs: Optional[Dict[str, Any]] = {},
         max_ep_data_store_num: int = 10,
         env_name: str = 'eplus-env-v1',
-        config_params: Optional[Dict[str, Any]] = None
+        config_params: Optional[Dict[str, Any]] = None,
+        seed: Optional[int] = None,
     ):
         """Environment with EnergyPlus simulator.
 
@@ -74,6 +75,7 @@ class EplusEnv(gym.Env):
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
+            seed (Optional[int], optional): Seed for random number generator. Defaults to None.
         """
 
         self.simple_printer.info(
@@ -84,6 +86,13 @@ class EplusEnv(gym.Env):
             'Name: {}'.format(env_name))
         self.simple_printer.info(
             '#==============================================================================================#')
+
+        # ---------------------------------------------------------------------------- #
+        #                                     seed                                     #
+        # ---------------------------------------------------------------------------- #
+        # Set the entropy, if seed is None, a random seed will be chosen
+        self.seed = seed
+        np.random.seed(self.seed)
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -105,6 +114,7 @@ class EplusEnv(gym.Env):
         self.meters = meters
         self.actuators = actuators
         self.context = context
+        self.initial_context = initial_context
 
         # ---------------------------------------------------------------------------- #
         #                    Define observation and action variables                   #
@@ -153,8 +163,8 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
 
         # Set initial context if exists
-        if initial_context is not None:
-            self.update_context(initial_context)
+        if self.initial_context is not None:
+            self.update_context(self.initial_context)
 
         # EnergyPlus simulator
         self.energyplus_simulator = EnergyPlus(
@@ -228,15 +238,16 @@ class EplusEnv(gym.Env):
         """Reset the environment.
 
         Args:
-            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). If global seed was configured in environment, reset seed will not be applied. Defaults to None.
             options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
 
-        # We need the following line to seed self.np_random
-        super().reset(seed=seed)
+        # If global seed was configured, reset seed will not be applied.
+        if self.seed is None:
+            np.random.seed(seed)
 
         # Apply options if exists, else default options
         reset_options = options if options is not None else self.default_options
@@ -345,27 +356,20 @@ class EplusEnv(gym.Env):
         try:
             assert self._action_space.contains(
                 action)
-        except AssertionError as err:
-            self.logger.warning(
+        except AssertionError:
+            self.logger.error(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
-
-        # Check if episode existed and is not terminated or truncated
-        try:
-            assert self.energyplus_simulator.energyplus_state is not None
-        except AssertionError as err:
-            self.logger.critical(
-                'Step: Environment requires to be reset before.')
-            raise err
+            raise TypeError
 
         # check for simulation errors
         try:
             assert not self.energyplus_simulator.failed()
-        except AssertionError as err:
+        except AssertionError:
             self.logger.critical(
                 'EnergyPlus failed with exit code {}'.format(
                     self.energyplus_simulator.sim_results['exit_code']))
-            raise err
+            raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
             self.logger.debug(
@@ -398,9 +402,9 @@ class EplusEnv(gym.Env):
         reward, rw_terms = self.reward_fn(obs)
 
         # Update info with
-        info.update({'action': action})
-        info.update({'timestep': self.timestep,
-                    'reward': reward})
+        info.update({'action': action,
+                     'timestep': self.timestep,
+                     'reward': reward})
         info.update(rw_terms)
         self.last_info = info
 
@@ -531,6 +535,15 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
+
+    def set_seed(self, seed: Optional[int]) -> None:
+        """Set seed for random number generator.
+
+        Args:
+            seed (Optional[int]): Seed for random number generator.
+        """
+        self.seed = seed
+        np.random.seed(self.seed)
 
     # ---------------------------------- Spaces ---------------------------------- #
 
@@ -666,6 +679,7 @@ class EplusEnv(gym.Env):
     - Number of timesteps in an episode: {}
     - Timestep size (seconds): {}
     - It is discrete?: {}
+    - seed: {}
     #----------------------------------------------------------------------------------#
                                 ENVIRONMENT SPACE:
     #----------------------------------------------------------------------------------#
@@ -683,7 +697,7 @@ class EplusEnv(gym.Env):
     #----------------------------------------------------------------------------------#
                                 AVAILABLE ELEMENTS:
     #----------------------------------------------------------------------------------#
-    *Some variables can not be here depending if it is defined Output:Variable field
+    *Some variables cannot be here depending if it is defined Output:Variable field
      in building model. See documentation for more information.*
 
     {}
@@ -710,6 +724,7 @@ class EplusEnv(gym.Env):
             self.timestep_per_episode,
             self.step_size,
             self.is_discrete,
+            self.seed,
             self.observation_space,
             self.observation_variables,
             self.action_space,
