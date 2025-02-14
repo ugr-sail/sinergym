@@ -3,14 +3,14 @@ method: grid
 parameters:
 # ---------------------------------- BASICS ---------------------------------- #
   environment:
-    value: 'Eplus-5zone-hot-continuous-stochastic-v1'
+    value: 'Eplus-5zone-hot-discrete-stochastic-v1'
   episodes:
     value: 5
   log_interval:
     value: 10
 # --------------------------------- ALGORITHM -------------------------------- #
   algorithm:
-    value: PPO
+    value: DQN
   # Algorithm parameters group
   algorithm_parameters:
     parameters:
@@ -18,43 +18,37 @@ parameters:
         value: 'MlpPolicy'
       learning_rate:
         values: 
-          - 3.0e-4
-          - 1.0e-3
-      n_steps:
-        value: 2048
+          - 1.0e-4
+      buffer_size:
+        value: 1_000_000
+      learning_starts:
+        value: 50000
       batch_size:
-        values:
-          - 256
-          - 512
-      n_epochs:
-        value: 10
+        value: 32
+      tau:
+        value: 1.0
       gamma:
         value: 0.99
-      gae_lambda:
-        value: 0.95
-      clip_range:
-        value: 0.2
-      clip_range_vf:
+      train_freq:
+        value: 4
+      gradient_steps:
+        value: 1
+      replay_buffer_class:
         value: null
-      normalize_advantage:
-        value: True
-      ent_coef:
-        values: 
-          - 0.0
-      vf_coef:
-        value: 0.5
-      max_grad_norm:
-        value: 0.5
-      use_sde:
+      replay_buffer_kwargs:
+        value: null
+      optimize_memory_usage:
         value: False
-      sde_sample_freq:
-        value: -1
-      rollout_buffer_class:
-        value: null
-      rollout_buffer_kwargs:
-        value: null
-      target_kl:
-        value: null
+      target_update_interval:
+        value: 10000
+      exploration_fraction:
+        value: 0.1
+      exploration_initial_eps:
+        value: 1.0
+      exploration_final_eps:
+        value: 0.05
+      max_grad_norm:
+        value: 10
       stats_window_size:
         value: 100
       tensorboard_log:
@@ -95,7 +89,6 @@ parameters:
     values: 
       - [
           ['NormalizeObservation', {}],
-          ['NormalizeAction', {}],
           ['LoggerWrapper', {}],
           ['CSVLogger',{}],
           ['WandBLogger', {'save_code': True,

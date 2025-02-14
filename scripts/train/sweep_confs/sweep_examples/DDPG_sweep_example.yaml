@@ -10,65 +10,50 @@ parameters:
     value: 10
 # --------------------------------- ALGORITHM -------------------------------- #
   algorithm:
-    value: PPO
+    value: DDPG
   # Algorithm parameters group
   algorithm_parameters:
     parameters:
-      policy:
-        value: 'MlpPolicy'
-      learning_rate:
-        values: 
-          - 3.0e-4
-          - 1.0e-3
-      n_steps:
-        value: 2048
-      batch_size:
-        values:
-          - 256
-          - 512
-      n_epochs:
-        value: 10
-      gamma:
-        value: 0.99
-      gae_lambda:
-        value: 0.95
-      clip_range:
-        value: 0.2
-      clip_range_vf:
-        value: null
-      normalize_advantage:
-        value: True
-      ent_coef:
-        values: 
-          - 0.0
-      vf_coef:
-        value: 0.5
-      max_grad_norm:
-        value: 0.5
-      use_sde:
-        value: False
-      sde_sample_freq:
-        value: -1
-      rollout_buffer_class:
-        value: null
-      rollout_buffer_kwargs:
-        value: null
-      target_kl:
-        value: null
-      stats_window_size:
+      policy: 
+        value: MlpPolicy
+      learning_rate: 
+        value: 0.001
+      buffer_size: 
+        value: 1000000
+      learning_starts: 
         value: 100
-      tensorboard_log:
+      batch_size: 
+        value: 100
+      tau: 
+        value: 0.005
+      gamma: 
+        value: 0.99
+      train_freq:
+        value:
+          - 1
+          - episode
+      gradient_steps: 
+        value: -1
+      action_noise: 
         value: null
-      policy_kwargs:
+      replay_buffer_class: 
         value: null
-      verbose:
+      replay_buffer_kwargs: 
+        value: null
+      optimize_memory_usage: 
+        value: false
+      tensorboard_log: 
+        value: null
+      policy_kwargs: 
+        value: null
+      verbose: 
         value: 1
-      seed:
+      seed: 
         value: null
-      device:
-        value: 'auto'
-      _init_setup_model:
-        value: True
+      device: 
+        value: auto
+      _init_setup_model: 
+        value: true
 # -------------------------------- EVALUATION -------------------------------- #
   evaluation: # Set null when you don't want evaluation
     parameters:
