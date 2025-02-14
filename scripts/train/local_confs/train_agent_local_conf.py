@@ -5,7 +5,6 @@ from datetime import datetime
 
 import gymnasium as gym
 import numpy as np
-import wandb
 import yaml
 from stable_baselines3 import *
 from stable_baselines3 import __version__ as sb3_version
@@ -17,6 +16,7 @@ from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+import wandb
 from sinergym.utils.callbacks import *
 from sinergym.utils.common import (is_wrapped, process_algorithm_parameters,
                                    process_environment_parameters)
@@ -129,6 +129,10 @@ try:
 
     # ------------------------ Training from a given model ----------------------- #
     else:
+        # ----------------------------- Local model path ----------------------------- #
+        if conf['model'].get('local_path'):
+            model_path = conf['model']['local_path']
+
         # ------------------------ Weights and Bias model path ----------------------- #
         if conf['model'].get('entity'):
             # Get wandb run or generate a new one
@@ -161,10 +165,6 @@ try:
                 bucket_name + '/')[-1]
             gcloud.read_from_bucket(client, bucket_name, model_path)
             model_path = './' + model_path
-
-        # ----------------------------- Local model path ----------------------------- #
-        if conf['model'].get('local_path'):
-            model_path = conf['model']['local_path']
 
         # ---------- Load calibration of normalization for model if required --------- #
         if conf['model'].get('normalization') and is_wrapped(

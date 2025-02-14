@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------- #
+#                                 CONFIGURATION                                #
+# ---------------------------------------------------------------------------- #
+# The sweep must be created previously in the wandb dashboard (using the sweep_example.yaml)
+sweep_id: 61yi98pn
+entity: sail_ugr
+project: test-project
+parallel_agents: 1
+sequential_experiments: 1
+train_script_path: /workspaces/sinergym/scripts/train/sweep_confs/train_agent_sweep_conf.py
+# --------------------------------- OPTIONALS -------------------------------- #
+wandb_api_key: null # Use it to set a different api key than the one in the environment variable
+wandb_group: null
+wandb_tags: null # Example: tag1,tag2
