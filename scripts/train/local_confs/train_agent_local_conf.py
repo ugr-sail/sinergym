@@ -18,8 +18,11 @@ from stable_baselines3.common.noise import NormalActionNoise
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
-from sinergym.utils.common import (is_wrapped, process_algorithm_parameters,
-                                   process_environment_parameters)
+from sinergym.utils.common import (
+    is_wrapped,
+    process_algorithm_parameters,
+    process_environment_parameters,
+)
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
@@ -129,6 +132,10 @@ try:
 
     # ------------------------ Training from a given model ----------------------- #
     else:
+        # ----------------------------- Local model path ----------------------------- #
+        if conf['model'].get('local_path'):
+            model_path = conf['model']['local_path']
+
         # ------------------------ Weights and Bias model path ----------------------- #
         if conf['model'].get('entity'):
             # Get wandb run or generate a new one
@@ -161,10 +168,6 @@ try:
                 bucket_name + '/')[-1]
             gcloud.read_from_bucket(client, bucket_name, model_path)
             model_path = './' + model_path
-
-        # ----------------------------- Local model path ----------------------------- #
-        if conf['model'].get('local_path'):
-            model_path = conf['model']['local_path']
 
         # ---------- Load calibration of normalization for model if required --------- #
         if conf['model'].get('normalization') and is_wrapped(

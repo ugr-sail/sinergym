@@ -12,8 +12,7 @@ from stable_baselines3.common.vec_env import VecEnv
 
 from sinergym.utils.constants import LOG_CALLBACK_LEVEL
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.wrappers import (BaseLoggerWrapper, NormalizeObservation,
-                                     WandBLogger)
+from sinergym.utils.wrappers import BaseLoggerWrapper, NormalizeObservation, WandBLogger
 
 
 class LoggerEvalCallback(EventCallback):

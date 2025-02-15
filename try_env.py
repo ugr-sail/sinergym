@@ -5,8 +5,12 @@ import numpy as np
 
 import sinergym
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.wrappers import (CSVLogger, LoggerWrapper, NormalizeAction,
-                                     NormalizeObservation)
+from sinergym.utils.wrappers import (
+    CSVLogger,
+    LoggerWrapper,
+    NormalizeAction,
+    NormalizeObservation,
+)
 
 # Logger
 terminal_logger = TerminalLogger()
