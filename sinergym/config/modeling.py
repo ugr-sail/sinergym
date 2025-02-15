@@ -10,10 +10,18 @@ import numpy as np
 from eppy.modeleditor import IDF
 from epw.weather import Weather
 
-from sinergym.utils.common import (eppy_element_to_dict, get_delta_seconds,
-                                   ornstein_uhlenbeck_process)
-from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
-                                      WEEKDAY_ENCODING, YEAR)
+from sinergym.utils.common import (
+    eppy_element_to_dict,
+    get_delta_seconds,
+    ornstein_uhlenbeck_process,
+)
+from sinergym.utils.constants import (
+    CWD,
+    LOG_MODEL_LEVEL,
+    PKG_DATA_PATH,
+    WEEKDAY_ENCODING,
+    YEAR,
+)
 from sinergym.utils.logger import TerminalLogger
 
 

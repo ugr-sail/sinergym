@@ -6,9 +6,8 @@ import os
 import sys
 import types
 
-import yaml
-
 import wandb
+import yaml
 
 if __name__ == '__main__':
 
