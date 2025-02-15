@@ -53,7 +53,7 @@ The following are some key points to consider:
 
 * **Sequential / curriculum learning** can be implemented by adding a valid model path to the ``model`` parameter. In this way, the script will load and re-train an existing model.
 
-The ``train_agent_local_conf.py`` script requires a single parameter (``-conf``), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in `sinergym/scripts/train/local_confs/train_agent_PPO.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_PPO.yaml>`__.
+The ``train_agent_local_conf.py`` script requires a single parameter (``-conf``), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in `sinergym/scripts/train/local_confs/conf_examples/train_agent_PPO.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examplestrain_agent_PPO.yaml>`__.
 
 We distinguish between *mandatory* and *optional* parameters:
 
@@ -83,6 +83,17 @@ Once executed, the script performs the following steps:
   9. If a remote store is specified, saves all outputs in a Google Cloud Bucket. If WandB is specified, saves all outputs in the WandB run artifact.
 
   10. Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.
+
+Model training with sweeps
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Weights and Biases sweeps <https://docs.wandb.ai/guides/sweeps/>`__ is a powerful feature that enables hyperparameter exploration in artificial intelligence algorithms.
+
+To help users take advantage of this functionality, we have created a script that allows agents to run in parallel or sequentially. These agents pick predefined configurations from previously created sweeps to carry out the optimization process.
+
+The script for launching agents, the training script they execute (either in parallel or sequentially), and example sweep configurations can all be found in the `sinergym/scripts/train/sweep_confs <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/sweep_confs>`__ directory.
+
+We recommend reviewing the contents of this directory alongside the Weights and Biases documentation if you are interested in using this feature.
 
 Model loading
 ~~~~~~~~~~~~~~~~~~~~~~
