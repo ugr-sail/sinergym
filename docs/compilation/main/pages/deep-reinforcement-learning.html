@@ -73,6 +73,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#model-training">Model training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-training-with-sweeps">Model training with sweeps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#model-loading">Model loading</a></li>
 </ul>
 </li>
@@ -157,7 +158,7 @@
 <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, and <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> are specified there.</p></li>
 <li><p><strong>Sequential / curriculum learning</strong> can be implemented by adding a valid model path to the <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter. In this way, the script will load and re-train an existing model.</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">train_agent_local_conf.py</span></code> script requires a single parameter (<code class="docutils literal notranslate"><span class="pre">-conf</span></code>), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_PPO.yaml">sinergym/scripts/train/local_confs/train_agent_PPO.yaml</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">train_agent_local_conf.py</span></code> script requires a single parameter (<code class="docutils literal notranslate"><span class="pre">-conf</span></code>), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examplestrain_agent_PPO.yaml">sinergym/scripts/train/local_confs/conf_examples/train_agent_PPO.yaml</a>.</p>
 <p>We distinguish between <em>mandatory</em> and <em>optional</em> parameters:</p>
 <ul class="simple">
 <li><p><strong>Mandatory</strong>: environment, training episodes, and algorithm (plus any non-default algorithm parameters).</p></li>
@@ -179,6 +180,13 @@ model to load, experiment ID, wrappers (in order), training evaluation, and clou
 <li><p>Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.</p></li>
 </ol>
 </div></blockquote>
+</section>
+<section id="model-training-with-sweeps">
+<h3>Model training with sweeps<a class="headerlink" href="#model-training-with-sweeps" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://docs.wandb.ai/guides/sweeps/">Weights and Biases sweeps</a> is a powerful feature that enables hyperparameter exploration in artificial intelligence algorithms.</p>
+<p>To help users take advantage of this functionality, we have created a script that allows agents to run in parallel or sequentially. These agents pick predefined configurations from previously created sweeps to carry out the optimization process.</p>
+<p>The script for launching agents, the training script they execute (either in parallel or sequentially), and example sweep configurations can all be found in the <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/sweep_confs">sinergym/scripts/train/sweep_confs</a> directory.</p>
+<p>We recommend reviewing the contents of this directory alongside the Weights and Biases documentation if you are interested in using this feature.</p>
 </section>
 <section id="model-loading">
 <h3>Model loading<a class="headerlink" href="#model-loading" title="Link to this heading"></a></h3>
