@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------- #
 #                                  BASE IMAGE                                  #
 # ---------------------------------------------------------------------------- #
-
-ARG UBUNTU_VERSION=24.04
+### Build stage
+ARG UBUNTU_VERSION=24.04 AS builder
 FROM ubuntu:${UBUNTU_VERSION}
 
 # ---------------------------------------------------------------------------- #
@@ -119,6 +119,14 @@ COPY poetry.lock /workspaces/sinergym/poetry.lock
 # ---------------------------------------------------------------------------- #
 
 RUN poetry install --no-interaction --only main --extras "$SINERGYM_EXTRAS"
+
+
+### Runtime stage
+FROM ubuntu:${UBUNTU_VERSION}
+
+COPY --from=builder /workspaces/sinergym /workspaces/sinergym
+
+WORKDIR /workspaces/sinergym
 
 # Execute the command
 CMD ["python", "scripts/try_env.py"]
