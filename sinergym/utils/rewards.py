@@ -4,6 +4,7 @@
 from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Optional, Tuple, Union
+from numpy import mean, sqrt
 
 from sinergym.utils.constants import LOG_REWARD_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
@@ -615,7 +616,22 @@ class MultiZoneReward(BaseReward):
         where temperature setpoints are not controlled directly but rather used as targets to be achieved, while
         other actuators are controlled to reach these setpoints. A setpoint observation variable can be assigned
         per zone if it is available in the specific building. It is also possible to assign the same setpoint
-        variable to multiple air temperature zones.
+        variable to multiple air temperclass BalancedRewardV1(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super(LinearReward, self).__init__()ture zones.
 
         Args:
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
@@ -774,3 +790,129 @@ class MultiZoneReward(BaseReward):
             (1 - self.W_energy) * comfort_penalty
         reward = energy_term + comfort_term
         return reward, energy_term, comfort_term
+
+
+class BalancedRewardV1(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super(LinearReward, self).__init__(temperature_variables,
+                                           energy_variables,
+                                           range_comfort_winter,
+                                           range_comfort_summer,
+                                           summer_start,
+                                           summer_final,
+                                           energy_weight,
+                                           lambda_energy,
+                                           lambda_temperature)
+
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
+        """Calculate the reward function.
+
+        Args:
+            obs_dict (Dict[str, Any]): Dict with observation variable name (key) and observation variable value (value)
+
+        Returns:
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
+        """
+        # Energy calculation
+        energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
+        energy_penalty = self._get_energy_penalty(energy_values)
+
+        # Comfort violation calculation
+        total_temp_violation, temp_violations = self._get_temperature_violation(
+            obs_dict)
+        comfort_penalty = self._get_comfort_penalty(temp_violations)
+
+        comfort_term = self.lambda_temp * (1 - self.W_energy) * comfort_penalty
+        energy_term = self.lambda_energy * \
+            self.W_energy * -(energy_consumed / (1 + mean(temp_violations)))
+
+        reward = energy_term + comfort_term
+
+        reward_terms = {
+            'energy_term': energy_term,
+            'comfort_term': comfort_term,
+            'reward_weight': self.W_energy,
+            'abs_energy_penalty': energy_penalty,
+            'abs_comfort_penalty': comfort_penalty,
+            'total_power_demand': energy_consumed,
+            'total_temperature_violation': total_temp_violation
+        }
+
+        return reward, reward_terms
+
+
+class BalancedRewardV2(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super(LinearReward, self).__init__(temperature_variables,
+                                           energy_variables,
+                                           range_comfort_winter,
+                                           range_comfort_summer,
+                                           summer_start,
+                                           summer_final,
+                                           energy_weight,
+                                           lambda_energy,
+                                           lambda_temperature)
+
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
+        """Calculate the reward function.
+
+        Args:
+            obs_dict (Dict[str, Any]): Dict with observation variable name (key) and observation variable value (value)
+
+        Returns:
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
+        """
+        # Energy calculation
+        energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
+        energy_penalty = self._get_energy_penalty(energy_values)
+
+        # Comfort violation calculation
+        total_temp_violation, temp_violations = self._get_temperature_violation(
+            obs_dict)
+        comfort_penalty = self._get_comfort_penalty(temp_violations)
+
+        comfort_term = self.lambda_temp * (1 - self.W_energy) * comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (energy_consumed / sqrt(1 + mean(temp_violations)))
+
+        reward = energy_term + comfort_term
+
+        reward_terms = {
+            'energy_term': energy_term,
+            'comfort_term': comfort_term,
+            'reward_weight': self.W_energy,
+            'abs_energy_penalty': energy_penalty,
+            'abs_comfort_penalty': comfort_penalty,
+            'total_power_demand': energy_consumed,
+            'total_temperature_violation': total_temp_violation
+        }
+
+        return reward, reward_terms
