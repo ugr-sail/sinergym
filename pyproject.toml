@@ -61,6 +61,7 @@ eppy = "^0.5.63"
 tqdm = "^4.66.5"
 xlsxwriter = "^3.2.0"
 epw = "^1.2.dev2"
+pyyaml = "^6.0.2"
 
 # Extra dependencies (optional)
 pytest = { version = "^8.3.3", optional = true }
