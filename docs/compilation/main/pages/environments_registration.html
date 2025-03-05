@@ -119,8 +119,8 @@
   <section id="environments-configuration-and-registration">
 <h1>Environments configuration and registration<a class="headerlink" href="#environments-configuration-and-registration" title="Link to this heading"></a></h1>
 <p>New <em>Sinergym</em> environments can be created using the constructor of the <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/envs/eplus_env.py">EplusEnv</a> class and the parameters listed in section <a class="reference internal" href="environments.html#available-parameters"><span class="std std-ref">Available parameters</span></a>.</p>
-<p>Since multiple environments can be generated from the same building, <em>Sinergym</em> provides an automated way for creating and registering them. Using a JSON file located in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">sinergym/data/default_configuration</a>, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.</p>
-<p>This section outlines the structure of these JSON configuration files. Moreover, this structure allows for the definition of observation variables (<code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">meters</span></code>) and action variables (<code class="docutils literal notranslate"><span class="pre">actuators</span></code>). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.</p>
+<p>Since multiple environments can be generated from the same building, <em>Sinergym</em> provides an automated way for creating and registering them. Using a YAML file located in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">sinergym/data/default_configuration</a>, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.</p>
+<p>This section outlines the structure of these YAML configuration files. Moreover, this structure allows for the definition of observation variables (<code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">meters</span></code>) and action variables (<code class="docutils literal notranslate"><span class="pre">actuators</span></code>). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Key</strong></p></th>
@@ -208,126 +208,162 @@ register the discrete version using this flag.</p></td>
 If needed, environments are discretized afterwards using a wrapper.
 For additional details, refer to <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>.</p>
 </div>
-<p>Having presented the available parameters, the following is a JSON example of how to use them:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id_base&quot;</span><span class="w">               </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5zone&quot;</span><span class="p">,</span>
+<p>Having presented the available parameters, the following is a YAML example of how to use them:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Documentation: https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                        ID BASE FROM ENVIRONMNET NAMES                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">id_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5zone</span>
 
-<span class="w">    </span><span class="nt">&quot;building_file&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5ZoneAutoDXVAV.epJSON&quot;</span><span class="p">,</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                         BUILDING AND WEATHER SETTINGS                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">building_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5ZoneAutoDXVAV.epJSON</span>
 
-<span class="w">    </span><span class="nt">&quot;weather_specification&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;weather_files&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                           </span><span class="s2">&quot;USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                           </span><span class="s2">&quot;USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw&quot;</span>
-<span class="w">                        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cool&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="c1"># A environment alternative for each weather key</span>
+<span class="nt">weather_specification</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">weather_files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</span>
+<span class="w">  </span><span class="nt">keys</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hot</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mixed</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cool</span>
 
-<span class="w">    </span><span class="nt">&quot;config_params&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                         BUILDING EXTRA CONFIGURATION                         #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">config_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 
-<span class="w">    </span><span class="nt">&quot;weather_variability&quot;</span><span class="p">:{</span>
-<span class="w">        </span><span class="nt">&quot;Dry Bulb Temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">24.0</span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
 
-<span class="w">    </span><span class="nt">&quot;max_ep_data_store_num&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="nt">&quot;time_variables&quot;</span><span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;day_of_month&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hour&quot;</span><span class="p">],</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                        WEATHER VARIABILITY (OPTIONAL)                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1"># Alternative stochastic environments if it is defined</span>
+<span class="nt">weather_variability</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Dry Bulb Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># sigma</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># mu</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24.0</span><span class="w"> </span><span class="c1"># tau</span>
 
-<span class="w">    </span><span class="nt">&quot;variables&quot;</span><span class="w">             </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Site Outdoor Air DryBulb Temperature&quot;</span><span class="w">                            </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;outdoor_temperature&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">           </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Site Outdoor Air Relative Humidity&quot;</span><span class="w">                              </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;outdoor_humidity&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">         </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Site Wind Speed&quot;</span><span class="w">                                                 </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wind_speed&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Site Wind Direction&quot;</span><span class="w">                                             </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wind_direction&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Site Diffuse Solar Radiation Rate per Area&quot;</span><span class="w">                      </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diffuse_solar_radiation&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">         </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Site Direct Solar Radiation Rate per Area&quot;</span><span class="w">                       </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;direct_solar_radiation&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Environment&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Zone Thermostat Heating Setpoint Temperature&quot;</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;htg_setpoint&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPACE5-1&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Zone Thermostat Cooling Setpoint Temperature&quot;</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;clg_setpoint&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPACE5-1&quot;</span><span class="w">           </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Zone Air Temperature&quot;</span><span class="w">                                            </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPACE5-1&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Zone Air Relative Humidity&quot;</span><span class="w">                                      </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;air_humidity&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPACE5-1&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Zone People Occupant Count&quot;</span><span class="w">                                      </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;people_occupant&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPACE5-1&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Environmental Impact Total CO2 Emissions Carbon Equivalent Mass&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;co2_emission&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;site&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;Facility Total HVAC Electricity Demand Rate&quot;</span><span class="w">                     </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_names&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HVAC_electricity_demand_rate&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;keys&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Whole Building&quot;</span><span class="w">            </span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                          EPISODES FOLDER GENERATION                          #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">max_ep_data_store_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 
-<span class="w">    </span><span class="nt">&quot;meters&quot;</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Electricity:HVAC&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;total_electricity_HVAC&quot;</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                             OBSERVATION VARIABLES                            #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
 
-<span class="w">    </span><span class="nt">&quot;actuators&quot;</span><span class="w">             </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;HTG-SETP-SCH&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Heating_Setpoint_RL&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;element_type&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schedule:Compact&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">            </span><span class="nt">&quot;value_type&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schedule Value&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;CLG-SETP-SCH&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;variable_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cooling_Setpoint_RL&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;element_type&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schedule:Compact&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">            </span><span class="nt">&quot;value_type&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schedule Value&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="c1"># --------------- TIME VARIABLES (same name as EnergyPlus API) --------------- #</span>
+<span class="nt">time_variables</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">day_of_month</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hour</span>
+<span class="c1"># More variables in Data Transfer API: https://energyplus.readthedocs.io/en/latest/datatransfer.html</span>
 
-<span class="w">    </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="c1"># ----------------------------- OUTPUT:VARIABLES ----------------------------- #</span>
+<span class="nt">variables</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Site Outdoor Air DryBulb Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outdoor_temperature</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Outdoor Air Relative Humidity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outdoor_humidity</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Wind Speed</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wind_speed</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Wind Direction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wind_direction</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Diffuse Solar Radiation Rate per Area</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diffuse_solar_radiation</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Direct Solar Radiation Rate per Area</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">direct_solar_radiation</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Heating Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">htg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Cooling Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Air Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_temperature</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Air Relative Humidity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_humidity</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone People Occupant Count</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">people_occupant</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Environmental Impact Total CO2 Emissions Carbon Equivalent Mass</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">co2_emission</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">site</span>
+<span class="w">  </span><span class="nt">Facility Total HVAC Electricity Demand Rate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HVAC_electricity_demand_rate</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Whole Building</span>
 
-<span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
+<span class="c1"># ------------------------------- OUTPUT:METERS ------------------------------ #</span>
+<span class="nt">meters</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Electricity:HVAC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_electricity_HVAC</span>
 
-<span class="w">    </span><span class="nt">&quot;action_space_discrete&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Discrete(10)&quot;</span><span class="p">,</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                               ACTION VARIABLES                               #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
 
-<span class="w">    </span><span class="nt">&quot;reward&quot;</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LinearReward&quot;</span><span class="p">,</span>
+<span class="c1"># --------------------------- ACTUATORS TO CONTROL --------------------------- #</span>
+<span class="nt">actuators</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">HTG-SETP-SCH</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Heating_Setpoint_RL</span>
+<span class="w">    </span><span class="nt">element_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule:Compact</span>
+<span class="w">    </span><span class="nt">value_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule Value</span>
+<span class="w">  </span><span class="nt">CLG-SETP-SCH</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cooling_Setpoint_RL</span>
+<span class="w">    </span><span class="nt">element_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule:Compact</span>
+<span class="w">    </span><span class="nt">value_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule Value</span>
 
-<span class="w">    </span><span class="nt">&quot;reward_kwargs&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;temperature_variables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;energy_variables&quot;</span><span class="w">      </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;HVAC_electricity_demand_rate&quot;</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;range_comfort_winter&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="w"> </span><span class="mf">23.5</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;range_comfort_summer&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">23.0</span><span class="p">,</span><span class="w"> </span><span class="mf">26.0</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;summer_start&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;summer_final&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;energy_weight&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;lambda_energy&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="mf">1e-4</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;lambda_temperature&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 
-<span class="p">}</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                                 ACTIONS SPACE                                #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">action_space</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)</span>
+
+<span class="nt">action_space_discrete</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gym.spaces.Discrete(10)</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                                REWARD FUNCTION                               #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LinearReward</span>
+
+<span class="nt">reward_kwargs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">temperature_variables</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_temperature</span>
+<span class="w">  </span><span class="nt">energy_variables</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HVAC_electricity_demand_rate</span>
+<span class="w">  </span><span class="nt">range_comfort_winter</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.5</span>
+<span class="w">  </span><span class="nt">range_comfort_summer</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span>
+<span class="w">  </span><span class="nt">summer_start</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">summer_final</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">  </span><span class="nt">energy_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">  </span><span class="nt">lambda_energy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0e-4</span>
+<span class="w">  </span><span class="nt">lambda_temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
 </pre></div>
 </div>
-<p>Based on this JSON configuration for the building <code class="docutils literal notranslate"><span class="pre">5ZoneAutoDXVAV.epJSON</span></code>, the following
+<p>Based on this YAML configuration for the building <code class="docutils literal notranslate"><span class="pre">5ZoneAutoDXVAV.epJSON</span></code>, the following
 environments will be automatically created:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
  <span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">,</span>
@@ -356,7 +392,7 @@ named as <code class="docutils literal notranslate"><span class="pre">DEFAULT_&l
 <section id="variables-specification">
 <h2>Variables specification<a class="headerlink" href="#variables-specification" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">variables</span></code> field follows a specific format to efficiently define all observed variables in the environment. Variable names and keys can be provided as either individual strings or lists of strings. The functionality is illustrated in the following graph:</p>
-<a class="reference internal image-reference" href="../_images/json_variables_conf.png"><img alt="*variables* field format in the JSON configuration of *Sinergym* environments" class="align-center" src="../_images/json_variables_conf.png" style="width: 1111.0px; height: 618.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/yaml_variables_conf.png"><img alt="*variables* field format in the YAML configuration of *Sinergym* environments" class="align-center" src="../_images/yaml_variables_conf.png" style="width: 1111.0px; height: 618.0px;" /></a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>

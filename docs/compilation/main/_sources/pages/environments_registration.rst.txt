@@ -4,9 +4,9 @@ Environments configuration and registration
 
 New *Sinergym* environments can be created using the constructor of the `EplusEnv <https://github.com/ugr-sail/sinergym/blob/main/sinergym/envs/eplus_env.py>`__ class and the parameters listed in section :ref:`Available Parameters`.
 
-Since multiple environments can be generated from the same building, *Sinergym* provides an automated way for creating and registering them. Using a JSON file located in `sinergym/data/default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.
+Since multiple environments can be generated from the same building, *Sinergym* provides an automated way for creating and registering them. Using a YAML file located in `sinergym/data/default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.
 
-This section outlines the structure of these JSON configuration files. Moreover, this structure allows for the definition of observation variables (``time_variables``, ``variables`` and ``meters``) and action variables (``actuators``). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.
+This section outlines the structure of these YAML configuration files. Moreover, this structure allows for the definition of observation variables (``time_variables``, ``variables`` and ``meters``) and action variables (``actuators``). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.
 
 +----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Key**              | **Optional** | **Description**                                                                                                                                                           |
@@ -54,12 +54,12 @@ This section outlines the structure of these JSON configuration files. Moreover,
                If needed, environments are discretized afterwards using a wrapper. 
                For additional details, refer to :ref:`DiscretizeEnv`.
 
-Having presented the available parameters, the following is a JSON example of how to use them: 
+Having presented the available parameters, the following is a YAML example of how to use them: 
 
-.. literalinclude:: ../../../sinergym/data/default_configuration/5ZoneAutoDXVAV.json
-    :language: json
+.. literalinclude:: ../../../sinergym/data/default_configuration/5ZoneAutoDXVAV.yaml
+    :language: yaml
 
-Based on this JSON configuration for the building ``5ZoneAutoDXVAV.epJSON``, the following 
+Based on this YAML configuration for the building ``5ZoneAutoDXVAV.epJSON``, the following 
 environments will be automatically created: ::
 
     [
@@ -91,9 +91,9 @@ Variables specification
 
 The ``variables`` field follows a specific format to efficiently define all observed variables in the environment. Variable names and keys can be provided as either individual strings or lists of strings. The functionality is illustrated in the following graph:
 
-.. image:: /_static/json_variables_conf.png
+.. image:: /_static/yaml_variables_conf.png
   :scale: 25 %
-  :alt: *variables* field format in the JSON configuration of *Sinergym* environments
+  :alt: *variables* field format in the YAML configuration of *Sinergym* environments
   :align: center
 
 

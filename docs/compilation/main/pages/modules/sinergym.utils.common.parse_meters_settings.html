@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sinergym.utils.common.json_to_variables &mdash; Sinergym  documentation</title>
+  <title>sinergym.utils.common.parse_meters_settings &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.common.ornstein_uhlenbeck_process" href="sinergym.utils.common.ornstein_uhlenbeck_process.html" />
-    <link rel="prev" title="sinergym.utils.common.json_to_meters" href="sinergym.utils.common.json_to_meters.html" /> 
+    <link rel="next" title="sinergym.utils.common.parse_variables_settings" href="sinergym.utils.common.parse_variables_settings.html" />
+    <link rel="prev" title="sinergym.utils.common.parse_actuators_settings" href="sinergym.utils.common.parse_actuators_settings.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -95,10 +95,10 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_schedulers_to_excel.html">sinergym.utils.common.export_schedulers_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.is_wrapped.html">sinergym.utils.common.is_wrapped</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.json_to_actuators.html">sinergym.utils.common.json_to_actuators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.json_to_meters.html">sinergym.utils.common.json_to_meters</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.common.json_to_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ornstein_uhlenbeck_process.html">sinergym.utils.common.ornstein_uhlenbeck_process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_actuators_settings.html">sinergym.utils.common.parse_actuators_settings</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.common.parse_meters_settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables_settings.html">sinergym.utils.common.parse_variables_settings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.process_algorithm_parameters.html">sinergym.utils.common.process_algorithm_parameters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.process_environment_parameters.html">sinergym.utils.common.process_environment_parameters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html">sinergym.utils.common.unwrap_wrapper</a></li>
@@ -137,9 +137,9 @@
           <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
           <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
           <li class="breadcrumb-item"><a href="sinergym.utils.common.html">sinergym.utils.common</a></li>
-      <li class="breadcrumb-item active">sinergym.utils.common.json_to_variables</li>
+      <li class="breadcrumb-item active">sinergym.utils.common.parse_meters_settings</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/modules/sinergym.utils.common.json_to_variables.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/pages/modules/sinergym.utils.common.parse_meters_settings.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -147,25 +147,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sinergym-utils-common-json-to-variables">
-<h1>sinergym.utils.common.json_to_variables<a class="headerlink" href="#sinergym-utils-common-json-to-variables" title="Link to this heading"></a></h1>
+  <section id="sinergym-utils-common-parse-meters-settings">
+<h1>sinergym.utils.common.parse_meters_settings<a class="headerlink" href="#sinergym-utils-common-parse-meters-settings" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="sinergym.utils.common.json_to_variables">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">json_to_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.json_to_variables" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.utils.common.parse_meters_settings">
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">parse_meters_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.parse_meters_settings" title="Link to this definition"></a></dt>
 <dd><dl class="simple">
-<dt>Read variables dictionary (from Sinergym JSON conf) and adapt it to the</dt><dd><p>EnergyPlus format. More information about Sinergym JSON configuration format
+<dt>Read meters dictionary (from Sinergym YAML settings) and adapt it to the</dt><dd><p>EnergyPlus format. More information about Sinergym YAML configuration format
 in documentation.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>variables</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary from Sinergym JSON configuration with variables information.</p>
+<dd class="field-odd"><p><strong>meters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Dictionary from Sinergym YAML configuration with meters information.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with variables information in EnergyPlus API format.</p>
+<dd class="field-even"><p>Dictionary with meters information in EnergyPlus API format.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict[str, Tuple[str, str]]</p>
+<dd class="field-odd"><p>Dict[str, str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,8 +176,8 @@ in documentation.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.common.json_to_meters.html" class="btn btn-neutral float-left" title="sinergym.utils.common.json_to_meters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.common.ornstein_uhlenbeck_process.html" class="btn btn-neutral float-right" title="sinergym.utils.common.ornstein_uhlenbeck_process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.common.parse_actuators_settings.html" class="btn btn-neutral float-left" title="sinergym.utils.common.parse_actuators_settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.common.parse_variables_settings.html" class="btn btn-neutral float-right" title="sinergym.utils.common.parse_variables_settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -214,17 +214,17 @@ in documentation.</p>
             <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
-            <dd><a href="../../../v3.1.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.1.0</a></dd>
-            <dd><a href="../../../v3.2.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.2.0</a></dd>
-            <dd><a href="../../../v3.3.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.3.0</a></dd>
-            <dd><a href="../../../v3.4.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.4.0</a></dd>
-            <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.5.0</a></dd>
-            <dd><a href="../../../v3.6.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.6.0</a></dd>
-            <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.common.json_to_variables.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+            <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="sinergym.utils.common.json_to_variables.html">main</a></dd>
+            <dd><a href="sinergym.utils.common.parse_meters_settings.html">main</a></dd>
         </dl>
     </div>
 </div><script>
