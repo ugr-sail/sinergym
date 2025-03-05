@@ -241,17 +241,18 @@ def ornstein_uhlenbeck_process(
     return data_mod
 
 # ---------------------------------------------------------------------------- #
-#                    READING JSON ENVIRONMENT CONFIGURATION                    #
+#                    READING YAML ENVIRONMENT CONFIGURATION                    #
 # ---------------------------------------------------------------------------- #
 
 
-def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
-    """Read variables dictionary (from Sinergym JSON conf) and adapt it to the
-       EnergyPlus format. More information about Sinergym JSON configuration format
+def parse_variables_settings(
+        variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
+    """Read variables dictionary (from Sinergym yaml settings) and adapt it to the
+       EnergyPlus format. More information about Sinergym YAML configuration format
        in documentation.
 
     Args:
-        variables (Dict[str, Any]): Dictionary from Sinergym JSON configuration with variables information.
+        variables (Dict[str, Any]): Dictionary from Sinergym YAML configuration with variables information.
 
     Returns:
         Dict[str, Tuple[str, str]]: Dictionary with variables information in EnergyPlus API format.
@@ -284,8 +285,9 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len( specification['variable_names']) == len(
-                    specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
+                assert len(
+    specification['variable_names']) == len(
+         specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
                     output[variable_name] = (variable, key_name)
@@ -300,13 +302,13 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
     return output
 
 
-def json_to_meters(meters: Dict[str, str]) -> Dict[str, str]:
-    """Read meters dictionary (from Sinergym JSON conf) and adapt it to the
-       EnergyPlus format. More information about Sinergym JSON configuration format
+def parse_meters_settings(meters: Dict[str, str]) -> Dict[str, str]:
+    """Read meters dictionary (from Sinergym YAML settings) and adapt it to the
+       EnergyPlus format. More information about Sinergym YAML configuration format
        in documentation.
 
     Args:
-        meters (Dict[str, str]): Dictionary from Sinergym JSON configuration with meters information.
+        meters (Dict[str, str]): Dictionary from Sinergym YAML configuration with meters information.
 
     Returns:
         Dict[str, str]: Dictionary with meters information in EnergyPlus API format.
@@ -320,14 +322,14 @@ def json_to_meters(meters: Dict[str, str]) -> Dict[str, str]:
     return output
 
 
-def json_to_actuators(
+def parse_actuators_settings(
         actuators: Dict[str, Dict[str, str]]) -> Dict[str, Tuple[str, str, str]]:
-    """Read actuators dictionary (from Sinergym JSON conf) and adapt it to the
-       EnergyPlus format. More information about Sinergym JSON configuration format
+    """Read actuators dictionary (from Sinergym YAML settings) and adapt it to the
+       EnergyPlus format. More information about Sinergym YAML configuration format
        in documentation.
 
     Args:
-        actuators (Dict[str, Dict[str, str]]): Dictionary from Sinergym JSON configuration with actuators information.
+        actuators (Dict[str, Dict[str, str]]): Dictionary from Sinergym YAML configuration with actuators information.
 
     Returns:
         Dict[str, Tuple[str, str, str]]: Dictionary with actuators information in EnergyPlus API format.
@@ -344,11 +346,11 @@ def json_to_actuators(
 
 def convert_conf_to_env_parameters(
         conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
-    """Convert a conf from json format (sinergym/data/default_configuration/file.json) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
-       More information about Sinergym environment configuration in JSON format in documentation.
+    """Convert a configuration from YAML format (sinergym/data/default_configuration/file.yaml) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
+       More information about Sinergym environment configuration in YAML format in documentation.
 
     Args:
-        conf (Dict[str, Any]): Dictionary from read json configuration file (sinergym/data/default_configuration/file.json).
+        conf (Dict[str, Any]): Dictionary from read YAML setting file (sinergym/data/default_configuration/file.yaml).
 
     Returns:
         Dict[str,[Dict[str, Any]]: All possible Sinergym environment constructor kwargs.
@@ -356,10 +358,10 @@ def convert_conf_to_env_parameters(
 
     configurations = {}
 
-    variables = json_to_variables(conf['variables'])
-    meters = json_to_meters(conf['meters'])
-    actuators = json_to_actuators(conf['actuators'])
-    context = json_to_actuators(conf['context'])
+    variables = parse_variables_settings(conf['variables'])
+    meters = parse_meters_settings(conf['meters'])
+    actuators = parse_actuators_settings(conf['actuators'])
+    context = parse_actuators_settings(conf['context'])
 
     assert len(conf['weather_specification']['weather_files']) == len(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'

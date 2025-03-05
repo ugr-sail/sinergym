@@ -56,10 +56,10 @@ def test_unwrap_wrapper(
     assert env is None
 
 
-def test_json_to_variables(conf_5zone):
+def test_parse_variables_settings(conf_5zone):
 
     assert isinstance(conf_5zone['variables'], dict)
-    output = common.json_to_variables(conf_5zone['variables'])
+    output = common.parse_variables_settings(conf_5zone['variables'])
 
     assert isinstance(output, dict)
     assert isinstance(list(output.keys())[0], str)
@@ -67,20 +67,20 @@ def test_json_to_variables(conf_5zone):
     assert len(list(output.values())[0]) == 2
 
 
-def test_json_to_meters(conf_5zone):
+def test_parse_meters_settings(conf_5zone):
 
     assert isinstance(conf_5zone['meters'], dict)
-    output = common.json_to_meters(conf_5zone['meters'])
+    output = common.parse_meters_settings(conf_5zone['meters'])
 
     assert isinstance(output, dict)
     assert isinstance(list(output.keys())[0], str)
     assert isinstance(list(output.values())[0], str)
 
 
-def test_json_to_actuators(conf_5zone):
+def test_parse_actuators_settings(conf_5zone):
 
     assert isinstance(conf_5zone['actuators'], dict)
-    output = common.json_to_actuators(conf_5zone['actuators'])
+    output = common.parse_actuators_settings(conf_5zone['actuators'])
 
     assert isinstance(output, dict)
     assert isinstance(list(output.keys())[0], str)
