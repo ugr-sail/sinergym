@@ -1,7 +1,15 @@
+# Documentation: https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html
+# ---------------------------------------------------------------------------- #
+#                        ID BASE FROM ENVIRONMNET NAMES                        #
+# ---------------------------------------------------------------------------- #
 id_base: 5zone
 
+# ---------------------------------------------------------------------------- #
+#                         BUILDING AND WEATHER SETTINGS                        #
+# ---------------------------------------------------------------------------- #
 building_file: 5ZoneAutoDXVAV.epJSON
 
+# A environment alternative for each weather key
 weather_specification:
   weather_files:
     - USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw
@@ -12,21 +20,39 @@ weather_specification:
     - mixed
     - cool
 
+# ---------------------------------------------------------------------------- #
+#                         BUILDING EXTRA CONFIGURATION                         #
+# ---------------------------------------------------------------------------- #
 config_params: null
 
+
+# ---------------------------------------------------------------------------- #
+#                        WEATHER VARIABILITY (OPTIONAL)                        #
+# ---------------------------------------------------------------------------- #
+# Alternative stochastic environments if it is defined
 weather_variability:
   Dry Bulb Temperature:
-    - 1.0
-    - 0.0
-    - 24.0
+    - 1.0 # sigma
+    - 0.0 # mu
+    - 24.0 # tau
 
+# ---------------------------------------------------------------------------- #
+#                          EPISODES FOLDER GENERATION                          #
+# ---------------------------------------------------------------------------- #
 max_ep_data_store_num: 10
 
+# ---------------------------------------------------------------------------- #
+#                             OBSERVATION VARIABLES                            #
+# ---------------------------------------------------------------------------- #
+
+# --------------- TIME VARIABLES (same name as EnergyPlus API) --------------- #
 time_variables:
   - month
   - day_of_month
   - hour
+# More variables in Data Transfer API: https://energyplus.readthedocs.io/en/latest/datatransfer.html
 
+# ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
   Site Outdoor Air DryBulb Temperature:
     variable_names: outdoor_temperature
@@ -68,9 +94,15 @@ variables:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
 
+# ------------------------------- OUTPUT:METERS ------------------------------ #
 meters:
   Electricity:HVAC: total_electricity_HVAC
 
+# ---------------------------------------------------------------------------- #
+#                               ACTION VARIABLES                               #
+# ---------------------------------------------------------------------------- #
+
+# --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   HTG-SETP-SCH:
     variable_name: Heating_Setpoint_RL
@@ -81,12 +113,21 @@ actuators:
     element_type: Schedule:Compact
     value_type: Schedule Value
 
+# ---------------------------------------------------------------------------- #
+#                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
+# ---------------------------------------------------------------------------- #
 context: {}
 
+# ---------------------------------------------------------------------------- #
+#                                 ACTIONS SPACE                                #
+# ---------------------------------------------------------------------------- #
 action_space: gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)
 
 action_space_discrete: gym.spaces.Discrete(10)
 
+# ---------------------------------------------------------------------------- #
+#                                REWARD FUNCTION                               #
+# ---------------------------------------------------------------------------- #
 reward: LinearReward
 
 reward_kwargs:
