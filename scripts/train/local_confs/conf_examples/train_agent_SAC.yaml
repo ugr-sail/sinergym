@@ -48,14 +48,14 @@ env_params:
 
 # ---------------------------------- WRAPPER --------------------------------- #
 wrappers:
-  NormalizeAction: {}
-  NormalizeObservation: {}
-  LoggerWrapper:
-    storage_class: sinergym.utils.logger.LoggerStorage
-  CSVLogger: {}
-  WandBLogger:
-    entity: sail_ugr
-    project_name: test-project
+  - NormalizeAction: {}
+  - NormalizeObservation: {}
+  - LoggerWrapper:
+      storage_class: sinergym.utils.logger.LoggerStorage
+  - CSVLogger: {}
+  - WandBLogger:
+      entity: sail_ugr
+      project_name: test-project
 
 # --------------------------- INITIAL STATE (MODEL) -------------------------- #
 # Model from scratch:

@@ -80,15 +80,16 @@ try:
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
     if conf.get('wrappers'):
-        for key, parameters in conf['wrappers'].items():
-            wrapper_class = eval(key)
-            for name, value in parameters.items():
-                # parse str parameters to sinergym Callable or Objects if
-                # required
-                if isinstance(value, str):
-                    if '.' in value and '.txt' not in value:
-                        parameters[name] = eval(value)
-            env = wrapper_class(env=env, ** parameters)
+        for wrapper in conf['wrappers']:
+            for key, parameters in wrapper.items():
+                wrapper_class = eval(key)
+                for name, value in parameters.items():
+                    # parse str parameters to sinergym Callable or Objects if
+                    # required
+                    if isinstance(value, str):
+                        if '.' in value and '.txt' not in value:
+                            parameters[name] = eval(value)
+                env = wrapper_class(env=env, ** parameters)
 
     # ---------------------------------------------------------------------------- #
     #                                  Load Agent                                  #

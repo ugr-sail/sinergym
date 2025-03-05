@@ -90,19 +90,20 @@ try:
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
     if conf.get('wrappers'):
-        for key, parameters in conf['wrappers'].items():
-            wrapper_class = eval(key)
-            for name, value in parameters.items():
-                # parse str parameters to sinergym Callable or Objects if
-                # required
-                if isinstance(value, str):
-                    if '.' in value:
-                        parameters[name] = eval(value)
-            env = wrapper_class(env=env, ** parameters)
-            if eval_env is not None:
-                # In evaluation, THE WandB wrapper is not needed
-                if key != 'WandBLogger':
-                    eval_env = wrapper_class(env=eval_env, ** parameters)
+        for wrapper in conf['wrappers']:
+            for key, parameters in wrapper.items():
+                wrapper_class = eval(key)
+                for name, value in parameters.items():
+                    # parse str parameters to sinergym Callable or Objects if
+                    # required
+                    if isinstance(value, str):
+                        if '.' in value:
+                            parameters[name] = eval(value)
+                env = wrapper_class(env=env, ** parameters)
+                if eval_env is not None:
+                    # In evaluation, THE WandB wrapper is not needed
+                    if key != 'WandBLogger':
+                        eval_env = wrapper_class(env=eval_env, ** parameters)
 
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
