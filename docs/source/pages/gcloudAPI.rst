@@ -223,7 +223,7 @@ The `train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/trai
 .. note:: The **train_agent.py** script can also be used for local experiments and sending output data 
           and artifacts to remote storage, such as WandB, without configuring cloud computing.
 
-The JSON structure for configuring experiments or evaluations is explained in the :ref:`Usage` section.
+The YAML structure for configuring experiments or evaluations is explained in the :ref:`Usage` section.
 
 .. warning:: To ensure correct auto-deletion, it is recommended to use MIGs instead of individual VM instances.
 
