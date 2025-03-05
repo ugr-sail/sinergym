@@ -2,7 +2,6 @@
 id: LoadExample
 environment: Eplus-5zone-hot-continuous-stochastic-v1
 episodes: 5
-seed: null
 
 # ------------------------------- SB3 ALGORITHM ------------------------------ #
 algorithm:
@@ -44,6 +43,7 @@ model:
 
 # -------------------------------- ENVIRONMENT ------------------------------- #
 env_params:
+  seed: null
   reward: LinearReward
 
 # --------------------------------- WRAPPERS --------------------------------- #

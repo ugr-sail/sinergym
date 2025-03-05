@@ -57,8 +57,6 @@ try:
     experiment_date = datetime.today().strftime('%Y-%m-%d_%H-%M')
     experiment_name = conf['algorithm']['name'] + '-' + conf['environment'] + \
         '-episodes-' + str(conf['episodes'])
-    if conf.get('seed'):
-        experiment_name += '-seed-' + str(conf['seed'])
     if conf.get('id'):
         experiment_name += '-id-' + str(conf['id'])
     experiment_name += '_' + experiment_date
