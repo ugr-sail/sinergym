@@ -1,10 +1,10 @@
-import json
 import logging
 import os
 import warnings
 from typing import Union
 
 import gymnasium as gym
+import yaml
 from gymnasium.envs.registration import WrapperSpec, register
 
 from sinergym.utils.common import convert_conf_to_env_parameters
@@ -90,8 +90,8 @@ for root, dirs, files in os.walk(configuration_path):
 
 # ---------------- For each conf file, set up environments --------------- #
 for conf_file in conf_files:
-    with open(conf_file) as json_f:
-        conf = json.load(json_f)
+    with open(conf_file, 'r') as yaml_conf:
+        conf = yaml.safe_load(yaml_conf)
 
     # configurations = Dict [key=environment_id, value=env_kwargs dict]
     configurations = convert_conf_to_env_parameters(conf)
