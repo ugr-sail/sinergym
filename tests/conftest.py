@@ -816,12 +816,12 @@ def multizone_reward():
 def pytest_sessionfinish(session, exitstatus):
     """ whole test run finishes. """
     # Deleting all temporal directories generated during tests (environments)
-    directories = glob('Eplus-env-TEST*/')
+    directories = glob('TEST*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal directories generated during tests (simulators)
-    directories = glob('Eplus-TESTSIMULATOR*/')
+    directories = glob('TESTSIMULATOR*/')
     for directory in directories:
         shutil.rmtree(directory)
 

@@ -296,7 +296,7 @@ def test_set_episode_working_dir(model_5zone):
 def test_set_experiment_working_dir(model_5zone):
     # Check current config experiment working dir and if exists
     current_experiment_path = model_5zone.experiment_path
-    assert 'Eplus-env-TESTCONFIG-res' in current_experiment_path
+    assert 'TESTCONFIG-res' in current_experiment_path
     assert os.path.isdir(current_experiment_path)
     # Set a new experiment_path
     new_experiment_path = model_5zone._set_experiment_working_dir(
@@ -309,9 +309,9 @@ def test_set_experiment_working_dir(model_5zone):
 
 
 def test_get_working_folder(model_5zone):
-    expected = 'Eplus-env-TESTCONFIG-res1/Eplus-env-sub_run1'
-    parent_dir = 'Eplus-env-TESTCONFIG-res1'
-    dir_sig = '-sub_run'
+    expected = 'TESTCONFIG-res1/episode-1'
+    parent_dir = 'TESTCONFIG-res1'
+    dir_sig = 'episode-'
     path = model_5zone._get_working_folder(parent_dir, dir_sig)
     assert expected == path
 
