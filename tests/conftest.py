@@ -278,7 +278,7 @@ def env_demo(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
@@ -311,7 +311,7 @@ def env_demo_energy_cost(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
@@ -347,7 +347,7 @@ def env_demo_summer(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
@@ -380,7 +380,7 @@ def env_demo_summer_energy_cost(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
@@ -426,7 +426,7 @@ def env_5zone(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
@@ -465,7 +465,7 @@ def env_5zone_stochastic(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (
                 1,
@@ -504,7 +504,7 @@ def env_datacenter(
             'range_comfort_summer': (
                 18,
                 27)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
@@ -541,7 +541,7 @@ def building_5zone(json_path_5zone):
 def model_5zone(VARIABLES_5ZONE, METERS_5ZONE):
 
     return ModelJSON(
-        env_name='TESTCONFIG',
+        env_name='PYTESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
         weather_files=['USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'],
         variables=VARIABLES_5ZONE,
@@ -558,7 +558,7 @@ def model_5zone_several_weathers(
         VARIABLES_5ZONE,
         METERS_5ZONE):
     return ModelJSON(
-        env_name='TESTCONFIG',
+        env_name='PYTESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
         weather_files=[
             'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -816,17 +816,17 @@ def multizone_reward():
 def pytest_sessionfinish(session, exitstatus):
     """ whole test run finishes. """
     # Deleting all temporal directories generated during tests (environments)
-    directories = glob('TEST*/')
+    directories = glob('PYTEST*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal directories generated during tests (simulators)
-    directories = glob('TESTSIMULATOR*/')
+    directories = glob('PYTESTSIMULATOR*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal files generated during tests
-    files = glob('./TEST*.xlsx')
+    files = glob('./PYTEST*.xlsx')
     for file in files:
         os.remove(file)
     files = glob('./data_available*')
@@ -834,7 +834,7 @@ def pytest_sessionfinish(session, exitstatus):
         os.remove(file)
 
     # Deleting new JSON files generated during tests
-    files = glob('sinergym/data/buildings/TEST*.epJSON')
+    files = glob('sinergym/data/buildings/PYTEST*.epJSON')
     for file in files:
         os.remove(file)
 

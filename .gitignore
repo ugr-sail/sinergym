@@ -10,7 +10,6 @@ __pycache__/
 
 # Other softwares
 EnergyPlus*/
-bcvtb/
 
 # Simulation outputs
 Eplus-*/
@@ -37,6 +36,9 @@ docs/build/
 
 #dist folder for pypi packages
 dist/
+
+# pytest output
+PYTEST*/
 
 #.pytest_cache
 .pytest_cache/

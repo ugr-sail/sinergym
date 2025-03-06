@@ -95,7 +95,7 @@ def test_convert_conf_to_env_parameters(conf_5zone):
     # Check if environments are valid
     for env_id, env_kwargs in configurations.items():
         # Added TEST name in env_kwargs
-        env_kwargs['env_name'] = 'TESTGYM'
+        env_kwargs['env_name'] = 'PYTESTGYM'
         env = gym.make(env_id, **env_kwargs)
         env.reset()
         env.close()

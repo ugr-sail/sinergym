@@ -296,11 +296,11 @@ def test_set_episode_working_dir(model_5zone):
 def test_set_experiment_working_dir(model_5zone):
     # Check current config experiment working dir and if exists
     current_experiment_path = model_5zone.experiment_path
-    assert 'TESTCONFIG-res' in current_experiment_path
+    assert 'PYTESTCONFIG-res' in current_experiment_path
     assert os.path.isdir(current_experiment_path)
     # Set a new experiment_path
     new_experiment_path = model_5zone._set_experiment_working_dir(
-        env_name='TESTCONFIG')
+        env_name='PYTESTCONFIG')
     # The name should be the same except last number id
     assert current_experiment_path[:-1] == new_experiment_path[:-1]
     assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
@@ -309,8 +309,8 @@ def test_set_experiment_working_dir(model_5zone):
 
 
 def test_get_working_folder(model_5zone):
-    expected = 'TESTCONFIG-res1/episode-1'
-    parent_dir = 'TESTCONFIG-res1'
+    expected = 'PYTESTCONFIG-res1/episode-1'
+    parent_dir = 'PYTESTCONFIG-res1'
     dir_sig = 'episode-'
     path = model_5zone._get_working_folder(parent_dir, dir_sig)
     assert expected == path

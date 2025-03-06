@@ -130,7 +130,7 @@ def test_reset_reproducibility():
     # Disable environment global seed
     env = gym.make(
         'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         seed=None)
 
     # Check that the environment is reproducible
@@ -194,13 +194,13 @@ def test_global_reproducibility():
     # With seed 1234
     env1 = gym.make(
         'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         seed=1234)
     env1 = NormalizeObservation(env1)
     values1 = _check_reset_reproducibility_with_seed(env1)
     env2 = gym.make(
         'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         seed=1234)
     env2 = NormalizeObservation(env2)
     values2 = _check_reset_reproducibility_with_seed(env2)
@@ -223,7 +223,7 @@ def test_all_environments():
         check_env(env)
 
         # Rename directory with name TEST for future remove
-        os.rename(env.get_wrapper_attr('workspace_path'), 'Eplus-env-TEST' +
+        os.rename(env.get_wrapper_attr('workspace_path'), 'PYTEST' +
                   env.get_wrapper_attr('workspace_path').split('/')[-1])
 
         env.close()
