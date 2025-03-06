@@ -13,7 +13,7 @@ EnergyPlus*/
 bcvtb/
 
 # Simulation outputs
-Eplus-env*/
+Eplus-*/
 Sinergym_output/
 
 #Socket.cfg in tests

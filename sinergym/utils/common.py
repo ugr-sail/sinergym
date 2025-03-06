@@ -388,7 +388,7 @@ def convert_conf_to_env_parameters(
             'reward': eval(conf['reward']),
             'reward_kwargs': conf['reward_kwargs'],
             'max_ep_data_store_num': conf['max_ep_data_store_num'],
-            'env_name': id.replace('Eplus-', ''),
+            'env_name': id,
             'config_params': conf.get('config_params')
         }
         configurations[id] = env_kwargs
@@ -420,7 +420,7 @@ def convert_conf_to_env_parameters(
                 'reward': eval(conf['reward']),
                 'reward_kwargs': conf['reward_kwargs'],
                 'max_ep_data_store_num': conf['max_ep_data_store_num'],
-                'env_name': id.replace('Eplus-', ''),
+                'env_name': id,
                 'config_params': conf.get('config_params')
             }
             configurations[id] = env_kwargs

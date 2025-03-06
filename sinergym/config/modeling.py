@@ -499,14 +499,14 @@ class ModelJSON(object):
         else:
             episode_path = self._get_working_folder(
                 directory_path=self.experiment_path,
-                base_name='-sub_run')
-            # Create directoy
+                base_name='episode-')
+            # Create directory
             os.makedirs(episode_path)
             # set path like config attribute
             self.episode_path = episode_path
 
             # Remove redundant past working directories
-            self._rm_past_history_dir(episode_path, '-sub_run')
+            self._rm_past_history_dir(episode_path, 'episode-')
 
             self.logger.info(
                 'Episode directory created.')
@@ -534,7 +534,7 @@ class ModelJSON(object):
                 # Generate experiment dir path
                 experiment_path = self._get_working_folder(
                     directory_path=CWD,
-                    base_name='-%s-res' %
+                    base_name='%s-res' %
                     (env_name))
                 # Create dir
                 os.makedirs(experiment_path)
@@ -554,7 +554,7 @@ class ModelJSON(object):
     def _get_working_folder(
             self,
             directory_path: str,
-            base_name: str = '-run') -> str:
+            base_name: str = 'sinergym-run') -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
            Assumes folders in parent_dir have suffix <env_name>-run{run_number}. Finds the highest run number and sets the output folder to that number + 1.
 
@@ -585,8 +585,9 @@ class ModelJSON(object):
         # experiment_id number will be +1 from last name found out.
         experiment_id += 1
 
-        working_dir = os.path.join(directory_path, 'Eplus-env')
-        working_dir = working_dir + '%s%d' % (base_name, experiment_id)
+        working_dir = os.path.join(
+            directory_path, '%s%d' %
+            (base_name, experiment_id))
         return working_dir
 
     def _rm_past_history_dir(
