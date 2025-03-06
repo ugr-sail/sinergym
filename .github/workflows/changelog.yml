@@ -23,13 +23,11 @@ jobs:
           echo '<details>' >> changelog.md
           echo '  <summary>🔽 Click to view changelog</summary>' >> changelog.md
           echo '' >> changelog.md
-          echo '```' >> changelog.md
           if git rev-parse --verify origin/main > /dev/null 2>&1; then
             git log $(git merge-base origin/main HEAD)..HEAD --pretty=format:"- %s" --no-merges --reverse >> changelog.md
           else
             git log --pretty=format:"- %s" --no-merges --reverse >> changelog.md
           fi
-          echo '```' >> changelog.md
           echo '' >> changelog.md
           echo '</details>' >> changelog.md
 
