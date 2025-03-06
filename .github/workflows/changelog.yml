@@ -10,6 +10,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Esto asegura que se obtenga todo el historial de commits
+
+      - name: Fetch all branches
+        run: git fetch --all
 
       - name: Generate Changelog
         run: |
@@ -19,7 +24,11 @@ jobs:
           echo '  <summary>🔽 Click to view changelog</summary>' >> changelog.md
           echo '' >> changelog.md
           echo '```' >> changelog.md
-          git log $(git merge-base origin/main HEAD)..HEAD --pretty=format:"- %s" >> changelog.md
+          if git rev-parse --verify origin/main > /dev/null 2>&1; then
+            git log $(git merge-base origin/main HEAD)..HEAD --pretty=format:"- %s" >> changelog.md
+          else
+            git log --pretty=format:"- %s" >> changelog.md
+          fi
           echo '```' >> changelog.md
           echo '' >> changelog.md
           echo '</details>' >> changelog.md
