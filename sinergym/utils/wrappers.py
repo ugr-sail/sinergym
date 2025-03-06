@@ -11,7 +11,6 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 import numpy as np
 import pandas as pd
-import wandb
 from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
@@ -1634,287 +1633,297 @@ class CSVLogger(gym.Wrapper):
                     writer.writerow(var_values)
 
 
-# ---------------------------------------------------------------------------- #
+try:
+    import wandb
 
-class WandBLogger(gym.Wrapper):  # pragma: no cover
+    class WandBLogger(gym.Wrapper):  # pragma: no cover
 
-    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
-                                        level=LOG_WRAPPERS_LEVEL)
+        logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
+                                            level=LOG_WRAPPERS_LEVEL)
 
-    def __init__(self,
-                 env: Env,
-                 entity: Optional[str] = None,
-                 project_name: Optional[str] = None,
-                 run_name: Optional[str] = None,
-                 group: Optional[str] = None,
-                 job_type: Optional[str] = None,
-                 tags: Optional[List[str]] = None,
-                 episode_percentage: float = 0.9,
-                 save_code: bool = False,
-                 dump_frequency: int = 1000,
-                 artifact_save: bool = True,
-                 artifact_type: str = 'output',
-                 excluded_info_keys: List[str] = ['reward',
-                                                  'action',
-                                                  'timestep',
-                                                  'month',
-                                                  'day',
-                                                  'hour',
-                                                  'time_elapsed(hours)',
-                                                  'reward_weight',
-                                                  'is_raining'],
-                 excluded_episode_summary_keys: List[str] = ['terminated',
-                                                             'truncated']):
-        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+        def __init__(self,
+                     env: Env,
+                     entity: Optional[str] = None,
+                     project_name: Optional[str] = None,
+                     run_name: Optional[str] = None,
+                     group: Optional[str] = None,
+                     job_type: Optional[str] = None,
+                     tags: Optional[List[str]] = None,
+                     episode_percentage: float = 0.9,
+                     save_code: bool = False,
+                     dump_frequency: int = 1000,
+                     artifact_save: bool = True,
+                     artifact_type: str = 'output',
+                     excluded_info_keys: List[str] = ['reward',
+                                                      'action',
+                                                      'timestep',
+                                                      'month',
+                                                      'day',
+                                                      'hour',
+                                                      'time_elapsed(hours)',
+                                                      'reward_weight',
+                                                      'is_raining'],
+                     excluded_episode_summary_keys: List[str] = ['terminated',
+                                                                 'truncated']):
+            """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
 
-        Args:
-            env (Env): Original Sinergym environment.
-            entity (Optional[str]): The entity to which the project belongs. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
-            project_name (Optional[str]): The project name. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
-            run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
-            group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
-            job_type (Optional[str]): The type of job. Defaults to None.
-            tags (Optional[List[str]]): List of tags for the run. Defaults to None.
-            episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
-            save_code (bool): Whether to save the code in the run. Defaults to False.
-            dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
-            artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
-            artifact_type (str): Type of artifact to save. Defaults to 'output'.
-            excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
-            excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
-        """
-        super(WandBLogger, self).__init__(env)
+            Args:
+                env (Env): Original Sinergym environment.
+                entity (Optional[str]): The entity to which the project belongs. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
+                project_name (Optional[str]): The project name. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
+                run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
+                group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
+                job_type (Optional[str]): The type of job. Defaults to None.
+                tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+                episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
+                save_code (bool): Whether to save the code in the run. Defaults to False.
+                dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
+                artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
+                artifact_type (str): Type of artifact to save. Defaults to 'output'.
+                excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+                excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
+            """
+            super(WandBLogger, self).__init__(env)
 
-        # Check if logger is active
-        try:
-            assert is_wrapped(self, BaseLoggerWrapper)
-        except AssertionError as err:
-            self.logger.error(
-                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
-            raise err
+            # Check if logger is active
+            try:
+                assert is_wrapped(self, BaseLoggerWrapper)
+            except AssertionError as err:
+                self.logger.error(
+                    'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
+                raise err
 
-        # Define wandb run name if is not specified
-        run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
-            'name') + '_' + wandb.util.generate_id()
+            # Define wandb run name if is not specified
+            run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
+                'name') + '_' + wandb.util.generate_id()
 
-        # Init WandB session
-        # If there is no active run and entity and project has been specified,
-        # initialize a new one using the parameters
-        if wandb.run is None and (
-                entity is not None and project_name is not None):
-            self.wandb_run = wandb.init(entity=entity,
-                                        project=project_name,
-                                        name=run_name,
-                                        group=group,
-                                        job_type=job_type,
-                                        tags=tags,
-                                        save_code=save_code,
-                                        reinit=False)
-        # If there is an active run
-        elif wandb.run is not None:
-            # Use the active run
-            self.wandb_run = wandb.run
-        else:
-            self.logger.error(
-                'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
-            raise RuntimeError
+            # Init WandB session
+            # If there is no active run and entity and project has been specified,
+            # initialize a new one using the parameters
+            if wandb.run is None and (
+                    entity is not None and project_name is not None):
+                self.wandb_run = wandb.init(entity=entity,
+                                            project=project_name,
+                                            name=run_name,
+                                            group=group,
+                                            job_type=job_type,
+                                            tags=tags,
+                                            save_code=save_code,
+                                            reinit=False)
+            # If there is an active run
+            elif wandb.run is not None:
+                # Use the active run
+                self.wandb_run = wandb.run
+            else:
+                self.logger.error(
+                    'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
+                raise RuntimeError
 
-        # Flag to Wandb finish with env close
-        self.wandb_finish = True
+            # Flag to Wandb finish with env close
+            self.wandb_finish = True
 
-        # Define X-Axis for episode summaries
-        self.wandb_run.define_metric(
-            'episode_summaries/*',
-            step_metric='episode_summaries/episode_num')
+            # Define X-Axis for episode summaries
+            self.wandb_run.define_metric(
+                'episode_summaries/*',
+                step_metric='episode_summaries/episode_num')
 
-        # Attributes
-        self.dump_frequency = dump_frequency
-        self.artifact_save = artifact_save
-        self.artifact_type = artifact_type
-        self.episode_percentage = episode_percentage
-        self.wandb_id = self.wandb_run.id
-        self.excluded_info_keys = excluded_info_keys
-        self.excluded_episode_summary_keys = excluded_episode_summary_keys
-        self.global_timestep = 0
+            # Attributes
+            self.dump_frequency = dump_frequency
+            self.artifact_save = artifact_save
+            self.artifact_type = artifact_type
+            self.episode_percentage = episode_percentage
+            self.wandb_id = self.wandb_run.id
+            self.excluded_info_keys = excluded_info_keys
+            self.excluded_episode_summary_keys = excluded_episode_summary_keys
+            self.global_timestep = 0
 
-        self.logger.info('Wrapper initialized.')
+            self.logger.info('Wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment. Logging new interaction information in WandB platform.
+        def step(self, action: Union[int, np.ndarray]
+                 ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+            """Sends action to the environment. Logging new interaction information in WandB platform.
 
-        Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+            Args:
+                action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
-        Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
-        """
-        self.global_timestep += 1
-        # Execute step ion order to get new observation and reward back
-        obs, reward, terminated, truncated, info = self.env.step(action)
+            Returns:
+                Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+            """
+            self.global_timestep += 1
+            # Execute step ion order to get new observation and reward back
+            obs, reward, terminated, truncated, info = self.env.step(action)
 
-        # Log step information if frequency is correct
-        if self.global_timestep % self.dump_frequency == 0:
-            self.logger.debug(
-                'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
-                    self.global_timestep))
-            self.wandb_log()
+            # Log step information if frequency is correct
+            if self.global_timestep % self.dump_frequency == 0:
+                self.logger.debug(
+                    'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
+                        self.global_timestep))
+                self.wandb_log()
 
-        return obs, reward, terminated, truncated, info
+            return obs, reward, terminated, truncated, info
 
-    def reset(self,
-              seed: Optional[int] = None,
-              options: Optional[Dict[str,
-                                     Any]] = None) -> Tuple[np.ndarray,
-                                                            Dict[str,
-                                                                 Any]]:
-        """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
+        def reset(self,
+                  seed: Optional[int] = None,
+                  options: Optional[Dict[str,
+                                         Any]] = None) -> Tuple[np.ndarray,
+                                                                Dict[str,
+                                                                     Any]]:
+            """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
 
-        Args:
-            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
-            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+            Args:
+                seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+                options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
-        Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
-        """
-        # It isn't the first episode simulation, so we can logger last episode
-        if self.get_wrapper_attr('is_running'):
+            Returns:
+                Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+            """
+            # It isn't the first episode simulation, so we can logger last
+            # episode
+            if self.get_wrapper_attr('is_running'):
+                # Log all episode information
+                if self.get_wrapper_attr(
+                        'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+                    self.wandb_log_summary()
+                else:
+                    self.logger.warning(
+                        'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                            self.episode_percentage * 100))
+                self.logger.info(
+                    'End of episode detected, dumping summary metrics in WandB Platform.')
+
+            # Then, reset environment
+            obs, info = self.env.reset(seed=seed, options=options)
+
+            return obs, info
+
+        def close(self) -> None:
+            """Recording last episode summary and close env.
+
+            Args:
+                wandb_finish (bool): Whether to finish WandB run. Defaults to True.
+            """
+
+            # Log last episode summary
             # Log all episode information
-            if self.get_wrapper_attr(
-                    'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+            if self.get_wrapper_attr('timestep') > self.episode_percentage * \
+                    self.get_wrapper_attr('timestep_per_episode'):
                 self.wandb_log_summary()
             else:
                 self.logger.warning(
                     'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
                         self.episode_percentage * 100))
             self.logger.info(
-                'End of episode detected, dumping summary metrics in WandB Platform.')
+                'Environment closed, dumping summary metrics in WandB Platform.')
 
-        # Then, reset environment
-        obs, info = self.env.reset(seed=seed, options=options)
+            # Finish WandB run
+            if self.wandb_finish:
+                # Save artifact
+                if self.artifact_save:
+                    self.save_artifact()
+                self.wandb_run.finish()
 
-        return obs, info
+            # Then, close env
+            self.env.close()
 
-    def close(self) -> None:
-        """Recording last episode summary and close env.
+        def wandb_log(self) -> None:
+            """Log last step information in WandB platform.
+            """
 
-        Args:
-            wandb_finish (bool): Whether to finish WandB run. Defaults to True.
-        """
+            # Interaction registration such as obs, action, reward...
+            # (organized in a nested dictionary)
+            log_dict = {}
+            data_logger = self.get_wrapper_attr('data_logger')
 
-        # Log last episode summary
-        # Log all episode information
-        if self.get_wrapper_attr('timestep') > self.episode_percentage * \
-                self.get_wrapper_attr('timestep_per_episode'):
-            self.wandb_log_summary()
-        else:
-            self.logger.warning(
-                'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
-                    self.episode_percentage * 100))
-        self.logger.info(
-            'Environment closed, dumping summary metrics in WandB Platform.')
-
-        # Finish WandB run
-        if self.wandb_finish:
-            # Save artifact
-            if self.artifact_save:
-                self.save_artifact()
-            self.wandb_run.finish()
-
-        # Then, close env
-        self.env.close()
-
-    def wandb_log(self) -> None:
-        """Log last step information in WandB platform.
-        """
-
-        # Interaction registration such as obs, action, reward...
-        # (organized in a nested dictionary)
-        log_dict = {}
-        data_logger = self.get_wrapper_attr('data_logger')
-
-        # OBSERVATION
-        if is_wrapped(self, NormalizeObservation):
-            log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.normalized_observations[-1]))
-            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.observations[-1]))
-        else:
-            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.observations[-1]))
-
-        # ACTION
-        # Original action sent
-        log_dict['Agent_actions'] = dict(
-            zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
-        # Action values performed in simulation
-        log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
-            'action_variables'), data_logger.infos[-1]['action']))
-
-        # REWARD
-        log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
-
-        # INFO
-        log_dict['Info'] = {
-            key: float(value) for key,
-            value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
-
-        # CUSTOM METRICS
-        if len(self.get_wrapper_attr('custom_variables')) > 0:
-            custom_metrics = dict(zip(self.get_wrapper_attr(
-                'custom_variables'), data_logger.custom_metrics[-1]))
-            log_dict['Variables_custom'] = custom_metrics
-
-        # Log in WandB
-        self._log_data(log_dict)
-
-    def wandb_log_summary(self) -> None:
-        """Log episode summary in WandB platform.
-        """
-        if len(self.get_wrapper_attr('data_logger').rewards) > 0:
-            # Get information from logger of LoggerWrapper
-            episode_summary = self.get_wrapper_attr(
-                'get_episode_summary')()
-            # Deleting excluded keys
-            episode_summary = {key: value for key, value in episode_summary.items(
-            ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
-            # Log summary data in WandB
-            self._log_data({'episode_summaries': episode_summary})
-
-    def save_artifact(self) -> None:
-        """Save sinergym output as artifact in WandB platform.
-        """
-        artifact = wandb.Artifact(
-            name=self.wandb_run.name,
-            type=self.artifact_type)
-        artifact.add_dir(
-            local_path=self.get_wrapper_attr('workspace_path'),
-            name='Sinergym_output/')
-        self.wandb_run.log_artifact(artifact)
-
-    def set_wandb_finish(self, wandb_finish: bool) -> None:
-        """Set if WandB run must be finished when environment is closed.
-
-        Args:
-            wandb_finish (bool): Whether to finish WandB run.
-        """
-        self.wandb_finish = wandb_finish
-
-    def _log_data(self, data: Dict[str, Any]) -> None:
-        """Log data in WandB platform. Nesting the dictionary correctly in different sections.
-
-        Args:
-            data (Dict[str, Any]): Dictionary with data to be logged.
-        """
-
-        for key, value in data.items():
-            if isinstance(value, dict):
-                for k, v in value.items():
-                    self.wandb_run.log({f'{key}/{k}': v},
-                                       step=self.global_timestep)
+            # OBSERVATION
+            if is_wrapped(self, NormalizeObservation):
+                log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.normalized_observations[-1]))
+                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.observations[-1]))
             else:
-                self.wandb_run.log({key: value},
-                                   step=self.global_timestep)
+                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.observations[-1]))
+
+            # ACTION
+            # Original action sent
+            log_dict['Agent_actions'] = dict(
+                zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
+            # Action values performed in simulation
+            log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
+                'action_variables'), data_logger.infos[-1]['action']))
+
+            # REWARD
+            log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
+
+            # INFO
+            log_dict['Info'] = {
+                key: float(value) for key,
+                value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
+
+            # CUSTOM METRICS
+            if len(self.get_wrapper_attr('custom_variables')) > 0:
+                custom_metrics = dict(zip(self.get_wrapper_attr(
+                    'custom_variables'), data_logger.custom_metrics[-1]))
+                log_dict['Variables_custom'] = custom_metrics
+
+            # Log in WandB
+            self._log_data(log_dict)
+
+        def wandb_log_summary(self) -> None:
+            """Log episode summary in WandB platform.
+            """
+            if len(self.get_wrapper_attr('data_logger').rewards) > 0:
+                # Get information from logger of LoggerWrapper
+                episode_summary = self.get_wrapper_attr(
+                    'get_episode_summary')()
+                # Deleting excluded keys
+                episode_summary = {key: value for key, value in episode_summary.items(
+                ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
+                # Log summary data in WandB
+                self._log_data({'episode_summaries': episode_summary})
+
+        def save_artifact(self) -> None:
+            """Save sinergym output as artifact in WandB platform.
+            """
+            artifact = wandb.Artifact(
+                name=self.wandb_run.name,
+                type=self.artifact_type)
+            artifact.add_dir(
+                local_path=self.get_wrapper_attr('workspace_path'),
+                name='Sinergym_output/')
+            self.wandb_run.log_artifact(artifact)
+
+        def set_wandb_finish(self, wandb_finish: bool) -> None:
+            """Set if WandB run must be finished when environment is closed.
+
+            Args:
+                wandb_finish (bool): Whether to finish WandB run.
+            """
+            self.wandb_finish = wandb_finish
+
+        def _log_data(self, data: Dict[str, Any]) -> None:
+            """Log data in WandB platform. Nesting the dictionary correctly in different sections.
+
+            Args:
+                data (Dict[str, Any]): Dictionary with data to be logged.
+            """
+
+            for key, value in data.items():
+                if isinstance(value, dict):
+                    for k, v in value.items():
+                        self.wandb_run.log({f'{key}/{k}': v},
+                                           step=self.global_timestep)
+                else:
+                    self.wandb_run.log({key: value},
+                                       step=self.global_timestep)
+except ImportError:
+    class WandBLogger():  # pragma: no cover
+        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+        """
+
+        def __init__(self):
+            print(
+                'WandB is not installed. Please install it to use WandBLogger.')
 
 
 # ---------------------------------------------------------------------------- #
