@@ -368,9 +368,11 @@ def convert_conf_to_env_parameters(
     if len(conf['weather_specification']['weather_files']) != len(
             conf['weather_specification']['keys']):
         logger.error(
-            'Weather files and id keys must have the same len'
-            f'({len(conf["weather_specification"]["weather_files"])} != '
-            f'{len(conf["weather_specification"]["keys"])})')
+            'Weather files and id keys must have the same len\n' f'{
+                len(
+                    conf["weather_specification"]["weather_files"])} weather files != {
+                len(
+                    conf["weather_specification"]["keys"])} keys')
         raise ValueError
 
     weather_info = list(zip(conf['weather_specification']['keys'],

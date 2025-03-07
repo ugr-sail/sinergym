@@ -486,7 +486,7 @@ class EplusEnv(gym.Env):
                 if len(params) != 3:
                     raise ValueError(
                         f'Invalid parameter for Ornstein-Uhlenbeck process: {
-                            params}. '
+                            params}.'
                         'It must have exactly 3 values.'
                     )
 
