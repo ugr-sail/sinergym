@@ -95,17 +95,17 @@ def test_convert_conf_to_env_parameters(conf_5zone):
     # Check if environments are valid
     for env_id, env_kwargs in configurations.items():
         # Added TEST name in env_kwargs
-        env_kwargs['env_name'] = 'TESTGYM'
+        env_kwargs['env_name'] = 'PYTESTGYM'
         env = gym.make(env_id, **env_kwargs)
         env.reset()
         env.close()
 
 
-def test_json_conf_exceptions(conf_5zone_exceptions):
+def test_yaml_conf_exceptions(conf_5zone_exceptions):
 
     assert isinstance(conf_5zone_exceptions, list)
     for conf_5zone_exception in conf_5zone_exceptions:
-        with pytest.raises((RuntimeError, AssertionError)):
+        with pytest.raises((RuntimeError, ValueError)):
             common.convert_conf_to_env_parameters(conf_5zone_exception)
 
 

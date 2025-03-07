@@ -11,7 +11,6 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 import numpy as np
 import pandas as pd
-import wandb
 from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
@@ -38,13 +37,11 @@ class DatetimeWrapper(gym.ObservationWrapper):
         super(DatetimeWrapper, self).__init__(env)
 
         # Check datetime variables are defined in environment
-        try:
-            assert all(time_variable in self.get_wrapper_attr('observation_variables')
-                       for time_variable in ['month', 'day_of_month', 'hour'])
-        except AssertionError as err:
+        if any(time_variable not in self.get_wrapper_attr('observation_variables')
+               for time_variable in ['month', 'day_of_month', 'hour']):
             self.logger.error(
                 'month, day_of_month and hour must be defined in observation space in environment previously.')
-            raise err
+            raise ValueError
 
         # Update new shape
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
@@ -126,8 +123,10 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_observation_variables = deepcopy(
             self.get_wrapper_attr('observation_variables'))
         for obs_var in previous_variables:
-            assert obs_var in self.get_wrapper_attr(
-                'observation_variables'), '{} variable is not defined in observation space, revise the name.'.format(obs_var)
+            if obs_var not in self.get_wrapper_attr('observation_variables'):
+                self.logger.error(
+                    f'{obs_var} variable is not defined in observation variables, revise the name.')
+                raise ValueError
             new_observation_variables.append(obs_var + '_previous')
         # Update observation variables
         self.observation_variables = new_observation_variables
@@ -332,22 +331,20 @@ class NormalizeObservation(gym.Wrapper):
                     metric = np.loadtxt(metric)
                 except FileNotFoundError as err:
                     self.logger.error(
-                        '{}.txt file not found. Please, check the path.'.format(metric_name))
+                        f'{metric_name}.txt file not found. Please, check the path.')
                     raise err
             elif isinstance(metric, list) or isinstance(metric, np.ndarray):
                 metric = np.float64(metric)
             else:
                 self.logger.error(
-                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
+                    f'{metric_name} values must be a list, a numpy array or a path to a txt file.')
                 raise ValueError
 
             # Check dimension of mean and var
-            try:
-                assert len(metric) == self.observation_space.shape[0]
-            except AssertionError as err:
+            if len(metric) != self.observation_space.shape[0]:
                 self.logger.error(
-                    '{} values must have the same shape than environment observation space.'.format(metric_name))
-                raise err
+                    f'{metric_name} values must have the same shape than environment observation space.')
+                raise ValueError
 
         return metric
 
@@ -756,15 +753,25 @@ class DeltaTempWrapper(gym.ObservationWrapper):
         super(DeltaTempWrapper, self).__init__(env)
 
         # Check variables definition
-        assert len(setpoint_variables) == 1 or len(setpoint_variables) == len(
-            temperature_variables), 'Setpoint variables must have one element length or the same length than temperature variables.'
+        if len(setpoint_variables) != 1 and len(
+                temperature_variables) != len(setpoint_variables):
+            self.logger.error(
+                'Setpoint variables must have one element length or the same length than temperature variables.'
+                f'Current setpoint variables length: {setpoint_variables}')
+            raise ValueError
 
         # Check all temperature and setpoint variables are in environment
         # observation variables
-        assert all([variable in self.get_wrapper_attr('observation_variables')
-                    for variable in temperature_variables]), 'Some temperature variables are not defined in observation space.'
-        assert all([variable in self.get_wrapper_attr('observation_variables')
-                    for variable in setpoint_variables]), 'Some setpoint variables are not defined in observation space.'
+        if any(variable not in self.get_wrapper_attr('observation_variables')
+                for variable in temperature_variables):
+            self.logger.error(
+                'Some temperature variables are not defined in observation space.')
+            raise ValueError
+        if any(variable not in self.get_wrapper_attr('observation_variables')
+                for variable in setpoint_variables):
+            self.logger.error(
+                'Some setpoint variables are not defined in observation space.')
+            raise ValueError
 
         # Define wrappers attributes
         self.delta_temperatures = temperature_variables
@@ -847,26 +854,19 @@ class IncrementalWrapper(gym.ActionWrapper):
         self.current_values = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.env.get_wrapper_attr('is_discrete'):
             self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert all([variable in self.env.get_wrapper_attr('action_variables')
-                       for variable in list(incremental_variables_definition.keys())])
-        except AssertionError as err:
+                'Env wrapped by this wrapper must be continuous instead of discrete.')
+            raise TypeError
+        if any(variable not in self.env.get_wrapper_attr('action_variables')
+               for variable in incremental_variables_definition.keys()):
             self.logger.error(
                 'Some of the incremental variables specified does not exist as action variable in environment.')
-            raise err
-        try:
-            assert len(initial_values) == len(
-                incremental_variables_definition)
-        except AssertionError as err:
+            raise ValueError
+        if len(initial_values) != len(incremental_variables_definition):
             self.logger.error(
-                'Number of incremental variables does not match with initial values')
-            raise err
+                'Number of incremental variables does not match with initial values.')
+            raise ValueError
 
         # All posible incremental variations
         self.values_definition = {}
@@ -905,11 +905,9 @@ class IncrementalWrapper(gym.ActionWrapper):
             dtype=np.float32)
 
         self.logger.info(
-            'New incremental continuous action space: {}'.format(
-                self.action_space))
+            f'New incremental continuous action space: {self.action_space}')
         self.logger.info(
-            'Incremental variables configuration (variable: delta, step): {}'.format(
-                incremental_variables_definition))
+            f'Incremental variables configuration (variable: delta, step): {incremental_variables_definition}')
         self.logger.info('Wrapper initialized')
 
     def action(self, action):
@@ -969,20 +967,15 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.current_setpoints = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.env.get_wrapper_attr('is_discrete'):
             self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert len(
-                self.get_wrapper_attr('current_setpoints')) == len(
-                self.env.get_wrapper_attr('action_variables'))
-        except AssertionError as err:
+                'Env wrapped by this wrapper must be continuous instead of discrete.')
+            raise TypeError
+        if len(self.get_wrapper_attr('current_setpoints')) != len(
+                self.env.get_wrapper_attr('action_variables')):
             self.logger.error(
                 'Number of variables is different from environment')
-            raise err
+            raise ValueError
 
         # Define all posible setpoint variations
         values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
@@ -1005,8 +998,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         self.action_space = gym.spaces.Discrete(n)
 
-        self.logger.info('New incremental action mapping: {}'.format(n))
-        self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
+        self.logger.info(f'New incremental action mapping: {n}')
+        self.logger.info(f'{self.get_wrapper_attr('mapping')}')
         self.logger.info('Wrapper initialized')
 
     # Define action mapping method
@@ -1075,8 +1068,7 @@ class DiscretizeEnv(gym.ActionWrapper):
         self.action_mapping = action_mapping
 
         self.logger.info(
-            'New Discrete Space and mapping: {}'.format(
-                self.action_space))
+            f'New Discrete Space and mapping: {self.action_space}')
         self.logger.info(
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
@@ -1123,12 +1115,10 @@ class NormalizeAction(gym.ActionWrapper):
         super().__init__(env)
 
         # Checks
-        try:
-            assert not self.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.get_wrapper_attr('is_discrete'):
             self.logger.critical(
-                'The original environment must be continuous')
-            raise err
+                'The original environment must be continuous instead of discrete')
+            raise TypeError
 
         # Define real space for simulator
         self.real_space = deepcopy(self.action_space)
@@ -1150,8 +1140,7 @@ class NormalizeAction(gym.ActionWrapper):
         self.action_space = self.normalized_space
 
         self.logger.info(
-            'New normalized action Space: {}'.format(
-                self.action_space))
+            f'New normalized action Space: {self.action_space}')
         self.logger.info('Wrapper initialized')
 
     def reverting_action(self,
@@ -1471,12 +1460,11 @@ class CSVLogger(gym.Wrapper):
         super(CSVLogger, self).__init__(env)
         self.info_excluded_keys = info_excluded_keys
 
-        try:
-            assert is_wrapped(self.env, BaseLoggerWrapper)
-        except AssertionError as err:
+        # Check if it is wrapped by a BaseLoggerWrapper child class (required)
+        if not is_wrapped(self.env, BaseLoggerWrapper):
             self.logger.error(
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
-            raise err
+            raise ValueError
 
         self.progress_file_path = self.get_wrapper_attr(
             'workspace_path') + '/progress.csv'
@@ -1634,287 +1622,294 @@ class CSVLogger(gym.Wrapper):
                     writer.writerow(var_values)
 
 
-# ---------------------------------------------------------------------------- #
+try:
+    import wandb
 
-class WandBLogger(gym.Wrapper):  # pragma: no cover
+    class WandBLogger(gym.Wrapper):  # pragma: no cover
 
-    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
-                                        level=LOG_WRAPPERS_LEVEL)
+        logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
+                                            level=LOG_WRAPPERS_LEVEL)
 
-    def __init__(self,
-                 env: Env,
-                 entity: Optional[str] = None,
-                 project_name: Optional[str] = None,
-                 run_name: Optional[str] = None,
-                 group: Optional[str] = None,
-                 job_type: Optional[str] = None,
-                 tags: Optional[List[str]] = None,
-                 episode_percentage: float = 0.9,
-                 save_code: bool = False,
-                 dump_frequency: int = 1000,
-                 artifact_save: bool = True,
-                 artifact_type: str = 'output',
-                 excluded_info_keys: List[str] = ['reward',
-                                                  'action',
-                                                  'timestep',
-                                                  'month',
-                                                  'day',
-                                                  'hour',
-                                                  'time_elapsed(hours)',
-                                                  'reward_weight',
-                                                  'is_raining'],
-                 excluded_episode_summary_keys: List[str] = ['terminated',
-                                                             'truncated']):
-        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+        def __init__(self,
+                     env: Env,
+                     entity: Optional[str] = None,
+                     project_name: Optional[str] = None,
+                     run_name: Optional[str] = None,
+                     group: Optional[str] = None,
+                     job_type: Optional[str] = None,
+                     tags: Optional[List[str]] = None,
+                     episode_percentage: float = 0.9,
+                     save_code: bool = False,
+                     dump_frequency: int = 1000,
+                     artifact_save: bool = True,
+                     artifact_type: str = 'output',
+                     excluded_info_keys: List[str] = ['reward',
+                                                      'action',
+                                                      'timestep',
+                                                      'month',
+                                                      'day',
+                                                      'hour',
+                                                      'time_elapsed(hours)',
+                                                      'reward_weight',
+                                                      'is_raining'],
+                     excluded_episode_summary_keys: List[str] = ['terminated',
+                                                                 'truncated']):
+            """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
 
-        Args:
-            env (Env): Original Sinergym environment.
-            entity (Optional[str]): The entity to which the project belongs. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
-            project_name (Optional[str]): The project name. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
-            run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
-            group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
-            job_type (Optional[str]): The type of job. Defaults to None.
-            tags (Optional[List[str]]): List of tags for the run. Defaults to None.
-            episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
-            save_code (bool): Whether to save the code in the run. Defaults to False.
-            dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
-            artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
-            artifact_type (str): Type of artifact to save. Defaults to 'output'.
-            excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
-            excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
-        """
-        super(WandBLogger, self).__init__(env)
+            Args:
+                env (Env): Original Sinergym environment.
+                entity (Optional[str]): The entity to which the project belongs. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
+                project_name (Optional[str]): The project name. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
+                run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
+                group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
+                job_type (Optional[str]): The type of job. Defaults to None.
+                tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+                episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
+                save_code (bool): Whether to save the code in the run. Defaults to False.
+                dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
+                artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
+                artifact_type (str): Type of artifact to save. Defaults to 'output'.
+                excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+                excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
+            """
+            super(WandBLogger, self).__init__(env)
 
-        # Check if logger is active
-        try:
-            assert is_wrapped(self, BaseLoggerWrapper)
-        except AssertionError as err:
-            self.logger.error(
-                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
-            raise err
+            # Check if logger is active (required)
+            if not is_wrapped(self, BaseLoggerWrapper):
+                self.logger.error(
+                    'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
+                raise ValueError
 
-        # Define wandb run name if is not specified
-        run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
-            'name') + '_' + wandb.util.generate_id()
+            # Define wandb run name if is not specified
+            run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
+                'name') + '_' + wandb.util.generate_id()
 
-        # Init WandB session
-        # If there is no active run and entity and project has been specified,
-        # initialize a new one using the parameters
-        if wandb.run is None and (
-                entity is not None and project_name is not None):
-            self.wandb_run = wandb.init(entity=entity,
-                                        project=project_name,
-                                        name=run_name,
-                                        group=group,
-                                        job_type=job_type,
-                                        tags=tags,
-                                        save_code=save_code,
-                                        reinit=False)
-        # If there is an active run
-        elif wandb.run is not None:
-            # Use the active run
-            self.wandb_run = wandb.run
-        else:
-            self.logger.error(
-                'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
-            raise RuntimeError
+            # Init WandB session
+            # If there is no active run and entity and project has been specified,
+            # initialize a new one using the parameters
+            if wandb.run is None and (
+                    entity is not None and project_name is not None):
+                self.wandb_run = wandb.init(entity=entity,
+                                            project=project_name,
+                                            name=run_name,
+                                            group=group,
+                                            job_type=job_type,
+                                            tags=tags,
+                                            save_code=save_code,
+                                            reinit=False)
+            # If there is an active run
+            elif wandb.run is not None:
+                # Use the active run
+                self.wandb_run = wandb.run
+            else:
+                self.logger.error(
+                    'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
+                raise RuntimeError
 
-        # Flag to Wandb finish with env close
-        self.wandb_finish = True
+            # Flag to Wandb finish with env close
+            self.wandb_finish = True
 
-        # Define X-Axis for episode summaries
-        self.wandb_run.define_metric(
-            'episode_summaries/*',
-            step_metric='episode_summaries/episode_num')
+            # Define X-Axis for episode summaries
+            self.wandb_run.define_metric(
+                'episode_summaries/*',
+                step_metric='episode_summaries/episode_num')
 
-        # Attributes
-        self.dump_frequency = dump_frequency
-        self.artifact_save = artifact_save
-        self.artifact_type = artifact_type
-        self.episode_percentage = episode_percentage
-        self.wandb_id = self.wandb_run.id
-        self.excluded_info_keys = excluded_info_keys
-        self.excluded_episode_summary_keys = excluded_episode_summary_keys
-        self.global_timestep = 0
+            # Attributes
+            self.dump_frequency = dump_frequency
+            self.artifact_save = artifact_save
+            self.artifact_type = artifact_type
+            self.episode_percentage = episode_percentage
+            self.wandb_id = self.wandb_run.id
+            self.excluded_info_keys = excluded_info_keys
+            self.excluded_episode_summary_keys = excluded_episode_summary_keys
+            self.global_timestep = 0
 
-        self.logger.info('Wrapper initialized.')
+            self.logger.info('Wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment. Logging new interaction information in WandB platform.
+        def step(self, action: Union[int, np.ndarray]
+                 ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+            """Sends action to the environment. Logging new interaction information in WandB platform.
 
-        Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+            Args:
+                action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
-        Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
-        """
-        self.global_timestep += 1
-        # Execute step ion order to get new observation and reward back
-        obs, reward, terminated, truncated, info = self.env.step(action)
+            Returns:
+                Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+            """
+            self.global_timestep += 1
+            # Execute step ion order to get new observation and reward back
+            obs, reward, terminated, truncated, info = self.env.step(action)
 
-        # Log step information if frequency is correct
-        if self.global_timestep % self.dump_frequency == 0:
-            self.logger.debug(
-                'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
-                    self.global_timestep))
-            self.wandb_log()
+            # Log step information if frequency is correct
+            if self.global_timestep % self.dump_frequency == 0:
+                self.logger.debug(
+                    f'Dump Frequency reached in timestep {
+                        self.global_timestep}, dumping data in WandB.')
+                self.wandb_log()
 
-        return obs, reward, terminated, truncated, info
+            return obs, reward, terminated, truncated, info
 
-    def reset(self,
-              seed: Optional[int] = None,
-              options: Optional[Dict[str,
-                                     Any]] = None) -> Tuple[np.ndarray,
-                                                            Dict[str,
-                                                                 Any]]:
-        """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
+        def reset(self,
+                  seed: Optional[int] = None,
+                  options: Optional[Dict[str,
+                                         Any]] = None) -> Tuple[np.ndarray,
+                                                                Dict[str,
+                                                                     Any]]:
+            """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
 
-        Args:
-            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
-            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+            Args:
+                seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+                options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
-        Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
-        """
-        # It isn't the first episode simulation, so we can logger last episode
-        if self.get_wrapper_attr('is_running'):
+            Returns:
+                Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+            """
+            # It isn't the first episode simulation, so we can logger last
+            # episode
+            if self.get_wrapper_attr('is_running'):
+                # Log all episode information
+                if self.get_wrapper_attr(
+                        'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+                    self.wandb_log_summary()
+                else:
+                    self.logger.warning(
+                        f'Episode ignored for log summary in WandB Platform, it has not be completed in at least {
+                            self.episode_percentage * 100}%.')
+                self.logger.info(
+                    'End of episode detected, dumping summary metrics in WandB Platform.')
+
+            # Then, reset environment
+            obs, info = self.env.reset(seed=seed, options=options)
+
+            return obs, info
+
+        def close(self) -> None:
+            """Recording last episode summary and close env.
+
+            Args:
+                wandb_finish (bool): Whether to finish WandB run. Defaults to True.
+            """
+
+            # Log last episode summary
             # Log all episode information
-            if self.get_wrapper_attr(
-                    'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+            if self.get_wrapper_attr('timestep') > self.episode_percentage * \
+                    self.get_wrapper_attr('timestep_per_episode'):
                 self.wandb_log_summary()
             else:
                 self.logger.warning(
-                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
-                        self.episode_percentage * 100))
+                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {self.episode_percentage * 100}%.')
             self.logger.info(
-                'End of episode detected, dumping summary metrics in WandB Platform.')
+                'Environment closed, dumping summary metrics in WandB Platform.')
 
-        # Then, reset environment
-        obs, info = self.env.reset(seed=seed, options=options)
+            # Finish WandB run
+            if self.wandb_finish:
+                # Save artifact
+                if self.artifact_save:
+                    self.save_artifact()
+                self.wandb_run.finish()
 
-        return obs, info
+            # Then, close env
+            self.env.close()
 
-    def close(self) -> None:
-        """Recording last episode summary and close env.
+        def wandb_log(self) -> None:
+            """Log last step information in WandB platform.
+            """
 
-        Args:
-            wandb_finish (bool): Whether to finish WandB run. Defaults to True.
-        """
+            # Interaction registration such as obs, action, reward...
+            # (organized in a nested dictionary)
+            log_dict = {}
+            data_logger = self.get_wrapper_attr('data_logger')
 
-        # Log last episode summary
-        # Log all episode information
-        if self.get_wrapper_attr('timestep') > self.episode_percentage * \
-                self.get_wrapper_attr('timestep_per_episode'):
-            self.wandb_log_summary()
-        else:
-            self.logger.warning(
-                'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
-                    self.episode_percentage * 100))
-        self.logger.info(
-            'Environment closed, dumping summary metrics in WandB Platform.')
-
-        # Finish WandB run
-        if self.wandb_finish:
-            # Save artifact
-            if self.artifact_save:
-                self.save_artifact()
-            self.wandb_run.finish()
-
-        # Then, close env
-        self.env.close()
-
-    def wandb_log(self) -> None:
-        """Log last step information in WandB platform.
-        """
-
-        # Interaction registration such as obs, action, reward...
-        # (organized in a nested dictionary)
-        log_dict = {}
-        data_logger = self.get_wrapper_attr('data_logger')
-
-        # OBSERVATION
-        if is_wrapped(self, NormalizeObservation):
-            log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.normalized_observations[-1]))
-            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.observations[-1]))
-        else:
-            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), data_logger.observations[-1]))
-
-        # ACTION
-        # Original action sent
-        log_dict['Agent_actions'] = dict(
-            zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
-        # Action values performed in simulation
-        log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
-            'action_variables'), data_logger.infos[-1]['action']))
-
-        # REWARD
-        log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
-
-        # INFO
-        log_dict['Info'] = {
-            key: float(value) for key,
-            value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
-
-        # CUSTOM METRICS
-        if len(self.get_wrapper_attr('custom_variables')) > 0:
-            custom_metrics = dict(zip(self.get_wrapper_attr(
-                'custom_variables'), data_logger.custom_metrics[-1]))
-            log_dict['Variables_custom'] = custom_metrics
-
-        # Log in WandB
-        self._log_data(log_dict)
-
-    def wandb_log_summary(self) -> None:
-        """Log episode summary in WandB platform.
-        """
-        if len(self.get_wrapper_attr('data_logger').rewards) > 0:
-            # Get information from logger of LoggerWrapper
-            episode_summary = self.get_wrapper_attr(
-                'get_episode_summary')()
-            # Deleting excluded keys
-            episode_summary = {key: value for key, value in episode_summary.items(
-            ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
-            # Log summary data in WandB
-            self._log_data({'episode_summaries': episode_summary})
-
-    def save_artifact(self) -> None:
-        """Save sinergym output as artifact in WandB platform.
-        """
-        artifact = wandb.Artifact(
-            name=self.wandb_run.name,
-            type=self.artifact_type)
-        artifact.add_dir(
-            local_path=self.get_wrapper_attr('workspace_path'),
-            name='Sinergym_output/')
-        self.wandb_run.log_artifact(artifact)
-
-    def set_wandb_finish(self, wandb_finish: bool) -> None:
-        """Set if WandB run must be finished when environment is closed.
-
-        Args:
-            wandb_finish (bool): Whether to finish WandB run.
-        """
-        self.wandb_finish = wandb_finish
-
-    def _log_data(self, data: Dict[str, Any]) -> None:
-        """Log data in WandB platform. Nesting the dictionary correctly in different sections.
-
-        Args:
-            data (Dict[str, Any]): Dictionary with data to be logged.
-        """
-
-        for key, value in data.items():
-            if isinstance(value, dict):
-                for k, v in value.items():
-                    self.wandb_run.log({f'{key}/{k}': v},
-                                       step=self.global_timestep)
+            # OBSERVATION
+            if is_wrapped(self, NormalizeObservation):
+                log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.normalized_observations[-1]))
+                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.observations[-1]))
             else:
-                self.wandb_run.log({key: value},
-                                   step=self.global_timestep)
+                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                    'observation_variables'), data_logger.observations[-1]))
+
+            # ACTION
+            # Original action sent
+            log_dict['Agent_actions'] = dict(
+                zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
+            # Action values performed in simulation
+            log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
+                'action_variables'), data_logger.infos[-1]['action']))
+
+            # REWARD
+            log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
+
+            # INFO
+            log_dict['Info'] = {
+                key: float(value) for key,
+                value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
+
+            # CUSTOM METRICS
+            if len(self.get_wrapper_attr('custom_variables')) > 0:
+                custom_metrics = dict(zip(self.get_wrapper_attr(
+                    'custom_variables'), data_logger.custom_metrics[-1]))
+                log_dict['Variables_custom'] = custom_metrics
+
+            # Log in WandB
+            self._log_data(log_dict)
+
+        def wandb_log_summary(self) -> None:
+            """Log episode summary in WandB platform.
+            """
+            if len(self.get_wrapper_attr('data_logger').rewards) > 0:
+                # Get information from logger of LoggerWrapper
+                episode_summary = self.get_wrapper_attr(
+                    'get_episode_summary')()
+                # Deleting excluded keys
+                episode_summary = {key: value for key, value in episode_summary.items(
+                ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
+                # Log summary data in WandB
+                self._log_data({'episode_summaries': episode_summary})
+
+        def save_artifact(self) -> None:
+            """Save sinergym output as artifact in WandB platform.
+            """
+            artifact = wandb.Artifact(
+                name=self.wandb_run.name,
+                type=self.artifact_type)
+            artifact.add_dir(
+                local_path=self.get_wrapper_attr('workspace_path'),
+                name='Sinergym_output/')
+            self.wandb_run.log_artifact(artifact)
+
+        def set_wandb_finish(self, wandb_finish: bool) -> None:
+            """Set if WandB run must be finished when environment is closed.
+
+            Args:
+                wandb_finish (bool): Whether to finish WandB run.
+            """
+            self.wandb_finish = wandb_finish
+
+        def _log_data(self, data: Dict[str, Any]) -> None:
+            """Log data in WandB platform. Nesting the dictionary correctly in different sections.
+
+            Args:
+                data (Dict[str, Any]): Dictionary with data to be logged.
+            """
+
+            for key, value in data.items():
+                if isinstance(value, dict):
+                    for k, v in value.items():
+                        self.wandb_run.log({f'{key}/{k}': v},
+                                           step=self.global_timestep)
+                else:
+                    self.wandb_run.log({key: value},
+                                       step=self.global_timestep)
+except ImportError:
+    class WandBLogger():  # pragma: no cover
+        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+        """
+
+        def __init__(self):
+            print(
+                'WandB is not installed. Please install it to use WandBLogger.')
 
 
 # ---------------------------------------------------------------------------- #
@@ -1939,14 +1934,11 @@ class ReduceObservationWrapper(gym.Wrapper):
         super().__init__(env)
 
         # Check if the variables to be removed are in the observation space
-        try:
-            assert all(
-                var in self.get_wrapper_attr('observation_variables')
-                for var in obs_reduction)
-        except AssertionError as err:
+        if any(var not in self.get_wrapper_attr('observation_variables')
+               for var in obs_reduction):
             self.logger.error(
                 'Some observation variable to be removed is not defined in the original observation space.')
-            raise err
+            raise ValueError
 
         # Update observation space
         self.observation_space = gym.spaces.Box(
@@ -2033,27 +2025,24 @@ class VariabilityContextWrapper(gym.Wrapper):
         super().__init__(env)
 
         # Definition checks
-        try:
-            assert context_space.shape[0] == len(
-                self.get_wrapper_attr('context_variables'))
-        except AssertionError as err:
+        if context_space.shape[0] != len(
+                self.get_wrapper_attr('context_variables')):
             self.logger.error(
-                'Context space shape is not coherent with environment context variables.')
-            raise err
+                'Context space shape is not coherent with environment context variables.'
+                f'Context space shape: {context_space.shape[0]}, '
+                f'Context variables: {len(self.get_wrapper_attr("context_variables"))}')
+            raise ValueError
 
-        try:
-            assert delta_value > 0
-        except AssertionError as err:
+        if delta_value <= 0:
             self.logger.error(
-                'Delta temperature must be greater than 0.')
-            raise err
+                f'Delta temperature must be greater than 0, but received {delta_value}.')
+            raise ValueError
 
-        try:
-            assert step_frequency_range[0] > 0 and step_frequency_range[0] < step_frequency_range[1]
-        except AssertionError as err:
+        if step_frequency_range[0] <= 0 or step_frequency_range[0] >= step_frequency_range[1]:
             self.logger.error(
-                'Step frequency range invalid.')
-            raise err
+                'Step frequency range invalid. It must be a tuple with two positive integers, where the first is less than the second.'
+                f'Step frequency range: {step_frequency_range}')
+            raise ValueError
 
         # Initialization
         self.context_space = context_space
@@ -2090,8 +2079,9 @@ class VariabilityContextWrapper(gym.Wrapper):
             # Update context
             self.get_wrapper_attr('update_context')(self.next_context_values)
             self.current_context = self.next_context_values
-            self.logger.info('Context updated with values: {}'.format(
-                self.next_context_values))
+            self.logger.info(
+                f'Context updated with values: {
+                    self.next_context_values}')
             # Calculate next update
             self.next_context_values, self.next_step_update = self._generate_context_values()
 
@@ -2133,8 +2123,10 @@ class VariabilityContextWrapper(gym.Wrapper):
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
         gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
-        assert env.get_wrapper_attr('building_path').split(
-            '/')[-1] == 'OfficeGridStorageSmoothing.epJSON', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
+        if env.get_wrapper_attr('building_path').split(
+                '/')[-1] != 'OfficeGridStorageSmoothing.epJSON':
+            raise ValueError(
+                'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.')
         super().__init__(env)
 
     def action(self, act: np.ndarray) -> np.ndarray:

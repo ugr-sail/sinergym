@@ -7,7 +7,7 @@ required = {'stable_baselines3'}
 installed = {dist.metadata['Name'].lower()
              for dist in metadata.distributions()}
 
-if required <= installed and False:
+if required <= installed:
     import stable_baselines3
     from stable_baselines3.common.noise import NormalActionNoise
 

@@ -104,15 +104,10 @@ RUN apt autoremove -y && apt autoclean -y \
 # ---------------------------------------------------------------------------- #
 
 WORKDIR /workspaces/sinergym
-COPY README.md /workspaces/sinergym/README.md
-COPY LICENSE /workspaces/sinergym/LICENSE
-COPY INSTALL.md /workspaces/sinergym/INSTALL.md
-COPY CODE_OF_CONDUCT.md /workspaces/sinergym/CODE_OF_CONDUCT.md
-COPY scripts /workspaces/sinergym/scripts
-COPY tests /workspaces/sinergym/tests
-COPY sinergym /workspaces/sinergym/sinergym
-COPY pyproject.toml /workspaces/sinergym/pyproject.toml
-COPY poetry.lock /workspaces/sinergym/poetry.lock
+COPY pyproject.toml poetry.lock README.md INSTALL.md CODE_OF_CONDUCT.md LICENSE ./
+COPY sinergym ./sinergym
+COPY scripts ./scripts
+COPY tests ./tests
 
 # ---------------------------------------------------------------------------- #
 #                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #

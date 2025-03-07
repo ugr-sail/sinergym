@@ -1,40 +1,53 @@
-<!--- Provide a general summary of your changes in the Title above -->
+## 🚀 Description
 
-## Description
-Describe your changes in detail
+<!-- Briefly describe the changes introduced in this PR and their purpose. -->
 
-## Motivation and Context
+## 📸 Screenshots (if applicable)
 
-- [ ] I have raised an issue to propose this change ([required](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for new features and bug fixes)
+<!-- If your changes affect the UI, please add screenshots here. -->
 
-Why is this change required? What problem does it solve? Please, reference issue or issues opened previously.
-<!--- e.g You can use the syntax `fixes #100` if this solves the issue #100 -->
-Fixes #(issue or issues)
+## 🔗 Related Issue
 
-## Types of changes
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] Documentation (update in the documentation)
-- [ ] Improvement (of an existing feature)
-- [ ] Others
+<!-- Mention the related issue, e.g., Closes #123 -->
 
-## Checklist:
-<!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
-<!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
-- [ ] I've read the [CONTRIBUTION](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) guide (**required**)
-- [ ] My change requires a change to the documentation.
+---
+
+## 🔄 Types of Changes
+<!-- What type of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+
+- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
+- [ ] ✨ New feature (non-breaking change that adds functionality)
+- [ ] 💥 Breaking change (change that alters existing functionality)
+- [ ] 📖 Documentation update
+- [ ] 🔧 Improvement (enhancement of an existing feature)
+- [ ] 🏷️ Other (please specify below)
+
+If "Other," please describe:  
+<!-- Provide a brief explanation -->
+
+---
+
+## ✅ Checklist
+<!-- Go through the following points and check all that apply. -->
+<!-- If you're unsure about any, feel free to ask. We're here to help! -->
+
+- [ ] I have read the [CONTRIBUTION GUIDE](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) (**required**).
+- [ ] My changes require an update in the documentation.
 - [ ] I have updated the tests.
 - [ ] I have updated the documentation accordingly.
-- [ ] I have reformatted the code using `autopep8` second level aggressive.
+- [ ] I have reformatted the code using `autopep8 --aggressive --aggressive`.
 - [ ] I have reformatted the code using `isort`.
-- [ ] I have ensured `cd docs && make spelling && make html` pass (**required** if documentation has been updated.)
-- [ ] I have ensured `pytest tests/ -vv` pass. (**required**).
-- [ ] I have ensured `pytype -d import-error sinergym/` pass. (**required**)
+- [ ] I have ensured `cd docs && make spelling && make html` passes (**required** if documentation was updated).
+- [ ] I have ensured `pytest tests/ -vv` passes (**required**).
+- [ ] I have ensured `pytype -d import-error sinergym/` passes (**required**).
 
-## Changelog:
+---
 
-- List changes here.
+## 📜 Automatic Changelog
 
-<!--- This Template is an edited version of the one from https://github.com/evilsocket/pwnagotchi/-->
+<!-- 🚨 DO NOT EDIT: This section will be automatically populated with commit messages. -->
+
+<details>
+  <summary>🔽 Click to view changelog</summary>
+  <!-- GitHub Actions will insert commit messages here -->
+</details>

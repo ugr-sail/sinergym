@@ -2,7 +2,6 @@
 id: LoadExample
 environment: Eplus-5zone-hot-continuous-stochastic-v1
 episodes: 5
-seed: null
 
 # ------------------------------- SB3 ALGORITHM ------------------------------ #
 algorithm:
@@ -29,7 +28,7 @@ algorithm:
 model:
   project: test-project
   entity: sail_ugr
-  artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPOExperimentExample_2025-02-02_18-31_9jau51uy
+  artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPO_training_2025-03-05_12-32_7sws2edy
   artifact_type: output
   artifact_tag: v0
   artifact_path: Sinergym_output/evaluation/
@@ -44,18 +43,19 @@ model:
 
 # -------------------------------- ENVIRONMENT ------------------------------- #
 env_params:
+  seed: null
   reward: LinearReward
 
 # --------------------------------- WRAPPERS --------------------------------- #
 wrappers:
-  NormalizeAction: {}
-  NormalizeObservation:
-    mean: null
-    var: null
-    automatic_update: false
-  LoggerWrapper:
-    storage_class: sinergym.utils.logger.LoggerStorage
-  CSVLogger: {}
+  - NormalizeAction: {}
+  - NormalizeObservation:
+      mean: null
+      var: null
+      automatic_update: false
+  - LoggerWrapper:
+      storage_class: sinergym.utils.logger.LoggerStorage
+  - CSVLogger: {}
 
 # -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
 cloud: 

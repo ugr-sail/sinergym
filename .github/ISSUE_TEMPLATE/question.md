@@ -18,7 +18,7 @@ Add any other context about the question here.
 
 ### Checklist
 
-- [ ] I have read the [documentation](https://ugr-sail.github.io/sinergym/compilation/html/index.html) (**required**)
+- [ ] I have read the [documentation](ugr-sail.github.io/sinergym/) (**required**)
 - [ ] I have checked that there is no similar [issue](https://github.com/ugr-sail/sinergym/issues) in the repo (**required**)
 
 :pencil: Please, don't forget to include more labels besides `question` if it is necessary.

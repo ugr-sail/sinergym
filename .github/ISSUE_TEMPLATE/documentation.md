@@ -13,7 +13,7 @@ A clear and concise description of what should be improved in the documentation.
 
 ### Checklist
 
-- [ ] I have read the [documentation](https://ugr-sail.github.io/sinergym/compilation/html/index.html) (**required**)
+- [ ] I have read the [documentation](ugr-sail.github.io/sinergym/) (**required**)
 - [ ] I have checked that there is no similar [issue](https://github.com/ugr-sail/sinergym/issues) in the repo (**required**)
 
 :pencil: Please, don't forget to include more labels besides `documentation` if it is necessary.

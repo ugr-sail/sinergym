@@ -2,7 +2,6 @@
 id: TD3_training
 environment: Eplus-5zone-hot-continuous-stochastic-v1
 episodes: 5
-seed: null
 
 # ------------------------------- SB3 ALGORITHM ------------------------------ #
 algorithm:
@@ -42,19 +41,20 @@ evaluation:
 
 # -------------------------------- ENVIRONMENT ------------------------------- #
 env_params:
+  seed: null
   reward: LinearReward
 # ... other environment parameters
 
 # ---------------------------------- WRAPPER --------------------------------- #
 wrappers:
-  NormalizeAction: {}
-  NormalizeObservation: {}
-  LoggerWrapper:
-    storage_class: sinergym.utils.logger.LoggerStorage
-  CSVLogger: {}
-  WandBLogger:
-    entity: sail_ugr
-    project_name: test-project
+  - NormalizeAction: {}
+  - NormalizeObservation: {}
+  - LoggerWrapper:
+      storage_class: sinergym.utils.logger.LoggerStorage
+  - CSVLogger: {}
+  - WandBLogger:
+      entity: sail_ugr
+      project_name: test-project
 
 # --------------------------- INITIAL STATE (MODEL) -------------------------- #
 # Model from scratch:

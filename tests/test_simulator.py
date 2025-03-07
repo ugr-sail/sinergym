@@ -35,7 +35,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
             pkg_data_path,
             'weather',
             'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
-        output_path='./Eplus-TESTSIMULATOR/',
+        output_path='./PYTESTSIMULATOR/',
         episode=1)
 
     # Checks status after simulation start
@@ -156,7 +156,7 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
             pkg_data_path,
             'weather',
             'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
-        output_path='./Eplus-TESTSIMULATOR/',
+        output_path='./PYTESTSIMULATOR/',
         episode=1)
     # Until first observation received, system is not initialized
     assert simulator_5zone.var_handlers is None

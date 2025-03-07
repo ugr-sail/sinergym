@@ -36,7 +36,7 @@ def test_datetime_wrapper(env_demo):
     # Check exceptions
     # Delete hour variable from observation variables and observation space
     env_demo.observation_variables.remove('hour')
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_exception = DatetimeWrapper(env=env_demo)
 
 
@@ -230,9 +230,9 @@ def test_normalize_observation_exceptions(env_demo):
     with pytest.raises(ValueError):
         env = NormalizeObservation(env=env_demo, var=56)
     # Specify a list with wrong shape
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env = NormalizeObservation(env=env_demo, mean=[0.2, 0.1, 0.3])
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env = NormalizeObservation(env=env_demo, var=[0.2, 0.1, 0.3])
 
 
@@ -486,7 +486,7 @@ def test_incremental_exceptions(env_demo):
         discrete_space=gym.spaces.Discrete(10),
         action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
     )
-    with pytest.raises(AssertionError):
+    with pytest.raises(TypeError):
         IncrementalWrapper(
             env=env_discrete,
             incremental_variables_definition={
@@ -497,7 +497,7 @@ def test_incremental_exceptions(env_demo):
         )
 
     # Unknown variable exception
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         IncrementalWrapper(
             env=env_demo,
             incremental_variables_definition={
@@ -509,7 +509,7 @@ def test_incremental_exceptions(env_demo):
         )
 
     # Wrong initial values exception
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         IncrementalWrapper(
             env=env_demo,
             incremental_variables_definition={
@@ -554,7 +554,7 @@ def test_discrete_incremental_exceptions(env_demo):
         discrete_space=gym.spaces.Discrete(10),
         action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
     )
-    with pytest.raises(AssertionError):
+    with pytest.raises(TypeError):
         DiscreteIncrementalWrapper(
             env=env_discrete,
             initial_values=[21.0, 25.0],
@@ -562,7 +562,7 @@ def test_discrete_incremental_exceptions(env_demo):
             step_temp=0.5
         )
     # Number of initial values different than number of action_variables
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         DiscreteIncrementalWrapper(
             env=env_demo,
             initial_values=[21.0, 25.0, 3.0],
@@ -690,7 +690,7 @@ def test_normalize_action_exceptions(env_demo):
         discrete_space=gym.spaces.Discrete(10),
         action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
     )
-    with pytest.raises(AssertionError):
+    with pytest.raises(TypeError):
         NormalizeAction(env=env_discrete)
 
 
@@ -943,7 +943,7 @@ def test_CSVlogger_custom_logger(env_demo, custom_logger_wrapper):
 def test_logger_exceptions(env_demo):
     # Use a Logger without previous BaseLoggerWrapper child class should raise
     # exception
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env = CSVLogger(env=env_demo)
 
 
@@ -985,7 +985,7 @@ def test_reduced_observation_wrapper(env_demo):
 def test_reduced_observation_exceptions(env_demo):
 
     # We force an unknown variable to be removed
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         ReduceObservationWrapper(
             env=env_demo,
             obs_reduction=[
@@ -1059,7 +1059,7 @@ def test_variability_context_wrapper(env_5zone):
 
 def test_variability_context_wrapper_exceptions(env_5zone):
     # Create wrapped environment
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_5zone = VariabilityContextWrapper(
             env=env_5zone,
             context_space=gym.spaces.Box(
@@ -1072,7 +1072,7 @@ def test_variability_context_wrapper_exceptions(env_5zone):
             delta_value=-0.2,
             step_frequency_range=(96, 96 * 7))
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_5zone = VariabilityContextWrapper(
             env=env_5zone,
             context_space=gym.spaces.Box(
@@ -1085,7 +1085,7 @@ def test_variability_context_wrapper_exceptions(env_5zone):
             delta_value=0.5,
             step_frequency_range=(-2, 96 * 7))
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_5zone = VariabilityContextWrapper(
             env=env_5zone,
             context_space=gym.spaces.Box(
