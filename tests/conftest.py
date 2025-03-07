@@ -5,6 +5,7 @@ from glob import glob  # to find directories with patterns
 from importlib import resources
 
 import pytest
+import yaml
 from epw.weather import Weather
 
 import sinergym
@@ -238,9 +239,10 @@ def conf_5zone_exceptions(pkg_mock_path):
     for i in range(1, 6):
         conf_path = os.path.join(pkg_mock_path,
                                  'environment_configurations',
-                                 '5ZoneAutoDXVAV_exception{}.json'.format(i))
-        with open(conf_path) as json_f:
-            conf_exceptions.append(json.load(json_f))
+                                 '5ZoneAutoDXVAV_exception{}.yaml'.format(i))
+        with open(conf_path, 'r') as yaml_conf:
+            conf_exceptions.append(yaml.safe_load(yaml_conf))
+
     return conf_exceptions
 
 
