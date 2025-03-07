@@ -37,13 +37,11 @@ class DatetimeWrapper(gym.ObservationWrapper):
         super(DatetimeWrapper, self).__init__(env)
 
         # Check datetime variables are defined in environment
-        try:
-            assert all(time_variable in self.get_wrapper_attr('observation_variables')
-                       for time_variable in ['month', 'day_of_month', 'hour'])
-        except AssertionError as err:
+        if any(time_variable not in self.get_wrapper_attr('observation_variables')
+               for time_variable in ['month', 'day_of_month', 'hour']):
             self.logger.error(
                 'month, day_of_month and hour must be defined in observation space in environment previously.')
-            raise err
+            raise ValueError
 
         # Update new shape
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
@@ -125,8 +123,10 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_observation_variables = deepcopy(
             self.get_wrapper_attr('observation_variables'))
         for obs_var in previous_variables:
-            assert obs_var in self.get_wrapper_attr(
-                'observation_variables'), '{} variable is not defined in observation space, revise the name.'.format(obs_var)
+            if obs_var not in self.get_wrapper_attr('observation_variables'):
+                self.logger.error(
+                    f'{obs_var} variable is not defined in observation variables, revise the name.')
+                raise ValueError
             new_observation_variables.append(obs_var + '_previous')
         # Update observation variables
         self.observation_variables = new_observation_variables
@@ -331,22 +331,19 @@ class NormalizeObservation(gym.Wrapper):
                     metric = np.loadtxt(metric)
                 except FileNotFoundError as err:
                     self.logger.error(
-                        '{}.txt file not found. Please, check the path.'.format(metric_name))
+                        f'{metric_name}.txt file not found. Please, check the path.')
                     raise err
             elif isinstance(metric, list) or isinstance(metric, np.ndarray):
                 metric = np.float64(metric)
             else:
                 self.logger.error(
-                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
+                    f'{metric_name} values must be a list, a numpy array or a path to a txt file.')
                 raise ValueError
 
             # Check dimension of mean and var
-            try:
-                assert len(metric) == self.observation_space.shape[0]
-            except AssertionError as err:
+            if len(metric) != self.observation_space.shape[0]:
                 self.logger.error(
-                    '{} values must have the same shape than environment observation space.'.format(metric_name))
-                raise err
+                    f'{metric_name} values must have the same shape than environment observation space.')
 
         return metric
 
@@ -755,15 +752,25 @@ class DeltaTempWrapper(gym.ObservationWrapper):
         super(DeltaTempWrapper, self).__init__(env)
 
         # Check variables definition
-        assert len(setpoint_variables) == 1 or len(setpoint_variables) == len(
-            temperature_variables), 'Setpoint variables must have one element length or the same length than temperature variables.'
+        if len(setpoint_variables) != 1 and len(
+                temperature_variables) != len(setpoint_variables):
+            self.logger.error(
+                'Setpoint variables must have one element length or the same length than temperature variables.'
+                f'Current setpoint variables length: {setpoint_variables}')
+            raise ValueError
 
         # Check all temperature and setpoint variables are in environment
         # observation variables
-        assert all([variable in self.get_wrapper_attr('observation_variables')
-                    for variable in temperature_variables]), 'Some temperature variables are not defined in observation space.'
-        assert all([variable in self.get_wrapper_attr('observation_variables')
-                    for variable in setpoint_variables]), 'Some setpoint variables are not defined in observation space.'
+        if any(variable not in self.get_wrapper_attr('observation_variables')
+                for variable in temperature_variables):
+            self.logger.error(
+                'Some temperature variables are not defined in observation space.')
+            raise ValueError
+        if any(variable not in self.get_wrapper_attr('observation_variables')
+                for variable in setpoint_variables):
+            self.logger.error(
+                'Some setpoint variables are not defined in observation space.')
+            raise ValueError
 
         # Define wrappers attributes
         self.delta_temperatures = temperature_variables
@@ -846,26 +853,19 @@ class IncrementalWrapper(gym.ActionWrapper):
         self.current_values = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.env.get_wrapper_attr('is_discrete'):
             self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert all([variable in self.env.get_wrapper_attr('action_variables')
-                       for variable in list(incremental_variables_definition.keys())])
-        except AssertionError as err:
+                'Env wrapped by this wrapper must be continuous instead of discrete.')
+            raise TypeError
+        if any(variable not in self.env.get_wrapper_attr('action_variables')
+               for variable in incremental_variables_definition.keys()):
             self.logger.error(
                 'Some of the incremental variables specified does not exist as action variable in environment.')
-            raise err
-        try:
-            assert len(initial_values) == len(
-                incremental_variables_definition)
-        except AssertionError as err:
+            raise ValueError
+        if len(initial_values) != len(incremental_variables_definition):
             self.logger.error(
-                'Number of incremental variables does not match with initial values')
-            raise err
+                'Number of incremental variables does not match with initial values.')
+            raise ValueError
 
         # All posible incremental variations
         self.values_definition = {}
@@ -904,11 +904,9 @@ class IncrementalWrapper(gym.ActionWrapper):
             dtype=np.float32)
 
         self.logger.info(
-            'New incremental continuous action space: {}'.format(
-                self.action_space))
+            f'New incremental continuous action space: {self.action_space}')
         self.logger.info(
-            'Incremental variables configuration (variable: delta, step): {}'.format(
-                incremental_variables_definition))
+            f'Incremental variables configuration (variable: delta, step): {incremental_variables_definition}')
         self.logger.info('Wrapper initialized')
 
     def action(self, action):
@@ -968,20 +966,15 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.current_setpoints = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.env.get_wrapper_attr('is_discrete'):
             self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert len(
-                self.get_wrapper_attr('current_setpoints')) == len(
-                self.env.get_wrapper_attr('action_variables'))
-        except AssertionError as err:
+                'Env wrapped by this wrapper must be continuous instead of discrete.')
+            raise TypeError
+        if len(self.get_wrapper_attr('current_setpoints')) != len(
+                self.env.get_wrapper_attr('action_variables')):
             self.logger.error(
                 'Number of variables is different from environment')
-            raise err
+            raise ValueError
 
         # Define all posible setpoint variations
         values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
@@ -1004,8 +997,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         self.action_space = gym.spaces.Discrete(n)
 
-        self.logger.info('New incremental action mapping: {}'.format(n))
-        self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
+        self.logger.info(f'New incremental action mapping: {n}')
+        self.logger.info(f'{self.get_wrapper_attr('mapping')}')
         self.logger.info('Wrapper initialized')
 
     # Define action mapping method
@@ -1074,8 +1067,7 @@ class DiscretizeEnv(gym.ActionWrapper):
         self.action_mapping = action_mapping
 
         self.logger.info(
-            'New Discrete Space and mapping: {}'.format(
-                self.action_space))
+            f'New Discrete Space and mapping: {self.action_space}')
         self.logger.info(
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
@@ -1122,12 +1114,10 @@ class NormalizeAction(gym.ActionWrapper):
         super().__init__(env)
 
         # Checks
-        try:
-            assert not self.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
+        if self.get_wrapper_attr('is_discrete'):
             self.logger.critical(
-                'The original environment must be continuous')
-            raise err
+                'The original environment must be continuous instead of discrete')
+            raise TypeError
 
         # Define real space for simulator
         self.real_space = deepcopy(self.action_space)
@@ -1149,8 +1139,7 @@ class NormalizeAction(gym.ActionWrapper):
         self.action_space = self.normalized_space
 
         self.logger.info(
-            'New normalized action Space: {}'.format(
-                self.action_space))
+            f'New normalized action Space: {self.action_space}')
         self.logger.info('Wrapper initialized')
 
     def reverting_action(self,
@@ -1470,12 +1459,11 @@ class CSVLogger(gym.Wrapper):
         super(CSVLogger, self).__init__(env)
         self.info_excluded_keys = info_excluded_keys
 
-        try:
-            assert is_wrapped(self.env, BaseLoggerWrapper)
-        except AssertionError as err:
+        # Check if it is wrapped by a BaseLoggerWrapper child class (required)
+        if not is_wrapped(self.env, BaseLoggerWrapper):
             self.logger.error(
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
-            raise err
+            raise ValueError
 
         self.progress_file_path = self.get_wrapper_attr(
             'workspace_path') + '/progress.csv'
@@ -1685,13 +1673,11 @@ try:
             """
             super(WandBLogger, self).__init__(env)
 
-            # Check if logger is active
-            try:
-                assert is_wrapped(self, BaseLoggerWrapper)
-            except AssertionError as err:
+            # Check if logger is active (required)
+            if not is_wrapped(self, BaseLoggerWrapper):
                 self.logger.error(
                     'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
-                raise err
+                raise ValueError
 
             # Define wandb run name if is not specified
             run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
@@ -1756,8 +1742,8 @@ try:
             # Log step information if frequency is correct
             if self.global_timestep % self.dump_frequency == 0:
                 self.logger.debug(
-                    'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
-                        self.global_timestep))
+                    f'Dump Frequency reached in timestep {
+                        self.global_timestep}, dumping data in WandB.')
                 self.wandb_log()
 
             return obs, reward, terminated, truncated, info
@@ -1786,8 +1772,8 @@ try:
                     self.wandb_log_summary()
                 else:
                     self.logger.warning(
-                        'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
-                            self.episode_percentage * 100))
+                        f'Episode ignored for log summary in WandB Platform, it has not be completed in at least {
+                            self.episode_percentage * 100}%.')
                 self.logger.info(
                     'End of episode detected, dumping summary metrics in WandB Platform.')
 
@@ -1810,8 +1796,7 @@ try:
                 self.wandb_log_summary()
             else:
                 self.logger.warning(
-                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
-                        self.episode_percentage * 100))
+                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {self.episode_percentage * 100}%.')
             self.logger.info(
                 'Environment closed, dumping summary metrics in WandB Platform.')
 
@@ -1948,14 +1933,11 @@ class ReduceObservationWrapper(gym.Wrapper):
         super().__init__(env)
 
         # Check if the variables to be removed are in the observation space
-        try:
-            assert all(
-                var in self.get_wrapper_attr('observation_variables')
-                for var in obs_reduction)
-        except AssertionError as err:
+        if any(var not in self.get_wrapper_attr('observation_variables')
+               for var in obs_reduction):
             self.logger.error(
                 'Some observation variable to be removed is not defined in the original observation space.')
-            raise err
+            raise ValueError
 
         # Update observation space
         self.observation_space = gym.spaces.Box(
@@ -2042,27 +2024,24 @@ class VariabilityContextWrapper(gym.Wrapper):
         super().__init__(env)
 
         # Definition checks
-        try:
-            assert context_space.shape[0] == len(
-                self.get_wrapper_attr('context_variables'))
-        except AssertionError as err:
+        if context_space.shape[0] != len(
+                self.get_wrapper_attr('context_variables')):
             self.logger.error(
-                'Context space shape is not coherent with environment context variables.')
-            raise err
+                'Context space shape is not coherent with environment context variables.'
+                f'Context space shape: {context_space.shape[0]}, '
+                f'Context variables: {len(self.get_wrapper_attr("context_variables"))}')
+            raise ValueError
 
-        try:
-            assert delta_value > 0
-        except AssertionError as err:
+        if delta_value <= 0:
             self.logger.error(
-                'Delta temperature must be greater than 0.')
-            raise err
+                f'Delta temperature must be greater than 0, but received {delta_value}.')
+            raise ValueError
 
-        try:
-            assert step_frequency_range[0] > 0 and step_frequency_range[0] < step_frequency_range[1]
-        except AssertionError as err:
+        if step_frequency_range[0] <= 0 or step_frequency_range[0] >= step_frequency_range[1]:
             self.logger.error(
-                'Step frequency range invalid.')
-            raise err
+                'Step frequency range invalid. It must be a tuple with two positive integers, where the first is less than the second.'
+                f'Step frequency range: {step_frequency_range}')
+            raise ValueError
 
         # Initialization
         self.context_space = context_space
@@ -2099,8 +2078,9 @@ class VariabilityContextWrapper(gym.Wrapper):
             # Update context
             self.get_wrapper_attr('update_context')(self.next_context_values)
             self.current_context = self.next_context_values
-            self.logger.info('Context updated with values: {}'.format(
-                self.next_context_values))
+            self.logger.info(
+                f'Context updated with values: {
+                    self.next_context_values}')
             # Calculate next update
             self.next_context_values, self.next_step_update = self._generate_context_values()
 
@@ -2142,8 +2122,10 @@ class VariabilityContextWrapper(gym.Wrapper):
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
         gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
-        assert env.get_wrapper_attr('building_path').split(
-            '/')[-1] == 'OfficeGridStorageSmoothing.epJSON', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
+        if env.get_wrapper_attr('building_path').split(
+                '/')[-1] != 'OfficeGridStorageSmoothing.epJSON':
+            raise ValueError(
+                'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.')
         super().__init__(env)
 
     def action(self, act: np.ndarray) -> np.ndarray:

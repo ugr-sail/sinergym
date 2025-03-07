@@ -81,8 +81,7 @@ class EplusEnv(gym.Env):
             '#==============================================================================================#')
         self.logger.info(
             'Creating Gymnasium environment.')
-        self.logger.info(
-            'Name: {}'.format(env_name))
+        self.logger.info(f'Name: {env_name}')
         self.simple_printer.info(
             '#==============================================================================================#')
 
@@ -266,8 +265,7 @@ class EplusEnv(gym.Env):
         self.logger.info(
             'Starting a new episode.')
         self.logger.info(
-            'Episode {}: {}'.format(
-                self.episode, self.name))
+            f'Episode {self.episode}: {self.name}')
         self.simple_printer.info(
             '#----------------------------------------------------------------------------------------------#')
         # Get new episode working dir
@@ -282,11 +280,8 @@ class EplusEnv(gym.Env):
             weather_variability=reset_options.get('weather_variability'))
         eplus_working_out_path = (self.episode_dir + '/' + 'output')
         self.logger.info(
-            'Saving episode output path.'.format(
-                eplus_working_out_path))
-        self.logger.debug(
-            'Path: {}'.format(
-                eplus_working_out_path))
+            f'Saving episode output path in {eplus_working_out_path}.')
+        self.logger.debug(f'Path: {eplus_working_out_path}')
 
         self.energyplus_simulator.start(
             building_path=eplus_working_building_path,
@@ -294,7 +289,7 @@ class EplusEnv(gym.Env):
             output_path=eplus_working_out_path,
             episode=self.episode)
 
-        self.logger.info('Episode {} started.'.format(self.episode))
+        self.logger.info(f'Episode {self.episode} started.')
 
         # wait for E+ warmup to complete
         if not self.energyplus_simulator.warmup_complete:
@@ -321,8 +316,8 @@ class EplusEnv(gym.Env):
         self.last_obs = obs
         self.last_info = info
 
-        self.logger.debug('RESET observation received: {}'.format(obs))
-        self.logger.debug('RESET info received: {}'.format(info))
+        self.logger.debug(f'RESET observation received: {obs}')
+        self.logger.debug(f'RESET info received: {info}')
 
         return np.array(list(obs.values()), dtype=np.float32), info
 
@@ -350,23 +345,18 @@ class EplusEnv(gym.Env):
         self.timestep += 1
         terminated = truncated = False
 
-        # Check if action is contained for the current action space (warning)
-        try:
-            assert self._action_space.contains(
-                action)
-        except AssertionError:
-            self.logger.error(
-                'Step: The action {} is not correct for the Action Space {}'.format(
-                    action, self._action_space))
-            raise TypeError
+        # Check action is correct for environment
+        if not self._action_space.contains(action):
+            self.logger.error(f'Invalid action: {action}')
+            raise ValueError(
+                f'Action {action} is not valid for {
+                    self._action_space}')
 
         # check for simulation errors
-        try:
-            assert not self.energyplus_simulator.failed()
-        except AssertionError:
+        if self.energyplus_simulator.failed():
             self.logger.critical(
-                'EnergyPlus failed with exit code {}'.format(
-                    self.energyplus_simulator.sim_results['exit_code']))
+                f'EnergyPlus failed with exit code {
+                    self.energyplus_simulator.sim_results['exit_code']}')
             raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
@@ -406,11 +396,11 @@ class EplusEnv(gym.Env):
         info.update(rw_terms)
         self.last_info = info
 
-        # self.logger.debug('STEP observation: {}'.format(obs))
-        # self.logger.debug('STEP reward: {}'.format(reward))
-        # self.logger.debug('STEP terminated: {}'.format(terminated))
-        # self.logger.debug('STEP truncated: {}'.format(truncated))
-        # self.logger.debug('STEP info: {}'.format(info))
+        # self.logger.debug(f'STEP observation: {obs}')
+        # self.logger.debug(f'STEP reward: {reward}')
+        # self.logger.debug(f'STEP terminated: {terminated}')
+        # self.logger.debug(f'STEP truncated: {truncated}')
+        # self.logger.debug(f'STEP info: {info}')
 
         return np.array(list(obs.values()), dtype=np.float32
                         ), reward, terminated, truncated, info
@@ -432,7 +422,7 @@ class EplusEnv(gym.Env):
     def close(self) -> None:
         """End simulation."""
         self.energyplus_simulator.stop()
-        self.logger.info('Environment closed. [{}]'.format(self.name))
+        self.logger.info(f'Environment closed. [{self.name}]')
 
     # ---------------------------------------------------------------------------- #
     #                       REAL-TIME BUILDING CONTEXT UPDATE                      #
@@ -446,18 +436,17 @@ class EplusEnv(gym.Env):
             context_values (Union[np.ndarray, List[float]]): List of values to be updated in the building model.
         """
         # Check context_values concistency with context variables
-        try:
-            assert len(context_values) == len(self.context)
-        except AssertionError:
+        if len(context_values) != len(self.context):
             self.logger.warning(
-                'Context values must have the same length than context variables specified, and values must be in the same order.')
+                f'Context values must have the same length than context variables specified, and values must be in the same order. The context space is {
+                    self.context}, but values {context_values} were spevified.')
 
         try:
             self.context_queue.put(context_values, block=False)
             self.last_context = context_values
         except (Full):
             self.logger.warning(
-                'Context queue is full, context update will be skipped.')
+                f'Context queue is full, context update with values {context_values} will be skipped.')
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
@@ -467,22 +456,22 @@ class EplusEnv(gym.Env):
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
         # OBSERVATION
-        try:
-            assert len(
-                self.observation_variables) == self._observation_space.shape[0]
-        except AssertionError as err:
+        if len(self.observation_variables) != self._observation_space.shape[0]:
             self.logger.error(
-                'Observation space has not the same length than variable names specified.')
-            raise err
+                f'Observation space ({
+                    self._observation_space.shape[0]} variables) has not the same length than specified variable names ({
+                    len(
+                        self.observation_variables)}).')
+            raise ValueError
 
         # ACTION
-        try:
-            assert len(
-                self.action_variables) == self._action_space.shape[0]
-        except AssertionError as err:
-            self.logger.critical(
-                'Action space shape must match with number of action variables specified.')
-            raise err
+        if len(self.action_variables) != self._action_space.shape[0]:
+            self.logger.error(
+                f'Action space ({
+                    self._action_space.shape[0]} variables) has not the same length than specified variable names ({
+                    len(
+                        self.action_variables)}).')
+            raise ValueError
 
         # WEATHER VARIABILITY
         if 'weather_variability' in self.default_options:
@@ -490,15 +479,15 @@ class EplusEnv(gym.Env):
                 """Validate weather variability parameters."""
                 if not (isinstance(params, tuple)):
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {
-                            params}. "
-                        "It must be a tuple of 3 elements."
+                        f'Invalid parameter for Ornstein-Uhlenbeck process: {
+                            params}. '
+                        'It must be a tuple of 3 elements.'
                     )
                 if len(params) != 3:
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {
-                            params}. "
-                        "It must have exactly 3 values."
+                        f'Invalid parameter for Ornstein-Uhlenbeck process: {
+                            params}. '
+                        'It must have exactly 3 values.'
                     )
 
                 for param in params:
@@ -508,15 +497,15 @@ class EplusEnv(gym.Env):
                             (tuple, float, int))
                     ):
                         raise ValueError(
-                            f"Invalid parameter for Ornstein-Uhlenbeck process: {
-                                param}. "
-                            "It must be a tuple of two values (range), or a number."
+                            f'Invalid parameter for Ornstein-Uhlenbeck process: {
+                                param}. '
+                            'It must be a tuple of two values (range), or a number.'
                         )
                     if (isinstance(param, tuple)) and len(param) != 2:
                         raise ValueError(
-                            f"Invalid parameter for Ornstein-Uhlenbeck process: {
-                                param}. "
-                            "Tuples must have exactly two values (range)."
+                            f'Invalid parameter for Ornstein-Uhlenbeck process: {
+                                param}. '
+                            'Tuples must have exactly two values (range).'
                         )
 
             try:
@@ -655,80 +644,52 @@ class EplusEnv(gym.Env):
     # -------------------------------- class print ------------------------------- #
 
     def info(self):  # pragma: no cover
-        print("""
+        print(f"""
     #==================================================================================#
-                                ENVIRONMENT NAME: {}
+        ENVIRONMENT NAME: {self.name}
     #==================================================================================#
     #----------------------------------------------------------------------------------#
-                                ENVIRONMENT INFO:
+                                    ENVIRONMENT INFO:
     #----------------------------------------------------------------------------------#
-    - Building file: {}
-    - Zone names: {}
-    - Weather file(s): {}
-    - Current weather used: {}
-    - Episodes executed: {}
-    - Workspace directory: {}
-    - Reward function: {}
-    - Reset default options: {}
-    - Run period: {}
-    - Episode length (seconds): {}
-    - Number of timesteps in an episode: {}
-    - Timestep size (seconds): {}
-    - It is discrete?: {}
-    - seed: {}
+    - Building file: {self.building_path}
+    - Zone names: {self.zone_names}
+    - Weather file(s): {self.weather_files}
+    - Current weather used: {self.weather_path}
+    - Episodes executed: {self.episode}
+    - Workspace directory: {self.workspace_path}
+    - Reward function: {self.reward_fn}
+    - Reset default options: {self.default_options}
+    - Run period: {self.runperiod}
+    - Episode length (seconds): {self.episode_length}
+    - Number of timesteps in an episode: {self.timestep_per_episode}
+    - Timestep size (seconds): {self.step_size}
+    - It is discrete?: {self.is_discrete}
+    - seed: {self.seed}
     #----------------------------------------------------------------------------------#
-                                ENVIRONMENT SPACE:
+                                    ENVIRONMENT SPACE:
     #----------------------------------------------------------------------------------#
-    - Observation space: {}
-    - Observation variables: {}
-    - Action space: {}
-    - Action variables: {}
+    - Observation space: {self.observation_space}
+    - Observation variables: {self.observation_variables}
+    - Action space: {self.action_space}
+    - Action variables: {self.action_variables}
     #==================================================================================#
-                                    SIMULATOR
+                                        SIMULATOR
     #==================================================================================#
     *NOTE: To have information about available handlers and controlled elements, it is
     required to do env reset before to print information.*
 
-    Is running? : {}
+    Is running? : {self.is_running}
     #----------------------------------------------------------------------------------#
-                                AVAILABLE ELEMENTS:
+                                    AVAILABLE ELEMENTS:
     #----------------------------------------------------------------------------------#
     *Some variables cannot be here depending if it is defined Output:Variable field
      in building model. See documentation for more information.*
-
-    {}
     #----------------------------------------------------------------------------------#
-                                CONTROLLED ELEMENTS:
+                                    CONTROLLED ELEMENTS:
     #----------------------------------------------------------------------------------#
-    - Actuators: {}
-    - Variables: {}
-    - Meters: {}
-    - Internal Context: {}
+    - Actuators: {self.actuator_handlers}
+    - Variables: {self.var_handlers}
+    - Meters: {self.meter_handlers}
+    - Internal Context: {self.context_handlers}
 
-    """.format(
-            self.name,
-            self.building_path,
-            self.zone_names,
-            self.weather_files,
-            self.weather_path,
-            self.episode,
-            self.workspace_path,
-            self.reward_fn,
-            self.default_options,
-            self.runperiod,
-            self.episode_length,
-            self.timestep_per_episode,
-            self.step_size,
-            self.is_discrete,
-            self.seed,
-            self.observation_space,
-            self.observation_variables,
-            self.action_space,
-            self.action_variables,
-            self.is_running,
-            self.available_handlers,
-            self.actuator_handlers,
-            self.var_handlers,
-            self.meter_handlers,
-            self.context_handlers)
-        )
+    """)

@@ -141,7 +141,7 @@ class EnergyPlus(object):
                     # Progress bar for simulation
                     self.progress_bar = tqdm(
                         total=100,
-                        desc='Simulation Progress [Episode {}]'.format(episode),
+                        desc=f'Simulation Progress [Episode {episode}]',
                         ncols=100,
                         unit='%',
                         leave=True,
@@ -183,7 +183,7 @@ class EnergyPlus(object):
         # run EnergyPlus in a non-blocking way
         def _run_energyplus(runtime, cmd_args, state, results):
             self.logger.debug(
-                'Running EnergyPlus with args: {}'.format(cmd_args))
+                f'Running EnergyPlus with args: {cmd_args}')
 
             # start simulation
             results["exit_code"] = runtime.run_energyplus(state, cmd_args)
@@ -315,9 +315,9 @@ class EnergyPlus(object):
         }
 
         # Put in the queues the observation and info
-        # self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
+        # self.logger.debug(f 'OBSERVATION put in QUEUE: {self.next_obs}')
         self.obs_queue.put(self.next_obs)
-        # self.logger.debug('INFO put in QUEUE: {}'.format(self.next_obs))
+        # self.logger.debug(f'INFO put in QUEUE: {self.next_obs}')
         self.info_queue.put(self.next_info)
 
     def _process_action(self, state_argument: int) -> None:
@@ -336,7 +336,7 @@ class EnergyPlus(object):
             return
         # Get next action from queue and check type
         next_action = self.act_queue.get()
-        # self.logger.debug('ACTION get from queue: {}'.format(next_action))
+        # self.logger.debug(f'ACTION get from queue: {next_action}')
         if not self.simulation_complete:
             # Set the action values obtained in actuator handlers
             for i, (act_name, act_handle) in enumerate(
@@ -348,8 +348,7 @@ class EnergyPlus(object):
                 )
 
                 # self.logger.debug(
-                #     'Set in actuator {} value {}.'.format(
-                #         act_name, next_action[i]))
+                #     f'Set in actuator {act_name} value {next_action[i]}.')
 
     def _process_context(self, state_argument: int) -> None:
         """EnergyPlus callback that sets actuator as a building context, instead of control.
@@ -445,25 +444,22 @@ class EnergyPlus(object):
 
                 # Check handlers specified exists
                 for variable_name, handle_value in self.var_handlers.items():
-                    try:
-                        assert handle_value > -1
-                    except AssertionError:
+                    if handle_value < 0:
                         self.logger.error(
-                            'Variable handlers: {} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt'.format(variable_name))
+                            f'Variable handlers: {variable_name} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt')
+                        # raise ValueError
 
                 for meter_name, handle_value in self.meter_handlers.items():
-                    try:
-                        assert handle_value > -1
-                    except AssertionError:
+                    if handle_value < 0:
                         self.logger.error(
-                            'Meter handlers: {} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt'.format(meter_name))
+                            f'Meter handlers: {meter_name} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt')
+                        # raise ValueError
 
                 for actuator_name, handle_value in self.actuator_handlers.items():
-                    try:
-                        assert handle_value > -1
-                    except AssertionError:
+                    if handle_value < 0:
                         self.logger.error(
-                            'Actuator handlers: {} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt'.format(actuator_name))
+                            f'Actuator handlers: {actuator_name} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt')
+                        # raise ValueError
 
                 self.logger.info('handlers initialized.')
 
