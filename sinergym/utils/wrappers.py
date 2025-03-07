@@ -344,6 +344,7 @@ class NormalizeObservation(gym.Wrapper):
             if len(metric) != self.observation_space.shape[0]:
                 self.logger.error(
                     f'{metric_name} values must have the same shape than environment observation space.')
+                raise ValueError
 
         return metric
 

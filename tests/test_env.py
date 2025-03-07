@@ -239,7 +239,7 @@ def test_all_environments():
 def test_wrong_action_space(env_5zone, action):
     env_5zone.reset()
     # Forcing wrong action for current action space
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         env_5zone.step(action)
 
 
@@ -285,14 +285,14 @@ def test_step_in_completed_episode(env_demo):
 def test_observation_contradiction(env_demo):
     # Forcing observation variables and observation space error
     env_demo.observation_variables.append('unknown_variable')
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_demo._check_eplus_env()
 
 
 def test_action_contradiction(env_demo):
     # Forcing action variables and action space error
     env_demo.action_variables.append('unknown_variable')
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         env_demo._check_eplus_env()
 
 
