@@ -227,9 +227,9 @@ def conf_5zone(pkg_mock_path):
     conf_path = os.path.join(
         pkg_mock_path,
         'environment_configurations',
-        '5ZoneAutoDXVAV.json')
-    with open(conf_path) as json_f:
-        conf = json.load(json_f)
+        '5ZoneAutoDXVAV.yaml')
+    with open(conf_path, 'r') as yaml_conf:
+        conf = yaml.safe_load(yaml_conf)
     return conf
 
 
