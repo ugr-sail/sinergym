@@ -67,8 +67,8 @@ def TIME_VARIABLES():
 @pytest.fixture(scope='function')
 def ACTION_SPACE_5ZONE():
     return gym.spaces.Box(
-        low=np.array([15.0, 22.5], dtype=np.float32),
-        high=np.array([22.5, 30.0], dtype=np.float32),
+        low=np.array([12.0, 23.25], dtype=np.float32),
+        high=np.array([23.25, 30.0], dtype=np.float32),
         shape=(2,),
         dtype=np.float32
     )
@@ -161,8 +161,8 @@ def ACTION_SPACE_DISCRETE_5ZONE():
 @pytest.fixture(scope='function')
 def ACTION_SPACE_DATACENTER():
     return gym.spaces.Box(
-        low=np.array([15.0, 22.5], dtype=np.float32),
-        high=np.array([22.5, 30.0], dtype=np.float32),
+        low=np.array([15.0, 22.0], dtype=np.float32),
+        high=np.array([22.0, 30.0], dtype=np.float32),
         shape=(2,),
         dtype=np.float32
     )
