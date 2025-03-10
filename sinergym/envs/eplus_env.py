@@ -98,10 +98,8 @@ class EplusEnv(gym.Env):
         # building file
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
-        if isinstance(weather_files, str):
-            self.weather_files = [weather_files]
-        else:
-            self.weather_files = weather_files
+        self.weather_files = [weather_files] if isinstance(
+            weather_files, str) else weather_files
 
         # ---------------------------------------------------------------------------- #
         #                  Variables, meters and actuators definition                  #
@@ -366,12 +364,12 @@ class EplusEnv(gym.Env):
             obs = self.last_obs
             info = self.last_info
         else:
-            # enqueue action (received by EnergyPlus through dedicated callback)
-            # then wait to get next observation.
-            # timeout is set to 2s to handle end of simulation cases, which happens async
+            # Enqueue action (received by EnergyPlus through dedicated callback)
+            # then wait to get the next observation.
+            # Timeout is set to 2s to handle end of simulation cases, which happens asynchronously
             # and materializes by worker thread waiting on this queue (EnergyPlus callback
-            # not consuming yet/anymore)
-            # timeout value can be increased if E+ timestep takes longer
+            # not consuming yet/anymore).
+            # Timeout value can be increased if E+ timestep takes longer.
             timeout = 2
             try:
                 self.act_queue.put(action, timeout=timeout)
