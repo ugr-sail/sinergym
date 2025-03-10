@@ -152,7 +152,7 @@ extras = [
 # -------------------------------------------------------------------------- #
 [tool.isort]
 profile = "black"
-src_paths = ["sinergym", "test", "scripts"]
+src_paths = ["sinergym", "tests", "scripts"]
 
 # -------------------------------------------------------------------------- #
 #                         Poetry build configuration                         #
