@@ -48,17 +48,17 @@ def get_evaluation(env_params: Dict, train_env: gym.Env):
     # Wrapper for evaluation environment
     if wandb.config.get('wrappers'):
         for wrapper in wandb.config['wrappers']:
-            wrapper_name = wrapper[0]
-            if wrapper_name != 'WandBLogger':
-                wrapper_parameters = wrapper[1]
-                wrapper_class = eval(wrapper_name)
-                for name, value in wrapper_parameters.items():
-                    if isinstance(value, str):
-                        # A item that must be evaluated if '.' is present
-                        if '.' in value:
-                            wrapper_parameters[name] = eval(value)
-                eval_env = wrapper_class(
-                    env=eval_env, ** wrapper_parameters)
+            for key, parameters in wrapper.items():
+                # In evaluation, WandBLogger is not required
+                if key != 'WandBLogger':
+                    wrapper_class = eval(key)
+                    for name, value in parameters.items():
+                        if isinstance(value, str):
+                            # A item that must be evaluated if '.' is present
+                            if '.' in value:
+                                parameters[name] = eval(value)
+                    eval_env = wrapper_class(
+                        env=eval_env, ** parameters)
 
     # Make evaluation callback for environment
     eval_length = wandb.config['evaluation']['eval_length']
@@ -116,15 +116,14 @@ def train():
 
         if wandb.config.get('wrappers'):
             for wrapper in wandb.config['wrappers']:
-                wrapper_name = wrapper[0]
-                wrapper_parameters = wrapper[1]
-                wrapper_class = eval(wrapper_name)
-                for name, value in wrapper_parameters.items():
-                    if isinstance(value, str):
-                        # A item that must be evaluated if '.' is present
-                        if '.' in value:
-                            wrapper_parameters[name] = eval(value)
-                env = wrapper_class(env=env, ** wrapper_parameters)
+                for key, parameters in wrapper.items():
+                    wrapper_class = eval(key)
+                    for name, value in parameters.items():
+                        if isinstance(value, str):
+                            # A item that must be evaluated if '.' is present
+                            if '.' in value:
+                                parameters[name] = eval(value)
+                    env = wrapper_class(env=env, ** parameters)
 
         assert is_wrapped(
             env, WandBLogger), 'Environments with sweeps must be wrapped with WandBLogger.'
@@ -243,13 +242,6 @@ def train():
                     src_path=env.get_wrapper_attr('workspace_path'),
                     dest_bucket_name=wandb.config['cloud']['remote_store'],
                     dest_path=experiment_name)
-            # ---------------------------------------------------------------------------- #
-            #                   Autodelete option if is a cloud resource                   #
-            # ---------------------------------------------------------------------------- #
-            if wandb.config['cloud'].get('auto_delete'):
-                token = gcloud.get_service_account_token()
-                gcloud.delete_instance_MIG_from_container(
-                    wandb.config['cloud']['auto_delete']['group_name'], token)
 
         # ---------------------------------------------------------------------------- #
         #                               Close environment                              #
@@ -266,14 +258,6 @@ def train():
 
         # Current model state save
         model.save(env.get_wrapper_attr('workspace_path') + '/model')
-
-        # Auto delete
-        if wandb.config.get('cloud'):
-            if wandb.config['cloud'].get('auto_delete'):
-                print('Deleting remote container')
-                token = gcloud.get_service_account_token()
-                gcloud.delete_instance_MIG_from_container(
-                    wandb.config['cloud']['auto_delete']['group_name'], token)
 
         env.close()
         raise err

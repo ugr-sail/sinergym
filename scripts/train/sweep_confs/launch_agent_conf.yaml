@@ -8,6 +8,10 @@ project: test-project
 parallel_agents: 1
 sequential_experiments: 1
 train_script_path: /workspaces/sinergym/scripts/train/sweep_confs/train_agent_sweep_conf.py
+
+# -------------------------- Google Cloud (Optional) ------------------------- #
+autodelete: false
+
 # --------------------------------- OPTIONALS -------------------------------- #
 wandb_api_key: null # Use it to set a different api key than the one in the environment variable
 wandb_group: null

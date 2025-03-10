@@ -92,30 +92,29 @@ parameters:
 
 # --------------------------------- WRAPPERS --------------------------------- #
   wrappers:
-    values: 
-      - [
-          ['NormalizeObservation', {}],
-          ['NormalizeAction', {}],
-          ['LoggerWrapper', {}],
-          ['CSVLogger',{}],
-          ['WandBLogger', {'save_code': True,
-                          'dump_frequency': 1000,
-                          'artifact_save': True,
-                          'artifact_type': 'output',
-                          'excluded_info_keys': ['reward',
-                                                  'action',
-                                                  'timestep',
-                                                  'month',
-                                                  'day',
-                                                  'hour',
-                                                  'time_elapsed(hours)',
-                                                  'reward_weight',
-                                                  'is_raining'],
-                          'excluded_episode_summary_keys':['terminated',
-                                                            'truncated']
-                          }
-          ],
-      ]
+    value: 
+      - NormalizeObservation: {}
+      - NormalizeAction: {}
+      - LoggerWrapper: {}
+      - CSVLogger: {}
+      - WandBLogger: 
+          save_code: True
+          dump_frequency: 1000
+          artifact_save: True
+          artifact_type: output
+          excluded_info_keys: 
+            - reward
+            - action
+            - timestep
+            - month
+            - day
+            - hour
+            - time_elapsed(hours)
+            - reward_weight
+            - is_raining
+          excluded_episode_summary_keys:
+            - terminated
+            - truncated
 
 # --------------------------- INITIAL STATE (MODEL) -------------------------- #
   # Model from scratch:
@@ -158,8 +157,5 @@ parameters:
 # -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
 # cloud: 
 #   remote_store: null # remote bucket name
-#   auto_delete: null # Delete remote instance when finish experiment
-  # auto_delete:
-  #   group_name: group-example
   
       
