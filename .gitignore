@@ -5,9 +5,6 @@ __pycache__/
 .ipynb_checkpoints
 *.egg-info
 
-#vscode conf
-.vscode
-
 # Other softwares
 EnergyPlus*/
 
