@@ -20,23 +20,38 @@ logger = terminal_logger.getLogger(
 )
 
 # Create environment and apply wrappers for normalization and logging
-env = gym.make(
-    'Eplus-5zone-hot-continuous-stochastic-v1',
-    max_ep_data_store_num=1)
+env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
 env = NormalizeAction(env)
 env = NormalizeObservation(env)
 env = LoggerWrapper(env)
 env = CSVLogger(env)
 
-obs, info = env.reset()
+# Execute 3 episodes
+for i in range(3):
 
-env.get_wrapper_attr('info')()
-
-for i in range(1):
+    # Reset the environment to start a new episode
     obs, info = env.reset()
-    truncated = terminated = False
-    while not (terminated or truncated):
-        action = np.array([14.0, 24.0], dtype=np.float32)
-        obs, reward, terminated, truncated, info = env.step(action)
 
+    rewards = []
+    truncated = terminated = False
+    current_month = 0
+
+    while not (terminated or truncated):
+
+        # Random action selection
+        a = env.action_space.sample()
+
+        # Perform action and receive env information
+        obs, reward, terminated, truncated, info = env.step(a)
+
+        rewards.append(reward)
+
+        # Display results every simulated month
+        if info['month'] != current_month:
+            current_month = info['month']
+            logger.info('Reward: {}'.format(sum(rewards)))
+            logger.info('Info: {}'.format(info))
+
+    logger.info('Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(i,
+                                                                              np.mean(rewards), sum(rewards)))
 env.close()
