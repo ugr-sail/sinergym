@@ -172,26 +172,26 @@ class ModelJSON(object):
         # must be converted to dictionary)
 
         # LOCATION
-        new_location = self.ddy_model.idfobjects['Site:Location'][0]
-        new_location = eppy_element_to_dict(new_location)
+        self.building['Site:Location'] = eppy_element_to_dict(
+            next(location for location in self.ddy_model.idfobjects['Site:Location']))
 
         # DESIGNDAYS
         ddy_designdays = self.ddy_model.idfobjects['SizingPeriod:DesignDay']
-        summer_designdays = list(
-            filter(
-                lambda designday: summerday in designday.Name,
-                ddy_designdays))[0]
-        winter_designdays = list(
-            filter(
-                lambda designday: winterday in designday.Name,
-                ddy_designdays))[0]
-        new_designdays = {}
-        new_designdays.update(eppy_element_to_dict(winter_designdays))
-        new_designdays.update(eppy_element_to_dict(summer_designdays))
 
-        # Addeding new location and DesignDays to Building model
-        self.building['Site:Location'] = new_location
-        self.building['SizingPeriod:DesignDay'] = new_designdays
+        try:
+            summer_designday = next(
+                dd for dd in ddy_designdays if summerday in dd.Name)
+            winter_designday = next(
+                dd for dd in ddy_designdays if winterday in dd.Name)
+        except StopIteration:
+            self.logger.error(
+                f"Design day not found: Summer='{summerday}', Winter='{winterday}'")
+            raise ValueError
+
+        self.building['SizingPeriod:DesignDay'] = {
+            **eppy_element_to_dict(winter_designday),
+            **eppy_element_to_dict(summer_designday)
+        }
 
         self.logger.info('Adapting weather to building model.')
         self.logger.debug(f'Weather path: {self._weather_path.split('/')[-1]}')
