@@ -429,20 +429,16 @@ class ModelJSON(object):
         runperiod = list(self.building['RunPeriod'].values())[0]
 
         # Extract information about runperiod
-        start_month = int(
-            0 if runperiod['begin_month'] is None else runperiod['begin_month'])
-        start_day = int(
-            0 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month'])
-        start_year = int(
-            YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
-        end_month = int(
-            0 if runperiod['end_month'] is None else runperiod['end_month'])
-        end_day = int(0 if runperiod['end_day_of_month']
-                      is None else runperiod['end_day_of_month'])
-        end_year = int(
-            YEAR if runperiod['end_year'] is None else runperiod['end_year'])
+        start_month = runperiod.get('begin_month', 0)
+        start_day = runperiod.get('begin_day_of_month', 0)
+        start_year = runperiod.get('begin_year', YEAR)
+        end_month = runperiod.get('end_month', 0)
+        end_day = runperiod.get('end_day_of_month', 0)
+        end_year = runperiod.get('end_year', YEAR)
+
         start_weekday = WEEKDAY_ENCODING[runperiod['day_of_week_for_start_day'].lower(
         )]
+
         n_steps_per_hour = list(self.building['Timestep'].values())[
             0]['number_of_timesteps_per_hour']
 
