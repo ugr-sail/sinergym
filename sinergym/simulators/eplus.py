@@ -210,13 +210,12 @@ class EnergyPlus(object):
            reset (except handlers, to not initialize again if there is a next thread execution).
         """
         if self.is_running:
-            # Set simulation as complete and force thread to finish
-            self.simulation_complete = True
             # Kill progress bar
             if self.progress_bar is not None:
                 self.progress_bar.close()
-            # Flush all queues and unblock thread if needed
-            self._flush_queues()
+            # Set simulation as complete and force thread to finish
+            self.simulation_complete = True
+            # Unblock action thread if needed
             if self.act_queue.empty():
                 self.act_queue.put([0] * len(self.actuators))
             # Wait to thread to finish (without control)
@@ -274,7 +273,7 @@ class EnergyPlus(object):
 
         # if simulation is completed or not initialized --> do nothing
         if self.simulation_complete:
-            return
+            self.api.runtime.stop_simulation(self.energyplus_state)
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)
         if not self.system_ready:
@@ -329,7 +328,7 @@ class EnergyPlus(object):
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            return
+            self.api.runtime.stop_simulation(self.energyplus_state)
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)
         if not self.system_ready:
@@ -359,7 +358,7 @@ class EnergyPlus(object):
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            return
+            self.api.runtime.stop_simulation(self.energyplus_state)
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)
         if not self.system_ready:
