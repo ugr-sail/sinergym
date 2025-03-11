@@ -287,8 +287,6 @@ class EplusEnv(gym.Env):
             output_path=eplus_working_out_path,
             episode=self.episode)
 
-        self.logger.info(f'Episode {self.episode} started.')
-
         # wait for E+ warmup to complete
         if not self.energyplus_simulator.warmup_complete:
             self.logger.debug('Waiting for finishing WARMUP process.')
@@ -313,6 +311,8 @@ class EplusEnv(gym.Env):
         info.update({'timestep': self.timestep})
         self.last_obs = obs
         self.last_info = info
+
+        self.logger.info(f'Episode {self.episode} started.')
 
         self.logger.debug(f'RESET observation received: {obs}')
         self.logger.debug(f'RESET info received: {info}')
