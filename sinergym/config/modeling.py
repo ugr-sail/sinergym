@@ -197,23 +197,29 @@ class ModelJSON(object):
         self.logger.debug(f'Weather path: {self._weather_path.split('/')[-1]}')
 
     def adapt_building_to_variables(self) -> None:
-        """This method reads all variables and write it in the building model as Output:Variable field.
-        """
-        output_variables = {}
-        for i, (variable_name, variable_key) in enumerate(
-                list(self._variables.values()), start=1):
+        """Replaces the default Output:Variable entries in the building model with custom variables.
 
-            # Add element Output:Variable to the building model
-            output_variables['Output:Variable ' + str(i)] = {'key_value': variable_key,
-                                                             'variable_name': variable_name,
-                                                             'reporting_frequency': 'Timestep'}
+        This method removes all default Output:Variable entries and adds new ones based on
+        the variables stored in `self._variables`. Each variable is assigned a key, a name,
+        and a reporting frequency of 'Timestep'.
+        """
+
+        # Remove existing Output:Variables
+        self.building['Output:Variable'] = {}
+
+        # Construct and assign new Output:Variable dictionary
+        self.building['Output:Variable'] = {
+            f'Output:Variable {i}': {
+                'key_value': variable_key,
+                'variable_name': variable_name,
+                'reporting_frequency': 'Timestep'} for i,
+            (variable_name,
+             variable_key) in enumerate(
+                self._variables.values(),
+                start=1)}
 
         self.logger.info(
-            'Update building model Output:Variable with variable names.')
-
-        # Delete default Output:Variables and added whole building variables to
-        # Output:Variable field
-        self.building['Output:Variable'] = output_variables
+            'Building model Output:Variable updated with defined variable names.')
 
     def adapt_building_to_meters(self) -> None:
         """This method reads all meters and write it in the building model as Output:Meter field.
@@ -426,7 +432,7 @@ class ModelJSON(object):
             Dict[str,int]: A Dict with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
         # Get runperiod object inner building model
-        runperiod = list(self.building['RunPeriod'].values())[0]
+        runperiod = next(iter(self.building['RunPeriod'].values()), {})
 
         # Extract information about runperiod
         start_month = runperiod.get('begin_month', 0)
