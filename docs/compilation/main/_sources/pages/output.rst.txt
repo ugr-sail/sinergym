@@ -2,7 +2,7 @@
 Sinergym output
 ###############
 
-When a simulation is running, it creates a directory named ``Eplus-env-<env_name>-res<num_simulation>``. The ``modeling`` module is responsible for managing the directory structure generated during a simulation.
+When a simulation is running, it creates a directory named ``<env_name>-res<num_simulation>``. The ``modeling`` module is responsible for managing the directory structure generated during a simulation.
 
 The contents of this root output directory include the results of the simulation, and consists of the following: 
 
@@ -15,7 +15,7 @@ The contents of this root output directory include the results of the simulation
 
 .. note:: Optional files and directories are not shown in the image above. They are explained in the text below.
 
-- ``Eplus-env-sub_run<num_episode>`` directories record the results of each simulation episode. The number of directories retained depends on the value specified by the ``max_ep_data_store_num`` parameter (see :ref:`Maximum episode data stored in Sinergym output`). Within these directories, the structure is consistent and follows the same format, including:
+- ``episode-<num_episode>`` directories record the results of each simulation episode. The number of directories retained depends on the value specified by the ``max_ep_data_store_num`` parameter (see :ref:`Maximum episode data stored in Sinergym output`). Within these directories, the structure is consistent and follows the same format, including:
 
     - A copy of the ``environment.epJSON`` used during the simulation episode. This does not need to match the original one, as the simulation can be modified to accommodate specific user-defined settings when defining the Gymnasium environment.
 
