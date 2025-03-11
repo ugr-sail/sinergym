@@ -154,7 +154,7 @@ def test_check_model_wrong_weather(model_5zone_several_weathers):
     model_5zone_several_weathers._check_eplus_config()
     # update weather paths with one which does not exist
     model_5zone_several_weathers.weather_files.append('unknown_weather.epw')
-    with pytest.raises(AssertionError):
+    with pytest.raises(FileNotFoundError):
         model_5zone_several_weathers._check_eplus_config()
 
 
@@ -163,15 +163,15 @@ def test_check_model_wrong_config(model_5zone_several_weathers):
     # update config dictionary with wrong values
     if model_5zone_several_weathers.config.get('timesteps_per_hour'):
         model_5zone_several_weathers.config['timesteps_per_hour'] = -7
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['timesteps_per_hour'] = 2
     if model_5zone_several_weathers.config.get('runperiod'):
         model_5zone_several_weathers.config['runperiod'] = (1, 2, 3, 4)
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['runperiod'] = 2024
-        with pytest.raises(AssertionError):
+        with pytest.raises(TypeError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['runperiod'] = (
             1, 2, 1993, 2, 3, 1993)
