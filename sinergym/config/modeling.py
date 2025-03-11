@@ -476,39 +476,6 @@ class ModelJSON(object):
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def set_episode_working_dir(self) -> str:
-        """Set episode working dir path like config attribute for current simulation execution.
-
-        Raises:
-            Exception: If experiment path (parent folder) has not be created previously.
-
-        Returns:
-            str: Episode path for directory created.
-        """
-        # Generate episode dir path if experiment dir path has been created
-        # previously
-        if self.experiment_path is None:
-            self.logger.error('Experiment path is not specified.')
-            raise Exception
-        else:
-            episode_path = self._get_working_folder(
-                directory_path=self.experiment_path,
-                base_name='episode-')
-            # Create directory
-            os.makedirs(episode_path)
-            # set path like config attribute
-            self.episode_path = episode_path
-
-            # Remove redundant past working directories
-            self._rm_past_history_dir(episode_path, 'episode-')
-
-            self.logger.info(
-                'Episode directory created.')
-            self.logger.debug(
-                f'Episode directory path: {episode_path}')
-
-            return episode_path
-
     def _set_experiment_working_dir(self, env_name: str) -> str:
         """Set experiment working dir path like config attribute for current simulation.
 
@@ -518,23 +485,27 @@ class ModelJSON(object):
         Returns:
             str: Experiment path for directory created.
         """
-        # CRITICAL SECTION for paralell execution
-        # In order to avoid several folders with the same name
-        with open(CWD + '/.lock', 'w') as f:
-            # Exclusive lock
+        # lock file for paralell execution
+        lock_file = os.path.join(CWD, '.lock')
+
+        # CRITICAL SECTION: Avoid race conditions when generating the directory
+        with open(lock_file, 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             try:
-                # Generate experiment dir path
+                # Generate experiment_path
                 experiment_path = self._get_working_folder(
                     directory_path=CWD,
-                    base_name='%s-res' %
-                    (env_name))
-                # Create dir
+                    base_name=f'{env_name}-res'
+                )
+
+                # Create directory
                 os.makedirs(experiment_path)
+
             finally:
-                # Release lock
+                # Release the lock
                 fcntl.flock(f, fcntl.LOCK_UN)
-        # Set path like config attribute
+
+        # Set path as an instance attribute
         self.experiment_path = experiment_path
 
         self.logger.info(
@@ -578,6 +549,39 @@ class ModelJSON(object):
             directory_path, f'{base_name}{experiment_id}')
 
         return working_dir
+
+    def set_episode_working_dir(self) -> str:
+        """Set episode working dir path like config attribute for current simulation execution.
+
+        Raises:
+            Exception: If experiment path (parent folder) has not be created previously.
+
+        Returns:
+            str: Episode path for directory created.
+        """
+        # Generate episode dir path if experiment dir path has been created
+        # previously
+        if self.experiment_path is None:
+            self.logger.error('Experiment path is not specified.')
+            raise Exception
+        else:
+            episode_path = self._get_working_folder(
+                directory_path=self.experiment_path,
+                base_name='episode-')
+            # Create directory
+            os.makedirs(episode_path)
+            # set path like config attribute
+            self.episode_path = episode_path
+
+            # Remove redundant past working directories
+            self._rm_past_history_dir(episode_path, 'episode-')
+
+            self.logger.info(
+                'Episode directory created.')
+            self.logger.debug(
+                f'Episode directory path: {episode_path}')
+
+            return episode_path
 
     def _rm_past_history_dir(
             self,
