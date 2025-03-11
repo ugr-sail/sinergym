@@ -141,8 +141,8 @@ class ModelJSON(object):
         self.adapt_building_to_config()
 
         # Runperiod information
-        self.runperiod = self._get_eplus_runperiod()
-        self.episode_length = self._get_runperiod_len()
+        self.runperiod = self.get_eplus_runperiod()
+        self.episode_length = self.get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
         self.timestep_per_episode = int(
             self.episode_length / self.step_size)
@@ -261,8 +261,8 @@ class ModelJSON(object):
                 runperiod['end_year'] = int(self.config['runperiod'][5])
 
                 # Update runperiod and episode related attributes
-                self.runperiod = self._get_eplus_runperiod()
-                self.episode_length = self._get_runperiod_len()
+                self.runperiod = self.get_eplus_runperiod()
+                self.episode_length = self.get_runperiod_len()
                 self.step_size = 3600 / self.runperiod['n_steps_per_hour']
                 self.timestep_per_episode = int(
                     self.episode_length / self.step_size)
@@ -418,7 +418,7 @@ class ModelJSON(object):
 #                           Runperiod info extraction                          #
 # ---------------------------------------------------------------------------- #
 
-    def _get_eplus_runperiod(
+    def get_eplus_runperiod(
             self) -> Dict[str, int]:
         """This method reads building runperiod information and returns it.
 
@@ -452,7 +452,7 @@ class ModelJSON(object):
             'start_weekday': start_weekday,
             'n_steps_per_hour': n_steps_per_hour}
 
-    def _get_runperiod_len(self) -> float:
+    def get_runperiod_len(self) -> float:
         """Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
