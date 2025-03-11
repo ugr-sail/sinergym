@@ -5,6 +5,7 @@ import os
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
+import re
 
 import numpy as np
 from eppy.modeleditor import IDF
@@ -559,27 +560,23 @@ class ModelJSON(object):
 
         """
 
-        # Create de rute if not exists
+        # Ensure directory exists
         os.makedirs(directory_path, exist_ok=True)
-        experiment_id = 0
-        # Iterate all elements inner path
-        for folder_name in os.listdir(directory_path):
-            if not os.path.isdir(os.path.join(directory_path, folder_name)):
-                continue
-            try:
-                # Detect if there is another directory with the same base_name
-                # and get number at final of the name
-                folder_name = int(folder_name.split(base_name)[-1])
-                if folder_name > experiment_id:
-                    experiment_id = folder_name
-            except BaseException:
-                pass
-        # experiment_id number will be +1 from last name found out.
-        experiment_id += 1
+
+        # Regular expression to match folders with the base_name followed by a
+        # number
+        pattern = re.compile(rf'^{re.escape(base_name)}(\d+)$')
+
+        # Extract valid numbers from existing folder names
+        existing_numbers = [int(match.group(1)) for folder in os.listdir(directory_path) if (
+            match := pattern.match(folder)) and os.path.isdir(os.path.join(directory_path, folder))]
+
+        # Determine the next experiment ID
+        experiment_id = max(existing_numbers, default=0) + 1
 
         working_dir = os.path.join(
-            directory_path, '%s%d' %
-            (base_name, experiment_id))
+            directory_path, f'{base_name}{experiment_id}')
+
         return working_dir
 
     def _rm_past_history_dir(
