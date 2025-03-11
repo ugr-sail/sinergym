@@ -583,23 +583,46 @@ class ModelJSON(object):
 
             return episode_path
 
-    def _rm_past_history_dir(
-            self,
-            episode_path: str,
-            base_name: str) -> None:
-        """Removes the past simulation results from episode
+    def _rm_past_history_dir(self, episode_path: str, base_name: str) -> None:
+        """Removes old simulation result directories beyond the max storage limit.
 
         Args:
-            episode_path (str): path for the current episide output
-            base_name (str): base name for detect episode output id
+            episode_path (str): Path of the current episode output.
+            base_name (str): Base name used to detect episode output IDs.
         """
+        # Extract directory ID safely using regex
+        match = re.search(rf"{re.escape(base_name)}(\d+)$", episode_path)
+        if not match:
+            self.logger.error(
+                f"Could not extract episode ID from: {episode_path}")
+            raise ValueError
 
-        cur_dir_name, cur_dir_id = episode_path.split(base_name)
-        cur_dir_id = int(cur_dir_id)
-        if cur_dir_id - self.max_ep_store > 0:
-            rm_dir_id = cur_dir_id - self.max_ep_store
-            rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
+        try:
+            cur_dir_id = int(match.group(1))
+        except ValueError:
+            self.logger.error(
+                f"Invalid episode ID extracted from: {episode_path}")
+            raise ValueError
+
+        # Compute the directory ID to remove
+        rm_dir_id = cur_dir_id - self.max_ep_store
+        if rm_dir_id <= 0:
+            return  # Nothing to remove
+
+        # Construct full path of the directory to remove
+        rm_dir_full_name = os.path.join(
+            os.path.dirname(episode_path),
+            f"{base_name}{rm_dir_id}")
+
+        # Safely remove only if the directory exists
+        if os.path.exists(rm_dir_full_name) and os.path.isdir(
+                rm_dir_full_name):
             rmtree(rm_dir_full_name)
+            self.logger.debug(
+                f"Deleted old episode directory: {rm_dir_full_name}")
+        else:
+            self.logger.warning(
+                f"No old episode directory found to delete: {rm_dir_full_name}")
 
     # ---------------------------------------------------------------------------- #
     #                             Model class checker                              #
