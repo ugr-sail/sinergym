@@ -5,15 +5,11 @@ __pycache__/
 .ipynb_checkpoints
 *.egg-info
 
-#vscode conf
-.vscode
-
 # Other softwares
 EnergyPlus*/
-bcvtb/
 
 # Simulation outputs
-Eplus-env*/
+Eplus-*/
 Sinergym_output/
 
 #Socket.cfg in tests
@@ -37,6 +33,9 @@ docs/build/
 
 #dist folder for pypi packages
 dist/
+
+# pytest output
+PYTEST*/
 
 #.pytest_cache
 .pytest_cache/

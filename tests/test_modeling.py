@@ -154,7 +154,7 @@ def test_check_model_wrong_weather(model_5zone_several_weathers):
     model_5zone_several_weathers._check_eplus_config()
     # update weather paths with one which does not exist
     model_5zone_several_weathers.weather_files.append('unknown_weather.epw')
-    with pytest.raises(AssertionError):
+    with pytest.raises(FileNotFoundError):
         model_5zone_several_weathers._check_eplus_config()
 
 
@@ -163,15 +163,15 @@ def test_check_model_wrong_config(model_5zone_several_weathers):
     # update config dictionary with wrong values
     if model_5zone_several_weathers.config.get('timesteps_per_hour'):
         model_5zone_several_weathers.config['timesteps_per_hour'] = -7
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['timesteps_per_hour'] = 2
     if model_5zone_several_weathers.config.get('runperiod'):
         model_5zone_several_weathers.config['runperiod'] = (1, 2, 3, 4)
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['runperiod'] = 2024
-        with pytest.raises(AssertionError):
+        with pytest.raises(TypeError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.config['runperiod'] = (
             1, 2, 1993, 2, 3, 1993)
@@ -296,11 +296,11 @@ def test_set_episode_working_dir(model_5zone):
 def test_set_experiment_working_dir(model_5zone):
     # Check current config experiment working dir and if exists
     current_experiment_path = model_5zone.experiment_path
-    assert 'Eplus-env-TESTCONFIG-res' in current_experiment_path
+    assert 'PYTESTCONFIG-res' in current_experiment_path
     assert os.path.isdir(current_experiment_path)
     # Set a new experiment_path
     new_experiment_path = model_5zone._set_experiment_working_dir(
-        env_name='TESTCONFIG')
+        env_name='PYTESTCONFIG')
     # The name should be the same except last number id
     assert current_experiment_path[:-1] == new_experiment_path[:-1]
     assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
@@ -309,9 +309,9 @@ def test_set_experiment_working_dir(model_5zone):
 
 
 def test_get_working_folder(model_5zone):
-    expected = 'Eplus-env-TESTCONFIG-res1/Eplus-env-sub_run1'
-    parent_dir = 'Eplus-env-TESTCONFIG-res1'
-    dir_sig = '-sub_run'
+    expected = 'PYTESTCONFIG-res1/episode-1'
+    parent_dir = 'PYTESTCONFIG-res1'
+    dir_sig = 'episode-'
     path = model_5zone._get_working_folder(parent_dir, dir_sig)
     assert expected == path
 

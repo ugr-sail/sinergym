@@ -1,0 +1,43 @@
+name: Generate Changelog
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  update-pr-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Generate Changelog
+        run: |
+          echo '## 📜 Automatic Changelog' > changelog.md
+          echo '' >> changelog.md
+          echo '<details>' >> changelog.md
+          echo '  <summary>🔽 Click to view changelog</summary>' >> changelog.md
+          echo '' >> changelog.md
+          if git rev-parse --verify origin/main > /dev/null 2>&1; then
+            git log $(git merge-base origin/main HEAD)..HEAD --pretty=format:"- %s" --no-merges --reverse >> changelog.md
+          else
+            git log --pretty=format:"- %s" --no-merges --reverse >> changelog.md
+          fi
+          echo '' >> changelog.md
+          echo '</details>' >> changelog.md
+
+      - name: Update PR Description
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(gh pr view $PR_NUMBER --repo $REPO --json body -q .body)
+          UPDATED_BODY=$(echo "$BODY" | sed -e '/## 📜 Automatic Changelog/,$d')
+          echo -e "$UPDATED_BODY\n\n$(cat changelog.md)" > new_body.md
+          gh pr edit $PR_NUMBER --repo $REPO --body-file new_body.md
