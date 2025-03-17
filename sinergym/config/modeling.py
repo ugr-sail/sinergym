@@ -364,19 +364,17 @@ class ModelJSON(object):
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
 
-        filename = self._weather_path.split('/')[-1]
+        base_filename, ext = os.path.splitext(
+            os.path.basename(self._weather_path))
         weather_data_mod = deepcopy(self.weather_data)
 
         # Apply variation to EPW if exists
-        if weather_variability is not None:
+        if weather_variability:
 
-            # Check if there are ranges specified in params and get a random
-            # value
+            # Generate variability configuration
             self.weather_variability_config = {
                 weather_var: tuple(
-                    np.random.uniform(
-                        param[0], param[1]) if isinstance(
-                        param, tuple) else param
+                    np.random.uniform(param[0], param[1]) if isinstance(param, tuple) else param
                     for param in params
                 )
                 for weather_var, params in weather_variability.items()
@@ -388,18 +386,20 @@ class ModelJSON(object):
                 variability_config=self.weather_variability_config)
 
             self.logger.info(
-                f'Weather noise applied in columns: {
-                    list(
-                        self.weather_variability_config.keys())}')
+                f'Weather noise applied to columns: {
+                    list(self.weather_variability_config.keys())}')
 
             # Modify filename to reflect noise addition
-            filename = f"{filename.split('.epw')[0]}_OU_Noise.epw"
+            base_filename += '_OU_Noise'
 
-        episode_weather_path = self.episode_path + '/' + filename
+        # Define output path
+        episode_weather_path = os.path.join(
+            self.episode_path, f'{base_filename}{ext}')
+        # Write new weather file
         weather_data_mod.write(episode_weather_path)
 
         self.logger.debug(
-            f'Saving episode weather path... [{episode_weather_path}]')
+            f'Saved modified weather file: {episode_weather_path}')
 
         return episode_weather_path
 
