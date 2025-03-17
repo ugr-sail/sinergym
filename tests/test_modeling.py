@@ -262,7 +262,7 @@ def test_get_schedulers(model_5zone):
 
 
 def test_get_eplus_runperiod(model_5zone):
-    runperiod = model_5zone._get_eplus_runperiod()
+    runperiod = model_5zone.get_eplus_runperiod()
     building_runperiod = list(model_5zone.building['RunPeriod'].values())[0]
 
     assert runperiod['start_day'] == building_runperiod['begin_day_of_month']

@@ -222,22 +222,22 @@ class ModelJSON(object):
             'Building model Output:Variable updated with defined variable names.')
 
     def adapt_building_to_meters(self) -> None:
-        """This method reads all meters and write it in the building model as Output:Meter field.
+        """Reads all meters and updates the building model with Output:Meter fields.
         """
-        output_meters = {}
-        for i, meter_name in enumerate(
-                list(self._meters.values()), start=1):
 
-            # Add element Output:Variable to the building model
-            output_meters['Output:Meter ' +
-                          str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
+        # Remove existing Output:Meters
+        self.building['Output:Meter'] = {}
+
+        # Construct and assign new Output:Meter dictionary
+        self.building['Output:Meter'] = {
+            f'Output:Meter {i}': {
+                'key_name': meter_name,
+                'reporting_frequency': 'Timestep'} for i,
+            meter_name in enumerate(self._meters.values(), start=1)
+        }
 
         self.logger.info(
-            'Update building model Output:Meter with meter names.')
-
-        # Delete default Output:Variables and added whole building variables to
-        # Output:Variable field
-        self.building['Output:Meter'] = output_meters
+            'Updated building model Output:Meter with meter names.')
 
     def adapt_building_to_config(self) -> None:
         """Set extra configuration in building model
