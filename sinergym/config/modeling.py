@@ -295,20 +295,25 @@ class ModelJSON(object):
         """
 
         # If no path specified, then use json_path to save it.
-        if self.episode_path is not None:
-            episode_json_path = os.path.join(self.episode_path,
-                                             os.path.basename(self._json_path))
-            with open(episode_json_path, "w") as outfile:
-                json.dump(self.building, outfile, indent=4)
-
-            self.logger.debug(
-                f'Saving episode building model... [{episode_json_path}]')
-
-            return episode_json_path
-        else:
+        if not self.episode_path:
             self.logger.error(
                 'Episode path should be set before saving building model.')
             raise RuntimeError
+
+        episode_json_path = os.path.join(self.episode_path,
+                                         os.path.basename(self._json_path))
+
+        try:
+            with open(episode_json_path, 'w') as outfile:
+                json.dump(self.building, outfile, indent=4)
+            self.logger.debug(f'Building model saved at: {episode_json_path}')
+
+        except OSError:
+            self.logger.error(
+                f'Failed to save building model: {episode_json_path}')
+            raise OSError
+
+        return episode_json_path
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #

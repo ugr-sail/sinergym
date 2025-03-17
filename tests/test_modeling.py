@@ -144,6 +144,10 @@ def test_save_building_model(model_5zone):
     model_5zone.episode_path = None
     with pytest.raises(RuntimeError):
         model_5zone.save_building_model()
+    # Update episode path to wrong value to check save error
+    model_5zone.episode_path = 'unknown_path/unexistent_dir'
+    with pytest.raises(OSError):
+        model_5zone.save_building_model()
 
 # ---------------------------------------------------------------------------- #
 #                        EPW and Weather Data management                       #
