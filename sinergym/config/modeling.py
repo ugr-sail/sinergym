@@ -242,45 +242,50 @@ class ModelJSON(object):
     def adapt_building_to_config(self) -> None:
         """Set extra configuration in building model
         """
-        if self.config is not None:
 
-            # Timesteps processed in a simulation hour
-            if self.config.get('timesteps_per_hour'):
-                list(self.building['Timestep'].values())[
-                    0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+        if not self.config:
+            return
 
-                self.logger.debug(
-                    f'Extra config: timesteps_per_hour set up to {
-                        self.config['timesteps_per_hour']}')
+        # Timesteps processed in a simulation hour
+        timesteps = self.config.get('timesteps_per_hour')
+        if timesteps:
+            next(iter(self.building['Timestep'].values()), {})[
+                'number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
 
-            # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
-            # end_day, end_month, end_year)
-            if self.config.get('runperiod'):
-                runperiod = list(self.building['RunPeriod'].values())[0]
-                runperiod['begin_day_of_month'] = int(
-                    self.config['runperiod'][0])
-                runperiod['begin_month'] = int(self.config['runperiod'][1])
-                runperiod['begin_year'] = int(self.config['runperiod'][2])
-                runperiod['end_day_of_month'] = int(
-                    self.config['runperiod'][3])
-                runperiod['end_month'] = int(self.config['runperiod'][4])
-                runperiod['end_year'] = int(self.config['runperiod'][5])
+            self.logger.debug(
+                f'Extra config: timesteps_per_hour set up to {
+                    self.config['timesteps_per_hour']}')
 
-                # Update runperiod and episode related attributes
-                self.runperiod = self.get_eplus_runperiod()
-                self.episode_length = self.get_runperiod_len()
-                self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-                self.timestep_per_episode = int(
-                    self.episode_length / self.step_size)
-                self.logger.info(
-                    f'Extra config: runperiod updated to {runperiod}')
-                self.logger.info(
-                    f'Updated episode length (seconds): {self.episode_length}')
-                self.logger.info(
-                    f'Updated timestep size (seconds): {self.step_size}')
-                self.logger.info(
-                    f'Updated timesteps per episode: {
-                        self.timestep_per_episode}')
+        # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
+        # end_day, end_month, end_year)
+        runperiod = self.config.get('runperiod')
+        if runperiod:
+            next(iter(self.building['RunPeriod'].values()), {}).update({
+                'begin_day_of_month': int(runperiod[0]),
+                'begin_month': int(runperiod[1]),
+                'begin_year': int(runperiod[2]),
+                'end_day_of_month': int(runperiod[3]),
+                'end_month': int(runperiod[4]),
+                'end_year': int(runperiod[5])
+            })
+
+            # Update runperiod and episode related attributes
+            self.runperiod = self.get_eplus_runperiod()
+            self.episode_length = self.get_runperiod_len()
+            self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+            self.timestep_per_episode = int(
+                self.episode_length / self.step_size)
+
+            # Log updated values in terminal
+            self.logger.info(
+                f'Extra config: runperiod updated to {self.runperiod}')
+            self.logger.info(
+                f'Updated episode length (seconds): {self.episode_length}')
+            self.logger.info(
+                f'Updated timestep size (seconds): {self.step_size}')
+            self.logger.info(
+                f'Updated timesteps per episode: {
+                    self.timestep_per_episode}')
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
