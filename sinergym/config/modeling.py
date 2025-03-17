@@ -322,12 +322,29 @@ class ModelJSON(object):
     def update_weather_path(self) -> None:
         """When this method is called, weather file is changed randomly and building model is adapted to new one.
         """
+
+        if not self.weather_files:
+            self.logger.error('No weather files available to choose from.')
+            raise ValueError
+
+        # Select a new weather file randomly
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', np.random.choice(
                 self.weather_files))
-        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+
+        # Verify file exists
+        if not os.path.isfile(self._weather_path):
+            self.logger.error(
+                f'Weather file {self._weather_path} does not exist.')
+            raise FileNotFoundError
+
+        # Update ddy path for the same than weather
+        self._ddy_path = os.path.splitext(self._weather_path)[0] + '.ddy'
+
+        # Load new DDY and Weather instances
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data.read(self._weather_path)
+
         self.logger.info(
             f'Weather file {self._weather_path.split('/')[-1]} used.')
 

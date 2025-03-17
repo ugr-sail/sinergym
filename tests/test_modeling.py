@@ -191,6 +191,14 @@ def test_update_weather_path(model_5zone_several_weathers):
     assert model_5zone_several_weathers._weather_path is not None
     model_5zone_several_weathers.update_weather_path()
     assert model_5zone_several_weathers._weather_path is not None
+    # Try update without any weather
+    model_5zone_several_weathers.weather_files = []
+    with pytest.raises(ValueError):
+        model_5zone_several_weathers.update_weather_path()
+    # Try using a wrong weather file
+    model_5zone_several_weathers.weather_files = ['unknown_weather.epw']
+    with pytest.raises(FileNotFoundError):
+        model_5zone_several_weathers.update_weather_path()
 
 
 def test_apply_weather_variability(model_5zone):
