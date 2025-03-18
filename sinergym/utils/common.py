@@ -236,58 +236,39 @@ def ornstein_uhlenbeck_process(
 
 def parse_variables_settings(
         variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
-    """Read variables dictionary (from Sinergym yaml settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert Sinergym YAML variable settings to EnergyPlus API format.
 
     Args:
-        variables (Dict[str, Any]): Dictionary from Sinergym YAML configuration with variables information.
+        variables (Dict[str, Any]): Dictionary from Sinergym YAML configuration.
 
     Returns:
-        Dict[str, Tuple[str, str]]: Dictionary with variables information in EnergyPlus API format.
+        Dict[str, Tuple[str, str]]: Dictionary adapted for EnergyPlus API.
     """
 
     output = {}
 
     for variable, specification in variables.items():
+        var_names = specification['variable_names']
+        keys = specification['keys']
 
-        if isinstance(specification['variable_names'], str):
+        if isinstance(var_names, str) and isinstance(keys, str):
+            output[var_names] = (variable, keys)
 
-            if isinstance(specification['keys'], str):
-                output[specification['variable_names']] = (
-                    variable, specification['keys'])
+        elif isinstance(var_names, str) and isinstance(keys, list):
+            for key in keys:
+                prename = key.lower().replace(' ', '_') + '_'
+                output[prename + var_names] = (variable, key)
 
-            elif isinstance(specification['keys'], list):
-                for key in specification['keys']:
-                    prename = key.lower()
-                    prename = prename.replace(' ', '_')
-                    prename = prename + '_'
-                    output[prename +
-                           specification['variable_names']] = (variable, key)
-
-            else:
-                raise RuntimeError
-
-        elif isinstance(specification['variable_names'], list):
-
-            if isinstance(specification['keys'], str):
-                raise RuntimeError
-
-            elif isinstance(specification['keys'], list):
-                if len(specification['variable_names']) != len(
-                        specification['keys']):
-                    logger.error(
-                        f'variable names and keys must have the same len in {variable}')
-                    raise ValueError
-                for variable_name, key_name in list(
-                        zip(specification['variable_names'], specification['keys'])):
-                    output[variable_name] = (variable, key_name)
-
-            else:
-                raise RuntimeError
+        elif isinstance(var_names, list) and isinstance(keys, list):
+            if len(var_names) != len(keys):
+                raise ValueError(
+                    f"'variable_names' and 'keys' must have the same length in {variable}")
+            for var_name, key in zip(var_names, keys):
+                output[var_name] = (variable, key)
 
         else:
-
+            logger.error(
+                f'Invalid variable_names or keys format in {variable}')
             raise RuntimeError
 
     return output
