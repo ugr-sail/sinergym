@@ -275,23 +275,15 @@ def parse_variables_settings(
 
 
 def parse_meters_settings(meters: Dict[str, str]) -> Dict[str, str]:
-    """Read meters dictionary (from Sinergym YAML settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert meters dictionary from Sinergym YAML settings to EnergyPlus format.
 
     Args:
-        meters (Dict[str, str]): Dictionary from Sinergym YAML configuration with meters information.
+        meters (Dict[str, str]): Dictionary with meters information.
 
     Returns:
-        Dict[str, str]: Dictionary with meters information in EnergyPlus API format.
+        Dict[str, str]: Reformatted meters dictionary for EnergyPlus API.
     """
-
-    output = {}
-
-    for meter_name, variable_name in meters.items():
-        output[variable_name] = meter_name
-
-    return output
+    return {v: k for k, v in meters.items()}
 
 
 def parse_actuators_settings(
