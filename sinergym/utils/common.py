@@ -304,14 +304,13 @@ def parse_actuators_settings(
 
 def convert_conf_to_env_parameters(
         conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
-    """Convert a configuration from YAML format (sinergym/data/default_configuration/file.yaml) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
-       More information about Sinergym environment configuration in YAML format in documentation.
+    """Convert YAML configuration to a dictionary of possible environments.
 
     Args:
-        conf (Dict[str, Any]): Dictionary from read YAML setting file (sinergym/data/default_configuration/file.yaml).
+        conf (Dict[str, Any]): Dictionary from a YAML configuration file.
 
     Returns:
-        Dict[str,[Dict[str, Any]]: All possible Sinergym environment constructor kwargs.
+        Dict[str, Dict[str, Any]]: Dictionary with environment constructor kwargs.
     """
 
     configurations = {}
@@ -321,74 +320,54 @@ def convert_conf_to_env_parameters(
     actuators = parse_actuators_settings(conf['actuators'])
     context = parse_actuators_settings(conf['context'])
 
-    if len(conf['weather_specification']['weather_files']) != len(
-            conf['weather_specification']['keys']):
+    weather_keys = conf['weather_specification']['keys']
+    weather_files = conf['weather_specification']['weather_files']
+
+    # Check weathers configuration
+    if len(weather_keys) != len(weather_files):
         logger.error(
-            'Weather files and id keys must have the same len\n' f'{
-                len(
-                    conf["weather_specification"]["weather_files"])} weather files != {
-                len(
-                    conf["weather_specification"]["keys"])} keys')
+            f'Weather files and id keys must have the same length: ' f'{
+                len(weather_files)} weather files != {
+                len(weather_keys)} keys')
         raise ValueError
 
-    weather_info = list(zip(conf['weather_specification']['keys'],
-                        conf['weather_specification']['weather_files']))
+    # Base ID and kwargs
+    base_id = 'Eplus-' + conf['id_base']
+    base_kwargs = {
+        'building_file': conf['building_file'],
+        'action_space': eval(conf['action_space']),
+        'time_variables': conf['time_variables'],
+        'variables': variables,
+        'meters': meters,
+        'actuators': actuators,
+        'context': context,
+        'initial_context': conf.get('initial_context'),
+        'reward': eval(conf['reward']),
+        'reward_kwargs': conf['reward_kwargs'],
+        'max_ep_data_store_num': conf['max_ep_data_store_num'],
+        'config_params': conf.get('config_params')
+    }
 
     weather_variability = conf.get('weather_variability')
-
-    for weather_id, weather_file in weather_info:
-
-        id = 'Eplus-' + conf['id_base'] + '-' + weather_id + '-continuous-v1'
-
-        env_kwargs = {
-            'building_file': conf['building_file'],
-            'weather_files': weather_file,
-            'action_space': eval(conf['action_space']),
-            'time_variables': conf['time_variables'],
-            'variables': variables,
-            'meters': meters,
-            'actuators': actuators,
-            'context': context,
-            'initial_context': conf.get('initial_context'),
-            'reward': eval(conf['reward']),
-            'reward_kwargs': conf['reward_kwargs'],
-            'max_ep_data_store_num': conf['max_ep_data_store_num'],
-            'env_name': id,
-            'config_params': conf.get('config_params')
+    # Convert lists to tuples for consistency
+    if weather_variability:
+        weather_variability = {
+            var: tuple(tuple(param) if isinstance(param, list) else param
+                       for param in params)
+            for var, params in weather_variability.items()
         }
-        configurations[id] = env_kwargs
 
+    # Build environment configurations
+    for weather_id, weather_file in zip(weather_keys, weather_files):
+        configurations[f'{base_id}-{weather_id}-continuous-v1'] = {**base_kwargs,
+                                                                   'weather_files': weather_file,
+                                                                   'env_name': f'{base_id}-{weather_id}-continuous-v1'}
+        # Build stochastic versions if weather variability is present
         if weather_variability:
-
-            # Cast weather variability variation from list to tuple
-            weather_variability = {
-                var_name: tuple(
-                    tuple(param) if isinstance(param, list) else param
-                    for param in var_params
-                )
-                for var_name, var_params in weather_variability.items()
+            configurations[f'{base_id}-{weather_id}-continuous-stochastic-v1'] = {
+                **base_kwargs, 'weather_files': weather_file, 'weather_variability': weather_variability,
+                'env_name': f'{base_id}-{weather_id}-continuous-stochastic-v1'
             }
-
-            id = 'Eplus-' + conf['id_base'] + '-' + \
-                weather_id + '-continuous-stochastic-v1'
-            env_kwargs = {
-                'building_file': conf['building_file'],
-                'weather_files': weather_file,
-                'action_space': eval(conf['action_space']),
-                'time_variables': conf['time_variables'],
-                'variables': variables,
-                'meters': meters,
-                'actuators': actuators,
-                'context': context,
-                'initial_context': conf.get('initial_context'),
-                'weather_variability': weather_variability,
-                'reward': eval(conf['reward']),
-                'reward_kwargs': conf['reward_kwargs'],
-                'max_ep_data_store_num': conf['max_ep_data_store_num'],
-                'env_name': id,
-                'config_params': conf.get('config_params')
-            }
-            configurations[id] = env_kwargs
 
     return configurations
 
