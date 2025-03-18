@@ -172,10 +172,10 @@ def export_schedulers_to_excel(
         max_col = max(max_col, col_offset)
         current_row += 1
 
-    # Ajustar ancho de columnas
+    # Adjusting column width
     worksheet.set_column(0, max_col, 40)
 
-    # Agregar encabezados de objetos
+    # Add object columns
     for i, col in enumerate(range(2, max_col, 3), start=1):
         worksheet.merge_range(0, col, 0, col + 2, f'OBJECT {i}', keys_format)
 
@@ -210,12 +210,11 @@ def ornstein_uhlenbeck_process(
     dt = T / 1.0  # tau defined as epw rows (hours)
     # t = np.linspace(0., T, n)  # Vector of times.
 
-    for variable, variation in variability_config.items():
+    # Sigma = standard deviation.
+    # Mu = mean.
+    # Tau = time constant.
 
-        sigma = variation[0]  # Standard deviation.
-        mu = variation[1]  # Mean.
-        tau = variation[2]  # Time constant.
-
+    for variable, (sigma, mu, tau) in variability_config.items():
         sigma_bis = sigma * np.sqrt(2. / tau)
         sqrtdt = np.sqrt(dt)
 
