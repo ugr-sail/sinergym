@@ -95,7 +95,7 @@ def get_delta_seconds(
 
 
 def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
-    """Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
+    """Converts an eppy element into a dictionary following the EnergyPlus epJSON standard.
 
     Args:
         element (IDF): eppy element to be converted.
@@ -103,17 +103,14 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     Returns:
         Dict[str,Dict[str,str]]: Python dictionary with epJSON format of eppy element.
     """
-    fields = {}
-    for fieldname in element.fieldnames:
-        fieldname_fixed = fieldname.lower().replace(
-            'drybulb', 'dry_bulb')
-        if fieldname != 'Name' and fieldname != 'key':
-            if element[fieldname] != '':
-                if element[fieldname] == 'Wetbulb':
-                    fields[fieldname_fixed] = 'WetBulb'
-                else:
-                    fields[fieldname_fixed] = element[fieldname]
-    return {element.Name.lower(): fields}
+    fields = {
+        fieldname.lower().replace('drybulb', 'dry_bulb'):
+        'WetBulb' if (value := element[fieldname]) == 'Wetbulb' else value
+        for fieldname in element.fieldnames
+        if fieldname not in {'Name', 'key'} and element[fieldname] != ''
+    }
+
+    return {getattr(element, 'Name', '').lower(): fields}
 
 
 def export_schedulers_to_excel(
