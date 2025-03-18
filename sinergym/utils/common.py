@@ -115,81 +115,70 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
 
 def export_schedulers_to_excel(
         schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
-    """Given a python dictionary with schedulers from modeling format, this method export that information in a excel file
+    """Exports scheduler information from a dictionary to an Excel file.
 
     Args:
-        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
-        path (str): Relative path where excel file will be created.
+        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Dictionary with the correct format.
+        path (str): Relative path where the Excel file will be created.
     """
 
     # Creating workbook and sheet
     workbook = xlsxwriter.Workbook(path)
     worksheet = workbook.add_worksheet()
-    # Creating cells format configuration
-    keys_format = workbook.add_format({'bold': True,
-                                       'font_size': 20,
-                                       'align': 'center',
-                                       'bg_color': 'gray',
-                                       'border': True})
-    cells_format = workbook.add_format(
-        {'align': 'center'})
+
+    # Creating cell format configuration
+    keys_format = workbook.add_format(
+        {'bold': True, 'font_size': 20, 'align': 'center', 'bg_color': 'gray', 'border': True})
+    cells_format = workbook.add_format({'align': 'center'})
     actuator_format = workbook.add_format(
         {'bold': True, 'align': 'center', 'bg_color': 'gray'})
-    # Indicating cell position within sheet
-    current_row = 0
-    current_col = 0
-    # Anotate max_column in order to know excel extension
+
+    # Headers
+    worksheet.write(0, 0, 'Name', keys_format)
+    worksheet.write(0, 1, 'Type', keys_format)
+
+    current_row = 1
     max_col = 1
 
-    worksheet.write(current_row, current_col, 'Name', keys_format)
-    worksheet.write(current_row, current_col + 1, 'Type', keys_format)
-    current_row += 1
-
     for key, info in schedulers.items():
-        worksheet.write(current_row, current_col, key, actuator_format)
-        current_col += 1
-        worksheet.write(current_row, current_col, info['Type'], cells_format)
-        current_col += 1
+        worksheet.write(current_row, 0, key, actuator_format)
+        worksheet.write(
+            current_row, 1, info.get(
+                'Type', 'Unknown'), cells_format)
+
+        col_offset = 2  # Offset inicial después de 'Type'
         for object_name, values in info.items():
             if isinstance(values, dict):
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Name: ' + object_name)
-                current_col += 1
+                    col_offset,
+                    f'Name: {object_name}')
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Field: ' +
-                    values['field_name'])
-                current_col += 1
+                    col_offset + 1,
+                    f'Field: {
+                        values.get(
+                            "field_name",
+                            "N/A")}')
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Table type: ' +
-                    values['table_name'])
-                current_col += 1
-        # Update max column if it is necessary
-        if current_col > max_col:
-            max_col = current_col
+                    col_offset + 2,
+                    f'Table type: {
+                        values.get(
+                            "table_name",
+                            "N/A")}')
+                col_offset += 3  # Avanzar columnas según los datos escritos
 
+        max_col = max(max_col, col_offset)
         current_row += 1
-        current_col = 0
 
-    current_row = 0
-    object_num = 1
-    # Updating columns extension
+    # Ajustar ancho de columnas
     worksheet.set_column(0, max_col, 40)
 
-    for i in range(2, max_col, 3):
-        worksheet.merge_range(
-            current_row,
-            i,
-            current_row,
-            i + 2,
-            'OBJECT' + str(object_num),
-            keys_format)
-        object_num += 1
+    # Agregar encabezados de objetos
+    for i, col in enumerate(range(2, max_col, 3), start=1):
+        worksheet.merge_range(0, col, 0, col + 2, f'OBJECT {i}', keys_format)
+
     workbook.close()
 
 # ---------------------------------------------------------------------------- #
