@@ -288,24 +288,18 @@ def parse_meters_settings(meters: Dict[str, str]) -> Dict[str, str]:
 
 def parse_actuators_settings(
         actuators: Dict[str, Dict[str, str]]) -> Dict[str, Tuple[str, str, str]]:
-    """Read actuators dictionary (from Sinergym YAML settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert actuators dictionary from Sinergym YAML settings to EnergyPlus format.
 
     Args:
-        actuators (Dict[str, Dict[str, str]]): Dictionary from Sinergym YAML configuration with actuators information.
+        actuators (Dict[str, Dict[str, str]]): Actuators information from Sinergym YAML.
 
     Returns:
-        Dict[str, Tuple[str, str, str]]: Dictionary with actuators information in EnergyPlus API format.
+        Dict[str, Tuple[str, str, str]]: Reformatted actuators dictionary for EnergyPlus API.
     """
-
-    output = {}
-
-    for actuator_name, specification in actuators.items():
-        output[specification['variable_name']] = (
-            specification['element_type'], specification['value_type'], actuator_name)
-
-    return output
+    return {
+        spec['variable_name']: (spec['element_type'], spec['value_type'], name)
+        for name, spec in actuators.items()
+    }
 
 
 def convert_conf_to_env_parameters(
