@@ -33,9 +33,12 @@ def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.
 
-    :param env: Environment to check
-    :param wrapper_class: Wrapper class to look for
-    :return: True if environment has been wrapped with ``wrapper_class``.
+    Args:
+        env (Type[gym.Env]): Environment to check
+        wrapper_class (Type[gym.Wrapper]): Wrapper class to look for
+
+    Returns:
+        bool: True if environment has been wrapped with ``wrapper_class``.
     """
     return unwrap_wrapper(env, wrapper_class) is not None
 
@@ -45,9 +48,12 @@ def unwrap_wrapper(env: gym.Env,
     """
     Retrieve a wrapper object by recursively searching.
 
-    :param env: Environment to unwrap
-    :param wrapper_class: Wrapper to look for
-    :return: Environment unwrapped till ``wrapper_class`` if it has been wrapped with it
+    Args:
+        env (gym.Env): Environment to unwrap
+        wrapper_class (Type[gym.Wrapper]): Wrapper to look for
+
+    Returns:
+        Optional[gym.Wrapper]: Wrapper object if found, else None
     """
     env_tmp = env
     while isinstance(env_tmp, gym.Wrapper):
@@ -83,11 +89,9 @@ def get_delta_seconds(
         float: Time difference in seconds.
 
     """
-    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
-    endTime = datetime(end_year, end_mon, end_day,
-                       23, 0, 0) + timedelta(0, 3600)
-    delta_sec = (endTime - startTime).total_seconds()
-    return delta_sec
+    start_time = datetime(st_year, st_mon, st_day)
+    end_time = datetime(end_year, end_mon, end_day) + timedelta(days=1)
+    return (end_time - start_time).total_seconds()
 
 
 def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
