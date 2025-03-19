@@ -1356,10 +1356,10 @@ class LoggerWrapper(BaseLoggerWrapper):
                                 'std_reward_comfort_term',
                                 'mean_reward_energy_term',
                                 'std_reward_energy_term',
-                                'mean_abs_comfort_penalty',
-                                'std_abs_comfort_penalty',
-                                'mean_abs_energy_penalty',
-                                'std_abs_energy_penalty',
+                                'mean_comfort_penalty',
+                                'std_comfort_penalty',
+                                'mean_energy_penalty',
+                                'std_energy_penalty',
                                 'mean_temperature_violation',
                                 'std_temperature_violation',
                                 'mean_power_demand',
@@ -1387,10 +1387,10 @@ class LoggerWrapper(BaseLoggerWrapper):
                          for info in self.data_logger.infos[1:]]
         energy_terms = [info['energy_term']
                         for info in self.data_logger.infos[1:]]
-        abs_comfort_penalties = [info['abs_comfort_penalty']
-                                 for info in self.data_logger.infos[1:]]
-        abs_energy_penalties = [info['abs_energy_penalty']
-                                for info in self.data_logger.infos[1:]]
+        comfort_penalties = [info['comfort_penalty']
+                             for info in self.data_logger.infos[1:]]
+        energy_penalties = [info['energy_penalty']
+                            for info in self.data_logger.infos[1:]]
         temperature_violations = [info['total_temperature_violation']
                                   for info in self.data_logger.infos[1:]]
         power_demands = [info['total_power_demand']
@@ -1412,10 +1412,10 @@ class LoggerWrapper(BaseLoggerWrapper):
             'std_reward_comfort_term': np.std(comfort_terms),
             'mean_reward_energy_term': np.mean(energy_terms),
             'std_reward_energy_term': np.std(energy_terms),
-            'mean_abs_comfort_penalty': np.mean(abs_comfort_penalties),
-            'std_abs_comfort_penalty': np.std(abs_comfort_penalties),
-            'mean_abs_energy_penalty': np.mean(abs_energy_penalties),
-            'std_abs_energy_penalty': np.std(abs_energy_penalties),
+            'mean_comfort_penalty': np.mean(comfort_penalties),
+            'std_comfort_penalty': np.std(comfort_penalties),
+            'mean_energy_penalty': np.mean(energy_penalties),
+            'std_energy_penalty': np.std(energy_penalties),
             'mean_temperature_violation': np.mean(temperature_violations),
             'std_temperature_violation': np.std(temperature_violations),
             'mean_power_demand': np.mean(power_demands),
