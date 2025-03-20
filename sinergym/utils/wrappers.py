@@ -1926,28 +1926,31 @@ class ReduceObservationWrapper(gym.Wrapper):
         super().__init__(env)
 
         # Check if the variables to be removed are in the observation space
-        if any(var not in self.get_wrapper_attr('observation_variables')
-               for var in obs_reduction):
+        original_obs_vars = self.env.get_wrapper_attr('observation_variables')
+        missing_vars = [
+            var for var in obs_reduction if var not in original_obs_vars]
+        if missing_vars:
             self.logger.error(
-                'Some observation variable to be removed is not defined in the original observation space.')
+                f'Some observation variables to be removed are not defined: {missing_vars}')
             raise ValueError
 
-        # Update observation space
-        self.observation_space = gym.spaces.Box(
-            low=self.env.get_wrapper_attr('observation_space').low[0],
-            high=self.env.get_wrapper_attr('observation_space').high[0],
-            shape=(
-                self.env.get_wrapper_attr('observation_space').shape[0] -
-                len(obs_reduction),
-            ),
-            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+        # Calculate index of variables to keep
+        self.keep_index = np.array([i for i, var in enumerate(
+            original_obs_vars) if var not in obs_reduction])
 
-        # Separate removed variables from observation variables
-        self.observation_variables = list(
-            filter(
-                lambda x: x not in obs_reduction, deepcopy(
-                    self.get_wrapper_attr('observation_variables'))))
+        # Update observation variables
+        self.observation_variables = [
+            var for var in original_obs_vars if var not in obs_reduction]
         self.removed_observation_variables = obs_reduction
+
+        # Update observation space
+        original_obs_space = self.env.get_wrapper_attr('observation_space')
+        self.observation_space = gym.spaces.Box(
+            low=original_obs_space.low[0],
+            high=original_obs_space.high[0],
+            shape=(len(self.observation_variables),),
+            dtype=original_obs_space.dtype
+        )
 
         self.logger.info('Wrapper initialized.')
 
@@ -1963,14 +1966,10 @@ class ReduceObservationWrapper(gym.Wrapper):
         """
         obs, reward, terminated, truncated, info = self.env.step(action)
 
-        # Processig obs to delete removed variables and add them to info
-        obs_dict = dict(
-            zip(self.env.get_wrapper_attr('observation_variables'), obs))
-        reduced_obs_dict = {
-            key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
+        # Filter removed variables from observation using precalculated index
+        reduced_obs = obs[self.keep_index]
 
-        return np.array(list(reduced_obs_dict.values())
-                        ), reward, terminated, truncated, info
+        return reduced_obs, reward, terminated, truncated, info
 
     def reset(self,
               seed: Optional[int] = None,
@@ -1981,13 +1980,10 @@ class ReduceObservationWrapper(gym.Wrapper):
         """Sends action to the environment. Separating removed variables from observation values and adding it to info dict"""
         obs, info = self.env.reset(seed=seed, options=options)
 
-        # Processig obs to delete removed variables and add them to info
-        obs_dict = dict(
-            zip(self.env.get_wrapper_attr('observation_variables'), obs))
-        reduced_obs_dict = {
-            key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
+        # Filter removed variables from observation using precalculated index
+        reduced_obs = obs[self.keep_index]
 
-        return np.array(list(reduced_obs_dict.values())), info
+        return reduced_obs, info
 
 # ---------------------------------------------------------------------------- #
 #                      Real-time building context wrappers                     #
