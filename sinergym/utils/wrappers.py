@@ -1110,34 +1110,28 @@ class NormalizeAction(gym.ActionWrapper):
         """
         super().__init__(env)
 
-        # Checks
-        if self.get_wrapper_attr('is_discrete'):
+        # Ensure the action space is continuous
+        if isinstance(env.action_space, gym.spaces.Discrete):
             self.logger.critical(
-                'The original environment must be continuous instead of discrete')
+                'The original environment must have a continuous action space.')
             raise TypeError
 
-        # Define real space for simulator
-        self.real_space = deepcopy(self.action_space)
-        # Define normalize space
+        self.real_space = deepcopy(env.action_space)
         lower_norm_value, upper_norm_value = normalize_range
+
+        # Define the normalized action space
+        action_dim = env.action_space.shape[0]
         self.normalized_space = gym.spaces.Box(
-            low=np.array(
-                np.repeat(
-                    lower_norm_value,
-                    env.get_wrapper_attr('action_space').shape[0]),
-                dtype=np.float32),
-            high=np.array(
-                np.repeat(
-                    upper_norm_value,
-                    env.get_wrapper_attr('action_space').shape[0]),
-                dtype=np.float32),
-            dtype=env.get_wrapper_attr('action_space').dtype)
+            low=np.full(action_dim, lower_norm_value, dtype=np.float32),
+            high=np.full(action_dim, upper_norm_value, dtype=np.float32),
+            dtype=np.float32
+        )
+
         # Updated action space to normalized space
         self.action_space = self.normalized_space
 
-        self.logger.info(
-            f'New normalized action Space: {self.action_space}')
-        self.logger.info('Wrapper initialized')
+        self.logger.info(f'New normalized action space: {self.action_space}')
+        self.logger.info('Wrapper initialized.')
 
     def reverting_action(self,
                          action: Any):
@@ -1149,15 +1143,13 @@ class NormalizeAction(gym.ActionWrapper):
         Returns:
             np.array: Action transformed in simulator real action space.
         """
-
-        # Convert action to the original action space
-        action_ = (action - self.normalized_space.low) * (self.real_space.high - self.real_space.low) / \
-            (self.normalized_space.high - self.normalized_space.low) + self.real_space.low
-
-        return action_
+        action = np.asarray(action, dtype=np.float32)
+        return self.real_space.low + (action - self.normalized_space.low) * (
+            (self.real_space.high - self.real_space.low) / (self.normalized_space.high - self.normalized_space.low)
+        )
 
     def action(self, action: Any):
-        return self.get_wrapper_attr('reverting_action')(action)
+        return self.reverting_action(action)
 
 # ---------------------------------------------------------------------------- #
 #                                Reward Wrappers                               #
