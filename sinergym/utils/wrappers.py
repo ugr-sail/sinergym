@@ -26,51 +26,55 @@ from sinergym.utils.rewards import EnergyCostLinearReward
 
 
 class DatetimeWrapper(gym.ObservationWrapper):
-    """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
-       Observation space is updated automatically."""
+    """Wrapper to transform datetime variables into a more useful representation:
+       - 'day_of_month' is replaced with 'is_weekend' (1 if weekend, 0 otherwise).
+       - 'hour' is replaced with its sine and cosine encoding.
+       - 'month' is replaced with its sine and cosine encoding.
+       The observation space is updated automatically.
+    """
 
     logger = TerminalLogger().getLogger(name='WRAPPER DatetimeWrapper',
                                         level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env):
-        super(DatetimeWrapper, self).__init__(env)
+        super().__init__(env)
+
+        # Obtain observation variables from environment
+        obs_vars = self.get_wrapper_attr('observation_variables')
 
         # Check datetime variables are defined in environment
-        if any(time_variable not in self.get_wrapper_attr('observation_variables')
-               for time_variable in ['month', 'day_of_month', 'hour']):
+        required_vars = {'month', 'day_of_month', 'hour'}
+        if not required_vars.issubset(obs_vars):
             self.logger.error(
-                'month, day_of_month and hour must be defined in observation space in environment previously.')
+                "month, day_of_month, and hour must be defined in the environment's observation space.")
             raise ValueError
 
-        # Update new shape
-        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
+        # Update observation space
+        obs_space = self.get_wrapper_attr('observation_space')
         self.observation_space = gym.spaces.Box(
-            low=self.env.get_wrapper_attr('observation_space').low[0],
-            high=self.env.get_wrapper_attr('observation_space').high[0],
-            shape=(
-                new_shape,
-            ),
-            dtype=self.env.get_wrapper_attr('observation_space').dtype)
-        # Update observation variables
-        new_observation_variables = deepcopy(
-            self.get_wrapper_attr('observation_variables'))
+            low=obs_space.low[0],
+            high=obs_space.high[0],
+            # +2 porque agregamos senos y cosenos
+            shape=(obs_space.shape[0] + 2,),
+            dtype=obs_space.dtype
+        )
 
-        day_index = new_observation_variables.index('day_of_month')
-        new_observation_variables[day_index] = 'is_weekend'
-        hour_index = new_observation_variables.index('hour')
-        new_observation_variables[hour_index] = 'hour_cos'
-        new_observation_variables.insert(hour_index + 1, 'hour_sin')
-        month_index = new_observation_variables.index('month')
-        new_observation_variables[month_index] = 'month_cos'
-        new_observation_variables.insert(month_index + 1, 'month_sin')
+        # Update observation variables with new datetime variables
+        new_obs_vars = deepcopy(obs_vars)
+        new_obs_vars[new_obs_vars.index('day_of_month')] = 'is_weekend'
+        hour_idx = new_obs_vars.index('hour')
+        new_obs_vars[hour_idx] = 'hour_cos'
+        new_obs_vars.insert(hour_idx + 1, 'hour_sin')
+        month_idx = new_obs_vars.index('month')
+        new_obs_vars[month_idx] = 'month_cos'
+        new_obs_vars.insert(month_idx + 1, 'month_sin')
 
-        self.observation_variables = new_observation_variables
-
+        self.observation_variables = new_obs_vars
         self.logger.info('Wrapper initialized.')
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
-        """Applies calculation in is_weekend flag, and sen and cos in hour and month
+        """Transforms the observation to replace time variables with encoded representations.
 
         Args:
             obs (np.ndarray): Original observation.
@@ -78,27 +82,29 @@ class DatetimeWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: Transformed observation.
         """
-        # Get obs_dict with observation variables from original env
         obs_dict = dict(
             zip(self.env.get_wrapper_attr('observation_variables'), obs))
 
-        # New obs dict with same values than obs_dict but with new fields with
-        # None
-        new_obs = dict.fromkeys(self.get_wrapper_attr('observation_variables'))
-        for key, value in obs_dict.items():
-            if key in new_obs.keys():
-                new_obs[key] = value
+        # Obtain year if present
+        year = obs_dict.get('year', YEAR)
+
+        # Create datetime object
         dt = datetime(
-            int(obs_dict['year']) if obs_dict.get('year', False) else YEAR,
-            int(obs_dict['month']),
-            int(obs_dict['day_of_month']),
-            int(obs_dict['hour']))
-        # Update obs
-        new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0
-        new_obs['hour_cos'] = np.cos(2 * np.pi * obs_dict['hour'] / 24)
-        new_obs['hour_sin'] = np.sin(2 * np.pi * obs_dict['hour'] / 24)
-        new_obs['month_cos'] = np.cos(2 * np.pi * (obs_dict['month'] - 1) / 12)
-        new_obs['month_sin'] = np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12)
+            year, int(
+                obs_dict['month']), int(
+                obs_dict['day_of_month']), int(
+                obs_dict['hour']))
+
+        # Build new observation of transformed datetime variables
+        new_obs = {key: obs_dict[key] if key in obs_dict else None for key in self.get_wrapper_attr(
+            'observation_variables')}
+        new_obs.update({
+            'is_weekend': 1.0 if dt.weekday() >= 5 else 0.0,
+            'hour_cos': np.cos(2 * np.pi * obs_dict['hour'] / 24),
+            'hour_sin': np.sin(2 * np.pi * obs_dict['hour'] / 24),
+            'month_cos': np.cos(2 * np.pi * (obs_dict['month'] - 1) / 12),
+            'month_sin': np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12),
+        })
 
         return np.array(list(new_obs.values()))
 
