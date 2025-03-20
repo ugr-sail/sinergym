@@ -271,22 +271,22 @@ class NormalizeObservation(gym.Wrapper):
             mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
             var (list, np.float64, str, optional): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
         """
-        gym.Wrapper.__init__(self, env)
+        super().__init__(env)
 
-        # Check mean and var format if it is defined
-        mean = self._check_and_update_metric(mean, 'mean')
-        var = self._check_and_update_metric(var, 'var')
-
+        # Attributes
+        self.automatic_update = automatic_update
+        self.epsilon = epsilon
         self.num_envs = 1
         self.is_vector_env = False
-        self.automatic_update = automatic_update
-
         self.unwrapped_observation = None
+
         # Initialize normalization calibration
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
-        self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
-        self.obs_rms.var = var if var is not None else self.obs_rms.var
-        self.epsilon = epsilon
+
+        # Set mean and variance
+        self.obs_rms.mean = self._process_metric(
+            mean, 'mean') or self.obs_rms.mean
+        self.obs_rms.var = self._process_metric(var, 'var') or self.obs_rms.var
 
         self.logger.info('Wrapper initialized.')
 
@@ -299,73 +299,65 @@ class NormalizeObservation(gym.Wrapper):
         self.unwrapped_observation = deepcopy(obs)
 
         # Normalize observation and return
-        return self.normalize(np.array([obs]))[
-            0], reward, terminated, truncated, info
+        return self.normalize(obs), reward, terminated, truncated, info
 
     def reset(self, **kwargs):
         """Resets the environment and normalizes the observation."""
 
+        episode = self.get_wrapper_attr('episode')
+
         # Update normalization calibration if it is required
-        if self.get_wrapper_attr('episode') > 0:
+        if episode > 0:
             self._save_normalization_calibration()
 
         obs, info = self.env.reset(**kwargs)
-
-        # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
-        return self.normalize(np.array([obs]))[0], info
+        return self.normalize(obs), info
 
     def close(self):
         """save normalization calibration and close the environment."""
         # Update normalization calibration if it is required
         if self.get_wrapper_attr('episode') > 0:
             self._save_normalization_calibration()
-
         self.env.close()
 
 # ----------------------- Wrapper extra functionality ----------------------- #
+    def _process_metric(self, metric, metric_name) -> Union[np.ndarray, None]:
+        """Validates, loads, and converts mean/variance metrics."""
+        if metric is None:
+            return None
 
-    def _check_and_update_metric(self, metric, metric_name):
-        if metric is not None:
-            # Check type and conversions
-            if isinstance(metric, str):
-                try:
-                    metric = np.loadtxt(metric)
-                except FileNotFoundError as err:
-                    self.logger.error(
-                        f'{metric_name}.txt file not found. Please, check the path.')
-                    raise err
-            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
-                metric = np.float64(metric)
-            else:
-                self.logger.error(
-                    f'{metric_name} values must be a list, a numpy array or a path to a txt file.')
-                raise ValueError
+        if isinstance(metric, str):  # If it's a file path
+            if os.path.exists(metric):
+                return np.loadtxt(metric, dtype=np.float64)
+            self.logger.error(f"{metric_name}.txt file not found: {metric}")
+            raise FileNotFoundError
 
-            # Check dimension of mean and var
-            if len(metric) != self.observation_space.shape[0]:
-                self.logger.error(
-                    f'{metric_name} values must have the same shape than environment observation space.')
-                raise ValueError
+        # Convert list to np.ndarray if needed
+        metric = np.asarray(metric, dtype=np.float64)
+
+        if metric.shape[0] != self.observation_space.shape[0]:
+            self.logger.error(
+                f"{metric_name} shape mismatch: expected {
+                    self.observation_space.shape[0]}, got {
+                    metric.shape[0]}")
+            raise ValueError
 
         return metric
 
     def _save_normalization_calibration(self):
         """Saves the normalization calibration data in the output folder as txt files.
         """
-        self.logger.info(
-            'Saving normalization calibration data.')
-        # Save in txt in episode output folder
-        np.savetxt(fname=self.get_wrapper_attr(
-            'episode_path') + '/mean.txt', X=self.mean)
-        np.savetxt(fname=self.get_wrapper_attr(
-            'episode_path') + '/var.txt', X=self.var)
-        # Overwrite output root folder mean and var as latest calibration
-        np.savetxt(fname=self.get_wrapper_attr(
-            'workspace_path') + '/mean.txt', X=self.mean)
-        np.savetxt(fname=self.get_wrapper_attr(
-            'workspace_path') + '/var.txt', X=self.var)
+        episode_path = self.get_wrapper_attr('episode_path')
+        workspace_path = self.get_wrapper_attr('workspace_path')
+
+        np.savetxt(os.path.join(episode_path, 'mean.txt'), self.mean)
+        np.savetxt(os.path.join(episode_path, 'var.txt'), self.var)
+        np.savetxt(os.path.join(workspace_path, 'mean.txt'), self.mean)
+        np.savetxt(os.path.join(workspace_path, 'var.txt'), self.var)
+
+        self.logger.info('Normalization calibration saved.')
 
     def deactivate_update(self):
         """
@@ -391,14 +383,14 @@ class NormalizeObservation(gym.Wrapper):
         """Returns the variance value of the observations."""
         return self.obs_rms.var
 
-    def set_mean(self, mean: Union[list, np.float64, str]):
+    def set_mean(self, mean: Union[List[float], np.ndarray, str]):
         """Sets the mean value of the observations."""
-        mean = self._check_and_update_metric(mean, 'mean')
+        mean = self._process_metric(mean, 'mean')
         self.obs_rms.mean = deepcopy(mean)
 
-    def set_var(self, var: Union[list, np.float64, str]):
+    def set_var(self, var: Union[List[float], np.ndarray, str]):
         """Sets the variance value of the observations."""
-        var = self._check_and_update_metric(var, 'var')
+        var = self._process_metric(var, 'var')
         self.obs_rms.var = deepcopy(var)
 
     def normalize(self, obs):
@@ -406,6 +398,7 @@ class NormalizeObservation(gym.Wrapper):
         If automatic_update is enabled, the running mean and variance will be updated too."""
         if self.automatic_update:
             self.obs_rms.update(obs)
+
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 
