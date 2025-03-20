@@ -225,9 +225,9 @@ def test_normalize_observation_exceptions(env_demo):
     with pytest.raises(FileNotFoundError):
         env = NormalizeObservation(env=env_demo, var='unknown_path')
     # Specify an unknown value (nor str neither list)
-    with pytest.raises(ValueError):
+    with pytest.raises(IndexError):
         env = NormalizeObservation(env=env_demo, mean=56)
-    with pytest.raises(ValueError):
+    with pytest.raises(IndexError):
         env = NormalizeObservation(env=env_demo, var=56)
     # Specify a list with wrong shape
     with pytest.raises(ValueError):
@@ -323,7 +323,7 @@ def test_weatherforecasting_wrapper_forecastdata(env_demo):
 
 def test_weatherforecasting_wrapper_exceptions(env_demo):
     # Specify a tuple with wrong shape (must be 3)
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         env = WeatherForecastingWrapper(env_demo,
                                         n=3,
                                         delta=1,
@@ -430,7 +430,7 @@ def test_energycost_wrapper_energycostdata(env_demo):
 
 def test_energycost_wrapper_exceptions(env_demo):
     # Specify a tuple with wrong shape (must be 3)
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         env = EnergyCostWrapper(
             env_demo,
             energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',

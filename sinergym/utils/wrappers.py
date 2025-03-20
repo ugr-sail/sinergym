@@ -191,7 +191,7 @@ class MultiObsWrapper(gym.Wrapper):
             n (int, optional): Number of observations to be stacked. Defaults to 5.
             flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
         """
-        super(MultiObsWrapper, self).__init__(env)
+        super().__init__(env)
         self.n = n
         self.ind_flat = flatten
         self.history = deque([], maxlen=n)
@@ -393,14 +393,14 @@ class NormalizeObservation(gym.Wrapper):
         var = self._process_metric(var, 'var')
         self.obs_rms.var = deepcopy(var)
 
-    def normalize(self, obs):
+    def normalize(self, obs: np.ndarray) -> np.ndarray:
         """Normalizes the observation using the running mean and variance of the observations.
         If automatic_update is enabled, the running mean and variance will be updated too."""
         if self.automatic_update:
             self.obs_rms.update(obs)
 
-        return (obs - self.obs_rms.mean) / \
-            np.sqrt(self.obs_rms.var + self.epsilon)
+        std = np.sqrt(self.obs_rms.var + self.epsilon)
+        return (obs - self.obs_rms.mean) / std
 
 
 class WeatherForecastingWrapper(gym.Wrapper):
@@ -441,7 +441,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
                     raise ValueError(
                         f"The variable '{variable}' in forecast_variability is not in columns.")
 
-        super(WeatherForecastingWrapper, self).__init__(env)
+        super().__init__(env)
         self.n = n
         self.delta = delta
         self.columns = columns
@@ -614,7 +614,7 @@ class EnergyCostWrapper(gym.Wrapper):
                     raise ValueError(
                         f"The key '{key}' in reward_kwargs is not recognized.")
 
-        super(EnergyCostWrapper, self).__init__(env)
+        super().__init__(env)
         self.energy_cost_variability = {
             'value': energy_cost_variability} if energy_cost_variability is not None else None
         self.energy_cost_data_path = energy_cost_data_path
@@ -746,7 +746,7 @@ class DeltaTempWrapper(gym.ObservationWrapper):
             temperature_variables (List[str]): List of temperature variables.
             setpoint_variables (List[str]): List of setpoint variables. If the length is 1, it will be considered as a unique setpoint for all temperature variables.
         """
-        super(DeltaTempWrapper, self).__init__(env)
+        super().__init__(env)
 
         # Check variables definition
         if len(setpoint_variables) != 1 and len(
@@ -1130,6 +1130,10 @@ class NormalizeAction(gym.ActionWrapper):
         # Updated action space to normalized space
         self.action_space = self.normalized_space
 
+        # Calculate the scale factor
+        self.scale = (self.real_space.high - self.real_space.low) / \
+            (self.normalized_space.high - self.normalized_space.low)
+
         self.logger.info(f'New normalized action space: {self.action_space}')
         self.logger.info('Wrapper initialized.')
 
@@ -1144,9 +1148,9 @@ class NormalizeAction(gym.ActionWrapper):
             np.array: Action transformed in simulator real action space.
         """
         action = np.asarray(action, dtype=np.float32)
-        return self.real_space.low + (action - self.normalized_space.low) * (
-            (self.real_space.high - self.real_space.low) / (self.normalized_space.high - self.normalized_space.low)
-        )
+
+        return self.real_space.low + \
+            (action - self.normalized_space.low) * self.scale
 
     def action(self, action: Any):
         return self.reverting_action(action)
@@ -1168,7 +1172,7 @@ class MultiObjectiveReward(gym.Wrapper):
             env (Env): Original Sinergym environment.
             reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
         """
-        super(MultiObjectiveReward, self).__init__(env)
+        super().__init__(env)
         self.reward_terms = reward_terms
 
         self.logger.info('wrapper initialized.')
