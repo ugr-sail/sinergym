@@ -122,34 +122,33 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
     def __init__(self,
                  env: Env,
                  previous_variables: List[str]):
-        super(PreviousObservationWrapper, self).__init__(env)
-        # Check and apply previous variables to observation space and variables
-        # names
-        self.previous_variables = previous_variables
-        new_observation_variables = deepcopy(
-            self.get_wrapper_attr('observation_variables'))
-        for obs_var in previous_variables:
-            if obs_var not in self.get_wrapper_attr('observation_variables'):
-                self.logger.error(
-                    f'{obs_var} variable is not defined in observation variables, revise the name.')
-                raise ValueError
-            new_observation_variables.append(obs_var + '_previous')
-        # Update observation variables
-        self.observation_variables = new_observation_variables
-        # Update new shape
-        new_shape = self.env.get_wrapper_attr(
-            'observation_space').shape[0] + len(previous_variables)
-        self.observation_space = gym.spaces.Box(
-            low=self.env.get_wrapper_attr('observation_space').low[0],
-            high=self.env.get_wrapper_attr('observation_space').high[0],
-            shape=(
-                new_shape,
-            ),
-            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+        super().__init__(env)
 
-        # previous observation initialization
+        # Obtain observation variables from environment and check if previous
+        # variables are defined
+        obs_vars = self.get_wrapper_attr('observation_variables')
+        if not set(previous_variables).issubset(obs_vars):
+            missing_vars = set(previous_variables) - set(obs_vars)
+            self.logger.error(f'Missing observation variables: {missing_vars}')
+            raise ValueError
+
+        # Update observation variables
+        self.previous_variables = previous_variables
+        self.observation_variables = obs_vars + \
+            [var + '_previous' for var in previous_variables]
+
+        # Update observation space
+        obs_space = self.get_wrapper_attr('observation_space')
+        self.observation_space = gym.spaces.Box(
+            low=obs_space.low[0],
+            high=obs_space.high[0],
+            shape=(obs_space.shape[0] + len(previous_variables),),
+            dtype=obs_space.dtype
+        )
+
+        # Initialize previous observation with zeros
         self.previous_observation = np.zeros(
-            shape=len(previous_variables), dtype=np.float32)
+            len(previous_variables), dtype=np.float32)
 
         self.logger.info('Wrapper initialized.')
 
@@ -163,14 +162,12 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
             np.ndarray: observation with
         """
         # Concatenate current obs with previous observation variables
-        new_obs = np.concatenate(
-            (obs, self.get_wrapper_attr('previous_observation')))
+        new_obs = np.concatenate((obs, self.previous_observation))
+
         # Update previous observation to current observation
-        self.previous_observation = []
-        for variable in self.previous_variables:
-            index = self.env.get_wrapper_attr(
-                'observation_variables').index(variable)
-            self.previous_observation.append(obs[index])
+        obs_vars = self.get_wrapper_attr('observation_variables')
+        self.previous_observation = np.array(
+            [obs[obs_vars.index(var)] for var in self.previous_variables], dtype=np.float32)
 
         return new_obs
 
