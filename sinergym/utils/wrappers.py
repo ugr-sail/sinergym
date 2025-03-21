@@ -1329,7 +1329,7 @@ class LoggerWrapper(BaseLoggerWrapper):
             env (Env): Original Sinergym environment.
             storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
         """
-        super(LoggerWrapper, self).__init__(env, storage_class)
+        super().__init__(env, storage_class)
         # Overwrite in case you want more metrics
         self.custom_variables = []
         # Overwite in case you have other summary metrics (same as
@@ -1425,6 +1425,7 @@ class CSVLogger(gym.Wrapper):
     def __init__(
         self,
         env: Env,
+        monitor: bool = True,
         info_excluded_keys: List[str] = ['reward',
                                          'action',
                                          'timestep',
@@ -1439,11 +1440,14 @@ class CSVLogger(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment in Sinergym.
+            monitor (bool, optional): Flag to enable monitor data of all interactions. Defaults to True.
             info_excluded_keys (List[str], optional): List of keys in info dictionary to be excluded from CSV files. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
 
         """
-        super(CSVLogger, self).__init__(env)
+        super().__init__(env)
+
         self.info_excluded_keys = info_excluded_keys
+        self.monitor = monitor
 
         # Check if it is wrapped by a BaseLoggerWrapper child class (required)
         if not is_wrapped(self.env, BaseLoggerWrapper):
@@ -1451,11 +1455,12 @@ class CSVLogger(gym.Wrapper):
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
             raise ValueError
 
-        self.progress_file_path = self.get_wrapper_attr(
-            'workspace_path') + '/progress.csv'
-
-        self.weather_variability_config_path = self.get_wrapper_attr(
-            'workspace_path') + '/weather_variability_config.csv'
+        # Store paths to avoid redundant calls
+        self.workspace_path = self.get_wrapper_attr('workspace_path')
+        self.progress_file_path = os.path.join(
+            self.workspace_path, 'progress.csv')
+        self.weather_variability_config_path = os.path.join(
+            self.workspace_path, 'weather_variability_config.csv')
 
         self.logger.info('Wrapper initialized.')
 
@@ -1480,131 +1485,125 @@ class CSVLogger(gym.Wrapper):
             self.dump_log_files()
             self.logger.info(
                 'End of episode detected, data updated in monitor and progress.csv.')
-        # reset environment
-        obs, info = self.env.reset(seed=seed, options=options)
 
-        return obs, info
+        return self.env.reset(seed=seed, options=options)
 
     def close(self) -> None:
         """Recording last episode summary and close env.
         """
-
-        # Log csv files
         self.dump_log_files()
         self.logger.info(
             'Environment closed, data updated in monitor and progress.csv.')
-
-        # Close env, updating the logger information
         self.env.close()
 
     def dump_log_files(self) -> None:
-        """Dump all logger data in CSV files.
+        """Dump all logger data into CSV files.
         """
-        monitor_path = self.get_wrapper_attr('episode_path') + '/monitor'
-        os.makedirs(monitor_path, exist_ok=True)
+
         episode_data = self.get_wrapper_attr('data_logger')
 
-        if len(episode_data.rewards) > 0:
+        if not episode_data.rewards:
+            return
+
+        # -------------------------------- Monitor.csv ------------------------------- #
+        if self.monitor:
+
+            self.monitor_path = os.path.join(
+                self.get_wrapper_attr('episode_path'), 'monitor')
+            os.makedirs(self.monitor_path, exist_ok=True)
 
             # Observations
-            with open(monitor_path + '/observations.csv', 'w') as f:
-                writer = csv.writer(f)
-                writer.writerow(self.get_wrapper_attr('observation_variables'))
-                writer.writerows(episode_data.observations)
+            observation_variables = self.get_wrapper_attr(
+                'observation_variables')
+            self._save_csv(
+                'observations.csv',
+                observation_variables,
+                episode_data.observations)
 
             # Normalized Observations
-            if len(episode_data.normalized_observations) > 0:
-                with open(monitor_path + '/normalized_observations.csv', 'w') as f:
-                    writer = csv.writer(f)
-                    writer.writerow(
-                        self.get_wrapper_attr('observation_variables'))
-                    writer.writerows(episode_data.normalized_observations)
+            if episode_data.normalized_observations:
+                self._save_csv(
+                    'normalized_observations.csv',
+                    observation_variables,
+                    episode_data.normalized_observations)
 
             # Rewards
-            with open(monitor_path + '/rewards.csv', 'w') as f:
-                writer = csv.writer(f)
-                writer.writerow(['reward'])
-                for reward in episode_data.rewards:
-                    writer.writerow([reward])
+            self._save_csv(
+                'rewards.csv', ['reward'], [
+                    [r] for r in episode_data.rewards])
 
-            # Infos (except excluded keys)
-            with open(monitor_path + '/infos.csv', 'w') as f:
-                writer = csv.writer(f)
-                column_names = [key for key in episode_data.infos[-1].keys(
-                ) if key not in self.get_wrapper_attr('info_excluded_keys')]
-                # Skip reset row
-                rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
-                    'info_excluded_keys')] for info in episode_data.infos[1:]]
-                writer.writerow(column_names)
-                # write null row for reset
-                writer.writerow([None for _ in range(len(column_names))])
-                writer.writerows(rows)
+            # Infos (excluding specified keys)
+            filtered_infos = [
+                [v for k, v in info.items() if k not in self.info_excluded_keys]
+                for info in episode_data.infos[1:]  # Skip first (reset) row
+            ]
+            if filtered_infos:
+                info_header = [
+                    k for k in episode_data.infos[-1].keys() if k not in self.info_excluded_keys]
+                # Including reset info step
+                self._save_csv(
+                    'infos.csv', info_header, [
+                        [None] * len(info_header)] + filtered_infos)
 
             # Agent Actions
-            with open(monitor_path + '/agent_actions.csv', 'w') as f:
+            action_variables = self.get_wrapper_attr('action_variables')
+            self._save_csv(
+                'agent_actions.csv', action_variables, [
+                    [a] if not isinstance(
+                        a, list) else a for a in episode_data.actions])
+
+            # Simulated Actions
+            simulated_actions = [[*info['action']] if isinstance(
+                info['action'], list) else [info['action']] for info in episode_data.infos[1:]]
+            self._save_csv(
+                'simulated_actions.csv',
+                action_variables,
+                simulated_actions)
+
+            # Custom Metrics (if available)
+            if episode_data.custom_metrics:
+                custom_variables = self.get_wrapper_attr('custom_variables')
+                self._save_csv(
+                    'custom_metrics.csv',
+                    custom_variables,
+                    episode_data.custom_metrics)
+
+        # ------------------------------- Progress.csv ------------------------------- #
+        episode_summary = self.get_wrapper_attr('get_episode_summary')()
+        is_first_episode = self.get_wrapper_attr('episode') == 1
+
+        with open(self.progress_file_path, 'a+', newline='') as f:
+            writer = csv.writer(f)
+            if is_first_episode:
+                writer.writerow(episode_summary.keys())
+            writer.writerow(episode_summary.values())
+
+        # ---------------------- Weather bariability config csv ---------------------- #
+        modeling = self.get_wrapper_attr('model')
+
+        if modeling.weather_variability_config:
+            with open(self.weather_variability_config_path, 'a+', newline='') as f:
                 writer = csv.writer(f)
-                writer.writerow(self.get_wrapper_attr('action_variables'))
-                if isinstance(episode_data.actions[0], list):
-                    writer.writerows(episode_data.actions)
-                else:
-                    for action in episode_data.actions:
-                        writer.writerow([action])
+                if is_first_episode:
+                    header = ['episode_num'] + [f"{var}_{param}"
+                                                for var in modeling.weather_variability_config
+                                                for param in ['sigma', 'mu', 'tau']]
+                    writer.writerow(header)
 
-            # Simulated actions
-            with open(monitor_path + '/simulated_actions.csv', 'w') as f:
+                values = [
+                    self.get_wrapper_attr('episode')] + [
+                    val for params in modeling.weather_variability_config.values() for val in params]
+                writer.writerow(values)
+
+    def _save_csv(self, filename, header, rows):
+        """Utility function to save CSV files safely."""
+        try:
+            with open(os.path.join(self.monitor_path, filename), 'w', newline='') as f:
                 writer = csv.writer(f)
-                writer.writerow(self.get_wrapper_attr('action_variables'))
-                # reset_action = [None for _ in range(
-                #    len(self.get_wrapper_attr('action_variables')))]
-                simulated_actions = [list(info['action'])
-                                     for info in episode_data.infos[1:]]
-                if isinstance(simulated_actions[0], list):
-                    writer.writerows(simulated_actions)
-                else:
-                    for action in simulated_actions:
-                        writer.writerow([action])
-
-            # Custom metrics
-            if len(episode_data.custom_metrics) > 0:
-                with open(monitor_path + '/custom_metrics.csv', 'w') as f:
-                    writer = csv.writer(f)
-                    writer.writerow(self.get_wrapper_attr('custom_variables'))
-                    writer.writerows(episode_data.custom_metrics)
-
-            # Update progress.csv
-            episode_summary = self.get_wrapper_attr('get_episode_summary')()
-
-            with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
-                writer = csv.writer(f)
-                # If first episode, write header
-                if self.get_wrapper_attr('episode') == 1:
-                    writer.writerow(list(episode_summary.keys()))
-                writer.writerow(list(episode_summary.values()))
-
-            # Update weather_variability_config if exists
-            modeling = self.get_wrapper_attr('model')
-            config_path = self.get_wrapper_attr(
-                'weather_variability_config_path')
-
-            if modeling.weather_variability_config is not None:
-                with open(config_path, 'a+') as f:
-                    writer = csv.writer(f)
-
-                    # If first episode, write header
-                    if self.get_wrapper_attr('episode') == 1:
-                        header = ['episode_num'] + [
-                            f"{var_name}_{var_param}"
-                            for var_name in list(modeling.weather_variability_config.keys())
-                            for var_param in ['sigma', 'mu', 'tau']
-                        ]
-                        writer.writerow(header)
-
-                    # Write OU params for each weather variable
-                    var_values = list()
-                    var_values = [
-                        self.get_wrapper_attr('episode')] + [
-                        value for params in modeling.weather_variability_config.values() for value in params]
-                    writer.writerow(var_values)
+                writer.writerow(header)
+                writer.writerows(rows)
+        except Exception as e:
+            self.logger.error(f'Error writing {filename}: {e}')
 
 
 try:
@@ -1657,7 +1656,7 @@ try:
                 excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
                 excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
             """
-            super(WandBLogger, self).__init__(env)
+            super().__init__(env)
 
             # Check if logger is active (required)
             if not is_wrapped(self, BaseLoggerWrapper):
@@ -1889,11 +1888,13 @@ try:
                                        step=self.global_timestep)
 except ImportError:
     class WandBLogger():  # pragma: no cover
+        logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
+                                            level=LOG_WRAPPERS_LEVEL)
         """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
         """
 
-        def __init__(self):
-            print(
+        def __init__(self, env: Env):
+            self.logger.warning(
                 'WandB is not installed. Please install it to use WandBLogger.')
 
 
@@ -1998,31 +1999,40 @@ class VariabilityContextWrapper(gym.Wrapper):
         """Wrapper that modifies the environment's context variables at random intervals.
 
         Args:
-            env (Env): The environment to wrap.
+            env (gym.Env): The environment to wrap.
             context_space (gym.spaces.Box): The space defining valid context variable values.
             delta_value (float): Maximum absolute change applied to context variables at each update.
-            step_frequency_range (Tuple[int, int], optional): Range for the number of steps before each update. Defaults to (96, 96 * 7).
+            step_frequency_range (Tuple[int, int]): Range for the number of steps before each update.
         """
         super().__init__(env)
 
-        # Definition checks
-        if context_space.shape[0] != len(
-                self.get_wrapper_attr('context_variables')):
+        # Validations
+        if not isinstance(context_space, gym.spaces.Box):
             self.logger.error(
-                'Context space shape is not coherent with environment context variables.'
-                f'Context space shape: {context_space.shape[0]}, '
-                f'Context variables: {len(self.get_wrapper_attr("context_variables"))}')
+                'context_space must be an instance of gym.spaces.Box.')
+            raise TypeError
+
+        context_variables = self.get_wrapper_attr('context_variables')
+        if context_space.shape[0] != len(context_variables):
+            self.logger.error(
+                f'Context space shape ({context_space.shape[0]}) is not coherent with '
+                f'environment context variables ({len(context_variables)}).')
             raise ValueError
 
         if delta_value <= 0:
             self.logger.error(
-                f'Delta temperature must be greater than 0, but received {delta_value}.')
+                f'Delta value must be > 0, but received {delta_value}.')
+            raise ValueError
+
+        if not (isinstance(step_frequency_range, tuple)
+                and len(step_frequency_range) == 2):
+            self.logger.error(
+                f'Invalid step_frequency_range: {step_frequency_range}. Must be a tuple (min, max).')
             raise ValueError
 
         if step_frequency_range[0] <= 0 or step_frequency_range[0] >= step_frequency_range[1]:
             self.logger.error(
-                'Step frequency range invalid. It must be a tuple with two positive integers, where the first is less than the second.'
-                f'Step frequency range: {step_frequency_range}')
+                f'Invalid step_frequency_range: {step_frequency_range}.')
             raise ValueError
 
         # Initialization
@@ -2030,9 +2040,10 @@ class VariabilityContextWrapper(gym.Wrapper):
         self.delta_context = (-delta_value, delta_value)
         self.step_frequency_range = step_frequency_range
 
-        if self.get_wrapper_attr('initial_context') is not None:
+        initial_context = self.get_wrapper_attr('initial_context')
+        if initial_context is not None:
             self.current_context = np.array(
-                self.get_wrapper_attr('initial_context'), np.float32)
+                initial_context, np.float32)
         else:
             self.current_context = np.random.uniform(
                 self.context_space.low,
@@ -2045,7 +2056,7 @@ class VariabilityContextWrapper(gym.Wrapper):
 
     def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment. Complete...
+        """Executes an action and updates the environment's context if needed.
 
         Args:
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
@@ -2056,6 +2067,7 @@ class VariabilityContextWrapper(gym.Wrapper):
 
         # Discount frequency
         self.next_step_update -= 1
+
         if self.next_step_update == 0:
             # Update context
             self.get_wrapper_attr('update_context')(self.next_context_values)
