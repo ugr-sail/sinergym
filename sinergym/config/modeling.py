@@ -2,10 +2,10 @@
 import fcntl
 import json
 import os
+import re
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
-import re
 
 import numpy as np
 from eppy.modeleditor import IDF
