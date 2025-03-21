@@ -1212,11 +1212,12 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
             storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
         """
 
-        super(BaseLoggerWrapper, self).__init__(env)
+        super().__init__(env)
         self.data_logger = storage_class()
+        self.has_normalization = is_wrapped(self.env, NormalizeObservation)
         # Overwrite in case you want more metrics
-        self.custom_variables = []
-        self.summary_metrics = []
+        self.custom_variables: List[str] = []
+        self.summary_metrics: List[str] = []
 
     def reset(self,
               seed: Optional[int] = None,
@@ -1232,7 +1233,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         obs, info = self.env.reset(seed=seed, options=options)
 
         # Log reset observation
-        if is_wrapped(self.env, NormalizeObservation):
+        if self.has_normalization:
             self.data_logger.log_norm_obs(obs)
             self.data_logger.log_obs(
                 self.get_wrapper_attr('unwrapped_observation'))
@@ -1257,26 +1258,18 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
                                                        terminated,
                                                        truncated)
 
-        # Log interaction information of step
-        if is_wrapped(self.env, NormalizeObservation):
+        if self.has_normalization:
             self.data_logger.log_norm_obs(obs)
-            self.data_logger.log_interaction(
-                obs=self.get_wrapper_attr('unwrapped_observation'),
-                action=action,
-                reward=reward,
-                info=info,
-                terminated=terminated,
-                truncated=truncated,
-                custom_metrics=custom_metrics)
-        else:
-            self.data_logger.log_interaction(
-                obs=obs,
-                action=action,
-                reward=reward,
-                info=info,
-                terminated=terminated,
-                truncated=truncated,
-                custom_metrics=custom_metrics)
+
+        log_data = {
+            "obs": obs if not self.has_normalization else self.get_wrapper_attr('unwrapped_observation'),
+            "action": action,
+            "reward": reward,
+            "info": info,
+            "terminated": terminated,
+            "truncated": truncated,
+            "custom_metrics": custom_metrics}
+        self.data_logger.log_interaction(**log_data)
 
         return obs, reward, terminated, truncated, info
 
