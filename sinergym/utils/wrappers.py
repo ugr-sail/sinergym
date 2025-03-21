@@ -106,7 +106,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
             'month_sin': np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12),
         })
 
-        return np.array(list(new_obs.values()))
+        return np.fromiter(new_obs.values(), dtype=np.float32)
 
 # ---------------------------------------------------------------------------- #
 
@@ -221,12 +221,12 @@ class MultiObsWrapper(gym.Wrapper):
             self.history.append(obs)
         return self._get_obs(), info
 
-    def step(self, action: Union[int, np.ndarray]
+    def step(self, action: np.ndarray
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Performs the action in the new environment.
 
         Args:
-            action (Union[int, np.ndarray]): Action to be executed in environment.
+            action (np.ndarray): Action to be executed in environment.
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
@@ -244,9 +244,9 @@ class MultiObsWrapper(gym.Wrapper):
             np.array: Array of previous observations.
         """
         if self.get_wrapper_attr('ind_flat'):
-            return np.array(self.history).reshape(-1,)
+            return np.array(self.history, dtype=np.float32).reshape(-1,)
         else:
-            return np.array(self.history)
+            return np.array(self.history, dtype=np.float32)
 
 # ---------------------------------------------------------------------------- #
 
@@ -290,7 +290,7 @@ class NormalizeObservation(gym.Wrapper):
 
         self.logger.info('Wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+    def step(self, action: np.ndarray) -> Tuple[
             np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Steps through the environment and normalizes the observation."""
         obs, reward, terminated, truncated, info = self.env.step(action)
@@ -481,12 +481,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         return obs, info
 
-    def step(self, action: Union[int, np.ndarray]
+    def step(self, action: np.ndarray
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Performs the action in the new environment.
 
         Args:
-            action (Union[int, np.ndarray]): Action to be executed in environment.
+            action (np.ndarray): Action to be executed in environment.
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
@@ -650,7 +650,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         return obs, info
 
-    def step(self, action: Union[int, np.ndarray]
+    def step(self, action: np.ndarray
 
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Performs the action in the new environment.
@@ -979,8 +979,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         # Creating action_mapping function for the discrete environment
         self.mapping = {}
-        do_nothing = [0.0 for _ in range(
-            len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
+        do_nothing = np.array([0.0 for _ in range(len(self.env.get_wrapper_attr(
+            'action_variables')))], dtype=np.float32)  # do nothing
         self.mapping[0] = do_nothing
         n = 1
 
@@ -989,7 +989,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             for v in values:
                 x = deepcopy(do_nothing)
                 x[k] = v
-                self.mapping[n] = x
+                self.mapping[n] = np.array(x, dtype=np.float32)
                 n += 1
 
         self.action_space = gym.spaces.Discrete(n)
@@ -1000,9 +1000,9 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
     # Define action mapping method
     def action_mapping(self, action: int) -> np.ndarray:
-        return np.array(self.mapping[action], dtype=np.float32)
+        return self.mapping[action]
 
-    def action(self, action):
+    def action(self, action: int) -> np.ndarray:
         """Takes the discrete action and transforms it to setpoints tuple."""
         action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
@@ -1048,16 +1048,13 @@ class DiscretizeEnv(gym.ActionWrapper):
                  discrete_space: Union[gym.spaces.Discrete,
                                        gym.spaces.MultiDiscrete,
                                        gym.spaces.MultiBinary],
-                 action_mapping: Callable[[Union[int,
-                                                 List[int]]],
-                                          Union[float,
-                                                List[float]]]):
+                 action_mapping: Callable[[Union[int, List[int]]], np.ndarray]):
         """Wrapper for Discretize action space.
 
         Args:
             env (Env): Original environment.
             discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
-            action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
+            action_mapping (Callable[[Union[int,List[int]]], np.ndarray]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
         """
         super().__init__(env)
         self.action_space = discrete_space
@@ -1071,8 +1068,8 @@ class DiscretizeEnv(gym.ActionWrapper):
 
     def action(self, action: Union[int, List[int]]) -> np.ndarray:
         action_ = deepcopy(action)
-        action_ = np.array(self.get_wrapper_attr(
-            'action_mapping')(action_), dtype=np.float32)
+        action_ = self.get_wrapper_attr(
+            'action_mapping')(action_)
         return action_
 
     # Updating property
@@ -1138,21 +1135,19 @@ class NormalizeAction(gym.ActionWrapper):
         self.logger.info('Wrapper initialized.')
 
     def reverting_action(self,
-                         action: Any):
+                         action: np.ndarray) -> np.ndarray:
         """ This method maps a normalized action in a real action space.
 
         Args:
-            action (Any): Normalize action received in environment
+            action (np.ndarray): Normalize action received in environment
 
         Returns:
             np.array: Action transformed in simulator real action space.
         """
-        action = np.asarray(action, dtype=np.float32)
-
         return self.real_space.low + \
             (action - self.normalized_space.low) * self.scale
 
-    def action(self, action: Any):
+    def action(self, action: np.ndarray) -> np.ndarray:
         return self.reverting_action(action)
 
 # ---------------------------------------------------------------------------- #
@@ -1177,12 +1172,12 @@ class MultiObjectiveReward(gym.Wrapper):
 
         self.logger.info('wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+    def step(self, action: np.ndarray) -> Tuple[
             np.ndarray, List[float], bool, bool, Dict[str, Any]]:
         """Perform the action and environment return reward vector. If reward term is not in info reward_terms, it will be ignored.
 
         Args:
-            action (Union[int, np.ndarray]): Action to be executed in environment.
+            action (np.ndarray): Action to be executed in environment.
 
         Returns:
             Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
@@ -1244,7 +1239,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
 
         return obs, info
 
-    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+    def step(self, action: np.ndarray) -> Tuple[
             np.ndarray, float, bool, bool, Dict[str, Any]]:
 
         # Environment step
@@ -1283,7 +1278,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
     @abstractmethod  # pragma: no cover
     def calculate_custom_metrics(self,
                                  obs: np.ndarray,
-                                 action: Union[int, np.ndarray],
+                                 action: np.ndarray,
                                  reward: float,
                                  info: Dict[str, Any],
                                  terminated: bool,
@@ -1292,7 +1287,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
 
             Args:
                 obs (np.ndarray): Observation from environment.
-                action (Union[int, np.ndarray]): Action taken in environment.
+                action (np.ndarray): Action taken in environment.
                 reward (float): Reward received from environment.
                 info (Dict[str, Any]): Information from environment.
                 terminated (bool): Flag to indicate if episode is terminated.
@@ -1359,7 +1354,7 @@ class LoggerWrapper(BaseLoggerWrapper):
 
     def calculate_custom_metrics(self,
                                  obs: np.ndarray,
-                                 action: Union[int, np.ndarray],
+                                 action: np.ndarray,
                                  reward: float,
                                  info: Dict[str, Any],
                                  terminated: bool,
@@ -1710,12 +1705,12 @@ try:
 
             self.logger.info('Wrapper initialized.')
 
-        def step(self, action: Union[int, np.ndarray]
+        def step(self, action: np.ndarray
                  ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
             """Sends action to the environment. Logging new interaction information in WandB platform.
 
             Args:
-                action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+                action (np.ndarray): Action selected by the agent.
 
             Returns:
                 Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
@@ -1945,12 +1940,12 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         self.logger.info('Wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]
+    def step(self, action: np.ndarray
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Sends action to the environment. Separating removed variables from observation values and adding it to info dict.
 
         Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+            action (np.ndarray): Action selected by the agent.
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
@@ -2051,12 +2046,12 @@ class VariabilityContextWrapper(gym.Wrapper):
 
         self.logger.info('Wrapper initialized.')
 
-    def step(self, action: Union[int, np.ndarray]
+    def step(self, action: np.ndarray
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Executes an action and updates the environment's context if needed.
 
         Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+            action (np.ndarray): Action selected by the agent.
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information

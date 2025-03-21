@@ -583,7 +583,7 @@ def test_discretize_wrapper(env_demo):
     # Wrapped env
     assert env.get_wrapper_attr('is_discrete')
     assert env.action_space.n == 10
-    assert isinstance(env.action_mapping(0), list)
+    assert isinstance(env.action_mapping(0), np.ndarray)
     # Original continuos env
     original_env = env.env
     assert not original_env.get_wrapper_attr('is_discrete')
