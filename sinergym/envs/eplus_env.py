@@ -295,18 +295,18 @@ class EplusEnv(gym.Env):
 
         # Wait to receive simulation first observation and info
         try:
-            obs = self.obs_queue.get(timeout=20)
+            obs = self.obs_queue.get(timeout=10)
         except Empty:  # pragma: no cover
             self.logger.warning(
-                'Reset: Observation queue empty, returning a random observation (not real).')
+                'Reset: Observation queue empty, returning a random observation (not real). Probably EnergyPlus initialization is failing.')
             obs = self.last_obs
 
         try:
-            info = self.info_queue.get(timeout=20)
+            info = self.info_queue.get(timeout=10)
         except Empty:  # pragma: no cover
             info = self.last_info
             self.logger.warning(
-                'Reset: info queue empty, returning an empty info dictionary (not real).')
+                'Reset: info queue empty, returning an empty info dictionary (not real). Probably EnergyPlus initialization is failing.')
 
         info.update({'timestep': self.timestep})
         self.last_obs = obs
