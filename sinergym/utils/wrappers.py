@@ -1665,14 +1665,14 @@ try:
                 raise ValueError
 
             # Define wandb run name if is not specified
-            run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
-                'name') + '_' + wandb.util.generate_id()
+            run_name = run_name or f'{
+                self.env.get_wrapper_attr('name')}_{
+                wandb.util.generate_id()}'
 
             # Init WandB session
             # If there is no active run and entity and project has been specified,
             # initialize a new one using the parameters
-            if wandb.run is None and (
-                    entity is not None and project_name is not None):
+            if not wandb.run and (entity and project_name):
                 self.wandb_run = wandb.init(entity=entity,
                                             project=project_name,
                                             name=run_name,
@@ -1682,7 +1682,7 @@ try:
                                             save_code=save_code,
                                             reinit=False)
             # If there is an active run
-            elif wandb.run is not None:
+            elif wandb.run:
                 # Use the active run
                 self.wandb_run = wandb.run
             else:
@@ -1727,8 +1727,8 @@ try:
             # Log step information if frequency is correct
             if self.global_timestep % self.dump_frequency == 0:
                 self.logger.debug(
-                    f'Dump Frequency reached in timestep {
-                        self.global_timestep}, dumping data in WandB.')
+                    f'Dump frequency reached ({
+                        self.global_timestep}), logging to WandB.')
                 self.wandb_log()
 
             return obs, reward, terminated, truncated, info
@@ -1805,22 +1805,22 @@ try:
             data_logger = self.get_wrapper_attr('data_logger')
 
             # OBSERVATION
+            observation_variables = self.get_wrapper_attr(
+                'observation_variables')
+            log_dict['Observations'] = dict(
+                zip(observation_variables, data_logger.observations[-1]))
             if is_wrapped(self, NormalizeObservation):
-                log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
-                    'observation_variables'), data_logger.normalized_observations[-1]))
-                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                    'observation_variables'), data_logger.observations[-1]))
-            else:
-                log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                    'observation_variables'), data_logger.observations[-1]))
+                log_dict['Normalized_observations'] = dict(
+                    zip(observation_variables, data_logger.normalized_observations[-1]))
 
             # ACTION
+            action_variables = self.get_wrapper_attr('action_variables')
             # Original action sent
             log_dict['Agent_actions'] = dict(
-                zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
+                zip(action_variables, data_logger.actions[-1]))
             # Action values performed in simulation
-            log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
-                'action_variables'), data_logger.infos[-1]['action']))
+            log_dict['Simulation_actions'] = dict(
+                zip(action_variables, data_logger.infos[-1]['action']))
 
             # REWARD
             log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
@@ -1831,10 +1831,9 @@ try:
                 value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
 
             # CUSTOM METRICS
-            if len(self.get_wrapper_attr('custom_variables')) > 0:
-                custom_metrics = dict(zip(self.get_wrapper_attr(
+            if self.get_wrapper_attr('custom_variables'):
+                log_dict['Variables_custom'] = dict(zip(self.get_wrapper_attr(
                     'custom_variables'), data_logger.custom_metrics[-1]))
-                log_dict['Variables_custom'] = custom_metrics
 
             # Log in WandB
             self._log_data(log_dict)
@@ -1842,7 +1841,7 @@ try:
         def wandb_log_summary(self) -> None:
             """Log episode summary in WandB platform.
             """
-            if len(self.get_wrapper_attr('data_logger').rewards) > 0:
+            if self.get_wrapper_attr('data_logger').rewards:
                 # Get information from logger of LoggerWrapper
                 episode_summary = self.get_wrapper_attr(
                     'get_episode_summary')()
@@ -1880,12 +1879,10 @@ try:
 
             for key, value in data.items():
                 if isinstance(value, dict):
-                    for k, v in value.items():
-                        self.wandb_run.log({f'{key}/{k}': v},
-                                           step=self.global_timestep)
+                    self.wandb_run.log(
+                        {f'{key}/{k}': v for k, v in value.items()}, step=self.global_timestep)
                 else:
-                    self.wandb_run.log({key: value},
-                                       step=self.global_timestep)
+                    self.wandb_run.log({key: value}, step=self.global_timestep)
 except ImportError:
     class WandBLogger():  # pragma: no cover
         logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
