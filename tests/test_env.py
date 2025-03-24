@@ -218,7 +218,7 @@ def test_all_environments():
     samples_id = sample(envs_id, 5)
     for env_id in samples_id:
         # Create env with TEST name
-        env = gym.make(env_id)
+        env = gym.make(env_id, env_name='PYTEST' + env_id)
 
         check_env(env)
 

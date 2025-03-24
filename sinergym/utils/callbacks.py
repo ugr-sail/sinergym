@@ -109,10 +109,9 @@ class LoggerEvalCallback(EventCallback):
         # Close current training environment to execute an evaluation
         if self.wandb_log:
             self.train_env.get_wrapper_attr('set_wandb_finish')(False)
-            self.train_env.close()
+        self.train_env.close()
+        if self.wandb_log:
             self.train_env.get_wrapper_attr('set_wandb_finish')(True)
-        else:
-            self.train_env.close()
 
         # We sincronize the evaluation and training envs (for example, for
         # normalization calibration data)
@@ -126,30 +125,24 @@ class LoggerEvalCallback(EventCallback):
         # ---------------------- Process evaluation information ---------------------- #
 
         # Process episodes data in means
-        evaluation_summary = {'evaluation_num': self.evaluation_num}
-        for key in evaluation_episodes.keys():
-            if key in self.evaluation_columns:
-                evaluation_summary[key] = np.mean(
-                    evaluation_episodes[key])
+        evaluation_summary = {
+            'evaluation_num': self.evaluation_num,
+            **{key: np.mean(evaluation_episodes[key]) for key in self.evaluation_columns if
+               key in evaluation_episodes}
+        }
 
         # ------------------------------ Log information ----------------------------- #
 
-        # Add evaluation summary to the evaluation metrics (CSV)
+        # Save evaluation summary to CSV
         evaluation_summary_df = pd.DataFrame(
             [evaluation_summary]).dropna(
             axis=1, how="all")
 
         if not evaluation_summary_df.empty:
-            evaluation_summary_df = evaluation_summary_df.reindex(
-                columns=self.evaluation_metrics.columns)
-            evaluation_summary_df = evaluation_summary_df.reset_index(
-                drop=True)
-            self.evaluation_metrics = self.evaluation_metrics.dropna(
-                axis=1, how="all")
-            self.evaluation_metrics = pd.concat(
-                [self.evaluation_metrics, evaluation_summary_df], ignore_index=True)
-        self.evaluation_metrics.to_csv(
-            self.save_path + '/evaluation_metrics.csv')
+            self.evaluation_metrics = pd.concat([self.evaluation_metrics.dropna(
+                axis=1, how="all"), evaluation_summary_df], ignore_index=True)
+            self.evaluation_metrics.to_csv(os.path.join(
+                self.save_path, 'evaluation_metrics.csv'))
 
         # Add evaluation metrics to wandb plots if enabled
         if self.wandb_log:
@@ -172,23 +165,22 @@ class LoggerEvalCallback(EventCallback):
                 self.logger.info('New best mean reward!')
 
             # Save new best model
-            self.model.save(
-                os.path.join(
-                    self.save_path,
-                    'best_model.zip'))
+            self.model.save(os.path.join(self.save_path, 'best_model.zip'))
             self.best_mean_reward = evaluation_summary['mean_reward']
+
             # Save normalization calibration if exists
             if is_wrapped(self.eval_env, NormalizeObservation):
                 self.logger.info(
                     'Save normalization calibration in evaluation folder')
                 np.savetxt(
-                    fname=self.save_path +
-                    '/mean.txt',
-                    X=self.eval_env.get_wrapper_attr('mean'))
+                    fname=os.path.join(self.save_path, 'mean.txt'),
+                    X=self.eval_env.get_wrapper_attr('mean')
+                )
                 np.savetxt(
-                    fname=self.save_path +
-                    '/var.txt',
-                    X=self.eval_env.get_wrapper_attr('var'))
+                    fname=os.path.join(self.save_path, 'var.txt'),
+                    X=self.eval_env.get_wrapper_attr('var')
+                )
+
             # Save best model found summary in wandb if its active
             if self.wandb_log:
                 self.train_env.get_wrapper_attr('_log_data')(
@@ -200,20 +192,21 @@ class LoggerEvalCallback(EventCallback):
 
     def _sync_envs(self):
         # normalization
-        if is_wrapped(
-                self.train_env,
-                NormalizeObservation) and is_wrapped(
-                self.eval_env,
-                NormalizeObservation):
-            self.eval_env.get_wrapper_attr('deactivate_update')()
-            self.eval_env.get_wrapper_attr('set_mean')(
-                self.train_env.get_wrapper_attr('mean'))
-            self.eval_env.get_wrapper_attr('set_var')(
-                self.train_env.get_wrapper_attr('var'))
+        if all(is_wrapped(env, NormalizeObservation)
+               for env in (self.train_env, self.eval_env)):
+
+            get_eval_attr = self.eval_env.get_wrapper_attr
+            get_train_attr = self.train_env.get_wrapper_attr
+
+            get_eval_attr('deactivate_update')()
+            get_eval_attr('set_mean')(
+                get_train_attr('mean'))
+            get_eval_attr('set_var')(
+                get_train_attr('var'))
 
     def _evaluate_policy(self) -> Dict[str, List[Any]]:
         """
-        Runs policy for ``n_eval_episodes`` episodes and returns average reward and other Sinergym metrics, depending its backend logger.
+        Runs the policy for ``n_eval_episodes`` episodes and returns average reward and other Sinergym metrics, depending its backend logger.
 
         Returns:
             Dict[str, List[Any]]: Dictionary with logger summary metrics for each evaluation episode executed. Keys depend on the logger used.
@@ -222,25 +215,21 @@ class LoggerEvalCallback(EventCallback):
         result = {key: [] for key in self.evaluation_columns}
 
         for _ in range(self.n_eval_episodes):
-
             obs, _ = self.eval_env.reset()
-            state = None
-            truncated = terminated = False
-            # ---------------------------------------------------------------------------- #
-            #                     Running episode and accumulate values                    #
-            # ---------------------------------------------------------------------------- #
+            state, truncated, terminated = None, False, False
+
+            # ------------------- Running episode and accumulate values ------------------ #
             while not (truncated or terminated):
                 action, state = self.model.predict(
                     obs, state=state, deterministic=self.deterministic)
-                obs, reward, terminated, truncated, info = self.eval_env.step(
+                obs, _, terminated, truncated, _ = self.eval_env.step(
                     action)
 
-            # ---------------------------------------------------------------------------- #
-            #                     Storing last episode in results dict                     #
-            # ---------------------------------------------------------------------------- #
+            # ------------------- Storing last episode in results dict ------------------- #
             summary = self.eval_env.get_wrapper_attr('get_episode_summary')()
             # Append values to result dictionary
-            for key in result.keys():
-                result[key].append(summary[key])
+            for key, value in summary.items():
+                if key in result:
+                    result[key].append(value)
 
         return result

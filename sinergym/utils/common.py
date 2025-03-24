@@ -33,9 +33,12 @@ def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.
 
-    :param env: Environment to check
-    :param wrapper_class: Wrapper class to look for
-    :return: True if environment has been wrapped with ``wrapper_class``.
+    Args:
+        env (Type[gym.Env]): Environment to check
+        wrapper_class (Type[gym.Wrapper]): Wrapper class to look for
+
+    Returns:
+        bool: True if environment has been wrapped with ``wrapper_class``.
     """
     return unwrap_wrapper(env, wrapper_class) is not None
 
@@ -45,9 +48,12 @@ def unwrap_wrapper(env: gym.Env,
     """
     Retrieve a wrapper object by recursively searching.
 
-    :param env: Environment to unwrap
-    :param wrapper_class: Wrapper to look for
-    :return: Environment unwrapped till ``wrapper_class`` if it has been wrapped with it
+    Args:
+        env (gym.Env): Environment to unwrap
+        wrapper_class (Type[gym.Wrapper]): Wrapper to look for
+
+    Returns:
+        Optional[gym.Wrapper]: Wrapper object if found, else None
     """
     env_tmp = env
     while isinstance(env_tmp, gym.Wrapper):
@@ -83,15 +89,13 @@ def get_delta_seconds(
         float: Time difference in seconds.
 
     """
-    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
-    endTime = datetime(end_year, end_mon, end_day,
-                       23, 0, 0) + timedelta(0, 3600)
-    delta_sec = (endTime - startTime).total_seconds()
-    return delta_sec
+    start_time = datetime(st_year, st_mon, st_day)
+    end_time = datetime(end_year, end_mon, end_day) + timedelta(days=1)
+    return (end_time - start_time).total_seconds()
 
 
 def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
-    """Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
+    """Converts an eppy element into a dictionary following the EnergyPlus epJSON standard.
 
     Args:
         element (IDF): eppy element to be converted.
@@ -99,96 +103,82 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     Returns:
         Dict[str,Dict[str,str]]: Python dictionary with epJSON format of eppy element.
     """
-    fields = {}
-    for fieldname in element.fieldnames:
-        fieldname_fixed = fieldname.lower().replace(
-            'drybulb', 'dry_bulb')
-        if fieldname != 'Name' and fieldname != 'key':
-            if element[fieldname] != '':
-                if element[fieldname] == 'Wetbulb':
-                    fields[fieldname_fixed] = 'WetBulb'
-                else:
-                    fields[fieldname_fixed] = element[fieldname]
-    return {element.Name.lower(): fields}
+    fields = {
+        fieldname.lower().replace('drybulb', 'dry_bulb'):
+        'WetBulb' if (value := element[fieldname]) == 'Wetbulb' else value
+        for fieldname in element.fieldnames
+        if fieldname not in {'Name', 'key'} and element[fieldname] != ''
+    }
+
+    return {getattr(element, 'Name', '').lower(): fields}
 
 
 def export_schedulers_to_excel(
         schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
-    """Given a python dictionary with schedulers from modeling format, this method export that information in a excel file
+    """Exports scheduler information from a dictionary to an Excel file.
 
     Args:
-        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
-        path (str): Relative path where excel file will be created.
+        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Dictionary with the correct format.
+        path (str): Relative path where the Excel file will be created.
     """
 
     # Creating workbook and sheet
     workbook = xlsxwriter.Workbook(path)
     worksheet = workbook.add_worksheet()
-    # Creating cells format configuration
-    keys_format = workbook.add_format({'bold': True,
-                                       'font_size': 20,
-                                       'align': 'center',
-                                       'bg_color': 'gray',
-                                       'border': True})
-    cells_format = workbook.add_format(
-        {'align': 'center'})
+
+    # Creating cell format configuration
+    keys_format = workbook.add_format(
+        {'bold': True, 'font_size': 20, 'align': 'center', 'bg_color': 'gray', 'border': True})
+    cells_format = workbook.add_format({'align': 'center'})
     actuator_format = workbook.add_format(
         {'bold': True, 'align': 'center', 'bg_color': 'gray'})
-    # Indicating cell position within sheet
-    current_row = 0
-    current_col = 0
-    # Anotate max_column in order to know excel extension
+
+    # Headers
+    worksheet.write(0, 0, 'Name', keys_format)
+    worksheet.write(0, 1, 'Type', keys_format)
+
+    current_row = 1
     max_col = 1
 
-    worksheet.write(current_row, current_col, 'Name', keys_format)
-    worksheet.write(current_row, current_col + 1, 'Type', keys_format)
-    current_row += 1
-
     for key, info in schedulers.items():
-        worksheet.write(current_row, current_col, key, actuator_format)
-        current_col += 1
-        worksheet.write(current_row, current_col, info['Type'], cells_format)
-        current_col += 1
+        worksheet.write(current_row, 0, key, actuator_format)
+        worksheet.write(
+            current_row, 1, info.get(
+                'Type', 'Unknown'), cells_format)
+
+        col_offset = 2  # Offset inicial después de 'Type'
         for object_name, values in info.items():
             if isinstance(values, dict):
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Name: ' + object_name)
-                current_col += 1
+                    col_offset,
+                    f'Name: {object_name}')
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Field: ' +
-                    values['field_name'])
-                current_col += 1
+                    col_offset + 1,
+                    f'Field: {
+                        values.get(
+                            "field_name",
+                            "N/A")}')
                 worksheet.write(
                     current_row,
-                    current_col,
-                    'Table type: ' +
-                    values['table_name'])
-                current_col += 1
-        # Update max column if it is necessary
-        if current_col > max_col:
-            max_col = current_col
+                    col_offset + 2,
+                    f'Table type: {
+                        values.get(
+                            "table_name",
+                            "N/A")}')
+                col_offset += 3  # Avanzar columnas según los datos escritos
 
+        max_col = max(max_col, col_offset)
         current_row += 1
-        current_col = 0
 
-    current_row = 0
-    object_num = 1
-    # Updating columns extension
+    # Adjusting column width
     worksheet.set_column(0, max_col, 40)
 
-    for i in range(2, max_col, 3):
-        worksheet.merge_range(
-            current_row,
-            i,
-            current_row,
-            i + 2,
-            'OBJECT' + str(object_num),
-            keys_format)
-        object_num += 1
+    # Add object columns
+    for i, col in enumerate(range(2, max_col, 3), start=1):
+        worksheet.merge_range(0, col, 0, col + 2, f'OBJECT {i}', keys_format)
+
     workbook.close()
 
 # ---------------------------------------------------------------------------- #
@@ -220,12 +210,11 @@ def ornstein_uhlenbeck_process(
     dt = T / 1.0  # tau defined as epw rows (hours)
     # t = np.linspace(0., T, n)  # Vector of times.
 
-    for variable, variation in variability_config.items():
+    # Sigma = standard deviation.
+    # Mu = mean.
+    # Tau = time constant.
 
-        sigma = variation[0]  # Standard deviation.
-        mu = variation[1]  # Mean.
-        tau = variation[2]  # Time constant.
-
+    for variable, (sigma, mu, tau) in variability_config.items():
         sigma_bis = sigma * np.sqrt(2. / tau)
         sqrtdt = np.sqrt(dt)
 
@@ -247,115 +236,81 @@ def ornstein_uhlenbeck_process(
 
 def parse_variables_settings(
         variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
-    """Read variables dictionary (from Sinergym yaml settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert Sinergym YAML variable settings to EnergyPlus API format.
 
     Args:
-        variables (Dict[str, Any]): Dictionary from Sinergym YAML configuration with variables information.
+        variables (Dict[str, Any]): Dictionary from Sinergym YAML configuration.
 
     Returns:
-        Dict[str, Tuple[str, str]]: Dictionary with variables information in EnergyPlus API format.
+        Dict[str, Tuple[str, str]]: Dictionary adapted for EnergyPlus API.
     """
 
     output = {}
 
     for variable, specification in variables.items():
+        var_names = specification['variable_names']
+        keys = specification['keys']
 
-        if isinstance(specification['variable_names'], str):
+        if isinstance(var_names, str) and isinstance(keys, str):
+            output[var_names] = (variable, keys)
 
-            if isinstance(specification['keys'], str):
-                output[specification['variable_names']] = (
-                    variable, specification['keys'])
+        elif isinstance(var_names, str) and isinstance(keys, list):
+            for key in keys:
+                prename = key.lower().replace(' ', '_') + '_'
+                output[prename + var_names] = (variable, key)
 
-            elif isinstance(specification['keys'], list):
-                for key in specification['keys']:
-                    prename = key.lower()
-                    prename = prename.replace(' ', '_')
-                    prename = prename + '_'
-                    output[prename +
-                           specification['variable_names']] = (variable, key)
-
-            else:
-                raise RuntimeError
-
-        elif isinstance(specification['variable_names'], list):
-
-            if isinstance(specification['keys'], str):
-                raise RuntimeError
-
-            elif isinstance(specification['keys'], list):
-                if len(specification['variable_names']) != len(
-                        specification['keys']):
-                    logger.error(
-                        f'variable names and keys must have the same len in {variable}')
-                    raise ValueError
-                for variable_name, key_name in list(
-                        zip(specification['variable_names'], specification['keys'])):
-                    output[variable_name] = (variable, key_name)
-
-            else:
-                raise RuntimeError
+        elif isinstance(var_names, list) and isinstance(keys, list):
+            if len(var_names) != len(keys):
+                raise ValueError(
+                    f"'variable_names' and 'keys' must have the same length in {variable}")
+            for var_name, key in zip(var_names, keys):
+                output[var_name] = (variable, key)
 
         else:
-
+            logger.error(
+                f'Invalid variable_names or keys format in {variable}')
             raise RuntimeError
 
     return output
 
 
 def parse_meters_settings(meters: Dict[str, str]) -> Dict[str, str]:
-    """Read meters dictionary (from Sinergym YAML settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert meters dictionary from Sinergym YAML settings to EnergyPlus format.
 
     Args:
-        meters (Dict[str, str]): Dictionary from Sinergym YAML configuration with meters information.
+        meters (Dict[str, str]): Dictionary with meters information.
 
     Returns:
-        Dict[str, str]: Dictionary with meters information in EnergyPlus API format.
+        Dict[str, str]: Reformatted meters dictionary for EnergyPlus API.
     """
-
-    output = {}
-
-    for meter_name, variable_name in meters.items():
-        output[variable_name] = meter_name
-
-    return output
+    return {v: k for k, v in meters.items()}
 
 
 def parse_actuators_settings(
         actuators: Dict[str, Dict[str, str]]) -> Dict[str, Tuple[str, str, str]]:
-    """Read actuators dictionary (from Sinergym YAML settings) and adapt it to the
-       EnergyPlus format. More information about Sinergym YAML configuration format
-       in documentation.
+    """Convert actuators dictionary from Sinergym YAML settings to EnergyPlus format.
 
     Args:
-        actuators (Dict[str, Dict[str, str]]): Dictionary from Sinergym YAML configuration with actuators information.
+        actuators (Dict[str, Dict[str, str]]): Actuators information from Sinergym YAML.
 
     Returns:
-        Dict[str, Tuple[str, str, str]]: Dictionary with actuators information in EnergyPlus API format.
+        Dict[str, Tuple[str, str, str]]: Reformatted actuators dictionary for EnergyPlus API.
     """
-
-    output = {}
-
-    for actuator_name, specification in actuators.items():
-        output[specification['variable_name']] = (
-            specification['element_type'], specification['value_type'], actuator_name)
-
-    return output
+    return {
+        spec['variable_name']: (spec['element_type'], spec['value_type'], name)
+        for name, spec in actuators.items()
+    }
 
 
 def convert_conf_to_env_parameters(
         conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
-    """Convert a configuration from YAML format (sinergym/data/default_configuration/file.yaml) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
-       More information about Sinergym environment configuration in YAML format in documentation.
+    """Convert YAML configuration to a dictionary of possible environments.
 
     Args:
-        conf (Dict[str, Any]): Dictionary from read YAML setting file (sinergym/data/default_configuration/file.yaml).
+        conf (Dict[str, Any]): Dictionary from a YAML configuration file.
 
     Returns:
-        Dict[str,[Dict[str, Any]]: All possible Sinergym environment constructor kwargs.
+        Dict[str, Dict[str, Any]]: Dictionary with environment constructor kwargs.
     """
 
     configurations = {}
@@ -365,74 +320,54 @@ def convert_conf_to_env_parameters(
     actuators = parse_actuators_settings(conf['actuators'])
     context = parse_actuators_settings(conf['context'])
 
-    if len(conf['weather_specification']['weather_files']) != len(
-            conf['weather_specification']['keys']):
+    weather_keys = conf['weather_specification']['keys']
+    weather_files = conf['weather_specification']['weather_files']
+
+    # Check weathers configuration
+    if len(weather_keys) != len(weather_files):
         logger.error(
-            'Weather files and id keys must have the same len\n' f'{
-                len(
-                    conf["weather_specification"]["weather_files"])} weather files != {
-                len(
-                    conf["weather_specification"]["keys"])} keys')
+            f'Weather files and id keys must have the same length: ' f'{
+                len(weather_files)} weather files != {
+                len(weather_keys)} keys')
         raise ValueError
 
-    weather_info = list(zip(conf['weather_specification']['keys'],
-                        conf['weather_specification']['weather_files']))
+    # Base ID and kwargs
+    base_id = 'Eplus-' + conf['id_base']
+    base_kwargs = {
+        'building_file': conf['building_file'],
+        'action_space': eval(conf['action_space']),
+        'time_variables': conf['time_variables'],
+        'variables': variables,
+        'meters': meters,
+        'actuators': actuators,
+        'context': context,
+        'initial_context': conf.get('initial_context'),
+        'reward': eval(conf['reward']),
+        'reward_kwargs': conf['reward_kwargs'],
+        'max_ep_data_store_num': conf['max_ep_data_store_num'],
+        'config_params': conf.get('config_params')
+    }
 
     weather_variability = conf.get('weather_variability')
-
-    for weather_id, weather_file in weather_info:
-
-        id = 'Eplus-' + conf['id_base'] + '-' + weather_id + '-continuous-v1'
-
-        env_kwargs = {
-            'building_file': conf['building_file'],
-            'weather_files': weather_file,
-            'action_space': eval(conf['action_space']),
-            'time_variables': conf['time_variables'],
-            'variables': variables,
-            'meters': meters,
-            'actuators': actuators,
-            'context': context,
-            'initial_context': conf.get('initial_context'),
-            'reward': eval(conf['reward']),
-            'reward_kwargs': conf['reward_kwargs'],
-            'max_ep_data_store_num': conf['max_ep_data_store_num'],
-            'env_name': id,
-            'config_params': conf.get('config_params')
+    # Convert lists to tuples for consistency
+    if weather_variability:
+        weather_variability = {
+            var: tuple(tuple(param) if isinstance(param, list) else param
+                       for param in params)
+            for var, params in weather_variability.items()
         }
-        configurations[id] = env_kwargs
 
+    # Build environment configurations
+    for weather_id, weather_file in zip(weather_keys, weather_files):
+        configurations[f'{base_id}-{weather_id}-continuous-v1'] = {**base_kwargs,
+                                                                   'weather_files': weather_file,
+                                                                   'env_name': f'{base_id}-{weather_id}-continuous-v1'}
+        # Build stochastic versions if weather variability is present
         if weather_variability:
-
-            # Cast weather variability variation from list to tuple
-            weather_variability = {
-                var_name: tuple(
-                    tuple(param) if isinstance(param, list) else param
-                    for param in var_params
-                )
-                for var_name, var_params in weather_variability.items()
+            configurations[f'{base_id}-{weather_id}-continuous-stochastic-v1'] = {
+                **base_kwargs, 'weather_files': weather_file, 'weather_variability': weather_variability,
+                'env_name': f'{base_id}-{weather_id}-continuous-stochastic-v1'
             }
-
-            id = 'Eplus-' + conf['id_base'] + '-' + \
-                weather_id + '-continuous-stochastic-v1'
-            env_kwargs = {
-                'building_file': conf['building_file'],
-                'weather_files': weather_file,
-                'action_space': eval(conf['action_space']),
-                'time_variables': conf['time_variables'],
-                'variables': variables,
-                'meters': meters,
-                'actuators': actuators,
-                'context': context,
-                'initial_context': conf.get('initial_context'),
-                'weather_variability': weather_variability,
-                'reward': eval(conf['reward']),
-                'reward_kwargs': conf['reward_kwargs'],
-                'max_ep_data_store_num': conf['max_ep_data_store_num'],
-                'env_name': id,
-                'config_params': conf.get('config_params')
-            }
-            configurations[id] = env_kwargs
 
     return configurations
 

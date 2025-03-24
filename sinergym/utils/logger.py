@@ -115,21 +115,11 @@ class LoggerStorage():
     """
 
     def __init__(self):
-        """Logger constructor."""
-
-        # Interaction data initialization
-        self.interactions = 0
-        self.observations = []
-        self.normalized_observations = []
-        self.actions = []
-        self.rewards = []
-        self.infos = []
-        self.terminateds = []
-        self.truncateds = []
-        self.custom_metrics = []
+        """Initialize LoggerStorage."""
+        self.reset_data()
 
     def log_interaction(self,
-                        obs: List[float],
+                        obs: Union[List[float], np.ndarray],
                         action: Union[int, np.ndarray, List[float]],
                         reward: float,
                         info: Dict[str, Any],
@@ -139,7 +129,7 @@ class LoggerStorage():
         """Log interaction data.
 
         Args:
-            obs (List[float]): Observation data.
+            obs (Union[List[float], np.ndarray]): Observation data.
             action (Union[int, np.ndarray, List[float]]): Action data.
             reward (float): Reward data.
             info (Dict[str, Any]): Info data.
@@ -147,37 +137,43 @@ class LoggerStorage():
             truncated (bool): Truncation flag.
             custom_metrics (List[Any]): Custom metric data. Default is None.
         """
-        if isinstance(action, np.ndarray):
-            action = action.tolist()
-        if isinstance(action, (int, np.int64)):
-            action = [action]
-        if isinstance(obs, np.ndarray):
-            obs = obs.tolist()
+        # Convert inputs to consistent formats
+        obs = obs.tolist() if isinstance(obs, np.ndarray) else obs
+        action = action.tolist() if isinstance(
+            action, np.ndarray) else [action] if isinstance(
+            action, (int, np.int64)) else action
+
+        # Store data
         self.observations.append(obs)
         self.actions.append(action)
         self.rewards.append(reward)
         self.infos.append(info)
         self.terminateds.append(terminated)
         self.truncateds.append(truncated)
-        if custom_metrics is not None and len(custom_metrics) > 0:
+        if custom_metrics:
             self.custom_metrics.append(custom_metrics)
+
         self.interactions += 1
 
-    def log_norm_obs(self, norm_obs: List[float]) -> None:
+    def log_norm_obs(self, norm_obs: Union[List[float], np.ndarray]) -> None:
         """Log normalized observation data.
 
         Args:
-            norm_obs (List[float]): Normalized observation data.
+            norm_obs (Union[List[float], np.ndarray]): Normalized observation data.
         """
-        self.normalized_observations.append(norm_obs)
+        self.normalized_observations.append(
+            norm_obs.tolist() if isinstance(
+                norm_obs, np.ndarray) else norm_obs)
 
-    def log_obs(self, obs: List[float]) -> None:
+    def log_obs(self, obs: Union[List[float], np.ndarray]) -> None:
         """Log observation data.
 
         Args:
-            obs (List[float]): Observation data.
+            obs (Union[List[float], np.ndarray]): Observation data.
         """
-        self.observations.append(obs)
+        self.observations.append(
+            obs.tolist() if isinstance(
+                obs, np.ndarray) else obs)
 
     def log_info(self, info: Dict[str, Any]) -> None:
         """Log info data.
