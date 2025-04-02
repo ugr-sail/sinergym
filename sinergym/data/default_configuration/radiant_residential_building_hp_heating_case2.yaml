@@ -1,0 +1,272 @@
+id_base: radiant_case2_heating
+building_file: radiant_residential_building_hp_heating.epJSON
+weather_specification:
+  weather_files:
+  - USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw
+  - USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw
+  - USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw
+  - SWE_Stockholm.Arlanda.024600_IWEC.epw
+  weather_confs:
+  - cap_nom_heating: 1000
+    cap_nom_cooling: 100
+    window_type: double_pane_low_E_air_eu
+    thickness_roof: 0.15
+    thickness_wall: 0.1
+    setpoint_control_type: HalfFlowPower
+    heating_control_throttling_range: 10
+    cooling_control_throttling_range: 10
+    maximum_hot_water_flow: [3.53971e-05, 4.77988e-05, 2.6982e-05, 5.19201e-05, 4.4704e-05]
+    maximum_cold_water_flow: ['Autosize', 'Autosize', 'Autosize', 'Autosize', 'Autosize']
+  - cap_nom_heating: 2000
+    cap_nom_cooling: 200
+    window_type: double_pane_low_E_air_eu
+    thickness_roof: 0.15
+    thickness_wall: 0.1
+    setpoint_control_type: HalfFlowPower
+    heating_control_throttling_range: 10
+    cooling_control_throttling_range: 10
+    maximum_hot_water_flow: [3.53971e-05, 4.77988e-05, 2.6982e-05, 5.19201e-05, 4.4704e-05]
+    maximum_cold_water_flow: ['Autosize', 'Autosize', 'Autosize', 'Autosize', 'Autosize']
+  - cap_nom_heating: 3000
+    cap_nom_cooling: 300
+    window_type: double_pane_low_E_air_eu
+    thickness_roof: 0.15
+    thickness_wall: 0.1
+    setpoint_control_type: HalfFlowPower
+    heating_control_throttling_range: 10
+    cooling_control_throttling_range: 10
+    maximum_hot_water_flow: [3.53971e-05, 4.77988e-05, 2.6982e-05, 5.19201e-05, 4.4704e-05]
+    maximum_cold_water_flow: ['Autosize', 'Autosize', 'Autosize', 'Autosize', 'Autosize']
+  - cap_nom_heating: 7000
+    cap_nom_cooling: Autosize
+    window_type: double_pane_low_E_air_eu
+    thickness_roof: 0.05
+    thickness_wall: 0.05
+    setpoint_control_type: HalfFlowPower
+    heating_control_throttling_range: 10
+    cooling_control_throttling_range: 10
+    maximum_hot_water_flow: [3.53971e-05, 4.77988e-05, 2.6982e-05, 5.19201e-05, 4.4704e-05]
+    maximum_cold_water_flow: ['Autosize', 'Autosize', 'Autosize', 'Autosize', 'Autosize']
+  keys:
+    - hot
+    - mixed
+    - cool
+    - stockholm
+config_params:
+  timesteps_per_hour: 12
+  north_axis: 270
+weather_variability:
+  Dry Bulb Temperature:
+    - [1.0, 2.0]
+    - 0
+    - 24
+max_ep_data_store_num: 3
+time_variables:
+  - month
+  - day_of_month
+  - hour
+  - minutes
+variables:
+  Site Outdoor Air DryBulb Temperature:
+    variable_names: outdoor_temperature
+    keys: Environment
+  Site Outdoor Air Relative Humidity:
+    variable_names: outdoor_humidity
+    keys: Environment
+  Site Wind Speed:
+    variable_names: wind_speed
+    keys: Environment
+  Site Wind Direction:
+    variable_names: wind_direction
+    keys: Environment
+  Site Diffuse Solar Radiation Rate per Area:
+    variable_names: diffuse_solar_radiation
+    keys: Environment
+  Site Direct Solar Radiation Rate per Area:
+    variable_names: direct_solar_radiation
+    keys: Environment
+  Zone Thermostat Heating Setpoint Temperature:
+    variable_names:
+      - htg_setpoint_living
+      - htg_setpoint_kitchen
+      - htg_setpoint_bed1
+      - htg_setpoint_bed2
+      - htg_setpoint_bed3
+    keys:
+      - FirstFloor:LivingRoom
+      - FirstFloor:Kitchen
+      - SecondFloor:Bedroom01
+      - SecondFloor:Bedroom02
+      - SecondFloor:Bedroom03
+  Zone Air Temperature:
+    variable_names:
+      - air_temperature_living
+      - air_temperature_kitchen
+      - air_temperature_bed1
+      - air_temperature_bed2
+      - air_temperature_bed3
+    keys:
+      - FirstFloor:LivingRoom
+      - FirstFloor:Kitchen
+      - SecondFloor:Bedroom01
+      - SecondFloor:Bedroom02
+      - SecondFloor:Bedroom03
+  Zone Air Relative Humidity:
+    variable_names:
+      - air_humidity_living
+      - air_humidity_kitchen
+      - air_humidity_bed1
+      - air_humidity_bed2
+      - air_humidity_bed3
+    keys:
+      - FirstFloor:LivingRoom
+      - FirstFloor:Kitchen
+      - SecondFloor:Bedroom01
+      - SecondFloor:Bedroom02
+      - SecondFloor:Bedroom03
+  Zone Radiant HVAC Outlet Temperature:
+    variable_names:
+      - radiant_hvac_outlet_temperature_living
+      - radiant_hvac_outlet_temperature_kitchen
+      - radiant_hvac_outlet_temperature_bed1
+      - radiant_hvac_outlet_temperature_bed2
+      - radiant_hvac_outlet_temperature_bed3
+    keys:
+      - FirstFloor:LivingRoom radiant surface
+      - FirstFloor:Kitchen radiant surface
+      - SecondFloor:Bedroom01 radiant surface
+      - SecondFloor:Bedroom02 radiant surface
+      - SecondFloor:Bedroom03 radiant surface
+  System Node Mass Flow Rate:
+    variable_names:
+      - flow_rate_living
+      - flow_rate_kitchen
+      - flow_rate_bed1
+      - flow_rate_bed2
+      - flow_rate_bed3
+    keys:
+      - FirstFloor:LivingRoom Radiant surface Hot Water Inlet Node
+      - FirstFloor:Kitchen Radiant surface Hot Water Inlet Node
+      - SecondFloor:Bedroom01 Radiant surface Hot Water Inlet Node
+      - SecondFloor:Bedroom02 Radiant surface Hot Water Inlet Node
+      - SecondFloor:Bedroom03 Radiant surface Hot Water Inlet Node
+  Heat Pump Electricity Rate:
+    variable_names: heat_source_electricity_rate
+    keys: Heating Temp. Source
+  Heat Pump Load Side Outlet Temperature:
+    variable_names: heat_source_load_side_outlet_temp
+    keys: Heating Temp. Source
+  Heat Pump Load Side Inlet Temperature:
+    variable_names: heat_source_load_side_inlet_temp
+    keys: Heating Temp. Source
+  Heat Pump Load Side Heat Transfer Rate:
+    variable_names: heat_source_load_side_heat_transfer_rate
+    keys: Heating Temp. Source
+  Heat Pump Load Side Mass Flow Rate:
+    variable_names: heat_source_load_side_mass_flow_rate
+    keys: Heating Temp. Source
+  Heat Pump Cycling Ratio:
+    variable_names: crf
+    keys: Heating Temp. Source
+  Performance Curve Output Value:
+    variable_names:
+      - heat_cap_mod
+      - cop_plr_mod
+      - cop_temp_mod
+    keys:
+      - HEATCAPAQUAREA9KW
+      - AQUAREA9KW_PLR
+      - COPAQUAREA9KW
+  Heat Pump Part Load Ratio:
+    variable_names: plr_current
+    keys: Heating Temp. Source
+
+meters: {}
+
+actuators:
+  FirstFloor:LivingRoom Radiant surface:
+    variable_name: flow_livroom
+    element_type: Hydronic Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  FirstFloor:Kitchen Radiant surface:
+    variable_name: flow_kitchen
+    element_type: Hydronic Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  SecondFloor:Bedroom01 Radiant surface:
+    variable_name: flow_bed1
+    element_type: Hydronic Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  SecondFloor:Bedroom02 Radiant surface:
+    variable_name: flow_bed2
+    element_type: Hydronic Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  SecondFloor:Bedroom03 Radiant surface:
+    variable_name: flow_bed3
+    element_type: Hydronic Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  'HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00':
+    variable_name: water_temperature
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+
+context:
+  Heating SP LIVING_SCHED:
+    variable_name: htg_setpoint_living
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Heating SP KITCHEN_SCHED:
+    variable_name: htg_setpoint_kitchen
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Heating SP BEDROOM1_SCHED:
+    variable_name: htg_setpoint_bed1
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Heating SP BEDROOM2_SCHED:
+    variable_name: htg_setpoint_bed2
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Heating SP BEDROOM3_SCHED:
+    variable_name: htg_setpoint_bed3
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+
+initial_context:
+  - 20
+  - 20
+  - 20
+  - 20
+  - 20
+
+action_space: gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32),
+  high=np.array([0.0353971, 0.0477988, 0.026982, 0.0519201, 0.044704, 45.0], dtype=np.float32),
+  shape=(6,), dtype=np.float32)
+
+only_discrete: false
+
+reward: LinearReward
+
+reward_kwargs:
+  temperature_variables:
+    - air_temperature_living
+    - air_temperature_kitchen
+    - air_temperature_bed1
+    - air_temperature_bed2
+    - air_temperature_bed3
+  energy_variables:
+    - heat_source_electricity_rate
+  range_comfort_winter:
+    - 19.5
+    - 22
+  range_comfort_summer:
+    - 19.5
+    - 22
+  summer_start:
+    - 6
+    - 1
+  summer_final:
+    - 9
+    - 30
+  energy_weight: 0.5
+  lambda_energy: 0.001
+  lambda_temperature: 1
