@@ -48,9 +48,10 @@ class LoggerEvalCallback(EventCallback):
             verbose (int, optional): Verbosity level. Defaults to 1.
         """
         super().__init__(verbose=verbose)
-
-        assert is_wrapped(
-            train_env, BaseLoggerWrapper), 'Training environment must be wrapped with BaseLoggerWrapper in order to be compatible with this callback.'
+        if not is_wrapped(train_env, BaseLoggerWrapper):
+            self.logger.error(
+                f'Training environment must be wrapped with BaseLoggerWrapper in order to be compatible with this callback.')
+            raise ValueError
 
         # Attributes
         self.eval_env = eval_env
@@ -158,12 +159,10 @@ class LoggerEvalCallback(EventCallback):
         # Terminal information when verbose is active
         if self.verbose >= 1:
             self.logger.info(
-                'Evaluation num_timesteps={}, episode_reward={} +/- {}'.format(
-                    self.num_timesteps,
-                    evaluation_summary['mean_reward'],
-                    evaluation_summary['std_reward']
-                )
-            )
+                f'Evaluation num_timesteps={
+                    self.num_timesteps}, episode_reward={
+                    evaluation_summary['mean_reward']} +/- {
+                    evaluation_summary['std_reward']}')
 
         # ------------------------ Save best model if required ----------------------- #
 

@@ -1,84 +1,135 @@
-## Contributing to Sinergym
+# Contributing to Sinergym
 
-If you are interested in contributing to Sinergym, your contributions will fall
-into two categories:
-1. You want to propose a new Feature and implement it
-    - Create an issue about your intended feature (use our issue template), and we shall discuss the design and
-    implementation. Once we agree that the plan looks good, go ahead and implement it.
-2. You want to implement a feature or bug-fix for an outstanding issue
-    - Look at the outstanding issues here: https://github.com/ugr-sail/sinergym/issues
-    - Pick an issue or feature and comment on the task that you want to work on this feature.
-    - If you need more context on a particular issue, please ask and we shall provide.
+Thank you for considering contributing to Sinergym! 🎉  
+Your contributions can fall into two main categories:
 
-Once you finish implementing a feature or bug-fix, please send a Pull Request to
-https://github.com/ugr-sail/sinergym main branch. Please, follow our pull request template for this purpose
-(it will appear in text box so you only have to complete it). Please, be sure that you include the number of your issue (for instance "123") as `Fixes #123` (the placeholder is already in the template) so the issue will be closed when the pull request is accepted.
+## 🚀 Proposing a New Feature
+1. **Create an issue** using our issue template to propose your feature.
+2. **Discuss the design and implementation** with the maintainers.
+3. Once approved, **implement the feature** and submit a Pull Request.
 
-You can create a pull request when the issue is not finished yet and work on it. If you prefer to work in this way, please, select [Draft pull request](https://github.blog/2019-02-14-introducing-draft-pull-requests/) and select *ready for review* when you are ready.
+## 🛠️ Fixing a Bug or Implementing an Existing Feature
+1. Browse open issues: [Sinergym Issues](https://github.com/ugr-sail/sinergym/issues).
+2. **Claim an issue** by commenting on it.
+3. If you need more context, feel free to ask—we're happy to help!
 
-If you are not familiar with creating a Pull Request, here are some guides:
-- http://stackoverflow.com/questions/14680711/how-to-do-a-github-pull-request
-- https://help.github.com/articles/creating-a-pull-request/
+## 🔄 Submitting a Pull Request (PR)
+- **Target the `main` branch** of [Sinergym](https://github.com/ugr-sail/sinergym).
+- **Follow the Pull Request template** (it will appear in the PR textbox).
+- **Reference the issue number** in your PR description using `Fixes #123` to auto-close it when merged.
+- If your work is still in progress, use a **Draft PR** ([learn more](https://github.blog/2019-02-14-introducing-draft-pull-requests/)).
 
-## Create Issues
+**Need help with PRs?** Check out:
+- [How to create a GitHub Pull Request (Stack Overflow)](http://stackoverflow.com/questions/14680711/how-to-do-a-github-pull-request)
+- [GitHub Help: Creating a PR](https://help.github.com/articles/creating-a-pull-request/)
 
-Please, follow the issue templates whenever possible (GitHub interface will offer you those templates). If your issue does not fit any of the templates, then you can generate a blank issue and provide the information as clearly and concisely as possible.
+---
 
-## Developing Sinergym
+# 📌 Creating Issues
+- Use our **GitHub issue templates** when possible.
+- If your issue doesn't fit any template, submit a **blank issue** with a clear and concise description.
 
-To develop Sinergym on your machine, here are some alternatives:
+---
 
-- Local computer
+# 🖥️ Developing Sinergym
 
-    1. Clone a copy of Sinergym from source (your forked repository):
-
+## 💻 **Option 1: Local Installation**
+1. **Clone the repository:**
     ```bash
     git clone https://github.com/ugr-sail/sinergym.git
     cd sinergym/
     ```
-
-    2. Install Sinergym in extra mode, with support for building the docs, running tests, execute DRL algorithms, etc:
-
+2. **Install in "extra" mode** (for docs, tests, DRL algorithms, etc.):
     ```bash
     pip install -e .[extra]
     ```
+    or using poetry (install all developer dependencies directly):
+    ```bash
+    poetry install --no-interaction 
+    ```
 
-    3. Install Energyplus and BCVTB into your computer (see [README.md](https://github.com/ugr-sail/sinergym/blob/main/README.md) for more information about this).
+3. **Install EnergyPlus and include EnergyPlus Python API in Python path** (see [INSTALL.md](https://github.com/ugr-sail/sinergym/blob/main/INSTALL.md)).
 
-- Local docker container (**recommended**)
+## 🐳 **Option 2: Using a Docker Container (Recommended)**
+😎 **Why?** No need to manage Python versions, dependencies, or EnergyPlus installation.
 
-    1. This is our recommendation, since you have not to care of Python version, dependencies, Energyplus engine, etc.
-    2. If you are using [Visual Studio Code](https://code.visualstudio.com/) you can build a container and develop with Github from there using [remote container extension](https://code.visualstudio.com/docs/remote/containers) (very comfortable).
-    3. If you don't want to use that editor extension, you can build a container using Dockerfile traditionally and init github credentials manually into container.
+1. If using **Visual Studio Code**, use the [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers) for an easy setup.
+2. Alternatively, build the container manually using the provided `Dockerfile`.
 
-## Documentation
+---
 
-If you want to update our documentation, you have to pass sphinx build and spelling compilation. Workflows will check that and report errors in Pull Request. If spelling doesn't pass due to a word that is not in default dictionary, you have to add in `docs/sources/spelling_wordlist.txt` (Please, respect alphabetical order).
+# 📖 Documentation Contributions
+- Ensure the documentation **builds successfully** with Sphinx:
+    ```bash
+    cd docs && make spelling && make html
+    ```
+- If a word isn't recognized, add it to `docs/sources/spelling_wordlist.txt` (**in alphabetical order**).
 
-## Codestyle
-
-- We are using [autopep8 codestyle](https://github.com/hhatto/autopep8) (max line length of 79 characters) 2 level aggressive.
-- We are using [isort](https://github.com/PyCQA/isort) to sort imports in our code.
-- We are using [pytype](https://github.com/google/pytype) to control input and output types in our code, check that your contribution pass this or pull request will be denied automatically by a workflow (`pytest -d import-error sinergym/`).
-
-**Please run `autopep8`** to reformat your code, if you are using [Visual Studio Code](https://code.visualstudio.com/) editor you can auto-format code on save file automatically: https://code.visualstudio.com/docs/python/editing#_formatting.
-
-Please document each function/method using docstring Google standard format (called [napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)):
+## 📜 **Docstrings in code**
+Follow the **Google-style docstrings** ([Napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)):
 
 ```python
-
 def my_function(arg1: type1, arg2: type2) -> returntype:
-    """[summary]
+    """Brief summary of the function.
 
     Args:
-        arg1 (type1): [description]
-        arg2 (type2): [description]
+        arg1 (type1): Description of arg1.
+        arg2 (type2): Description of arg2.
 
     Returns:
-        returntype: [description]
+        returntype: Description of return value.
     """
     ...
     return my_variable
 ```
 
-Note: [Python Docstring Generator](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) extension could be very interesting for you in order to follow this standard.
+💡 **Tip**: Use the [Python Docstring Generator](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) extension in **VS Code** to automatically generate docstrings in the correct format.
+
+---
+
+# 🎨 Code Style & Formatting
+
+## 📏 **Coding Standards**
+- **Code formatting**: Use [autopep8](https://github.com/hhatto/autopep8) (max **79** characters per line, aggressive level 2). Included in devcontainer definition.
+- **Import sorting**: Use [isort](https://github.com/PyCQA/isort).
+- **Type checking**: Run [pytype](https://github.com/google/pytype).
+
+📝 **Before submitting a PR, ensure your code passes:** 
+- `autopep8 --exit-code --recursive --diff --aggressive --aggressive .`
+- `isort --check-only --diff .`
+- `pytype -d import-error sinergym/ `
+- `pytest tests/ -vvv`
+
+📋 Workflows in the pull request will check it, in any case.
+
+---
+
+# ❗ Final Checklist Before Submitting a PR  
+📝 **Before pushing your code, make sure it meets the following criteria:**  
+
+## 📌 **Types of Changes**  
+Indicate the type of change your PR introduces by marking an `x` in the relevant box:
+
+- 🐛 **Bug fix** (non-breaking change that fixes an issue)  
+- ✨ **New feature** (non-breaking change that adds functionality)  
+- 💥 **Breaking change** (change that affects existing functionality)  
+- 📖 **Documentation** (updates to documentation)  
+- 🚀 **Improvement** (enhancing an existing feature)  
+- 🔄 **Other** (please specify)  
+
+## ✔️ **General PR Checklist**  
+<!--- Check all the following points before submitting your PR. If you're unsure, feel free to ask! -->
+- ✅ I have read the [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) guide (**required**).  
+- ✅ My changes require updates to the documentation.  
+- ✅ I have updated the necessary documentation accordingly.  
+- ✅ I have added or updated the necessary tests.  
+- ✅ I have reformatted the code using **`autopep8`** (aggressive level 2).  
+- ✅ I have sorted imports using **`isort`**.  
+- ✅ If I modified documentation, I verified that **`cd docs && make spelling && make html`** passes.  
+- ✅ I ensured that **`pytest tests/ -vv`** runs successfully (**required**).  
+- ✅ I checked that **`pytype -d import-error sinergym/`** runs successfully (**required**).  
+
+---
+
+💡 **Need help?** If you're unsure about anything, feel free to ask in your PR or open an issue.  
+Happy coding! 🚀

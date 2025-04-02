@@ -20,7 +20,7 @@ Environments
 Environment names follow the format ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``.  
 These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `info` method as shown in the example code.
 
-.. important:: Environments are automatically generated using JSON configuration files
+.. important:: Environments are automatically generated using YAML configuration files
                for each building. This eliminates the need to manually register each 
                environment ID or set parameters directly in the environment constructor.
                For more information, see :ref:`Environments Configuration and Registration`.
@@ -99,7 +99,7 @@ Finally, :math:`\tau` is the time constant (in hours), controlling how quickly t
 
 In climate systems, a large :math:`\tau` could model scenarios where extreme events, such as heatwaves or cold spells, last longer before the system reverts to its average state. The next figure illustrates the effect of different hyperparameters on the Ornstein-Uhlenbeck process noise in a mixed weather.
 
-Starting from version 3.7.2 of Sinergym, these hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A JSON file is saved with the chosen parameters in each episode subfolder.
+Starting from version 3.7.2 of Sinergym, these hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A CSV file is saved with the chosen parameters in each episode subfolder.
 
 .. note:: Starting from Sinergym v3.7.1, :math:`\tau` is represented in hours instead of as a percentage of the climate file, making its use more intuitive.
 

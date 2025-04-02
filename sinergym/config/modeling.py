@@ -149,14 +149,10 @@ class ModelJSON(object):
             self.episode_length / self.step_size)
 
         self.logger.info('Runperiod established.')
-        self.logger.debug('Runperiod: {}'.format(self.runperiod))
-        self.logger.info(
-            'Episode length (seconds): {}'.format(
-                self.episode_length))
-        self.logger.info('timestep size (seconds): {}'.format(self.step_size))
-        self.logger.info(
-            'timesteps per episode: {}'.format(
-                self.timestep_per_episode))
+        self.logger.debug(f'Runperiod: {self.runperiod}')
+        self.logger.info(f'Episode length (seconds): {self.episode_length}')
+        self.logger.info(f'timestep size (seconds): {self.step_size}')
+        self.logger.info(f'timesteps per episode: {self.timestep_per_episode}')
 
     # ---------------------------------------------------------------------------- #
     #                 Variables and Building model adaptation                      #
@@ -199,8 +195,7 @@ class ModelJSON(object):
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
         self.logger.info('Adapting weather to building model.')
-        self.logger.debug('Weather path: {}'.format(
-            self._weather_path.split('/')[-1]))
+        self.logger.debug(f'Weather path: {self._weather_path.split('/')[-1]}')
 
         # Apply weather_conf if exists
         if self.weather_conf is not None:
@@ -311,8 +306,8 @@ class ModelJSON(object):
                     0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
 
                 self.logger.debug(
-                    'Extra config: timesteps_per_hour set up to {}'.format(
-                        self.config['timesteps_per_hour']))
+                    f'Extra config: timesteps_per_hour set up to {
+                        self.config['timesteps_per_hour']}')
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
@@ -334,16 +329,14 @@ class ModelJSON(object):
                 self.timestep_per_episode = int(
                     self.episode_length / self.step_size)
                 self.logger.info(
-                    'Extra config: runperiod updated to {}'.format(runperiod))
+                    f'Extra config: runperiod updated to {runperiod}')
                 self.logger.info(
-                    'Updated episode length (seconds): {}'.format(
-                        self.episode_length))
+                    f'Updated episode length (seconds): {self.episode_length}')
                 self.logger.info(
-                    'Updated timestep size (seconds): {}'.format(
-                        self.step_size))
+                    f'Updated timestep size (seconds): {self.step_size}')
                 self.logger.info(
-                    'Updated timesteps per episode: {}'.format(
-                        self.timestep_per_episode))
+                    f'Updated timesteps per episode: {
+                        self.timestep_per_episode}')
 
             # North axis
             if self.config.get('north_axis'):
@@ -365,8 +358,7 @@ class ModelJSON(object):
                 json.dump(self.building, outfile, indent=4)
 
             self.logger.debug(
-                'Saving episode building model... [{}]'.format(
-                    episode_json_path))
+                f'Saving episode building model... [{episode_json_path}]')
 
             return episode_json_path
         else:
@@ -388,8 +380,7 @@ class ModelJSON(object):
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data.read(self._weather_path)
         self.logger.info(
-            'Weather file {} used.'.format(
-                self._weather_path.split('/')[-1]))
+            f'Weather file {self._weather_path.split('/')[-1]} used.')
 
     def apply_weather_variability(
             self,
@@ -417,7 +408,9 @@ class ModelJSON(object):
             # value
             self.weather_variability_config = {
                 weather_var: tuple(
-                    np.random.uniform(param[0], param[1]) if isinstance(param, tuple) else param
+                    np.random.uniform(
+                        param[0], param[1]) if isinstance(
+                        param, tuple) else param
                     for param in params
                 )
                 for weather_var, params in weather_variability.items()
@@ -429,9 +422,9 @@ class ModelJSON(object):
                 variability_config=self.weather_variability_config)
 
             self.logger.info(
-                'Weather noise applied in columns: {}'.format(
+                f'Weather noise applied in columns: {
                     list(
-                        self.weather_variability_config.keys())))
+                        self.weather_variability_config.keys())}')
 
             # Modify filename to reflect noise addition
             filename = f"{filename.split('.epw')[0]}_OU_Noise.epw"
@@ -440,7 +433,7 @@ class ModelJSON(object):
         weather_data_mod.write(episode_weather_path)
 
         self.logger.debug(
-            'Saving episode weather path... [{}]'.format(episode_weather_path))
+            f'Saving episode weather path... [{episode_weather_path}]')
 
         return episode_weather_path
 
@@ -567,20 +560,19 @@ class ModelJSON(object):
         else:
             episode_path = self._get_working_folder(
                 directory_path=self.experiment_path,
-                base_name='-sub_run')
-            # Create directoy
+                base_name='episode-')
+            # Create directory
             os.makedirs(episode_path)
             # set path like config attribute
             self.episode_path = episode_path
 
             # Remove redundant past working directories
-            self._rm_past_history_dir(episode_path, '-sub_run')
+            self._rm_past_history_dir(episode_path, 'episode-')
 
             self.logger.info(
                 'Episode directory created.')
             self.logger.debug(
-                'Episode directory path: {}'.format(
-                    episode_path))
+                f'Episode directory path: {episode_path}')
 
             return episode_path
 
@@ -602,7 +594,7 @@ class ModelJSON(object):
                 # Generate experiment dir path
                 experiment_path = self._get_working_folder(
                     directory_path=CWD,
-                    base_name='-%s-res' %
+                    base_name='%s-res' %
                     (env_name))
                 # Create dir
                 os.makedirs(experiment_path)
@@ -615,14 +607,14 @@ class ModelJSON(object):
         self.logger.info(
             'Experiment working directory created.')
         self.logger.info(
-            'Working directory: {}'.format(experiment_path))
+            f'Working directory: {experiment_path}')
 
         return experiment_path
 
     def _get_working_folder(
             self,
             directory_path: str,
-            base_name: str = '-run') -> str:
+            base_name: str = 'sinergym-run') -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
            Assumes folders in parent_dir have suffix <env_name>-run{run_number}. Finds the highest run number and sets the output folder to that number + 1.
 
@@ -653,8 +645,9 @@ class ModelJSON(object):
         # experiment_id number will be +1 from last name found out.
         experiment_id += 1
 
-        working_dir = os.path.join(directory_path, 'Eplus-env')
-        working_dir = working_dir + '%s%d' % (base_name, experiment_id)
+        working_dir = os.path.join(
+            directory_path, '%s%d' %
+            (base_name, experiment_id))
         return working_dir
 
     def _rm_past_history_dir(
@@ -688,12 +681,10 @@ class ModelJSON(object):
         for w_file in self.weather_files:
             w_path = os.path.join(
                 self.pkg_data_path, 'weather', w_file)
-            try:
-                assert os.path.isfile(w_path)
-            except AssertionError as err:
+            if not os.path.isfile(w_path):
                 self.logger.critical(
-                    'Weather files: {} is not a weather file available in Sinergym.'.format(w_file))
-                raise err
+                    f'Weather files: {w_file} is not a weather file available in Sinergym.')
+                raise FileNotFoundError
 
         # EXTRA CONFIG
         if self.config is not None:
@@ -701,22 +692,23 @@ class ModelJSON(object):
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    try:
-                        assert self.config[config_key] > 0
-                    except AssertionError as err:
+                    if self.config[config_key] < 1:
                         self.logger.critical(
-                            'Extra Config: timestep_per_hour must be a positive int value.')
-                        raise err
+                            f'Extra Config: timestep_per_hour must be a positive int value, the value specified is {
+                                self.config[config_key]}')
+                        raise ValueError
                 # Runperiod
                 elif config_key == 'runperiod':
-                    try:
-                        assert isinstance(
-                            self.config[config_key], tuple) and len(
-                            self.config[config_key]) == 6
-                    except AssertionError as err:
+                    if not isinstance(self.config[config_key], tuple):
                         self.logger.critical(
-                            'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).')
-                        raise err
+                            f'Extra Config: Runperiod specified in extra configuration must be a tuple (type detected {
+                                type(
+                                    self.config[config_key])})')
+                        raise TypeError
+                    if len(self.config[config_key]) != 6:
+                        self.logger.critical(
+                            'Extra Config: Runperiod specified in extra configuration must have 6 elements.')
+                        raise ValueError
                 # North axis
                 elif config_key == 'north_axis':
                     try:
@@ -727,7 +719,7 @@ class ModelJSON(object):
                         raise err
                 else:
                     self.logger.error(
-                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym, it will be ignored.'.format(config_key))
+                        f'Extra Config: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

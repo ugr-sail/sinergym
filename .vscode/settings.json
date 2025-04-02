@@ -1,7 +1,7 @@
 {
     "python.linting.pycodestyleEnabled": false,
     "editor.formatOnSave": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": 2,
     "python.testing.pytestArgs": [
         "--cov=.",
         "tests/",

@@ -5,6 +5,7 @@ from glob import glob  # to find directories with patterns
 from importlib import resources
 
 import pytest
+import yaml
 from epw.weather import Weather
 
 import sinergym
@@ -66,8 +67,8 @@ def TIME_VARIABLES():
 @pytest.fixture(scope='function')
 def ACTION_SPACE_5ZONE():
     return gym.spaces.Box(
-        low=np.array([15.0, 22.5], dtype=np.float32),
-        high=np.array([22.5, 30.0], dtype=np.float32),
+        low=np.array([12.0, 23.25], dtype=np.float32),
+        high=np.array([23.25, 30.0], dtype=np.float32),
         shape=(2,),
         dtype=np.float32
     )
@@ -160,8 +161,8 @@ def ACTION_SPACE_DISCRETE_5ZONE():
 @pytest.fixture(scope='function')
 def ACTION_SPACE_DATACENTER():
     return gym.spaces.Box(
-        low=np.array([15.0, 22.5], dtype=np.float32),
-        high=np.array([22.5, 30.0], dtype=np.float32),
+        low=np.array([15.0, 22.0], dtype=np.float32),
+        high=np.array([22.0, 30.0], dtype=np.float32),
         shape=(2,),
         dtype=np.float32
     )
@@ -226,9 +227,9 @@ def conf_5zone(pkg_mock_path):
     conf_path = os.path.join(
         pkg_mock_path,
         'environment_configurations',
-        '5ZoneAutoDXVAV.json')
-    with open(conf_path) as json_f:
-        conf = json.load(json_f)
+        '5ZoneAutoDXVAV.yaml')
+    with open(conf_path, 'r') as yaml_conf:
+        conf = yaml.safe_load(yaml_conf)
     return conf
 
 
@@ -238,9 +239,10 @@ def conf_5zone_exceptions(pkg_mock_path):
     for i in range(1, 6):
         conf_path = os.path.join(pkg_mock_path,
                                  'environment_configurations',
-                                 '5ZoneAutoDXVAV_exception{}.json'.format(i))
-        with open(conf_path) as json_f:
-            conf_exceptions.append(json.load(json_f))
+                                 '5ZoneAutoDXVAV_exception{}.yaml'.format(i))
+        with open(conf_path, 'r') as yaml_conf:
+            conf_exceptions.append(yaml.safe_load(yaml_conf))
+
     return conf_exceptions
 
 
@@ -278,7 +280,7 @@ def env_demo(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
@@ -311,7 +313,7 @@ def env_demo_energy_cost(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
@@ -347,7 +349,7 @@ def env_demo_summer(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
@@ -380,7 +382,7 @@ def env_demo_summer_energy_cost(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
@@ -426,7 +428,7 @@ def env_5zone(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
@@ -465,7 +467,7 @@ def env_5zone_stochastic(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (
                 1,
@@ -504,7 +506,7 @@ def env_datacenter(
             'range_comfort_summer': (
                 18,
                 27)},
-        env_name='TESTGYM',
+        env_name='PYTESTGYM',
         config_params={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
@@ -541,7 +543,7 @@ def building_5zone(json_path_5zone):
 def model_5zone(VARIABLES_5ZONE, METERS_5ZONE):
 
     return ModelJSON(
-        env_name='TESTCONFIG',
+        env_name='PYTESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
         weather_files=['USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'],
         variables=VARIABLES_5ZONE,
@@ -558,7 +560,7 @@ def model_5zone_several_weathers(
         VARIABLES_5ZONE,
         METERS_5ZONE):
     return ModelJSON(
-        env_name='TESTCONFIG',
+        env_name='PYTESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
         weather_files=[
             'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -816,17 +818,17 @@ def multizone_reward():
 def pytest_sessionfinish(session, exitstatus):
     """ whole test run finishes. """
     # Deleting all temporal directories generated during tests (environments)
-    directories = glob('Eplus-env-TEST*/')
+    directories = glob('PYTEST*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal directories generated during tests (simulators)
-    directories = glob('Eplus-TESTSIMULATOR*/')
+    directories = glob('PYTESTSIMULATOR*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal files generated during tests
-    files = glob('./TEST*.xlsx')
+    files = glob('./PYTEST*.xlsx')
     for file in files:
         os.remove(file)
     files = glob('./data_available*')
@@ -834,7 +836,7 @@ def pytest_sessionfinish(session, exitstatus):
         os.remove(file)
 
     # Deleting new JSON files generated during tests
-    files = glob('sinergym/data/buildings/TEST*.epJSON')
+    files = glob('sinergym/data/buildings/PYTEST*.epJSON')
     for file in files:
         os.remove(file)
 

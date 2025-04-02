@@ -9,6 +9,9 @@ import types
 import wandb
 import yaml
 
+import sinergym
+import sinergym.utils.gcloud as gcloud
+
 if __name__ == '__main__':
 
     # ---------------------------------------------------------------------------- #
@@ -56,10 +59,12 @@ if __name__ == '__main__':
 
     spec = importlib.util.spec_from_file_location('train', train_script_path)
     if spec and spec.loader:
-        # Crear un módulo vacío con el nombre correcto
+        # Empty module creation
         train = types.ModuleType(spec.name)
-        sys.modules[spec.name] = train  # Registrar el módulo en sys.modules
-        spec.loader.exec_module(train)  # Ejecutar el script dentro del módulo
+        # Register module in sys.modules
+        sys.modules[spec.name] = train
+        # Execute the module in the new namespace
+        spec.loader.exec_module(train)
     else:
         raise ImportError(
             f"The script could not be imported from {train_script_path}")
@@ -89,3 +94,10 @@ if __name__ == '__main__':
 
     for wait_process in list_process:
         wait_process.join()
+
+    # ---------------------------------------------------------------------------- #
+    #                   Autodelete option if is a cloud resource                   #
+    # ---------------------------------------------------------------------------- #
+    if conf.get('autodelete'):
+        token = gcloud.get_service_account_token()
+        gcloud.delete_instance_MIG_from_container(conf['group_name'], token)

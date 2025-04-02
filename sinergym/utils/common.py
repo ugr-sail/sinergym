@@ -285,9 +285,11 @@ def parse_variables_settings(
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(
-    specification['variable_names']) == len(
-         specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
+                if len(specification['variable_names']) != len(
+                        specification['keys']):
+                    logger.error(
+                        f'variable names and keys must have the same len in {variable}')
+                    raise ValueError
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
                     output[variable_name] = (variable, key_name)
@@ -363,8 +365,15 @@ def convert_conf_to_env_parameters(
     actuators = parse_actuators_settings(conf['actuators'])
     context = parse_actuators_settings(conf['context'])
 
-    assert len(conf['weather_specification']['weather_files']) == len(
-        conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
+    if len(conf['weather_specification']['weather_files']) != len(
+            conf['weather_specification']['keys']):
+        logger.error(
+            'Weather files and id keys must have the same len\n' f'{
+                len(
+                    conf["weather_specification"]["weather_files"])} weather files != {
+                len(
+                    conf["weather_specification"]["keys"])} keys')
+        raise ValueError
 
     if conf['weather_specification'].get('weather_confs'):
 
@@ -396,7 +405,7 @@ def convert_conf_to_env_parameters(
             'reward': eval(conf['reward']),
             'reward_kwargs': conf['reward_kwargs'],
             'max_ep_data_store_num': conf['max_ep_data_store_num'],
-            'env_name': id.replace('Eplus-', ''),
+            'env_name': id,
             'config_params': conf.get('config_params')
         }
         configurations[id] = env_kwargs
@@ -429,7 +438,7 @@ def convert_conf_to_env_parameters(
                 'reward': eval(conf['reward']),
                 'reward_kwargs': conf['reward_kwargs'],
                 'max_ep_data_store_num': conf['max_ep_data_store_num'],
-                'env_name': id.replace('Eplus-', ''),
+                'env_name': id,
                 'config_params': conf.get('config_params')
             }
             configurations[id] = env_kwargs
