@@ -65,7 +65,7 @@ If you want to run a sample DRL experiment, you can do it as follows:
 .. code:: sh
 
     $ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS="drl" .
-    $ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/train_agent.py -conf scripts/train/train_agent_PPO.json
+    $ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/train_agent.py -conf scripts/train/train_agent_PPO.yaml
 
 If the script requires a WandB account, remember to include the environment variable in the container with the token.
 

@@ -6,7 +6,7 @@
 package-mode = true
 name = "sinergym"
 
-version = "3.7.10"
+version = "3.7.11"
 description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
 license = "MIT"
 
@@ -61,6 +61,7 @@ eppy = "^0.5.63"
 tqdm = "^4.66.5"
 xlsxwriter = "^3.2.0"
 epw = "^1.2.dev2"
+pyyaml = "^6.0.2"
 
 # Extra dependencies (optional)
 pytest = { version = "^8.3.3", optional = true }
