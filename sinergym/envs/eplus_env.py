@@ -507,14 +507,12 @@ class EplusEnv(gym.Env):
                     if not (
                         isinstance(
                             param,
-                            tuple) or isinstance(
-                            param,
-                            float)
+                            (tuple, float, int))
                     ):
                         raise ValueError(
                             f"Invalid parameter for Ornstein-Uhlenbeck process: {
                                 param}. "
-                            "It must be a tuple of two values (range), or a float."
+                            "It must be a tuple of two values (range), or a number."
                         )
                     if (isinstance(param, tuple)) and len(param) != 2:
                         raise ValueError(
