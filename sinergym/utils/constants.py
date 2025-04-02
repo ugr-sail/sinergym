@@ -173,13 +173,13 @@ def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> List[float]:
 
     return mapping[action]
 
-# -------------------------------- AUTOBALANCE ------------------------------- #
+# ---------------------------------- RADIANT --------------------------------- #
 
 
-def DEFAULT_RADIANT_BOILER_VALVE_HEATING_DISCRETE_FUNCTION(
-        action: Union[np.ndarray, List[int]]) -> List[float]:
+def DEFAULT_RADIANT_DISCRETE_FUNCTION(
+        action: np.ndarray) -> np.ndarray:
     action[5] += 25
-    return list(action)
+    return action.astype(np.float32)
 
 
 # ----------------------------------HOSPITAL--------------------------------- #
