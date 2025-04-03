@@ -355,6 +355,11 @@ class ModelJSON(object):
                 list(self.building['Building'].values())[0][
                     'north_axis'] = self.config['north_axis']
 
+            # North axis
+            if self.config.get('north_axis'):
+                list(self.building['Building'].values())[0][
+                    'north_axis'] = self.config['north_axis']
+
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
 
