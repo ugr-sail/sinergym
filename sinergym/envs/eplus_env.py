@@ -151,8 +151,7 @@ class EplusEnv(gym.Env):
         # last obs, action and info
         self.last_obs: Optional[Dict[str, float]] = None
         self.last_info: Optional[Dict[str, Any]] = None
-        self.last_action: Optional[Union[List[float],
-                                         np.ndarray, Tuple[Any], float, int]] = None
+        self.last_action: Optional[np.ndarray] = None
         self.last_context: Optional[Union[List[float], np.ndarray]] = None
 
         # ---------------------------------------------------------------------------- #
@@ -289,8 +288,6 @@ class EplusEnv(gym.Env):
             output_path=eplus_working_out_path,
             episode=self.episode)
 
-        self.logger.info(f'Episode {self.episode} started.')
-
         # wait for E+ warmup to complete
         if not self.energyplus_simulator.warmup_complete:
             self.logger.debug('Waiting for finishing WARMUP process.')
@@ -299,43 +296,40 @@ class EplusEnv(gym.Env):
 
         # Wait to receive simulation first observation and info
         try:
-            obs = self.obs_queue.get(timeout=20)
+            obs = self.obs_queue.get(timeout=10)
         except Empty:  # pragma: no cover
             self.logger.warning(
-                'Reset: Observation queue empty, returning a random observation (not real).')
+                'Reset: Observation queue empty, returning a random observation (not real). Probably EnergyPlus initialization is failing.')
             obs = self.last_obs
 
         try:
-            info = self.info_queue.get(timeout=20)
+            info = self.info_queue.get(timeout=10)
         except Empty:  # pragma: no cover
             info = self.last_info
             self.logger.warning(
-                'Reset: info queue empty, returning an empty info dictionary (not real).')
+                'Reset: info queue empty, returning an empty info dictionary (not real). Probably EnergyPlus initialization is failing.')
 
         info.update({'timestep': self.timestep})
         self.last_obs = obs
         self.last_info = info
 
+        self.logger.info(f'Episode {self.episode} started.')
+
         self.logger.debug(f'RESET observation received: {obs}')
         self.logger.debug(f'RESET info received: {info}')
 
-        return np.array(list(obs.values()), dtype=np.float32), info
+        return np.fromiter(obs.values(), dtype=np.float32), info
 
     # ---------------------------------------------------------------------------- #
     #                                     STEP                                     #
     # ---------------------------------------------------------------------------- #
     def step(self,
-             action: Union[int,
-                           float,
-                           np.integer,
-                           np.ndarray,
-                           List[Any],
-                           Tuple[Any]]
+             action: np.ndarray
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Sends action to the environment.
 
         Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+            action (np.ndarray): Action selected by the agent.
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
@@ -343,14 +337,15 @@ class EplusEnv(gym.Env):
 
         # timestep +1 and flags initialization
         self.timestep += 1
-        terminated = truncated = False
+        terminated, truncated = False, False
 
         # Check action is correct for environment
         if not self._action_space.contains(action):
-            self.logger.error(f'Invalid action: {action}')
+            self.logger.error(
+                f'Invalid action: {action} (check type is np.ndarray with np.float32 values too)')
             raise ValueError(
                 f'Action {action} is not valid for {
-                    self._action_space}')
+                    self._action_space} (check type is np.ndarray with np.float32 values too)')
 
         # check for simulation errors
         if self.energyplus_simulator.failed():
@@ -390,7 +385,7 @@ class EplusEnv(gym.Env):
         reward, rw_terms = self.reward_fn(obs)
 
         # Update info with
-        info.update({'action': action,
+        info.update({'action': action.tolist(),
                      'timestep': self.timestep,
                      'reward': reward})
         info.update(rw_terms)
@@ -402,8 +397,8 @@ class EplusEnv(gym.Env):
         # self.logger.debug(f'STEP truncated: {truncated}')
         # self.logger.debug(f'STEP info: {info}')
 
-        return np.array(list(obs.values()), dtype=np.float32
-                        ), reward, terminated, truncated, info
+        return np.fromiter(
+            obs.values(), dtype=np.float32), reward, terminated, truncated, info
 
     # ---------------------------------------------------------------------------- #
     #                                RENDER (empty)                                #

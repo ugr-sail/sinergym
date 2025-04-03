@@ -144,6 +144,10 @@ def test_save_building_model(model_5zone):
     model_5zone.episode_path = None
     with pytest.raises(RuntimeError):
         model_5zone.save_building_model()
+    # Update episode path to wrong value to check save error
+    model_5zone.episode_path = 'unknown_path/unexistent_dir'
+    with pytest.raises(OSError):
+        model_5zone.save_building_model()
 
 # ---------------------------------------------------------------------------- #
 #                        EPW and Weather Data management                       #
@@ -187,6 +191,14 @@ def test_update_weather_path(model_5zone_several_weathers):
     assert model_5zone_several_weathers._weather_path is not None
     model_5zone_several_weathers.update_weather_path()
     assert model_5zone_several_weathers._weather_path is not None
+    # Try update without any weather
+    model_5zone_several_weathers.weather_files = []
+    with pytest.raises(ValueError):
+        model_5zone_several_weathers.update_weather_path()
+    # Try using a wrong weather file
+    model_5zone_several_weathers.weather_files = ['unknown_weather.epw']
+    with pytest.raises(FileNotFoundError):
+        model_5zone_several_weathers.update_weather_path()
 
 
 def test_apply_weather_variability(model_5zone):
@@ -262,7 +274,7 @@ def test_get_schedulers(model_5zone):
 
 
 def test_get_eplus_runperiod(model_5zone):
-    runperiod = model_5zone._get_eplus_runperiod()
+    runperiod = model_5zone.get_eplus_runperiod()
     building_runperiod = list(model_5zone.building['RunPeriod'].values())[0]
 
     assert runperiod['start_day'] == building_runperiod['begin_day_of_month']

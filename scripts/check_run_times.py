@@ -30,6 +30,7 @@ for env_id in args.environments:
     truncated = terminated = False
     for _ in range(args.episodes):
         env.reset()
+        truncated, terminated = False, False
         while not (terminated or truncated):
             a = env.action_space.sample()
             obs, reward, terminated, truncated, info = env.step(a)

@@ -38,22 +38,22 @@ LOG_FORMAT = "[%(name)s] (%(levelname)s) : %(message)s"
 # -------------------------------------5ZONE---------------------------------- #
 
 
-def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [12, 30],
-        1: [13, 30],
-        2: [14, 29],
-        3: [15, 28],
-        4: [16, 28],
-        5: [17, 27],
-        6: [18, 26],
-        7: [19, 25],
-        8: [20, 24],
-        9: [21, 23.25]
+        0: np.array([12, 30], dtype=np.float32),
+        1: np.array([13, 29], dtype=np.float32),
+        2: np.array([14, 28], dtype=np.float32),
+        3: np.array([15, 27], dtype=np.float32),
+        4: np.array([16, 26], dtype=np.float32),
+        5: np.array([17, 25], dtype=np.float32),
+        6: np.array([18, 24], dtype=np.float32),
+        7: np.array([19, 23.25], dtype=np.float32),
+        8: np.array([20, 23.25], dtype=np.float32),
+        9: np.array([21, 23.25], dtype=np.float32)
     }
 
     return mapping[action]
@@ -61,22 +61,22 @@ def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> List[float]:
 
 # ----------------------------------DATACENTER--------------------------------- #
 
-def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [15, 30],
-        1: [16, 29],
-        2: [17, 28],
-        3: [18, 27],
-        4: [19, 26],
-        5: [20, 25],
-        6: [21, 24],
-        7: [22, 23],
-        8: [22, 22.5],
-        9: [21, 22.5]
+        0: np.array([15, 30], dtype=np.float32),
+        1: np.array([16, 29], dtype=np.float32),
+        2: np.array([17, 28], dtype=np.float32),
+        3: np.array([18, 27], dtype=np.float32),
+        4: np.array([19, 26], dtype=np.float32),
+        5: np.array([20, 25], dtype=np.float32),
+        6: np.array([21, 24], dtype=np.float32),
+        7: np.array([22, 23], dtype=np.float32),
+        8: np.array([22, 22.5], dtype=np.float32),
+        9: np.array([21, 22], dtype=np.float32)
     }
 
     return mapping[action]
@@ -84,22 +84,22 @@ def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> List[float]:
 # ----------------------------------WAREHOUSE--------------------------------- #
 
 
-def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [15, 30],
-        1: [16, 29],
-        2: [17, 28],
-        3: [18, 27],
-        4: [19, 26],
-        5: [20, 25],
-        6: [21, 24],
-        7: [22, 23],
-        8: [22, 22.5],
-        9: [21, 22.5]
+        0: np.array([15, 30], dtype=np.float32),
+        1: np.array([16, 29], dtype=np.float32),
+        2: np.array([17, 28], dtype=np.float32),
+        3: np.array([18, 27], dtype=np.float32),
+        4: np.array([19, 26], dtype=np.float32),
+        5: np.array([20, 25], dtype=np.float32),
+        6: np.array([21, 24], dtype=np.float32),
+        7: np.array([22, 23], dtype=np.float32),
+        8: np.array([22, 22.5], dtype=np.float32),
+        9: np.array([21, 22.5], dtype=np.float32)
     }
 
     return mapping[action]
@@ -107,22 +107,22 @@ def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> List[float]:
 # ----------------------------------OFFICE--------------------------------- #
 
 
-def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [15, 30],
-        1: [16, 29],
-        2: [17, 28],
-        3: [18, 27],
-        4: [19, 26],
-        5: [20, 25],
-        6: [21, 24],
-        7: [22, 23],
-        8: [22, 22.5],
-        9: [21, 22.5]
+        0: np.array([15, 30], dtype=np.float32),
+        1: np.array([16, 29], dtype=np.float32),
+        2: np.array([17, 28], dtype=np.float32),
+        3: np.array([18, 27], dtype=np.float32),
+        4: np.array([19, 26], dtype=np.float32),
+        5: np.array([20, 25], dtype=np.float32),
+        6: np.array([21, 24], dtype=np.float32),
+        7: np.array([22, 23], dtype=np.float32),
+        8: np.array([22, 22.5], dtype=np.float32),
+        9: np.array([21, 22.5], dtype=np.float32)
     }
 
     return mapping[action]
@@ -130,22 +130,22 @@ def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> List[float]:
 # ----------------------------------OFFICEGRID---------------------------- #
 
 
-def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [15, 30, 0.0, 0.0],
-        1: [16, 29, 0.0, 0.0],
-        2: [17, 28, 0.0, 0.0],
-        3: [18, 27, 0.0, 0.0],
-        4: [19, 26, 0.0, 0.0],
-        5: [20, 25, 0.0, 0.0],
-        6: [21, 24, 0.0, 0.0],
-        7: [22, 23, 0.0, 0.0],
-        8: [22, 22.5, 0.0, 0.0],
-        9: [21, 22.5, 0.0, 0.0]
+        0: np.array([15, 30, 0.0, 0.0], dtype=np.float32),
+        1: np.array([16, 29, 0.0, 0.0], dtype=np.float32),
+        2: np.array([17, 28, 0.0, 0.0], dtype=np.float32),
+        3: np.array([18, 27, 0.0, 0.0], dtype=np.float32),
+        4: np.array([19, 26, 0.0, 0.0], dtype=np.float32),
+        5: np.array([20, 25, 0.0, 0.0], dtype=np.float32),
+        6: np.array([21, 24, 0.0, 0.0], dtype=np.float32),
+        7: np.array([22, 23, 0.0, 0.0], dtype=np.float32),
+        8: np.array([22, 22.5, 0.0, 0.0], dtype=np.float32),
+        9: np.array([21, 22.5, 0.0, 0.0], dtype=np.float32)
     }
 
     return mapping[action]
@@ -153,22 +153,22 @@ def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> List[float]:
 # ----------------------------------SHOP--------------------- #
 
 
-def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> List[float]:
+def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
     mapping = {
-        0: [15, 30],
-        1: [16, 29],
-        2: [17, 28],
-        3: [18, 27],
-        4: [19, 26],
-        5: [20, 25],
-        6: [21, 24],
-        7: [22, 23],
-        8: [22, 22.5],
-        9: [21, 22.5]
+        0: np.array([15, 30], dtype=np.float32),
+        1: np.array([16, 29], dtype=np.float32),
+        2: np.array([17, 28], dtype=np.float32),
+        3: np.array([18, 27], dtype=np.float32),
+        4: np.array([19, 26], dtype=np.float32),
+        5: np.array([20, 25], dtype=np.float32),
+        6: np.array([21, 24], dtype=np.float32),
+        7: np.array([22, 23], dtype=np.float32),
+        8: np.array([22, 22.5], dtype=np.float32),
+        9: np.array([21, 22.5], dtype=np.float32)
     }
 
     return mapping[action]
