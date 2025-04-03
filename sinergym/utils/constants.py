@@ -173,7 +173,7 @@ def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
     return mapping[action]
 
-# ---------------------------------- RADIANT --------------------------------- #
+# -------------------------------- AUTOBALANCE ------------------------------- #
 
 
 def DEFAULT_RADIANT_DISCRETE_FUNCTION(
