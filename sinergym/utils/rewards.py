@@ -4,6 +4,7 @@
 from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Optional, Tuple, Union
+from numpy import mean, sqrt
 
 from sinergym.utils.constants import LOG_REWARD_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
@@ -553,7 +554,93 @@ class NormalizedLinearReward(LinearReward):
         return reward, energy_term, comfort_term
 
 
-class MultiZoneReward(BaseReward):
+class BalancedRewardV1(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super().__init__(temperature_variables,
+                         energy_variables,
+                         range_comfort_winter,
+                         range_comfort_summer,
+                         summer_start,
+                         summer_final,
+                         energy_weight,
+                         lambda_energy,
+                         lambda_temperature)
+
+    def _get_reward(self) -> Tuple[float, ...]:
+        """Compute the final reward value.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+
+        Returns:
+            Tuple[float, ...]: Total reward calculated and reward terms.
+        """
+        comfort_term = self.lambda_temp * \
+            (1 - self.W_energy) * self.comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (self.total_energy / (1 + self.total_temp_violation / len(self.temp_names)))
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
+
+
+class BalancedRewardV2(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super(BalancedRewardV2, self).__init__(temperature_variables,
+                                               energy_variables,
+                                               range_comfort_winter,
+                                               range_comfort_summer,
+                                               summer_start,
+                                               summer_final,
+                                               energy_weight,
+                                               lambda_energy,
+                                               lambda_temperature)
+
+    def _get_reward(self) -> Tuple[float, ...]:
+        """Compute the final reward value.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+
+        Returns:
+            Tuple[float, ...]: Total reward calculated and reward terms.
+        """
+        comfort_term = self.lambda_temp * \
+            (1 - self.W_energy) * self.comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (self.total_energy / sqrt(1 + self.total_temp_violation / len(self.temp_names)))
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
+
+
+class MultiZoneRewardV1(BaseReward):
 
     def __init__(
         self,
@@ -571,7 +658,7 @@ class MultiZoneReward(BaseReward):
         where temperature setpoints are not controlled directly but rather used as targets to be achieved, while
         other actuators are controlled to reach these setpoints. A setpoint observation variable can be assigned
         per zone if it is available in the specific building. It is also possible to assign the same setpoint
-        variable to multiple air temperature zones.
+        variable to multiple air temperclass BalancedRewardV1(LinearReward):
 
         Args:
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
@@ -689,8 +776,63 @@ class MultiZoneReward(BaseReward):
         Returns:
             Tuple[float, ...]: Total reward calculated and reward terms.
         """
-        energy_term = self.lambda_energy * self.W_energy * self.energy_penalty
         comfort_term = self.lambda_temp * \
             (1 - self.W_energy) * self.comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (self.total_energy / (1 + self.total_temp_violation / len(self.comfort_configuration)))
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
+
+
+class MultiZoneRewardV2(MultiZoneRewardV1):
+
+    def __init__(
+        self,
+        energy_variables: List[str],
+        temperature_and_setpoints_conf: Dict[str, str],
+        comfort_threshold: float = 0.5,
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+        """
+        A linear reward function for environments with different comfort ranges in each zone. Instead of having
+        a fixed and common comfort range for the entire building, each zone has its own comfort range, which is
+        directly obtained from the setpoints established in the building. This function is designed for buildings
+        where temperature setpoints are not controlled directly but rather used as targets to be achieved, while
+        other actuators are controlled to reach these setpoints. A setpoint observation variable can be assigned
+        per zone if it is available in the specific building. It is also possible to assign the same setpoint
+        variable to multiple air temperclass BalancedRewardV1(LinearReward):
+
+        Args:
+            energy_variables (List[str]): Name(s) of the energy/power variable(s).
+            temperature_and_setpoints_conf (Dict[str, str]): Dictionary with the temperature variable name (key) and the setpoint variable name (value) of the observation space.
+            comfort_threshold (float, optional): Comfort threshold for temperature range (+/-). Defaults to 0.5.
+            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
+            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
+            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
+        """
+
+        super().__init__(energy_variables,
+                         temperature_and_setpoints_conf,
+                         comfort_threshold,
+                         energy_weight,
+                         lambda_energy,
+                         lambda_temperature)
+
+    def _get_reward(self) -> Tuple[float, ...]:
+        """Compute the final reward value.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+
+        Returns:
+            Tuple[float, ...]: Total reward calculated and reward terms.
+        """
+        comfort_term = self.lambda_temp * \
+            (1 - self.W_energy) * self.comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (self.total_energy / sqrt(1 + self.total_temp_violation / len(self.comfort_configuration)))
         reward = energy_term + comfort_term
         return reward, energy_term, comfort_term
