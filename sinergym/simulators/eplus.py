@@ -92,6 +92,8 @@ class EnergyPlus(object):
         self.initialized_handlers = False
         self.system_ready = False
         self.simulation_complete = False
+        self.progress_bar = None
+        self.episode = None
 
         # ----------------------------------- Paths ---------------------------------- #
         self._building_path: Optional[str] = None
