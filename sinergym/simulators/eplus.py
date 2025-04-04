@@ -92,6 +92,8 @@ class EnergyPlus(object):
         self.initialized_handlers = False
         self.system_ready = False
         self.simulation_complete = False
+        self.progress_bar = None
+        self.episode = None
 
         # ----------------------------------- Paths ---------------------------------- #
         self._building_path: Optional[str] = None
@@ -117,6 +119,8 @@ class EnergyPlus(object):
             output_path (str): Path where EnergyPlus process is going to allocate its output files.
             episode (int): Number of the episode to run (useful to show in progress bar).
         """
+        # -------------------------------- Attributes -------------------------------- #
+        self.episode = episode
 
         # ------------------------------ Path attributes ----------------------------- #
         self._building_path = building_path
@@ -133,35 +137,25 @@ class EnergyPlus(object):
         # ------------------------ Progress bar for simulation ----------------------- #
         self.progress_bar = None
 
-        # ------------------------- Callback for progress bar ------------------------ #
-        def _progress_update(percent: int) -> None:
-            if self.system_ready:
-
-                if self.progress_bar is None:
-                    # Progress bar for simulation
-                    self.progress_bar = tqdm(
-                        total=100,
-                        desc=f'Simulation Progress [Episode {episode}]',
-                        ncols=100,
-                        unit='%',
-                        leave=True,
-                        position=0,
-                        ascii=False,
-                        dynamic_ncols=True,
-                        file=sys.stdout)
-
-                percent = percent + 1 if percent < 100 else percent
-                self.progress_bar.update(percent - self.progress_bar.n)
-                self.progress_bar.set_postfix_str(f'{percent}% completed')
-                self.progress_bar.refresh()
-
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
-            self.energyplus_state, _progress_update)
+            self.energyplus_state, self._progress_update)
 
+        # register callback used to signal warmup complete
         self.api.runtime.callback_after_new_environment_warmup_complete(
             self.energyplus_state, self._warmup_complete)
-        # Warmup --> init system --> collect obs, action and context
+
+        # register callback used to collect observations
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
+            self.energyplus_state, self._collect_obs_and_info)
+
+        # register callback used to send actions
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
+            self.energyplus_state, self._process_action)
+
+        # register callback used to process context
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
+            self.energyplus_state, self._process_context)
 
         # ------------------- Run EnergyPlus in a non-blocking way ------------------- #
         def _run_energyplus(runtime, cmd_args, state, results):
@@ -243,32 +237,39 @@ class EnergyPlus(object):
         return eplus_args
 
     # ---------------------------------------------------------------------------- #
-    #                             E+ Callbacks methods                             #
+    #                              Auxiliary methods                               #
     # ---------------------------------------------------------------------------- #
 
-    # Warmup --> init system --> collect obs, action and context
+    # ------------------------------- Progress Bar ------------------------------- #
 
-    # ------------------------------ Warmup Process ------------------------------ #
+    def _progress_update(self, percent: int) -> None:
+        if self.system_ready:
 
-    def _warmup_complete(self, state_argument: Any) -> None:
-        """Callback that indicates when warmup process has been completed successfully. It sets the warmup flag to True and
-           put a flag in the warmup queue to indicate that warmup process has been completed. Then, it initializes the system.
+            if not self.progress_bar:
+                # Progress bar for simulation
+                self.progress_bar = tqdm(
+                    total=100,
+                    desc=f'Simulation Progress [Episode {self.episode}]',
+                    ncols=100,
+                    unit='%',
+                    leave=True,
+                    position=0,
+                    ascii=False,
+                    dynamic_ncols=True,
+                    file=sys.stdout)
 
-        Args:
-            state_argument (int): EnergyPlus API state
-        """
-        if not self.exchange.warmup_flag(
-                state_argument) and not self.warmup_complete:
-            self.warmup_complete = True
-            self.warmup_queue.put(True)
-            self.logger.info(
-                'Warmup process has been completed successfully.')
+            percent = percent + 1 if percent < 100 else percent
+            self.progress_bar.update(percent - self.progress_bar.n)
+            self.progress_bar.set_postfix_str(f'{percent}% completed')
+            self.progress_bar.refresh()
 
-            # Init system after warmup
-            self.api.runtime.callback_begin_new_environment(
-                self.energyplus_state, self._init_system)
+    # ------------------------------ Initialization ------------------------------ #
 
-    # --------------------------- Initilization process -------------------------- #
+    def _warmup_complete(self, state: Any) -> None:
+        self.warmup_complete = True
+        self.warmup_queue.put(True)
+        self.logger.debug(
+            'Warmup process has been completed successfully.')
 
     def _init_system(self, state_argument: int) -> None:
         """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
@@ -277,39 +278,24 @@ class EnergyPlus(object):
             state_argument (int): EnergyPlus API state
         """
         if not self.system_ready:
-
-            if self._init_handlers(state_argument):
-                self.system_ready = True
-
-                # register callback used to collect observations
-                self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-                    self.energyplus_state, self._collect_obs_and_info)
-
-                # register callback used to send actions
-                self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-                    self.energyplus_state, self._process_action)
-
-                # register callback used to process context
-                self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-                    self.energyplus_state, self._process_context)
-
+            self._init_handlers(state_argument)
+            self.system_ready = self.initialized_handlers and not self.exchange.warmup_flag(
+                state_argument)
+            if self.system_ready:
                 self.logger.info('System is ready.')
 
-    def _init_handlers(self, state_argument: int) -> bool:
+    def _init_handlers(self, state_argument: int) -> None:
         """initialize sensors/actuators handlers to interact with during simulation.
 
         Args:
             state_argument (int): EnergyPlus API state
-
-        Returns:
-            bool: Flag to indicate if handlers are initialized
 
         """
         # api data must be fully ready, else nothing happens
         if self.exchange.api_data_fully_ready(
                 state_argument) and not self.initialized_handlers:
 
-            if self.var_handlers is None and self.meter_handlers is None and self.actuator_handlers is None:
+            if self.var_handlers is None or self.meter_handlers is None or self.actuator_handlers is None:
                 # Get variable handlers using variables info
                 self.var_handlers = {
                     key: self.exchange.get_variable_handle(state_argument, *var)
@@ -366,12 +352,12 @@ class EnergyPlus(object):
                             f'Actuator handlers: {actuator_name} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt')
                         # raise ValueError
 
+                self.logger.info('handlers initialized.')
+
             self.logger.info('handlers are ready.')
             self.initialized_handlers = True
 
-        return self.initialized_handlers
-
-    # ---------------- Observation, action and context processing ---------------- #
+    # ---------------------------- Gymnasium iteration --------------------------- #
 
     def _collect_obs_and_info(self, state_argument: int) -> None:
         """EnergyPlus callback that collects output variables and info
@@ -384,6 +370,10 @@ class EnergyPlus(object):
         # if simulation is completed or not initialized --> do nothing
         if self.simulation_complete:
             self.api.runtime.stop_simulation(self.energyplus_state)
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
+            return
 
         # Obtain observation (time_variables, variables and meters) values in dict
         # format
@@ -435,7 +425,10 @@ class EnergyPlus(object):
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
             self.api.runtime.stop_simulation(self.energyplus_state)
-
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
+            return
         # Get next action from queue and check type
         next_action = self.act_queue.get()
         # self.logger.debug(f'ACTION get from queue: {next_action}')
@@ -462,7 +455,10 @@ class EnergyPlus(object):
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
             self.api.runtime.stop_simulation(self.energyplus_state)
-
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
+            return
         # Get next action from queue and check type
         try:
             next_context = self.context_queue.get(block=False)
@@ -478,10 +474,6 @@ class EnergyPlus(object):
                     )
         except Empty:
             pass
-
-    # ---------------------------------------------------------------------------- #
-    #                               Auxiliar methods                               #
-    # ---------------------------------------------------------------------------- #
 
     def _flush_queues(self) -> None:
         """It empties all values allocated in observation, action and warmup queues

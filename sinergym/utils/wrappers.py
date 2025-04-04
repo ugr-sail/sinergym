@@ -281,7 +281,9 @@ class NormalizeObservation(gym.Wrapper):
         self.unwrapped_observation = None
 
         # Initialize normalization calibration
-        self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
+        self.obs_rms = RunningMeanStd(
+            shape=self.observation_space.shape,
+            dtype=self.observation_space.dtype)
 
         # Set mean and variance
         self.obs_rms.mean = self._process_metric(
@@ -397,8 +399,10 @@ class NormalizeObservation(gym.Wrapper):
         """Normalizes the observation using the running mean and variance of the observations.
         If automatic_update is enabled, the running mean and variance will be updated too."""
         if self.automatic_update:
-            self.obs_rms.update(obs)
+            # Update running statistics
+            self.obs_rms.update(np.array([obs], dtype=np.float32))
 
+        # Calculate normalized observation
         std = np.sqrt(self.obs_rms.var + self.epsilon)
         return (obs - self.obs_rms.mean) / std
 

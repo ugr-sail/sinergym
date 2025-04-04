@@ -23,7 +23,8 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone._building_path is None
     assert simulator_5zone._weather_path is None
     assert simulator_5zone._output_path is None
-    assert not hasattr(simulator_5zone, 'progress_bar')
+    assert simulator_5zone.progress_bar is None
+    assert simulator_5zone.episode is None
 
     # simulation start
     simulator_5zone.start(
@@ -45,6 +46,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone._weather_path is not None
     assert simulator_5zone._output_path is not None
     assert simulator_5zone.progress_bar is None
+    assert simulator_5zone.episode is not None
 
     # Checks warmup process
     if not simulator_5zone.warmup_complete:

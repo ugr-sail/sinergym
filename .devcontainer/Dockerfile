@@ -101,7 +101,8 @@ RUN apt autoremove -y && apt autoclean -y \
 
 WORKDIR /workspaces/sinergym
 # Only copy basic files for poetry installation
-COPY pyproject.toml poetry.lock README.md LICENSE INSTALL.md CODE_OF_CONDUCT.md sinergym ./
+COPY pyproject.toml poetry.lock README.md LICENSE INSTALL.md CODE_OF_CONDUCT.md ./
+COPY sinergym ./sinergym
 
 # ---------------------------------------------------------------------------- #
 #                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #
