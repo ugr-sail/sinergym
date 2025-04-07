@@ -110,7 +110,6 @@ class EplusEnv(gym.Env):
         self.meters = meters
         self.actuators = actuators
         self.context = context
-        self.initial_context = initial_context
 
         # ---------------------------------------------------------------------------- #
         #                    Define observation and action variables                   #
@@ -156,10 +155,6 @@ class EplusEnv(gym.Env):
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
 
-        # Set initial context if exists
-        if self.initial_context is not None:
-            self.update_context(self.initial_context)
-
         # EnergyPlus simulator
         self.energyplus_simulator = EnergyPlus(
             name=env_name,
@@ -181,6 +176,8 @@ class EplusEnv(gym.Env):
         # Weather Variability
         if weather_variability:
             self.default_options['weather_variability'] = weather_variability
+        if initial_context:
+            self.default_options['initial_context'] = initial_context
         # ... more reset option implementations here
 
         # ---------------------------------------------------------------------------- #
@@ -240,16 +237,16 @@ class EplusEnv(gym.Env):
         """
 
         # If global seed was configured, reset seed will not be applied.
-        if self.seed is None:
+        if not self.seed:
             np.random.seed(seed)
 
         # Apply options if exists, else default options
-        reset_options = options if options is not None else self.default_options
+        reset_options = options if options else self.default_options
 
         self.episode += 1
         self.timestep = 0
 
-        # Stop oold thread of old episode if exists
+        # Stop old thread of old episode if exists
         self.energyplus_simulator.stop()
 
         self.last_obs = dict(
@@ -279,6 +276,10 @@ class EplusEnv(gym.Env):
         self.logger.info(
             f'Saving episode output path in {eplus_working_out_path}.')
         self.logger.debug(f'Path: {eplus_working_out_path}')
+
+        # Set initial context if exists
+        if reset_options.get('initial_context'):
+            self.update_context(reset_options['initial_context'])
 
         self.energyplus_simulator.start(
             building_path=eplus_working_building_path,
@@ -432,7 +433,7 @@ class EplusEnv(gym.Env):
         if len(context_values) != len(self.context):
             self.logger.warning(
                 f'Context values must have the same length than context variables specified, and values must be in the same order. The context space is {
-                    self.context}, but values {context_values} were spevified.')
+                    self.context}, but values {context_values} were specified.')
 
         try:
             self.context_queue.put(context_values, block=False)
