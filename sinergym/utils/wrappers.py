@@ -2036,8 +2036,9 @@ class VariabilityContextWrapper(gym.Wrapper):
         self.delta_context = (-delta_value, delta_value)
         self.step_frequency_range = step_frequency_range
 
-        initial_context = self.get_wrapper_attr('initial_context')
-        if initial_context is not None:
+        initial_context = self.get_wrapper_attr(
+            'default_options').get('initial_context')
+        if initial_context:
             self.current_context = np.array(
                 initial_context, np.float32)
         else:
