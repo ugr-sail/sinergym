@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------- #
 
 ARG UBUNTU_VERSION=24.04
-FROM ubuntu:${UBUNTU_VERSION}
+FROM --platform=linux/amd64 ubuntu:${UBUNTU_VERSION}
 
 # ---------------------------------------------------------------------------- #
 #                      CONTAINER ARGUMENTS AND ENV CONFIG                      #
