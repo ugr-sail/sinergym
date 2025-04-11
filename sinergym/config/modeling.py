@@ -314,6 +314,8 @@ class ModelJSON(object):
         if timesteps:
             next(iter(self.building['Timestep'].values()), {})[
                 'number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+            next(iter(self.building['Sizing:Parameters'].values()), {})[
+                'timesteps_in_averaging_window'] = self.config['timesteps_per_hour']
 
             self.logger.debug(
                 f'Extra config: timesteps_per_hour set up to {
