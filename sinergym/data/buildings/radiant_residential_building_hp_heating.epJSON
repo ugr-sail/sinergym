@@ -8939,7 +8939,7 @@
         "Sizing:Parameters 1": {
             "cooling_sizing_factor": 1.15,
             "heating_sizing_factor": 1.15,
-            "timesteps_in_averaging_window": 4
+            "timesteps_in_averaging_window": 12
         }
     },
     "Sizing:Plant": {
