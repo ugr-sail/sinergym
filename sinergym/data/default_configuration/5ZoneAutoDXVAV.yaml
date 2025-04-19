@@ -15,10 +15,12 @@ weather_specification:
     - USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw
     - USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw
     - USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw
+    - USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw
   keys:
     - hot
     - mixed
     - cool
+    - chicago
 
 # ---------------------------------------------------------------------------- #
 #                         BUILDING EXTRA CONFIGURATION                         #
