@@ -81,17 +81,31 @@ variables:
     variable_names: clg_setpoint
     keys: SPACE5-1
   Zone Air Temperature:
-    variable_names: air_temperature
-    keys: SPACE5-1
+    variable_names: 
+      - air_temperature_central
+      - air_temperature_peripheral1
+      - air_temperature_peripheral2
+      - air_temperature_peripheral3
+      - air_temperature_peripheral4
+    keys: 
+      - SPACE5-1
+      - SPACE1-1
+      - SPACE2-1
+      - SPACE3-1
+      - SPACE4-1
   Zone Air Relative Humidity:
-    variable_names: air_humidity
-    keys: SPACE5-1
-  Zone People Occupant Count:
-    variable_names: people_occupant
-    keys: SPACE5-1
-  Environmental Impact Total CO2 Emissions Carbon Equivalent Mass:
-    variable_names: co2_emission
-    keys: site
+    variable_names: 
+      - air_humidity_central
+      - air_humidity_peripheral1
+      - air_humidity_peripheral2
+      - air_humidity_peripheral3
+      - air_humidity_peripheral4
+    keys:
+      - SPACE5-1
+      - SPACE1-1
+      - SPACE2-1
+      - SPACE3-1
+      - SPACE4-1
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
