@@ -148,7 +148,11 @@ reward: LinearReward
 
 reward_kwargs:
   temperature_variables:
-    - air_temperature
+    - air_temperature_central
+    - air_temperature_peripheral1
+    - air_temperature_peripheral2
+    - air_temperature_peripheral3
+    - air_temperature_peripheral4
   energy_variables:
     - HVAC_electricity_demand_rate
   range_comfort_winter:
