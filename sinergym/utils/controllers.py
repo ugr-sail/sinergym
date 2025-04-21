@@ -75,6 +75,70 @@ class RBC5Zone(object):
         return season_range
 
 
+class RBCIncremental5Zone(object):
+
+    def __init__(self, env: Env) -> None:
+        """Agent based on rules for controlling 5ZoneAutoDXVAV setpoints in a incremental way.
+        Args:
+            env (Env): Simulation environment
+        """
+
+        self.env = env
+        self.observation_variables = env.get_wrapper_attr(
+            'observation_variables')
+        self.action_variables = env.get_wrapper_attr('action_variables')
+
+        self.range_winter = (20.0, 23.0)
+        self.range_summer = (23.5, 26.0)
+
+    def act(self, observation: List[Any]) -> Sequence[Any]:
+        """Select action based on indoor temperature.
+        Args:
+            observation (List[Any]): Perceived observation.
+        Returns:
+            Sequence[Any]: Action chosen.
+        """
+        obs_dict = dict(zip(self.observation_variables, observation))
+
+        # Mean temp in datacenter zones
+        mean_temp = np.mean([obs_dict['air_temperature_central'],
+                             obs_dict['air_temperature_peripheral1'],
+                             obs_dict['air_temperature_peripheral2'],
+                             obs_dict['air_temperature_peripheral3'],
+                             obs_dict['air_temperature_peripheral4'],])
+
+        current_heat_setpoint = np.clip(obs_dict['htg_setpoint'],
+                                        self.env.action_space.low[0],
+                                        self.env.action_space.high[0])
+        current_cool_setpoint = np.clip(obs_dict['clg_setpoint'],
+                                        self.env.action_space.low[1],
+                                        self.env.action_space.high[1])
+
+        new_heat_setpoint = current_heat_setpoint
+        new_cool_setpoint = current_cool_setpoint
+
+        # Check if current date is in summer (June 1 - Sept 30)
+        month = obs_dict['month']
+        day = obs_dict['day_of_month']
+
+        if month in [6, 7, 8, 9]:
+            current_range = self.range_summer
+        else:
+            current_range = self.range_winter
+
+        if mean_temp < current_range[0]:  # pragma: no cover
+            new_heat_setpoint = current_heat_setpoint + 1
+            new_cool_setpoint = current_cool_setpoint + 1
+        elif mean_temp > current_range[1]:  # pragma: no cover
+            new_cool_setpoint = current_cool_setpoint - 1
+            new_heat_setpoint = current_heat_setpoint - 1
+
+        return np.clip(
+            np.array([new_heat_setpoint, new_cool_setpoint], dtype=np.float32),
+            self.env.action_space.low,
+            self.env.action_space.high)
+
+
 class RBCDatacenter(object):
 
     def __init__(self, env: Env) -> None:
