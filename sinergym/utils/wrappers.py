@@ -286,9 +286,12 @@ class NormalizeObservation(gym.Wrapper):
             dtype=self.observation_space.dtype)
 
         # Set mean and variance
-        self.obs_rms.mean = self._process_metric(
-            mean, 'mean') or self.obs_rms.mean
-        self.obs_rms.var = self._process_metric(var, 'var') or self.obs_rms.var
+        processed_mean = self._process_metric(mean, 'mean')
+        processed_var = self._process_metric(var, 'var')
+        if processed_mean is not None:
+            self.obs_rms.mean = self._process_metric(mean, 'mean')
+        if processed_var is not None:
+            self.obs_rms.var = processed_var
 
         self.logger.info('Wrapper initialized.')
 
