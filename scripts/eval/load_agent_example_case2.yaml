@@ -1,6 +1,6 @@
 # ---------------------------------- BASICS ---------------------------------- #
 id: LoadExample
-environment: Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1
+environment: Eplus-radiant_case2_heating-stockholm-continuous-stochastic-v1
 episodes: 10
 
 # ------------------------------- SB3 ALGORITHM ------------------------------ #
@@ -10,11 +10,11 @@ algorithm:
 # --------------------------- MODEL FOR EVALUATION --------------------------- #
 # Local Path:
 model: 
-  local_path: /workspaces/sinergym/scripts/eval/PPO_50/best_model.zip
+  local_path: /workspaces/sinergym/artifacts/second_50/evaluation/best_model.zip
 # load model normalization if needed
   normalization:
-    mean: /workspaces/sinergym/scripts/eval/PPO_50/mean.txt
-    var: /workspaces/sinergym/scripts/eval/PPO_50/var.txt
+    mean: /workspaces/sinergym/artifacts/second_50/evaluation/mean.txt
+    var: /workspaces/sinergym/artifacts/second_50/evaluation/var.txt
 
 # Google Bucket Path:
 # model: 
