@@ -75,12 +75,14 @@ class ModelJSON(object):
             max_ep_store (int): Number of episodes directories will be stored in experiment_path.
             extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
         """
+
         self.pkg_data_path = PKG_DATA_PATH
-        # ----------------------- Transform filenames in paths ----------------------- #
+
+        # ----------------- Transform filenames in paths if required ----------------- #
 
         # JSON
-        self._json_path = os.path.join(
-            self.pkg_data_path, 'buildings', json_file)
+        self._json_path = self._json_path = json_file if os.path.isfile(
+            json_file) else os.path.join(self.pkg_data_path, 'buildings', json_file)
 
         # EPW
         self.weather_files = weather_files
@@ -89,9 +91,9 @@ class ModelJSON(object):
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
         # Select one weather randomly (if there are more than one)
-        self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', np.random.choice(
-                self.weather_files))
+        choice = np.random.choice(self.weather_files)
+        self._weather_path = choice if os.path.isfile(
+            choice) else os.path.join(self.pkg_data_path, 'weather', choice)
 
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
