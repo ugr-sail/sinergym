@@ -53,7 +53,7 @@ class EplusEnv(gym.Env):
         reward_kwargs: Optional[Dict[str, Any]] = {},
         max_ep_data_store_num: int = 10,
         env_name: str = 'eplus-env-v1',
-        config_params: Optional[Dict[str, Any]] = None,
+        building_config: Optional[Dict[str, Any]] = None,
         seed: Optional[int] = None,
     ):
         """Environment with EnergyPlus simulator.
@@ -73,7 +73,7 @@ class EplusEnv(gym.Env):
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
-            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
+            building_config (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for building. Defaults to None.
             seed (Optional[int], optional): Seed for random number generator. Defaults to None.
         """
 

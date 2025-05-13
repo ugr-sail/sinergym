@@ -240,7 +240,7 @@ The ``action_space`` argument adheres to the Gymnasium standard and must be a co
 Extra configuration
 ===================
 
-Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``config_params`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
+Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``building_config`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 
 Seed
 ====

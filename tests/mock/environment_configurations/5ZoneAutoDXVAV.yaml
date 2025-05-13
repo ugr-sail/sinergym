@@ -12,7 +12,7 @@ weather_specification:
     - mixed
     - cool
 
-config_params: null
+building_config: null
 
 weather_variability:
   Dry Bulb Temperature: [1.0, 0.0, 24.0]

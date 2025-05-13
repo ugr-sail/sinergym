@@ -72,7 +72,7 @@ register(
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)},
         'env_name': 'demo-v1',
-        'config_params': {
+        'building_config': {
             'runperiod': (1, 1, 1991, 1, 3, 1991),
             'timesteps_per_hour': 1
         }})

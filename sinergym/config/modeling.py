@@ -38,8 +38,8 @@ class ModelJSON(object):
         :param _meters: Output:Meter(s) information about building model.
         :param experiment_path: Path for Sinergym experiment output.
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
-        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
-        :param config: Dict config with extra configuration which is required to modify building model (may be None).
+        :param max_ep_data_store_num: Number of episodes directories will be stored in experiment_path.
+        :param building_config: Dict with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
         :param ddy_model: eppy object with DDY model.
         :param weather_data: epw module Weather class instance with EPW data.
@@ -103,6 +103,7 @@ class ModelJSON(object):
         # Building model object (Python dictionary from epJSON file)
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
+        self.building_config = self.env_config['building_config']
 
         # DDY model (eppy object)
         IDF.setiddname(self._idd)
@@ -636,7 +637,7 @@ class ModelJSON(object):
             raise ValueError
 
         # Compute the directory ID to remove
-        rm_dir_id = cur_dir_id - self.max_ep_store
+        rm_dir_id = cur_dir_id - self.env_config['max_ep_data_store_num']
         if rm_dir_id <= 0:
             return  # Nothing to remove
 
@@ -673,32 +674,32 @@ class ModelJSON(object):
                     f'Weather files: {w_file} is not a weather file available in Sinergym.')
                 raise FileNotFoundError
 
-        # EXTRA CONFIG
-        if self.config is not None:
-            for config_key in self.config.keys():
+        # BUILDING EXTRA CONFIGURATION
+        if self.building_config is not None:
+            for config_key in self.building_config.keys():
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    if self.config[config_key] < 1:
+                    if self.building_config[config_key] < 1:
                         self.logger.critical(
-                            f'Extra Config: timestep_per_hour must be a positive int value, the value specified is {
-                                self.config[config_key]}')
+                            f'Building configuration: timestep_per_hour must be a positive int value, the value specified is {
+                                self.building_config[config_key]}')
                         raise ValueError
                 # Runperiod
                 elif config_key == 'runperiod':
-                    if not isinstance(self.config[config_key], tuple):
+                    if not isinstance(self.building_config[config_key], tuple):
                         self.logger.critical(
-                            f'Extra Config: Runperiod specified in extra configuration must be a tuple (type detected {
+                            f'Building configuration: Runperiod specified in extra configuration must be a tuple (type detected {
                                 type(
-                                    self.config[config_key])})')
+                                    self.building_config[config_key])})')
                         raise TypeError
-                    if len(self.config[config_key]) != 6:
+                    if len(self.building_config[config_key]) != 6:
                         self.logger.critical(
-                            'Extra Config: Runperiod specified in extra configuration must have 6 elements.')
+                            'Building configuration: Runperiod specified in extra configuration must have 6 elements.')
                         raise ValueError
                 else:
                     self.logger.error(
-                        f'Extra Config: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
+                        f'Building configuration: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

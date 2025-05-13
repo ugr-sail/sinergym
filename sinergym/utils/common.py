@@ -345,7 +345,7 @@ def convert_conf_to_env_parameters(
         'reward': eval(conf['reward']),
         'reward_kwargs': conf['reward_kwargs'],
         'max_ep_data_store_num': conf['max_ep_data_store_num'],
-        'config_params': conf.get('config_params')
+        'building_config': conf.get('building_config')
     }
 
     weather_variability = conf.get('weather_variability')
@@ -412,10 +412,10 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
                 env_params['reward_kwargs'][reward_param_name] = tuple(
                     reward_value)
 
-    if env_params.get('config_params'):
-        if env_params['config_params'].get('runperiod'):
-            env_params['config_params']['runperiod'] = tuple(
-                env_params['config_params']['runperiod'])
+    if env_params.get('building_config'):
+        if env_params['building_config'].get('runperiod'):
+            env_params['building_config']['runperiod'] = tuple(
+                env_params['building_config']['runperiod'])
     # Add more keys if needed...
 
     return env_params

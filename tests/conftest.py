@@ -281,7 +281,7 @@ def env_demo(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
     )
@@ -314,7 +314,7 @@ def env_demo_energy_cost(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
     )
@@ -350,7 +350,7 @@ def env_demo_summer(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
     )
@@ -383,7 +383,7 @@ def env_demo_summer_energy_cost(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
     )
@@ -429,7 +429,7 @@ def env_5zone(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
     )
@@ -468,7 +468,7 @@ def env_5zone_stochastic(
                 23.0,
                 26.0)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (
                 1,
                 1,
@@ -507,7 +507,7 @@ def env_datacenter(
                 18,
                 27)},
         env_name='PYTESTGYM',
-        config_params={
+        building_config={
             'runperiod': (1, 1, 1991, 31, 3, 1991)
         }
     )
