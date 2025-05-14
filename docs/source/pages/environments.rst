@@ -15,7 +15,7 @@ Environments
 
   # Make and consult environment
   env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
-  print(env.info())
+  print(env.to_str())
 
 Environment names follow the format ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``.  
 These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `info` method as shown in the example code.

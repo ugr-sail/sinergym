@@ -98,8 +98,7 @@ class EplusEnv(gym.Env):
         # building file
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
-        self.weather_files = [weather_files] if isinstance(
-            weather_files, str) else weather_files
+        self.weather_files = weather_files
 
         # ---------------------------------------------------------------------------- #
         #                  Variables, meters and actuators definition                  #
@@ -123,6 +122,8 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                               Building modeling                              #
         # ---------------------------------------------------------------------------- #
+        self.max_ep_store = max_ep_store
+        self.building_config = building_config
 
         self.model = ModelJSON(
             env_name=env_name,
@@ -130,8 +131,8 @@ class EplusEnv(gym.Env):
             weather_files=self.weather_files,
             variables=self.variables,
             meters=self.meters,
-            max_ep_store=max_ep_data_store_num,
-            extra_config=config_params
+            max_ep_store=self.max_ep_store,
+            building_config=self.building_config,
         )
 
         # ---------------------------------------------------------------------------- #
@@ -206,6 +207,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
         # ---------------------------------------------------------------------------- #
+        self.reward_kwargs = reward_kwargs
         self.reward_fn = reward(**reward_kwargs)
 
         # ---------------------------------------------------------------------------- #
@@ -635,9 +637,71 @@ class EplusEnv(gym.Env):
     def idd_path(self) -> str:
         return self.model.idd_path
 
-    # -------------------------------- class print ------------------------------- #
+    # ---------------------------- formats and prints ---------------------------- #
 
-    def info(self):  # pragma: no cover
+    def to_dict(self) -> Dict[str, Any]:  # pragma: no cover
+        """Convert the environment instance to a Python dictionary.
+
+        Returns:
+            Dict[str, Any]: Environment configuration.
+        """
+        return {
+            'building_file': self.building_file,
+            'weather_files': self.weather_files,
+            'action_space': {
+                'low': self.action_space.low.tolist(),
+                'high': self.action_space.high.tolist(),
+                'shape': self.action_space.shape,
+                'dtype': str(self.action_space.dtype)
+            },
+            'time_variables': self.time_variables,
+            'variables': self.variables,
+            'meters': self.meters,
+            'actuators': self.actuators,
+            'context': self.context,
+            'initial_context': self.default_options.get(
+                'initial_context'),
+            'weather_variability': self.default_options.get(
+                'weather_variability'),
+            'reward': self.reward_fn.__class__.__name__,
+            'reward_kwargs': self.reward_kwargs,
+            'max_ep_store': self.max_ep_store,
+            'env_name': self.name,
+            'building_config': self.building_config,
+            'seed': self.seed
+        }
+
+    @classmethod  # pragma: no cover
+    def from_dict(cls, data):
+        # Reconstruir el espacio de acción
+        box = gym.spaces.Box(
+            low=np.array(data['action_space']['low'], dtype=np.float32),
+            high=np.array(data['action_space']['high'], dtype=np.float32),
+            shape=data['action_space']['shape'],
+            dtype=np.dtype(data['action_space']['dtype'])
+        )
+        reward = globals().get(data['reward'], None)
+
+        return cls(
+            building_file=data['building_file'],
+            weather_files=data['weather_files'],
+            action_space=box,
+            time_variables=data['time_variables'],
+            variables=data['variables'],
+            meters=data['meters'],
+            actuators=data['actuators'],
+            context=data['context'],
+            initial_context=data['initial_context'],
+            weather_variability=data['weather_variability'],
+            reward=reward,
+            reward_kwargs=data['reward_kwargs'],
+            max_ep_store=data['max_ep_store'],
+            env_name=data['env_name'],
+            building_config=data['building_config'],
+            seed=data['seed']
+        )
+
+    def to_str(self):  # pragma: no cover
         print(f"""
     #==================================================================================#
         ENVIRONMENT NAME: {self.name}

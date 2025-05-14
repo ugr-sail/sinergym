@@ -8,4 +8,4 @@ print(sinergym.__ids__)
 
 # Make and consult environment
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
-print(env.info())
+print(env.to_str())

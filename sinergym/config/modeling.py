@@ -85,7 +85,8 @@ class ModelJSON(object):
             json_file) else os.path.join(self.pkg_data_path, 'buildings', json_file)
 
         # EPW
-        self.weather_files = weather_files
+        self.weather_files = weather_files if isinstance(
+            weather_files, list) else [weather_files]
 
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
