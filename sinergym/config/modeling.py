@@ -1,4 +1,4 @@
-"""Class and utilities for backend modeling in Python with Sinergym (extra params, weather_variability, building model modification and files management)"""
+"""Class and utilities for backend modeling in Python with Sinergym (building_config, weather_variability, building model modification and files management)"""
 import fcntl
 import json
 import os
@@ -63,7 +63,7 @@ class ModelJSON(object):
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
             max_ep_store: int,
-            extra_config: Dict[str, Any]):
+            building_config: Dict[str, Any]):
         """Constructor. Variables and meters are required to update building model scheme.
 
         Args:
@@ -73,7 +73,7 @@ class ModelJSON(object):
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             max_ep_store (int): Number of episodes directories will be stored in workspace_path.
-            extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
+            building_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
         """
 
         self.pkg_data_path = PKG_DATA_PATH
@@ -103,7 +103,7 @@ class ModelJSON(object):
         # Building model object (Python dictionary from epJSON file)
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
-        self.building_config = self.env_config['building_config']
+        self.building_config = building_config
 
         # DDY model (eppy object)
         IDF.setiddname(self._idd)
@@ -121,7 +121,6 @@ class ModelJSON(object):
         self.workspace_path = self._set_workspace_dir(env_name)
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
-        self.config = extra_config
 
         # Input/Output varibles
         self._variables = variables
@@ -246,22 +245,22 @@ class ModelJSON(object):
         """Set extra configuration in building model
         """
 
-        if not self.config:
+        if not self.building_config:
             return
 
         # Timesteps processed in a simulation hour
-        timesteps = self.config.get('timesteps_per_hour')
+        timesteps = self.building_config.get('timesteps_per_hour')
         if timesteps:
             next(iter(self.building['Timestep'].values()), {})[
-                'number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+                'number_of_timesteps_per_hour'] = self.building_config['timesteps_per_hour']
 
             self.logger.debug(
-                f'Extra config: timesteps_per_hour set up to {
-                    self.config['timesteps_per_hour']}')
+                f'Building configuration: timesteps_per_hour set up to {
+                    self.building_config['timesteps_per_hour']}')
 
         # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
         # end_day, end_month, end_year)
-        runperiod = self.config.get('runperiod')
+        runperiod = self.building_config.get('runperiod')
         if runperiod:
             next(iter(self.building['RunPeriod'].values()), {}).update({
                 'begin_day_of_month': int(runperiod[0]),
@@ -281,7 +280,8 @@ class ModelJSON(object):
 
             # Log updated values in terminal
             self.logger.info(
-                f'Extra config: runperiod updated to {self.runperiod}')
+                f'Building configuration: runperiod updated to {
+                    self.runperiod}')
             self.logger.info(
                 f'Updated episode length (seconds): {self.episode_length}')
             self.logger.info(
@@ -635,7 +635,7 @@ class ModelJSON(object):
             raise ValueError
 
         # Compute the directory ID to remove
-        rm_dir_id = cur_dir_id - self.env_config['max_ep_store']
+        rm_dir_id = cur_dir_id - self.max_ep_store
         if rm_dir_id <= 0:
             return  # Nothing to remove
 
