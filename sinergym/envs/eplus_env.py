@@ -613,7 +613,7 @@ class EplusEnv(gym.Env):
 
     @property  # pragma: no cover
     def workspace_path(self) -> str:
-        return self.model.experiment_path
+        return self.model.workspace_path
 
     @property  # pragma: no cover
     def episode_path(self) -> str:

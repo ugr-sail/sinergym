@@ -36,9 +36,9 @@ class ModelJSON(object):
         :param _idd: IDD eppy object to set up Epm.
         :param _variables: Output:Variable(s) information about building model.
         :param _meters: Output:Meter(s) information about building model.
-        :param experiment_path: Path for Sinergym experiment output.
+        :param workspace_path: Path for Sinergym workspace output.
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
-        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
+        :param max_ep_store: Number of episodes directories will be stored in workspace_path.
         :param building_config: Dict with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
         :param ddy_model: eppy object with DDY model.
@@ -72,7 +72,7 @@ class ModelJSON(object):
             weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
-            max_ep_store (int): Number of episodes directories will be stored in experiment_path.
+            max_ep_store (int): Number of episodes directories will be stored in workspace_path.
             extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
         """
 
@@ -118,7 +118,7 @@ class ModelJSON(object):
         # ----------------------------- Other attributes ----------------------------- #
 
         # Output paths and config
-        self.experiment_path = self._set_experiment_working_dir(env_name)
+        self.workspace_path = self._set_workspace_dir(env_name)
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
@@ -508,44 +508,42 @@ class ModelJSON(object):
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def _set_experiment_working_dir(self, env_name: str) -> str:
-        """Set experiment working dir path like config attribute for current simulation.
+    def _set_workspace_dir(self, env_name: str) -> str:
+        """Set workspace dir path like config attribute for current simulation.
 
         Args:
             env_name (str): simulation env name to define a name in directory
 
         Returns:
-            str: Experiment path for directory created.
+            str: Workspace path for directory created.
         """
-        # lock file for paralell execution
+        # lock file for parallel execution
         lock_file = os.path.join(CWD, '.lock')
 
         # CRITICAL SECTION: Avoid race conditions when generating the directory
         with open(lock_file, 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             try:
-                # Generate experiment_path
-                experiment_path = self._get_working_folder(
+                # Generate workspace_path
+                workspace_path = self._get_working_folder(
                     directory_path=CWD,
                     base_name=f'{env_name}-res'
                 )
 
                 # Create directory
-                os.makedirs(experiment_path)
+                os.makedirs(workspace_path)
 
             finally:
                 # Release the lock
                 fcntl.flock(f, fcntl.LOCK_UN)
 
         # Set path as an instance attribute
-        self.experiment_path = experiment_path
+        self.workspace_path = workspace_path
 
         self.logger.info(
-            'Experiment working directory created.')
-        self.logger.info(
-            f'Working directory: {experiment_path}')
+            f'Working directory created: {workspace_path}')
 
-        return experiment_path
+        return workspace_path
 
     def _get_working_folder(
             self,
@@ -574,11 +572,11 @@ class ModelJSON(object):
         existing_numbers = [int(match.group(1)) for folder in os.listdir(directory_path) if (
             match := pattern.match(folder)) and os.path.isdir(os.path.join(directory_path, folder))]
 
-        # Determine the next experiment ID
-        experiment_id = max(existing_numbers, default=0) + 1
+        # Determine the next execution ID
+        execution_id = max(existing_numbers, default=0) + 1
 
         working_dir = os.path.join(
-            directory_path, f'{base_name}{experiment_id}')
+            directory_path, f'{base_name}{execution_id}')
 
         return working_dir
 
@@ -586,19 +584,19 @@ class ModelJSON(object):
         """Set episode working dir path like config attribute for current simulation execution.
 
         Raises:
-            Exception: If experiment path (parent folder) has not be created previously.
+            Exception: If workspace path (parent folder) has not be created previously.
 
         Returns:
             str: Episode path for directory created.
         """
-        # Generate episode dir path if experiment dir path has been created
+        # Generate episode dir path if workspace dir path has been created
         # previously
-        if self.experiment_path is None:
-            self.logger.error('Experiment path is not specified.')
+        if self.workspace_path is None:
+            self.logger.error('Workspace path is not specified.')
             raise Exception
         else:
             episode_path = self._get_working_folder(
-                directory_path=self.experiment_path,
+                directory_path=self.workspace_path,
                 base_name='episode-')
             # Create directory
             os.makedirs(episode_path)
