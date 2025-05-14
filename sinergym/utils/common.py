@@ -344,7 +344,7 @@ def convert_conf_to_env_parameters(
         'initial_context': conf.get('initial_context'),
         'reward': eval(conf['reward']),
         'reward_kwargs': conf['reward_kwargs'],
-        'max_ep_data_store_num': conf['max_ep_data_store_num'],
+        'max_ep_store': conf['max_ep_store'],
         'building_config': conf.get('building_config')
     }
 

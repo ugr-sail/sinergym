@@ -51,7 +51,7 @@ class EplusEnv(gym.Env):
         ]]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
-        max_ep_data_store_num: int = 10,
+        max_ep_store: int = 10,
         env_name: str = 'eplus-env-v1',
         building_config: Optional[Dict[str, Any]] = None,
         seed: Optional[int] = None,
@@ -71,7 +71,7 @@ class EplusEnv(gym.Env):
             weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Ranges can be specified to and a value will be select randomly for each episode. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
-            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
+            max_ep_store (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             building_config (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for building. Defaults to None.
             seed (Optional[int], optional): Seed for random number generator. Defaults to None.

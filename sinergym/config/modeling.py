@@ -38,7 +38,7 @@ class ModelJSON(object):
         :param _meters: Output:Meter(s) information about building model.
         :param experiment_path: Path for Sinergym experiment output.
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
-        :param max_ep_data_store_num: Number of episodes directories will be stored in experiment_path.
+        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
         :param building_config: Dict with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
         :param ddy_model: eppy object with DDY model.
@@ -637,7 +637,7 @@ class ModelJSON(object):
             raise ValueError
 
         # Compute the directory ID to remove
-        rm_dir_id = cur_dir_id - self.env_config['max_ep_data_store_num']
+        rm_dir_id = cur_dir_id - self.env_config['max_ep_store']
         if rm_dir_id <= 0:
             return  # Nothing to remove
 

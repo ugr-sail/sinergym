@@ -129,7 +129,7 @@ Maximum episode data stored in Sinergym output
 
 *Sinergym* stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section :ref:`Sinergym output` for further details). The ``env_name`` parameter is utilized to generate the **working directory name**, facilitating differentiation between multiple experiments within the same environment.
 
-The parameter ``max_ep_data_store_num`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
+The parameter ``max_ep_store`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
 
 If *Sinergym*'s CSV storage feature is enabled (refer to section :ref:`CSVLogger`), a ``progress.csv`` file will be generated. This file contains summary data for each episode.
 
