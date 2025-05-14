@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import yaml
 
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
@@ -215,6 +216,11 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         self.logger.debug('Passing the environment checker...')
         self._check_eplus_env()
+
+        # ---------------------------------------------------------------------------- #
+        #                 Save environment configuration as a YAML file                #
+        # ---------------------------------------------------------------------------- #
+        self.save_config()
 
         self.logger.info(
             'Environment created successfully.')
@@ -447,6 +453,15 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
+
+    def save_config(self) -> None:
+        """Save environment configuration as a YAML file."""
+        with open(f'{self.workspace_path}/env.pyyaml', 'w') as f:
+            yaml.dump(
+                data=self.unwrapped,
+                stream=f,
+                default_flow_style=False,
+                sort_keys=False)
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
