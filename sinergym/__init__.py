@@ -7,30 +7,16 @@ import gymnasium as gym
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
 
-from sinergym.envs import EplusEnv
 from sinergym.utils.common import convert_conf_to_env_parameters
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
+from sinergym.utils.serialization import create_sinergym_yaml_serializers
 
-# ------------------------- Ignore epw module warning ------------------------ #
+# ------------------------ Ignore epw module warning ------------------------ #
 warnings.filterwarnings("ignore", module='epw')
 
-# ------------------ Serialization of Sinergym envs in YAML ------------------ #
-
-
-def env_representer(dumper, obj):
-    return dumper.represent_mapping('!EplusEnv', obj.unwrapped.to_dict())
-
-
-def env_constructor(loader, node):
-    values = loader.construct_mapping(node, deep=True)
-    print('************************************************')
-    print(values)
-    return EplusEnv.from_dict(values)
-
-
-yaml.add_representer(EplusEnv, env_representer)
-yaml.add_constructor('!EplusEnv', env_constructor, Loader=yaml.FullLoader)
+# --------------------- Serialization of Sinergym in YAML -------------------- #
+create_sinergym_yaml_serializers()
 
 # ------------------------- Set __version__ in module ------------------------ #
 version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
