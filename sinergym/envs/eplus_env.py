@@ -456,7 +456,7 @@ class EplusEnv(gym.Env):
 
     def save_config(self) -> None:
         """Save environment configuration as a YAML file."""
-        with open(f'{self.workspace_path}/env.pyyaml', 'w') as f:
+        with open(f'{self.workspace_path}/env_config.pyyaml', 'w') as f:
             yaml.dump(
                 data=self.unwrapped,
                 stream=f,
@@ -663,12 +663,7 @@ class EplusEnv(gym.Env):
         return {
             'building_file': self.building_file,
             'weather_files': self.weather_files,
-            'action_space': {
-                'low': self.action_space.low.tolist(),
-                'high': self.action_space.high.tolist(),
-                'shape': self.action_space.shape,
-                'dtype': str(self.action_space.dtype)
-            },
+            'action_space': self.action_space,
             'time_variables': self.time_variables,
             'variables': self.variables,
             'meters': self.meters,
@@ -678,7 +673,7 @@ class EplusEnv(gym.Env):
                 'initial_context'),
             'weather_variability': self.default_options.get(
                 'weather_variability'),
-            'reward': self.reward_fn.__class__.__name__,
+            'reward': self.reward_fn.__class__,
             'reward_kwargs': self.reward_kwargs,
             'max_ep_store': self.max_ep_store,
             'env_name': self.name,
@@ -688,33 +683,7 @@ class EplusEnv(gym.Env):
 
     @classmethod  # pragma: no cover
     def from_dict(cls, data):
-        # Reconstruir el espacio de acción
-        box = gym.spaces.Box(
-            low=np.array(data['action_space']['low'], dtype=np.float32),
-            high=np.array(data['action_space']['high'], dtype=np.float32),
-            shape=data['action_space']['shape'],
-            dtype=np.dtype(data['action_space']['dtype'])
-        )
-        reward = globals().get(data['reward'], None)
-
-        return cls(
-            building_file=data['building_file'],
-            weather_files=data['weather_files'],
-            action_space=box,
-            time_variables=data['time_variables'],
-            variables=data['variables'],
-            meters=data['meters'],
-            actuators=data['actuators'],
-            context=data['context'],
-            initial_context=data['initial_context'],
-            weather_variability=data['weather_variability'],
-            reward=reward,
-            reward_kwargs=data['reward_kwargs'],
-            max_ep_store=data['max_ep_store'],
-            env_name=data['env_name'],
-            building_config=data['building_config'],
-            seed=data['seed']
-        )
+        return cls(**data)
 
     def to_str(self):  # pragma: no cover
         print(f"""
