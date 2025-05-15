@@ -80,19 +80,15 @@ register(
         }})
 
 # ------------------- Read environment configuration files ------------------- #
-conf_files = []
-configuration_path = os.path.join(
-    os.path.dirname(__file__),
-    'data/default_configuration')
-for root, dirs, files in os.walk(configuration_path):
-    for file in files:
-        # Obtain the whole path for each configuration file
-        file_path = os.path.join(root, file)
-        conf_files.append(file_path)
 
-# ---------------- For each conf file, set up environments --------------- #
-for conf_file in conf_files:
-    with open(conf_file, 'r') as yaml_conf:
+
+def register_envs_from_yaml(yaml_path: str):
+    """
+    Register environments from a YAML configuration file.
+
+    :param yaml_path: Path to the YAML configuration file.
+    """
+    with open(yaml_path, 'r') as yaml_conf:
         conf = yaml.safe_load(yaml_conf)
 
     # configurations = Dict [key=environment_id, value=env_kwargs dict]
@@ -143,9 +139,24 @@ for conf_file in conf_files:
                 kwargs=env_kwargs_discrete
             )
 
-# --------------------------- Set __ids__ in module -------------------------- #
-__ids__ = [env_id for env_id in gym.envs.registration.registry.keys()
-           if env_id.startswith('Eplus')]
+
+# ------------------ Read default configuration files ------------------ #
+configuration_path = os.path.join(
+    os.path.dirname(__file__),
+    'data/default_configuration')
+for root, dirs, files in os.walk(configuration_path):
+    for file in files:
+        # Obtain the whole path for each configuration file
+        file_path = os.path.join(root, file)
+        # For each conf file, set up environments
+        register_envs_from_yaml(file_path)
+
+# ---------------- Available Sinergym environment's ids getter --------------- #
+
+
+def ids():
+    return [env_id for env_id in gym.envs.registration.registry.keys()
+            if env_id.startswith('Eplus')]
 
 
 # ----------------------------- Log level system ----------------------------- #
