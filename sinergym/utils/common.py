@@ -81,6 +81,64 @@ def unwrap_wrapper(env: gym.Env,
         env_tmp = env_tmp.env
     return None
 
+
+def get_wrappers_info(
+        env: Type[gym.Env], path_to_save: str = None) -> List[Dict[str, Any]]:
+    """Get information about the wrappers applied to the environment.
+
+    Args:
+        env (Type[gym.Env]): Environment to get wrapper information from.
+        path_to_save (str, optional): Path to save the information in a YAML file. Defaults to None.
+
+    Returns:
+        List[Dict[str, Any]]: List of dictionaries with wrapper information.
+    """
+    wrappers_info = []
+    if not path_to_save:
+        path_to_save = f'{
+            env.get_wrapper_attr('workspace_path')}/wrappers_config.pyyaml'
+    while isinstance(env, gym.Wrapper):
+        wrapper_cls = env.__class__
+        wrapper_name = f'{wrapper_cls.__module__}:{wrapper_cls.__name__}'
+        if env.has_wrapper_attr('__metadata__'):
+            wrappers_info.append(
+                {wrapper_name: env.get_wrapper_attr('__metadata__')}
+            )
+        env = env.env
+    # The correct order of the wrappers is from the last one to the first one
+    wrappers_info = wrappers_info[::-1]
+    # Save the wrappers information to a YAML file
+    if path_to_save:
+        with open(path_to_save, 'w') as file:
+            yaml.dump(wrappers_info, file, default_flow_style=False)
+    # return in reverse order
+    return wrappers_info
+
+
+def apply_wrappers_info(
+        env: Type[gym.Env], wrappers_info: Union[List[Dict[str, Any]], str]) -> Type[gym.Env]:
+    """Apply wrapper information to the environment.
+
+    Args:
+        env (Type[gym.Env]): Environment to apply wrapper information to.
+        wrappers_info (Union[List[Dict[str, Any]], str]): List of dictionaries with wrapper information or path to a YAML file with the information.
+
+    Returns:
+        Type[gym.Env]: Environment with applied wrappers.
+    """
+    if isinstance(wrappers_info, str):
+        with open(wrappers_info, 'r') as file:
+            wrappers_info = yaml.load(file, Loader=yaml.FullLoader)
+
+    for wrapper in wrappers_info:
+        for wrapper_name, arguments in wrapper.items():
+            # Parseo genérico de cosas que tengamos que procesar antes
+            # Mirar script de train
+            wrapper_cls = import_from_path(wrapper_name)
+            env = wrapper_cls(env, **arguments)
+
+    return env
+
 # ---------------------------------------------------------------------------- #
 #                               BUILDING MODELING                              #
 # ---------------------------------------------------------------------------- #
