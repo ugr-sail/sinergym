@@ -6,7 +6,50 @@ import yaml
 import numpy as np
 import gymnasium as gym
 from sinergym.envs.eplus_env import EplusEnv
-from sinergym.utils.rewards import *
+from sinergym.utils.common import import_from_path
+import importlib
+import types
+
+# ---------------------------------------------------------------------------- #
+#                           Python Class and Function                          #
+# ---------------------------------------------------------------------------- #
+
+
+def class_representer(dumper, obj):
+    class_path = f'{obj.__module__}.{obj.__name__}'
+    return dumper.represent_scalar('!Class', class_path)
+
+
+def function_representer(dumper, obj):
+    func_path = f'{obj.__module__}.{obj.__name__}'
+    return dumper.represent_scalar('!Function', func_path)
+
+
+def class_constructor(loader, node):
+    class_path = loader.construct_scalar(node)
+    module_path, class_name = class_path.rsplit('.', 1)
+    module = importlib.import_module(module_path)
+    return getattr(module, class_name)
+
+
+def function_constructor(loader, node):
+    func_path = loader.construct_scalar(node)
+    module_path, func_name = func_path.rsplit('.', 1)
+    module = importlib.import_module(module_path)
+    return getattr(module, func_name)
+
+# ---------------------------------------------------------------------------- #
+#                                 Python Tuples                                #
+# ---------------------------------------------------------------------------- #
+
+
+def tuple_representer(dumper, obj):
+    return dumper.represent_sequence('!Tuple', obj)
+
+
+def tuple_constructor(loader, node):
+    return tuple(loader.construct_sequence(node))
+
 
 # ---------------------------------------------------------------------------- #
 #                               Numpy Arrays                                   #
@@ -16,14 +59,14 @@ from sinergym.utils.rewards import *
 def array_representer(dumper, obj):
     mapping = {
         'object': obj.tolist(),
-        'dtype': f'np.{str(obj.dtype)}'
+        'dtype': f'numpy:{str(obj.dtype)}'
     }
     return dumper.represent_mapping('!NumpyArray', mapping)
 
 
 def array_constructor(loader, node):
     values = loader.construct_mapping(node, deep=True)
-    values['dtype'] = eval(values['dtype'])
+    values['dtype'] = import_from_path(values['dtype'])
     return np.array(**values)
 
 # ---------------------------------------------------------------------------- #
@@ -33,12 +76,12 @@ def array_constructor(loader, node):
 
 def space_representer(dumper, obj):
     mapping = {
-        'class': f'gym.spaces.{obj.__class__.__name__}',
+        'class': obj.__class__,
         'arguments': {
             'low': obj.low,
             'high': obj.high,
             'shape': obj.shape,
-            'dtype': f'np.{str(obj.dtype)}'
+            'dtype': f'numpy:{str(obj.dtype)}'
         }
     }
     return dumper.represent_mapping('!GymSpace', mapping)
@@ -46,9 +89,9 @@ def space_representer(dumper, obj):
 
 def space_constructor(loader, node):
     values = loader.construct_mapping(node, deep=True)
-    space_class = eval(values['class'])
-    values['arguments']['dtype'] = eval(values['arguments']['dtype'])
-    return space_class(**values['arguments'])
+    values['arguments']['dtype'] = import_from_path(
+        values['arguments']['dtype'])
+    return values['class'](**values['arguments'])
 
 # ---------------------------------------------------------------------------- #
 #                             Sinergym Environment                             #
@@ -70,7 +113,7 @@ def env_representer(dumper, obj):
             'initial_context'),
         'weather_variability': env.default_options.get(
             'weather_variability'),
-        'reward': str(env.reward_fn.__class__.__name__),
+        'reward': env.reward_fn.__class__,
         'reward_kwargs': env.reward_kwargs,
         'max_ep_store': env.max_ep_store,
         'env_name': env.name,
@@ -83,7 +126,6 @@ def env_representer(dumper, obj):
 
 def env_constructor(loader, node):
     values = loader.construct_mapping(node, deep=True)
-    values['reward'] = eval(values['reward'])
     return EplusEnv.from_dict(values)
 
 # ---------------------------------------------------------------------------- #
@@ -96,6 +138,21 @@ def create_sinergym_yaml_serializers():
     Register custom YAML representers and constructors for Sinergym
     environments, gym spaces, numpy arrays and more.
     """
+
+    # ----------------------------- Python classes ------------------------------ #
+    yaml.add_multi_representer(type, class_representer)
+    yaml.add_constructor('!Class', class_constructor, Loader=yaml.FullLoader)
+
+    # ----------------------------- Python functions ---------------------------- #
+    yaml.add_multi_representer(types.FunctionType, function_representer)
+    yaml.add_constructor(
+        '!Function',
+        function_constructor,
+        Loader=yaml.FullLoader)
+
+    # ------------------------------- Python tuples ----------------------------- #
+    yaml.add_representer(tuple, tuple_representer)
+    yaml.add_constructor('!Tuple', tuple_constructor, Loader=yaml.FullLoader)
 
     # ------------------------------- Numpy arrays ------------------------------- #
     yaml.add_representer(np.ndarray, array_representer)
