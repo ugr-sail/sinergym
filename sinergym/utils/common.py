@@ -25,6 +25,25 @@ logger = TerminalLogger().getLogger(
     level=LOG_COMMON_LEVEL)
 
 # ---------------------------------------------------------------------------- #
+#                                Dynamic imports                               #
+# ---------------------------------------------------------------------------- #
+
+
+def import_from_path(dotted_path: str):
+    """
+    Import a class or function from a dotted path.
+    Args:
+        dotted_path (str): Dotted path to the class or function.
+    """
+    if ':' not in dotted_path:
+        raise ValueError(
+            f'Invalid dotted path: {dotted_path}. Expected format: module:class_or_function')
+
+    module_path, attr_name = dotted_path.split(':')
+    module = importlib.import_module(module_path)
+    return getattr(module, attr_name)
+
+# ---------------------------------------------------------------------------- #
 #                                   WRAPPERS                                   #
 # ---------------------------------------------------------------------------- #
 
