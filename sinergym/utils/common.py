@@ -2,8 +2,9 @@
 
 from copy import deepcopy
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Tuple, Type, Union
-
+from typing import Any, Dict, Optional, Tuple, Type, Union, List
+import yaml
+import importlib
 import gymnasium as gym
 import numpy as np
 import pandas as pd
@@ -18,7 +19,6 @@ except ImportError:
 import sinergym
 from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.rewards import *
 
 logger = TerminalLogger().getLogger(
     name='COMMON',
@@ -361,7 +361,7 @@ def convert_conf_to_env_parameters(
         'actuators': actuators,
         'context': context,
         'initial_context': conf.get('initial_context'),
-        'reward': eval(conf['reward']),
+        'reward': import_from_path(conf['reward']),
         'reward_kwargs': conf['reward_kwargs'],
         'max_ep_store': conf['max_ep_store'],
         'building_config': conf.get('building_config')
@@ -419,7 +419,7 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
         }
 
     if env_params.get('reward'):
-        env_params['reward'] = eval(env_params['reward'])
+        env_params['reward'] = import_from_path(env_params['reward'])
 
     if env_params.get('reward_kwargs'):
         for reward_param_name, reward_value in env_params.items():

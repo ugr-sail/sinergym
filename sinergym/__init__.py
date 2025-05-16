@@ -6,9 +6,9 @@ from typing import Union
 import gymnasium as gym
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
+import numpy as np
 
-from sinergym.utils.common import convert_conf_to_env_parameters
-from sinergym.utils.constants import *
+from sinergym.utils.common import convert_conf_to_env_parameters, import_from_path
 from sinergym.utils.rewards import *
 from sinergym.utils.serialization import create_sinergym_yaml_serializers
 
@@ -114,10 +114,10 @@ def register_envs_from_yaml(yaml_path: str):
             env_kwargs_discrete = env_kwargs.copy()
 
             # Action mapping must be included in constants.
-            action_mapping = eval(
-                "DEFAULT_" +
-                conf["id_base"].upper() +
-                "_DISCRETE_FUNCTION")
+            discrete_function = f'DEFAULT_{
+                conf["id_base"].upper()}_DISCRETE_FUNCTION'
+            action_mapping = import_from_path(
+                f'sinergym.utils.constants:{discrete_function}')
 
             discrete_wrapper_spec = WrapperSpec(
                 name='DiscretizeEnv',

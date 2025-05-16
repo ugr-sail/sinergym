@@ -249,7 +249,7 @@ only_discrete: true
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: LinearReward
+reward: sinergym.utils.rewards:LinearReward
 
 reward_kwargs:
   temperature_variables:
