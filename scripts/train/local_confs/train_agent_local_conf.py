@@ -23,10 +23,8 @@ from sinergym.utils.common import (
     process_algorithm_parameters,
     process_environment_parameters,
 )
-from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
-from sinergym.utils.rewards import *
-from sinergym.utils.wrappers import *
+from sinergym.utils.common import apply_wrappers_info, get_wrappers_info, import_from_path
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #
@@ -61,15 +59,24 @@ try:
         experiment_name += '-id-' + str(conf['id'])
     experiment_name += '_' + experiment_date
 
-    # --------------------- Overwrite environment parameters --------------------- #
-    env_params = conf.get('env_params', {})
-    env_params = process_environment_parameters(env_params)
-
     # ---------------------------------------------------------------------------- #
     #                           Environment construction                           #
     # ---------------------------------------------------------------------------- #
+    env_params = {}
+
+    # Update env params configuration with env yaml file if exists
+    if conf.get('env_yaml_config'):
+        with open(conf['env_yaml_config'], 'r') as env_yaml_conf:
+            env_params.update(yaml.load(env_yaml_conf, Loader=yaml.FullLoader))
+
+    # Update env params configuration with specified env parameters if exists
+    if conf.get('env_params'):
+        env_params.update(process_environment_parameters(conf['env_params']))
+
     # For this script, the execution name will be updated
     env_params.update({'env_name': experiment_name})
+
+    # Build environment
     env = gym.make(
         conf['environment'],
         ** env_params)
@@ -87,21 +94,36 @@ try:
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
-    if conf.get('wrappers'):
-        for wrapper in conf['wrappers']:
-            for key, parameters in wrapper.items():
-                wrapper_class = eval(key)
-                for name, value in parameters.items():
-                    # parse str parameters to sinergym Callable or Objects if
-                    # required
-                    if isinstance(value, str):
-                        if '.' in value:
-                            parameters[name] = eval(value)
-                env = wrapper_class(env=env, ** parameters)
-                if eval_env is not None:
-                    # In evaluation, THE WandB wrapper is not needed
-                    if key != 'WandBLogger':
-                        eval_env = wrapper_class(env=eval_env, ** parameters)
+    wrappers = {}
+    # Read wrappers from yaml file if exists
+    if conf.get('wrappers_yaml_config'):
+        with open(conf['wrappers_yaml_config'], 'r') as f:
+            wrappers = yaml.load(f, Loader=yaml.FullLoader)
+
+    # Else read wrappers from configuration file if exists
+    elif conf.get('wrappers'):
+        wrappers = conf['wrappers']
+        for wrapper_class_name, wrapper_arguments in wrappers.items():
+            for name, value in wrapper_arguments.items():
+                # parse str parameters to sinergym Callable or Objects if
+                # required
+                if isinstance(value, str):
+                    if '.' in value:
+                        wrapper_arguments[name] = eval(value)
+
+    # Apply wrappers to environment
+    if wrappers:
+        env = apply_wrappers_info(env, wrappers)
+        # Write wrappers configuration to yaml file
+        get_wrappers_info(env)
+
+        if eval_env is not None:
+            key_to_remove = [
+                key for key in wrappers if 'WandBLogger' in key][0]
+            del wrappers[key_to_remove]
+            eval_env = apply_wrappers_info(eval_env, wrappers)
+            # Write wrappers configuration to yaml file
+            get_wrappers_info(eval_env)
 
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
