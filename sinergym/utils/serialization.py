@@ -126,7 +126,8 @@ def env_representer(dumper, obj):
 
 def env_constructor(loader, node):
     values = loader.construct_mapping(node, deep=True)
-    return EplusEnv.from_dict(values)
+    # return EplusEnv.from_dict(values)
+    return values
 
 # ---------------------------------------------------------------------------- #
 #                 Registration of representers and constructors                #
