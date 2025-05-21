@@ -36,21 +36,28 @@ evaluation:
   eval_length: 1
 
 # -------------------------------- ENVIRONMENT ------------------------------- #
+# Yaml file with environment configuration (Optional)
+env_yaml_config: null
+# In order to overwrite some parameters of the environment, you can use the following
 env_params:
   seed: null
-  reward: LinearReward
+  reward: sinergym.utils.rewards:LinearReward
 # ... other environment parameters
 
+
 # ---------------------------------- WRAPPER --------------------------------- #
+# Yaml file with wrappers configuration (Optional)
+wrappers_yaml_config: null
+# If not specified, the default wrappers will be used
 wrappers:
-  - NormalizeAction: {}
-  - NormalizeObservation: {}
-  - LoggerWrapper:
-      storage_class: sinergym.utils.logger.LoggerStorage
-  - CSVLogger: {}
-  - WandBLogger:
-      entity: sail_ugr
-      project_name: test-project
+  sinergym.utils.wrappers:NormalizeAction: {}
+  sinergym.utils.wrappers:NormalizeObservation: {}
+  sinergym.utils.wrappers:LoggerWrapper:
+    storage_class: sinergym.utils.logger.LoggerStorage
+  sinergym.utils.wrappers:CSVLogger: {}
+  sinergym.utils.wrappers:WandBLogger:
+    entity: sail_ugr
+    project_name: test-project
 
 # --------------------------- INITIAL STATE (MODEL) -------------------------- #
 # Model from scratch:
