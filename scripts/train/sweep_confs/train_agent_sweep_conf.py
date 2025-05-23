@@ -12,6 +12,7 @@ from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
+import yaml
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -20,19 +21,19 @@ from sinergym.utils.common import (
     is_wrapped,
     process_algorithm_parameters,
     process_environment_parameters,
+    apply_wrappers_info, get_wrappers_info
 )
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
-from sinergym.utils.rewards import *
-from sinergym.utils.wrappers import *
 
 
-def get_evaluation(env_params: Dict, train_env: gym.Env):
+def get_evaluation(env_params: Dict, wrappers: Dict, train_env: gym.Env):
     """
     Creates an evaluation environment and evaluation callback for the environment.
 
     Args:
-        env_params (dict): Parameters for creating the evaluation environment.
+        env_params (Dict): Parameters for creating the evaluation environment.
+        wrappers (Dict): Wrappers to be applied to the evaluation environment.
         train_env (gym.Env): Original training env in order to use to syncronize with evaluation if it was required.
 
     Returns:
@@ -46,19 +47,15 @@ def get_evaluation(env_params: Dict, train_env: gym.Env):
     eval_env = gym.make(environment, **params)
 
     # Wrapper for evaluation environment
-    if wandb.config.get('wrappers'):
-        for wrapper in wandb.config['wrappers']:
-            for key, parameters in wrapper.items():
-                # In evaluation, WandBLogger is not required
-                if key != 'WandBLogger':
-                    wrapper_class = eval(key)
-                    for name, value in parameters.items():
-                        if isinstance(value, str):
-                            # A item that must be evaluated if '.' is present
-                            if '.' in value:
-                                parameters[name] = eval(value)
-                    eval_env = wrapper_class(
-                        env=eval_env, ** parameters)
+    if wrappers:
+        # WadndB is not used in evaluation
+        key_to_remove = [
+            key for key in wrappers if 'WandBLogger' in key][0]
+        del wrappers[key_to_remove]
+        # Apply wrappers to evaluation environment
+        eval_env = apply_wrappers_info(eval_env, wrappers)
+        # Write wrappers configuration to yaml file
+        get_wrappers_info(eval_env)
 
     # Make evaluation callback for environment
     eval_length = wandb.config['evaluation']['eval_length']
@@ -104,26 +101,42 @@ def train():
         #                             Environment creation                             #
         # ---------------------------------------------------------------------------- #
         environment = wandb.config['environment']
+        env_params = {}
+
+        if wandb.config.get('env_yaml_config'):
+            with open(wandb.config['env_yaml_config'], 'r') as f:
+                env_params.update(yaml.load(f, Loader=yaml.FullLoader))
+
         if wandb.config.get('environment_parameters'):
-            env_params = wandb.config['environment_parameters']
-            # Process types from yaml
-            env_params = process_environment_parameters(env_params)
+            env_params.update(
+                process_environment_parameters(
+                    wandb.config['environment_parameters']))
+
         env = gym.make(environment, **env_params)
 
         # ---------------------------------------------------------------------------- #
         #                           Application of wrapper(s)                          #
         # ---------------------------------------------------------------------------- #
+        wrappers = {}
+        if wandb.config.get('wrappers_yaml_config'):
+            with open(wandb.config['wrappers_yaml_config'], 'r') as f:
+                wrappers = yaml.load(f, Loader=yaml.FullLoader)
 
-        if wandb.config.get('wrappers'):
+        elif wandb.config.get('wrappers'):
             for wrapper in wandb.config['wrappers']:
-                for key, parameters in wrapper.items():
-                    wrapper_class = eval(key)
-                    for name, value in parameters.items():
+                for wrapper_class_name, wrapper_parameters in wrapper.items():
+                    for name, value in wrapper_parameters.items():
                         if isinstance(value, str):
                             # A item that must be evaluated if '.' is present
                             if '.' in value:
-                                parameters[name] = eval(value)
-                    env = wrapper_class(env=env, ** parameters)
+                                wrapper_parameters[name] = eval(value)
+                    wrappers[wrapper_class_name] = wrapper_parameters
+
+        # Apply wrappers
+        if wrappers:
+            env = apply_wrappers_info(env, wrappers)
+            # Write wrappers configuration to yaml file
+            get_wrappers_info(env)
 
         assert is_wrapped(
             env, WandBLogger), 'Environments with sweeps must be wrapped with WandBLogger.'
@@ -206,7 +219,8 @@ def train():
         # Evaluation Callback if evaluations are specified
         evaluation = wandb.config.get('evaluation', False)
         if evaluation:
-            eval_env, evaluation_callback = get_evaluation(env_params, env)
+            eval_env, evaluation_callback = get_evaluation(
+                env_params, wrappers, env)
             callbacks.append(evaluation_callback)
 
         callback = CallbackList(callbacks)

@@ -24,7 +24,7 @@ from sinergym.utils.common import (
     process_environment_parameters,
 )
 from sinergym.utils.logger import WandBOutputFormat
-from sinergym.utils.common import apply_wrappers_info, get_wrappers_info, import_from_path
+from sinergym.utils.common import apply_wrappers_info, get_wrappers_info
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #

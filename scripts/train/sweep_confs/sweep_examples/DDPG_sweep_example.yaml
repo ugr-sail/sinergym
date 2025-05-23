@@ -62,6 +62,11 @@ parameters:
       eval_length:
         value: 1
 # -------------------------------- ENVIRONMENT ------------------------------- #
+  # Yaml file with environment configuration (Optional)
+  env_yaml_config:
+    value: null
+  
+  # In order to overwrite some parameters of the environment, you can use the following
   environment_parameters:
     parameters:
       seed:
@@ -72,17 +77,22 @@ parameters:
           Dry Bulb Temperature: [1.0,0.0,24.0]
         }
       reward:
-        value: LinearReward
+        value: sinergym.utils.rewards:LinearReward
       # ... other environment parameters
 
 # --------------------------------- WRAPPERS --------------------------------- #
+# Yaml file with wrappers configuration for environment (Optional)
+  wrappers_yaml_config:
+    value: null
+  
+  # This definition is ignored if wrappers_yaml_config is defined
   wrappers:
     value: 
-      - NormalizeObservation: {}
-      - NormalizeAction: {}
-      - LoggerWrapper: {}
-      - CSVLogger: {}
-      - WandBLogger: 
+      - sinergym.utils.wrappers:NormalizeObservation: {}
+      - sinergym.utils.wrappers:NormalizeAction: {}
+      - sinergym.utils.wrappers:LoggerWrapper: {}
+      - sinergym.utils.wrappers:CSVLogger: {}
+      - sinergym.utils.wrappers:WandBLogger: 
           save_code: True
           dump_frequency: 1000
           artifact_save: True

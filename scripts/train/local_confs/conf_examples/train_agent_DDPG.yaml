@@ -48,7 +48,7 @@ env_params:
 # ---------------------------------- WRAPPER --------------------------------- #
 # Yaml file with wrappers configuration (Optional)
 wrappers_yaml_config: null
-# If not specified, the default wrappers will be used
+# This definition is ignored if wrappers_yaml_config is defined
 wrappers:
   sinergym.utils.wrappers:NormalizeAction: {}
   sinergym.utils.wrappers:NormalizeObservation: {}
@@ -56,7 +56,7 @@ wrappers:
     storage_class: sinergym.utils.logger.LoggerStorage
   sinergym.utils.wrappers:CSVLogger: {}
   sinergym.utils.wrappers:WandBLogger:
-    entity: sail_ugr
+    entity: alejandro-campoy
     project_name: test-project
 
 # --------------------------- INITIAL STATE (MODEL) -------------------------- #
