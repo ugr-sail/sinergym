@@ -44,6 +44,61 @@ def import_from_path(dotted_path: str):
     return getattr(module, attr_name)
 
 # ---------------------------------------------------------------------------- #
+#                            Dictionary deep update                            #
+# ---------------------------------------------------------------------------- #
+
+
+def deep_update(source: Dict, updates: Dict) -> Dict:
+    """
+    Recursively update a dictionary with another dictionary.
+
+    Args:
+        source (Dict): The original dictionary to update.
+        updates (Dict): The dictionary with updates.
+
+    Returns:
+        Dict: The updated dictionary.
+    """
+    result = deepcopy(source)
+    for key, value in updates.items():
+        if isinstance(value, dict) and isinstance(result.get(key), dict):
+            result[key] = deep_update(result[key], value)
+        else:
+            result[key] = deepcopy(value)
+    return result
+
+# ---------------------------------------------------------------------------- #
+#                           ENVIRONMENT CONSTRUCTION                           #
+# ---------------------------------------------------------------------------- #
+
+
+def create_environment(
+        env_id: str,
+        env_params: Dict,
+        wrappers: Dict) -> gym.Env:
+    """ Create a EplusEnv environment with the given parameters and wrappers.
+    Args:
+        env_id (str): Environment ID.
+        env_params (Dict): Environment parameters to overwrite the environment ID defaults.
+        wrappers (Dict): Wrappers to be applied to the environment.
+    Returns:
+        gym.Env: The created environment.
+    """
+
+    # Make environment
+    environment = env_id
+    env = gym.make(environment, **env_params)
+
+    # Apply wrappers
+    if wrappers:
+        # Apply wrappers to environment
+        env = apply_wrappers_info(env, wrappers)
+        # Write wrappers configuration to yaml file
+        get_wrappers_info(env)
+
+    return env
+
+# ---------------------------------------------------------------------------- #
 #                                   WRAPPERS                                   #
 # ---------------------------------------------------------------------------- #
 
