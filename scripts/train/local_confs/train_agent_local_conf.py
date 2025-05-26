@@ -83,8 +83,10 @@ try:
             # Get model path
             artifact_tag = conf['model'].get(
                 'artifact_tag', 'latest')
-            wandb_path = conf['model']['entity'] + '/' + conf['model']['project'] + \
-                '/' + conf['model']['artifact_name'] + ':' + artifact_tag
+            wandb_path = f'{
+                conf['model']['entity']}/{
+                conf['model']['project']}/{
+                conf['model']['artifact_name']}:{artifact_tag}'
 
             # Download artifact
             artifact = api.artifact(wandb_path)
@@ -93,17 +95,19 @@ try:
                 root='./')
 
             # Set model path to local wandb downloaded file
-            model_path = './' + conf['model']['model_path']
+            model_path = f'./{conf['model']['model_path']}'
 
         # -------------------------- Google cloud model path ------------------------- #
         if conf['model'].get('bucket_path'):
             # Download from given bucket (gcloud configured with privileges)
             client = gcloud.init_storage_client()
             bucket_name = conf['model']['bucket_path'].split('/')[2]
-            model_path = conf['model']['bucket_path'].split(
-                bucket_name + '/')[-1]
+            model_path = f'{
+                conf['model']['bucket_path'].split(
+                    bucket_name + '/')[
+                    -1]}'
             gcloud.read_from_bucket(client, bucket_name, model_path)
-            model_path = './' + model_path
+            model_path = f'./{model_path}'
 
     # ---------------------------------------------------------------------------- #
     #                           Environment parameters                              #
@@ -157,6 +161,22 @@ try:
         wrappers=wrappers)
 
     # ---------------------------------------------------------------------------- #
+    #                 Register hyperparameters in wandb if enabled                 #
+    # ---------------------------------------------------------------------------- #
+    if is_wrapped(env, WandBLogger):
+        experiment_params = {
+            'sinergym-version': sinergym.__version__,
+            'python-version': sys.version,
+            'stable-baselines3-version': sb3_version
+        }
+
+        wandb.run.config.update(experiment_params)
+        wandb.run.config.update(conf)
+        # Overwrite env_params with the full environment parameters
+        wandb.run.config.update(
+            {'env_params': env.get_wrapper_attr('to_dict')()}, allow_val_change=True)
+
+    # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
     alg_name = conf['algorithm']['name']
@@ -186,21 +206,6 @@ try:
         model.set_env(env)
 
     # ---------------------------------------------------------------------------- #
-    #                 Register hyperparameters in wandb if enabled                 #
-    # ---------------------------------------------------------------------------- #
-    if is_wrapped(env, WandBLogger):
-        experiment_params = {
-            'sinergym-version': sinergym.__version__,
-            'python-version': sys.version,
-            'stable-baselines3-version': sb3_version
-        }
-
-        conf['env_params'] = env.get_wrapper_attr('to_dict')()
-        experiment_params.update(conf)
-
-        env.get_wrapper_attr('wandb_run').config.update(experiment_params)
-
-    # ---------------------------------------------------------------------------- #
     #                              SET UP WANDB LOGGER                             #
     # ---------------------------------------------------------------------------- #
     if is_wrapped(env, WandBLogger):
@@ -213,12 +218,6 @@ try:
                     max_length=120),
                 WandBOutputFormat()])
         model.set_logger(logger)
-
-    # ---------------------------------------------------------------------------- #
-    #       Calculating total training timesteps based on number of episodes       #
-    # ---------------------------------------------------------------------------- #
-    timesteps = conf['episodes'] * \
-        (env.get_wrapper_attr('timestep_per_episode'))
 
     # ---------------------------------------------------------------------------- #
     #                                   CALLBACKS                                  #
@@ -263,10 +262,14 @@ try:
     # ---------------------------------------------------------------------------- #
     #                                   TRAINING                                   #
     # ---------------------------------------------------------------------------- #
+    timesteps = conf['episodes'] * \
+        (env.get_wrapper_attr('timestep_per_episode'))
+
     model.learn(
         total_timesteps=timesteps,
         callback=callback,
         log_interval=conf['algorithm']['log_interval'])
+
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
     # If the environment is not closed, this script will do it in
