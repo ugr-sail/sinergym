@@ -549,7 +549,7 @@ def model_5zone(VARIABLES_5ZONE, METERS_5ZONE):
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         max_ep_store=10,
-        extra_config={
+        building_config={
             'timesteps_per_hour': 2,
             'runperiod': (1, 2, 1993, 2, 3, 1993),
         })
@@ -568,7 +568,7 @@ def model_5zone_several_weathers(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         max_ep_store=10,
-        extra_config={
+        building_config={
             'timesteps_per_hour': 2,
             'runperiod': (
                 1,

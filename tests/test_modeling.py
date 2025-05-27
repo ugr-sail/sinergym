@@ -121,7 +121,7 @@ def test_adapt_building_to_config(model_5zone, building_5zone):
         0]['number_of_timesteps_per_hour'] == 2
 
     # Check runperiod elements is the same than runperiod from config specified
-    config_runperiod = model_5zone.config['runperiod']
+    config_runperiod = model_5zone.building_config['runperiod']
     runperiod = model_5zone.runperiod
     for i, key in enumerate(
             ['start_day', 'start_month', 'start_year', 'end_day', 'end_month', 'end_year']):
@@ -165,21 +165,22 @@ def test_check_model_wrong_weather(model_5zone_several_weathers):
 def test_check_model_wrong_config(model_5zone_several_weathers):
     model_5zone_several_weathers._check_eplus_config()
     # update config dictionary with wrong values
-    if model_5zone_several_weathers.config.get('timesteps_per_hour'):
-        model_5zone_several_weathers.config['timesteps_per_hour'] = -7
+    if model_5zone_several_weathers.building_config.get('timesteps_per_hour'):
+        model_5zone_several_weathers.building_config['timesteps_per_hour'] = -7
         with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['timesteps_per_hour'] = 2
-    if model_5zone_several_weathers.config.get('runperiod'):
-        model_5zone_several_weathers.config['runperiod'] = (1, 2, 3, 4)
+        model_5zone_several_weathers.building_config['timesteps_per_hour'] = 2
+    if model_5zone_several_weathers.building_config.get('runperiod'):
+        model_5zone_several_weathers.building_config['runperiod'] = (
+            1, 2, 3, 4)
         with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['runperiod'] = 2024
+        model_5zone_several_weathers.building_config['runperiod'] = 2024
         with pytest.raises(TypeError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['runperiod'] = (
+        model_5zone_several_weathers.building_config['runperiod'] = (
             1, 2, 1993, 2, 3, 1993)
-    model_5zone_several_weathers.config['Unknown_option'] = 100
+    model_5zone_several_weathers.building_config['Unknown_option'] = 100
     # It will be ignored by sinergym
     model_5zone_several_weathers._check_eplus_config()
 
