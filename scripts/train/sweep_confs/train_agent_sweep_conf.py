@@ -118,6 +118,8 @@ def train():
                 env_params, process_environment_parameters(
                     wandb.config['env_params']))
 
+        env_params['env_name'] = experiment_name
+
         # ---------------------------------------------------------------------------- #
         #                            Wrappers definition                               #
         # ---------------------------------------------------------------------------- #
