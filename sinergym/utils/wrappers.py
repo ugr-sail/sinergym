@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
 from datetime import datetime
+from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
@@ -19,7 +20,6 @@ from sinergym.utils.common import is_wrapped, ornstein_uhlenbeck_process
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
 from sinergym.utils.rewards import EnergyCostLinearReward
-from inspect import signature
 
 # ------------- Decorator for store kwargs in each wrapper layer ------------- #
 

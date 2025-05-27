@@ -14,20 +14,19 @@ from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 
-from sinergym.utils.wrappers import WandBLogger
-
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
 from sinergym.utils.common import (
+    create_environment,
+    deep_update,
+    import_from_path,
     is_wrapped,
     process_algorithm_parameters,
     process_environment_parameters,
-    create_environment,
-    import_from_path,
-    deep_update
 )
 from sinergym.utils.logger import WandBOutputFormat
+from sinergym.utils.wrappers import WandBLogger
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #

@@ -1,16 +1,17 @@
 """Common utilities."""
 
+import importlib
+import os
 from copy import deepcopy
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Tuple, Type, Union, List
-import yaml
-import importlib
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
+
 import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter
+import yaml
 from eppy.modeleditor import IDF
-import os
 
 try:
     from stable_baselines3.common.noise import NormalActionNoise
@@ -18,7 +19,7 @@ except ImportError:
     pass
 
 import sinergym
-from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
+from sinergym.utils.constants import LOG_COMMON_LEVEL
 from sinergym.utils.logger import TerminalLogger
 
 logger = TerminalLogger().getLogger(

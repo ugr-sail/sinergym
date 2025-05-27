@@ -4,12 +4,11 @@ import warnings
 from typing import Union
 
 import gymnasium as gym
+import numpy as np
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
-import numpy as np
 
 from sinergym.utils.common import convert_conf_to_env_parameters, import_from_path
-from sinergym.utils.rewards import *
 from sinergym.utils.serialization import create_sinergym_yaml_serializers
 
 # ------------------------ Ignore epw module warning ------------------------ #
@@ -67,7 +66,7 @@ register(
                 'Schedule Value',
                 'CLG-SETP-SCH')
         },
-        'reward': LinearReward,
+        'reward': import_from_path('sinergym.utils.rewards:LinearReward'),
         'reward_kwargs': {
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],

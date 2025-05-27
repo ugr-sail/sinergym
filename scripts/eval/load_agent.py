@@ -12,11 +12,9 @@ from stable_baselines3.common.monitor import Monitor
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.common import (
-    is_wrapped,
+    create_environment,
     deep_update,
     import_from_path,
-    create_environment,
-    process_algorithm_parameters,
     process_environment_parameters,
 )
 from sinergym.utils.constants import *
