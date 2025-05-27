@@ -98,7 +98,7 @@ def space_representer(dumper, obj):
             'nvec': obj.nvec,
             'dtype': f'numpy:{str(obj.dtype)}',
             #   'seed': obj.seed,
-            'start': int(obj.start)
+            'start': obj.start
         }
     elif class_name == 'MultiBinary':
         arguments = {
@@ -115,9 +115,32 @@ def space_representer(dumper, obj):
 
 def space_constructor(loader, node):
     values = loader.construct_mapping(node, deep=True)
-    values['arguments']['dtype'] = import_from_path(
-        values['arguments']['dtype'])
-    return values['class'](**values['arguments'])
+    cls = values['class']
+    args = values['arguments']
+    class_name = cls.__name__
+
+    if class_name == 'Box':
+        args['dtype'] = import_from_path(args['dtype'])
+        return cls(
+            low=args['low'],
+            high=args['high'],
+            shape=args['shape'],
+            dtype=args['dtype'])
+    elif class_name == 'Discrete':
+        return cls(n=args['n'], start=args.get('start', 0))
+    elif class_name == 'MultiDiscrete':
+        args['dtype'] = import_from_path(args['dtype'])
+        return cls(
+            nvec=args['nvec'],
+            dtype=args['dtype'],
+            start=args.get(
+                'start',
+                0))
+    elif class_name == 'MultiBinary':
+        return cls(n=args['n'])
+    else:
+        # Fallback for unknown spaces
+        return cls(**args)
 
 # ---------------------------------------------------------------------------- #
 #                             Sinergym Environment                             #
