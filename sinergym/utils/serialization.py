@@ -75,14 +75,38 @@ def array_constructor(loader, node):
 
 
 def space_representer(dumper, obj):
-    mapping = {
-        'class': obj.__class__,
-        'arguments': {
+    class_name = obj.__class__.__name__
+    arguments = {}
+    if class_name == 'Box':
+        arguments = {
             'low': obj.low,
             'high': obj.high,
             'shape': obj.shape,
-            'dtype': f'numpy:{str(obj.dtype)}'
+            'dtype': f'numpy:{str(obj.dtype)}',
+            #   'seed': obj.seed
         }
+    elif class_name == 'Discrete':
+        arguments = {
+            'n': int(obj.n),
+            #   'seed': obj.seed,
+            'start': int(obj.start)
+        }
+    elif class_name == 'MultiDiscrete':
+        arguments = {
+            'nvec': obj.nvec,
+            'dtype': f'numpy:{str(obj.dtype)}',
+            #   'seed': obj.seed,
+            'start': int(obj.start)
+        }
+    elif class_name == 'MultiBinary':
+        arguments = {
+            'n': int(obj.n),
+            #   'seed': obj.seed
+        }
+
+    mapping = {
+        'class': obj.__class__,
+        'arguments': arguments
     }
     return dumper.represent_mapping('!GymSpace', mapping)
 
