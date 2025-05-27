@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
+import os
 
 try:
     from stable_baselines3.common.noise import NormalActionNoise
@@ -29,19 +30,37 @@ logger = TerminalLogger().getLogger(
 # ---------------------------------------------------------------------------- #
 
 
-def import_from_path(dotted_path: str):
+def import_from_path(dotted_or_file_path: str):
     """
-    Import a class or function from a dotted path.
-    Args:
-        dotted_path (str): Dotted path to the class or function.
-    """
-    if ':' not in dotted_path:
-        raise ValueError(
-            f'Invalid dotted path: {dotted_path}. Expected format: module:class_or_function')
+    Import a class or function from a dotted module path or a file path.
 
-    module_path, attr_name = dotted_path.split(':')
-    module = importlib.import_module(module_path)
-    return getattr(module, attr_name)
+    Args:
+        dotted_or_file_path (str): Either 'module:attr' or '/path/to/file.py:attr'
+
+    Returns:
+        The imported attribute (function, class, etc.)
+    """
+    if ':' not in dotted_or_file_path:
+        raise ValueError(
+            f"Invalid format: '{dotted_or_file_path}'. Expected format: 'module:attr' or 'file.py:attr'")
+
+    path_part, attr_name = dotted_or_file_path.split(':', 1)
+
+    if os.path.isfile(path_part):  # Es una ruta de archivo
+        module_name = os.path.splitext(os.path.basename(path_part))[0]
+        spec = importlib.util.spec_from_file_location(module_name, path_part)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"Cannot load module from file: {path_part}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    else:  # Es un módulo en notación de puntos
+        module = importlib.import_module(path_part)
+
+    try:
+        return getattr(module, attr_name)
+    except AttributeError:
+        raise ImportError(
+            f"Module '{path_part}' does not have attribute '{attr_name}'")
 
 # ---------------------------------------------------------------------------- #
 #                            Dictionary deep update                            #
