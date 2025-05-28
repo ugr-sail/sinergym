@@ -158,7 +158,7 @@ def unwrap_wrapper(env: gym.Env,
 
 
 def get_wrappers_info(
-        env: Type[gym.Env], path_to_save: str = None) -> Dict[str, Dict[str, Any]]:
+        env: Type[gym.Env], path_to_save: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
     """Get ordered information about the wrappers applied to the environment.
 
     Args:
