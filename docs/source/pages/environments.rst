@@ -18,12 +18,17 @@ Environments
   print(env.get_wrapper_attr('to_str')())
 
 Environment names follow the format ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``.  
-These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `info` method as shown in the example code.
+These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `to_str` method as shown in the example code.
 
-.. important:: Environments are automatically generated using YAML configuration files
+.. important:: **Environments are automatically generated** using YAML configuration files
                for each building. This eliminates the need to manually register each 
                environment ID or set parameters directly in the environment constructor.
                For more information, see :ref:`Environments Configuration and Registration`.
+
+.. note:: Additionally, Sinergym supports **full serialization of environments and wrappers**, 
+          enabling easy saving, modification, and restoration of experiments. This ensures 
+          reproducibility and simplifies configuration sharing. For more details, see 
+          :ref:`Serialization and Configuration Management`.
 
 .. note:: Discrete environments are fully customizable. By default, these environments use a basic control scheme.
           However, you can opt for a continuous environment and apply custom discretization using our dedicated wrapper. For further details, refer to :ref:`DiscretizeEnv`.
@@ -237,8 +242,8 @@ The ``action_space`` argument adheres to the Gymnasium standard and must be a co
 
 *Sinergym* also offers the option to create **empty action interfaces**. In this case, control is managed by the **default building model schedulers**. For more information, see the usage example in :ref:`Default building control using an empty action space`.
 
-Extra configuration
-===================
+Building extra configuration
+=============================
 
 Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``building_config`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 

@@ -75,6 +75,7 @@ If you use *Sinergym* in your work, please, cite our `paper <https://www.science
    pages/architecture.rst
    pages/environments.rst
    pages/environments_registration.rst
+   pages/serialization.rst
    pages/logging.rst
    pages/output.rst
    pages/rewards.rst
