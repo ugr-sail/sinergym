@@ -72,6 +72,8 @@ To reload a complete environment, including its wrappers:
     # Alternatively:
     env = apply_wrappers_info(env, wrappers_info)
 
+This feature is used in Sinergym's scripts in :ref:`Usage`.
+
 *************
 Key Features
 *************

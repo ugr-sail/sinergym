@@ -58,6 +58,8 @@ The ``building_file`` parameter refers to the *epJSON* file, an `adaptation <htt
 
 Before starting the simulation, *Sinergym* performs a preparatory step to adapt the building model. For more details, refer to the *Modeling* component in the *Sinergym* backend diagram.
 
+This parameter can be set to either a single building file name or a full path, if an external building file is being used.
+
 Weather files
 =============
 
@@ -66,6 +68,8 @@ The ``weather_file`` parameter specifies the *EPW* (*EnergyPlus* Weather) file, 
 This parameter can be provided as a single weather file name (``str``) or as a list of multiple weather files (``List[str]``). When multiple files are specified, *Sinergym* will randomly select one *EPW* file for each episode and automatically adapt the building model accordingly. This feature adds complexity to the environment, if desired.
 
 The weather file used in each episode is saved in the *Sinergym* episode output folder. If **variability** (see section :ref:`Weather Variability`) is enabled, the stored *EPW* file will include the corresponding noise adjustments.
+
+Alternatively, the weather_file parameter can also be set to a full path, which is useful when using custom or external weather files not located in the default weather directory. This allows greater flexibility in testing specific climate scenarios or regional data.
 
 Weather variability
 ~~~~~~~~~~~~~~~~~~~

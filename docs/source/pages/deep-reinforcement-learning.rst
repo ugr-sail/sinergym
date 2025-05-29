@@ -38,75 +38,131 @@ Usage
 Model training
 ~~~~~~~~~~~~~~
 
-If you are looking to train a DRL agent using *Sinergym*, we provide the script `sinergym/scripts/train/local_confs/train_agent_local_conf.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_local_conf.py>`__. which can be easily adapted to custom experiments.
+If you want to train a DRL agent using *Sinergym*, you can use the script `sinergym/scripts/train/local_confs/train_agent_local_conf.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_local_conf.py>`__, which is easily adaptable for custom experiments.
 
-The following are some key points to consider:
+Here are a few key points to consider:
 
-* Models are built using an algorithm constructor, each with its own **specific parameters**. Defaults are used if none are defined.
+* Models are instantiated using an algorithm constructor, each with its own **specific parameters**. Defaults are used if none are provided.
 
-* If you normalize the environment wrapper, models will **train** using these **normalized** spaces.
+* If you apply a normalization wrapper to the environment, models will **train** using these **normalized** spaces.
 
-* Callbacks are **concatenated** by using a ``CallbackList`` instance from Stable Baselines 3.
+* Callbacks are **combined** using a ``CallbackList`` from Stable Baselines3.
 
-* The model begins training once the ``model.learn()`` method is called. The parameters ``timesteps``, 
-  ``callbacks``, and ``log_interval`` are specified there.
+* Training starts when the ``model.learn()`` method is called. Important parameters such as ``total_timesteps``, ``callback``, and ``log_interval`` are passed here.
 
-* **Sequential / curriculum learning** can be implemented by adding a valid model path to the ``model`` parameter. In this way, the script will load and re-train an existing model.
+* **Sequential / curriculum learning** is supported by providing a path to a previously trained model using the ``model`` parameter. This allows resuming or fine-tuning a model.
 
-The ``train_agent_local_conf.py`` script requires a single parameter (``-conf``), which is the YAML file containing the experiment configuration. A sample YAML structure with comments to understand the structure is detailed in `sinergym/scripts/train/local_confs/conf_examples/train_agent_PPO.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examplestrain_agent_PPO.yaml>`__.
+The ``train_agent_local_conf.py`` script requires a single argument (``-conf``), which should point to a YAML configuration file. An example configuration file with detailed comments can be found here: `train_agent_PPO.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examples/train_agent_PPO.yaml>`__.
 
-We distinguish between *mandatory* and *optional* parameters:
+We distinguish between *mandatory* and *optional* configuration parameters:
 
-* **Mandatory**: environment, training episodes, and algorithm (plus any non-default algorithm parameters).
+* **Mandatory**: environment, number of training episodes, and algorithm (including non-default hyperparameters if needed).
 
-* **Optional**: environment parameters (overwrites default if specified), seed, pre-training 
-  model to load, experiment ID, wrappers (in order), training evaluation, and cloud options.
+* **Optional**: environment parameters (override defaults), random seed, pretrained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.
 
 Once executed, the script performs the following steps:
 
-  1. Names the experiment following the format: ``<algorithm>-<environment_name>-episodes<episodes>-seed<seed_value>(<experiment_date>)``.
+1. **Generate the experiment name** using the format ``<experiment_name>_<date>`` if ``experiment_name`` is specified, or ``<algorithm_name>_<date>`` otherwise.
 
-  2. Sets environment parameters if specified.
+2. **Load a pretrained model**, if defined in the configuration:
 
-  3. Applies specified wrappers from the YAML configuration.
+   - From a local file path.
+   - From a Weights & Biases (WandB) artifact.
+   - From a Google Cloud Storage bucket.
 
-  4. Saves all experiment's hyperparameters in WandB if a session is detected.
+3. **Load and configure environment parameters**:
 
-  5. Defines the model algorithm with the specified hyperparameters. If a model has been specified, loads it and continues training.
+   - If an environment YAML configuration is provided, load all parameters from it (:ref:`Environment Configuration Serialization`).
+   - Optionally override or extend specific parameters using ``env_params`` in the configuration.
+   - Set the ``env_name`` to match the experiment name for better traceability.
 
-  6. Calculates training timesteps from the number of episodes.
+4. **Apply wrappers to the environment**, if specified:
 
-  7. Sets up an evaluation callback if specified.
+   - Load wrapper settings from a YAML file (:ref:`Wrapper Serialization and Restoration`).
+   - Optionally override or add wrappers defined directly in the configuration.
+   - Supports custom objects or callables using the ``<module>:<object>`` format.
 
-  8. Trains the model with the environment.
+5. **Create the simulation environment**, applying all parameters and wrappers.
 
-  9. If a remote store is specified, saves all outputs in a Google Cloud Bucket. If WandB is specified, saves all outputs in the WandB run artifact.
+6. **Log experiment metadata to Weights & Biases**, if ``WandBLogger`` is active:
 
-  10. Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.
+   - Track Sinergym, Python, and Stable-Baselines3 versions.
+   - Store the full configuration and the processed environment parameters.
+
+7. **Initialize the RL algorithm** using the specified hyperparameters:
+
+   - If no model is loaded, training starts from scratch. Using the algorithm hyperparameters defined in the configuration.
+   - If a pretrained model is available, it resumes training from the saved state.
+
+8. **Set up custom logging**, combining console and WandB logging when ``WandBLogger`` is enabled.
+
+9. **Prepare evaluation**, if enabled:
+
+   - Create a separate evaluation environment (excluding ``WandBLogger``).
+   - Set up a ``LoggerEvalCallback`` to run periodic evaluations during training.
+
+10. **Calculate total training timesteps** based on the number of episodes and episode length.
+
+11. **Train the model** using the environment and configured callbacks.
+
+12. **Save the final model** in the environment’s ``workspace_path`` after training completes.
+
+13. **Handle errors and interruptions gracefully**:
+
+    - Save the model state.
+    - Close the environment properly.
+  
+.. important:: The YAML configuration structure and values are designed to be **intuitive and easy to use**, especially when 
+   paired with this documentation. To get started, simply explore one of the provided example configuration files.  
+   These examples clearly illustrate how to define your environment, wrappers, algorithm, and other training 
+   options—making it straightforward to set up your own experiments. Visit `sinergym/scripts/train/local_confs/conf_examples <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examples>`__.
+
+.. warning:: If you are loading a pretrained model that was trained with **observation normalization**,  
+   it is **critical** to also load the **normalization statistics** (i.e., the running mean and variance)  
+   used during its original training (see :ref:`NormalizeObservation`). Otherwise, the model may perform poorly or behave unpredictably due  
+   to mismatched input distributions. These statistics are typically saved along with the model and should  
+   be restored explicitly before continuing training or evaluation, setting up the NormalizeObservation wrapper.
 
 Model training with sweeps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Weights and Biases sweeps <https://docs.wandb.ai/guides/sweeps/>`__ is a powerful feature that enables hyperparameter exploration in artificial intelligence algorithms.
 
-To help users take advantage of this functionality, we have created a script that allows agents to run in parallel or sequentially. These agents pick predefined configurations from previously created sweeps to carry out the optimization process.
+To help users take advantage of this functionality, we have created a script that allows agents to run in parallel or sequentially. These agents pick predefined configurations from previously created sweeps to carry out the optimization process. The process is similar to the one described in the previous section.
 
 The script for launching agents, the training script they execute (either in parallel or sequentially), and example sweep configurations can all be found in the `sinergym/scripts/train/sweep_confs <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/sweep_confs>`__ directory.
 
 We recommend reviewing the contents of this directory alongside the Weights and Biases documentation if you are interested in using this feature.
 
 Model loading
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
-To load and evaluate/execute an previously trained model, use the script `sinergym/scripts/eval/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py>`__. 
+To load and evaluate a previously trained model, you can use the script `scripts/eval/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py>`__. This script is flexible and supports multiple model sources and environment configurations.
 
-The ``load_agent.py`` script requires a single parameter, ``-conf``, indicating the YAML file with the evaluation configuration. See the YAML structure in 
-`sinergym/scripts/eval/load_agent_example.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.yaml>`__ for a reference example of this configuration file.
+The script requires a single parameter, ``-conf``, pointing to a YAML file with the evaluation setup. A reference configuration can be found in `scripts/eval/load_agent_example.yaml <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.yaml>`__.
 
-Again, we distinguish between *mandatory* and *optional* parameters:
+We distinguish between *mandatory* and *optional* parameters:
 
-* **Mandatory**: environment, evaluation episodes, algorithm (name only), and model to load. The model field can be a *local path*, a *bucket url* in the form ``gs://``, or a WandB artifact path for stored models.
+* **Mandatory**: environment name, number of episodes, algorithm (only name is required), and model path. Supported model sources include:
+  
+  - Local file path
+  - Google Cloud Storage bucket (``gs://...`` format)
+  - Weights & Biases (WandB) artifact
 
-* **Optional**: environment parameters (which overwrite defaults if specified), experiment identifier, wrappers (in order), and cloud options.
+* **Optional**: environment parameters (overrides defaults if provided), experiment name, wrapper definitions, and cloud storage options.
 
-The script loads the model and executes it the specified environment. Relevant data is collected and sent to remote storage if specified, otherwise it is stored locally.
+During execution, the script performs the following steps:
+
+1. Generates a unique evaluation name (e.g., ``PPO_2025-05-29_10:12_evaluation``).
+2. Downloads and loads the specified model from the defined source.
+3. Loads environment and wrapper configurations (from YAML environment and wrappers serialization or directly from the config).
+4. Initializes the evaluation environment with all parameters and wrappers.
+5. Runs the agent for the defined number of episodes.
+6. Stores results locally or in the cloud, depending on configuration.
+7. Gracefully handles errors and interruptions, ensuring environment closure.
+
+.. warning::
+
+   If your model was trained with **observation normalization**, make sure to restore the corresponding  
+   **normalization statistics**. These are usually saved with the model and must be loaded to ensure  
+   the agent receives inputs with the expected distribution. See :ref:`NormalizeObservation` for more details on how to handle this.
