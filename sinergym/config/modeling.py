@@ -1,4 +1,4 @@
-"""Class and utilities for backend modeling in Python with Sinergym (extra params, weather_variability, building model modification and files management)"""
+"""Class and utilities for backend modeling in Python with Sinergym (building_config, weather_variability, building model modification and files management)"""
 import fcntl
 import json
 import os
@@ -36,10 +36,10 @@ class ModelJSON(object):
         :param _idd: IDD eppy object to set up Epm.
         :param _variables: Output:Variable(s) information about building model.
         :param _meters: Output:Meter(s) information about building model.
-        :param experiment_path: Path for Sinergym experiment output.
+        :param workspace_path: Path for Sinergym workspace output.
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
-        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
-        :param config: Dict config with extra configuration which is required to modify building model (may be None).
+        :param max_ep_store: Number of episodes directories will be stored in workspace_path.
+        :param building_config: Dict with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
         :param ddy_model: eppy object with DDY model.
         :param weather_data: epw module Weather class instance with EPW data.
@@ -63,7 +63,7 @@ class ModelJSON(object):
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
             max_ep_store: int,
-            extra_config: Dict[str, Any]):
+            building_config: Dict[str, Any]):
         """Constructor. Variables and meters are required to update building model scheme.
 
         Args:
@@ -72,26 +72,29 @@ class ModelJSON(object):
             weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
-            max_ep_store (int): Number of episodes directories will be stored in experiment_path.
-            extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
+            max_ep_store (int): Number of episodes directories will be stored in workspace_path.
+            building_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
         """
+
         self.pkg_data_path = PKG_DATA_PATH
-        # ----------------------- Transform filenames in paths ----------------------- #
+
+        # ----------------- Transform filenames in paths if required ----------------- #
 
         # JSON
-        self._json_path = os.path.join(
-            self.pkg_data_path, 'buildings', json_file)
+        self._json_path = self._json_path = json_file if os.path.isfile(
+            json_file) else os.path.join(self.pkg_data_path, 'buildings', json_file)
 
         # EPW
-        self.weather_files = weather_files
+        self.weather_files = weather_files if isinstance(
+            weather_files, list) else [weather_files]
 
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
         # Select one weather randomly (if there are more than one)
-        self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', np.random.choice(
-                self.weather_files))
+        choice = np.random.choice(self.weather_files)
+        self._weather_path = choice if os.path.isfile(
+            choice) else os.path.join(self.pkg_data_path, 'weather', choice)
 
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
@@ -101,6 +104,7 @@ class ModelJSON(object):
         # Building model object (Python dictionary from epJSON file)
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
+        self.building_config = building_config
 
         # DDY model (eppy object)
         IDF.setiddname(self._idd)
@@ -115,10 +119,9 @@ class ModelJSON(object):
         # ----------------------------- Other attributes ----------------------------- #
 
         # Output paths and config
-        self.experiment_path = self._set_experiment_working_dir(env_name)
+        self.workspace_path = self._set_workspace_dir(env_name)
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
-        self.config = extra_config
 
         # Input/Output varibles
         self._variables = variables
@@ -243,22 +246,22 @@ class ModelJSON(object):
         """Set extra configuration in building model
         """
 
-        if not self.config:
+        if not self.building_config:
             return
 
         # Timesteps processed in a simulation hour
-        timesteps = self.config.get('timesteps_per_hour')
+        timesteps = self.building_config.get('timesteps_per_hour')
         if timesteps:
             next(iter(self.building['Timestep'].values()), {})[
-                'number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+                'number_of_timesteps_per_hour'] = self.building_config['timesteps_per_hour']
 
             self.logger.debug(
-                f'Extra config: timesteps_per_hour set up to {
-                    self.config['timesteps_per_hour']}')
+                f'Building configuration: timesteps_per_hour set up to {
+                    self.building_config['timesteps_per_hour']}')
 
         # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
         # end_day, end_month, end_year)
-        runperiod = self.config.get('runperiod')
+        runperiod = self.building_config.get('runperiod')
         if runperiod:
             next(iter(self.building['RunPeriod'].values()), {}).update({
                 'begin_day_of_month': int(runperiod[0]),
@@ -278,7 +281,8 @@ class ModelJSON(object):
 
             # Log updated values in terminal
             self.logger.info(
-                f'Extra config: runperiod updated to {self.runperiod}')
+                f'Building configuration: runperiod updated to {
+                    self.runperiod}')
             self.logger.info(
                 f'Updated episode length (seconds): {self.episode_length}')
             self.logger.info(
@@ -505,44 +509,42 @@ class ModelJSON(object):
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def _set_experiment_working_dir(self, env_name: str) -> str:
-        """Set experiment working dir path like config attribute for current simulation.
+    def _set_workspace_dir(self, env_name: str) -> str:
+        """Set workspace dir path like config attribute for current simulation.
 
         Args:
             env_name (str): simulation env name to define a name in directory
 
         Returns:
-            str: Experiment path for directory created.
+            str: Workspace path for directory created.
         """
-        # lock file for paralell execution
+        # lock file for parallel execution
         lock_file = os.path.join(CWD, '.lock')
 
         # CRITICAL SECTION: Avoid race conditions when generating the directory
         with open(lock_file, 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             try:
-                # Generate experiment_path
-                experiment_path = self._get_working_folder(
+                # Generate workspace_path
+                workspace_path = self._get_working_folder(
                     directory_path=CWD,
                     base_name=f'{env_name}-res'
                 )
 
                 # Create directory
-                os.makedirs(experiment_path)
+                os.makedirs(workspace_path)
 
             finally:
                 # Release the lock
                 fcntl.flock(f, fcntl.LOCK_UN)
 
         # Set path as an instance attribute
-        self.experiment_path = experiment_path
+        self.workspace_path = workspace_path
 
         self.logger.info(
-            'Experiment working directory created.')
-        self.logger.info(
-            f'Working directory: {experiment_path}')
+            f'Working directory created: {workspace_path}')
 
-        return experiment_path
+        return workspace_path
 
     def _get_working_folder(
             self,
@@ -571,11 +573,11 @@ class ModelJSON(object):
         existing_numbers = [int(match.group(1)) for folder in os.listdir(directory_path) if (
             match := pattern.match(folder)) and os.path.isdir(os.path.join(directory_path, folder))]
 
-        # Determine the next experiment ID
-        experiment_id = max(existing_numbers, default=0) + 1
+        # Determine the next execution ID
+        execution_id = max(existing_numbers, default=0) + 1
 
         working_dir = os.path.join(
-            directory_path, f'{base_name}{experiment_id}')
+            directory_path, f'{base_name}{execution_id}')
 
         return working_dir
 
@@ -583,19 +585,19 @@ class ModelJSON(object):
         """Set episode working dir path like config attribute for current simulation execution.
 
         Raises:
-            Exception: If experiment path (parent folder) has not be created previously.
+            Exception: If workspace path (parent folder) has not be created previously.
 
         Returns:
             str: Episode path for directory created.
         """
-        # Generate episode dir path if experiment dir path has been created
+        # Generate episode dir path if workspace dir path has been created
         # previously
-        if self.experiment_path is None:
-            self.logger.error('Experiment path is not specified.')
+        if self.workspace_path is None:
+            self.logger.error('Workspace path is not specified.')
             raise Exception
         else:
             episode_path = self._get_working_folder(
-                directory_path=self.experiment_path,
+                directory_path=self.workspace_path,
                 base_name='episode-')
             # Create directory
             os.makedirs(episode_path)
@@ -671,32 +673,32 @@ class ModelJSON(object):
                     f'Weather files: {w_file} is not a weather file available in Sinergym.')
                 raise FileNotFoundError
 
-        # EXTRA CONFIG
-        if self.config is not None:
-            for config_key in self.config.keys():
+        # BUILDING EXTRA CONFIGURATION
+        if self.building_config is not None:
+            for config_key in self.building_config.keys():
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    if self.config[config_key] < 1:
+                    if self.building_config[config_key] < 1:
                         self.logger.critical(
-                            f'Extra Config: timestep_per_hour must be a positive int value, the value specified is {
-                                self.config[config_key]}')
+                            f'Building configuration: timestep_per_hour must be a positive int value, the value specified is {
+                                self.building_config[config_key]}')
                         raise ValueError
                 # Runperiod
                 elif config_key == 'runperiod':
-                    if not isinstance(self.config[config_key], tuple):
+                    if not isinstance(self.building_config[config_key], tuple):
                         self.logger.critical(
-                            f'Extra Config: Runperiod specified in extra configuration must be a tuple (type detected {
+                            f'Building configuration: Runperiod specified in extra configuration must be a tuple (type detected {
                                 type(
-                                    self.config[config_key])})')
+                                    self.building_config[config_key])})')
                         raise TypeError
-                    if len(self.config[config_key]) != 6:
+                    if len(self.building_config[config_key]) != 6:
                         self.logger.critical(
-                            'Extra Config: Runperiod specified in extra configuration must have 6 elements.')
+                            'Building configuration: Runperiod specified in extra configuration must have 6 elements.')
                         raise ValueError
                 else:
                     self.logger.error(
-                        f'Extra Config: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
+                        f'Building configuration: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

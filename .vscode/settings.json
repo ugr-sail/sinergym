@@ -14,5 +14,9 @@
     "autopep8.args": [
         "--aggressive",
         "--aggressive"
-    ]
+    ],
+
+    "files.associations": {
+        "*.pyyaml": "yaml"
+    },
 }

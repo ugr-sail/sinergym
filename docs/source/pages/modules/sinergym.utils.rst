@@ -36,5 +36,6 @@
    gcloud
    logger
    rewards
+   serialization
    wrappers
 

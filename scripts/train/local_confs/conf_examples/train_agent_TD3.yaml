@@ -1,11 +1,15 @@
-# ---------------------------------- BASICS ---------------------------------- #
-id: TD3_training
+# ---------------------------------------------------------------------------- #
+#                                    BASICS                                    #
+# ---------------------------------------------------------------------------- #
+experiment_name: Eplus-TD3-training-example
 environment: Eplus-5zone-hot-continuous-stochastic-v1
 episodes: 5
 
-# ------------------------------- SB3 ALGORITHM ------------------------------ #
+# ---------------------------------------------------------------------------- #
+#                                 SB3 ALGORITHM                                #
+# ---------------------------------------------------------------------------- #
 algorithm:
-  name: TD3
+  name: stable_baselines3:TD3
   log_interval: 1
   parameters:
     policy: MlpPolicy
@@ -34,62 +38,68 @@ algorithm:
     device: auto
     _init_setup_model: true
 
-# -------------------------------- EVALUATION -------------------------------- #
-evaluation:
-  eval_freq: 2
-  eval_length: 1
+# ---------------------------------------------------------------------------- #
+#                             INITIAL STATE (MODEL)                            #
+# ---------------------------------------------------------------------------- #
 
-# -------------------------------- ENVIRONMENT ------------------------------- #
-env_params:
-  seed: null
-  reward: LinearReward
-# ... other environment parameters
-
-# ---------------------------------- WRAPPER --------------------------------- #
-wrappers:
-  - NormalizeAction: {}
-  - NormalizeObservation: {}
-  - LoggerWrapper:
-      storage_class: sinergym.utils.logger.LoggerStorage
-  - CSVLogger: {}
-  - WandBLogger:
-      entity: sail_ugr
-      project_name: test-project
-
-# --------------------------- INITIAL STATE (MODEL) -------------------------- #
-# Model from scratch:
-model: null
-
-# Local Path:
+# -------------------------------- Local Path -------------------------------- #
 # model: 
 #   local_path: </path/to/model>
-# load model normalization if needed
-#   normalization:
-#     mean: Sinergym_output/evaluation/mean.txt
-#     var: Sinergym_output/evaluation/var.txt
 
-# Google Bucket Path:
+# ---------------------------- Google Bucket Path ---------------------------- #
 # model: 
 #   bucket_path: gs://<path_to_model_google_bucket>
-# load model normalization if needed
-#   normalization:
-#     mean: <<path_to_model_google_bucket_mean.txt>
-#     var: <<path_to_model_google_bucket_var.txt>
 
-# WANDB model path:
+# ----------------------------- WANDB model Path ----------------------------- #
 # model:
 #   project: test-project
 #   entity: sail_ugr
-#   artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPOExperimentExample_2025-02-02_18-31_9jau51uy
+#   artifact_name: TD3-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-TD3ExperimentExample_2025-02-02_18-31_9jau51uy
 #   artifact_type: output
 #   artifact_tag: v0
 #   artifact_path: Sinergym_output/evaluation/
 #   model_path: Sinergym_output/evaluation/best_model.zip
-#   # load model normalization if needed
-#   normalization:
-#     mean: Sinergym_output/evaluation/mean.txt
-#     var: Sinergym_output/evaluation/var.txt
-# -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
+
+# ---------------------------------------------------------------------------- #
+#                                  EVALUATION                                  #
+# ---------------------------------------------------------------------------- #
+evaluation:
+  eval_freq: 2
+  eval_length: 1
+
+# ---------------------------------------------------------------------------- #
+#                       ENVIRONMENT OVERWRITE PARAMETERS                       #
+# ---------------------------------------------------------------------------- #
+# Yaml file with environment configuration (Optional)
+env_yaml_config: null
+# In order to overwrite some parameters of the environment, you can use the following
+env_params:
+  seed: null
+  reward: sinergym.utils.rewards:LinearReward
+# ... other environment parameters
+
+
+
+# ---------------------------------------------------------------------------- #
+#                              WRAPPERS DEFINITION                             #
+# ---------------------------------------------------------------------------- #
+# Yaml file with wrappers configuration (Optional)
+wrappers_yaml_config: null
+# This overwrite wrappers in wrappers_yaml_config if defined
+wrappers:
+  - sinergym.utils.wrappers:NormalizeAction: {}
+  - sinergym.utils.wrappers:NormalizeObservation: {}
+  - sinergym.utils.wrappers:LoggerWrapper:
+      storage_class: sinergym.utils.logger:LoggerStorage
+  - sinergym.utils.wrappers:CSVLogger: {}
+  - sinergym.utils.wrappers:WandBLogger:
+      entity: alejandro-campoy
+      project_name: test-project
+
+
+# ---------------------------------------------------------------------------- #
+#                            GOOGLE CLOUD (OPTIONAL)                           #
+# ---------------------------------------------------------------------------- #
 cloud: 
   remote_store: null # remote bucket name
   auto_delete: null # Delete remote instance when finish experiment
