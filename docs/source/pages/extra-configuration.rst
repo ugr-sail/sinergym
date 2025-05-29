@@ -11,7 +11,7 @@ Using the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinerg
 
     extra_params={'timesteps_per_hour' : 6
                   'runperiod' : (1,1,1997,12,3,1998)}
-    env = gym.make('Eplus-5Zone-hot-continuous-v1', config_params=extra_params)
+    env = gym.make('Eplus-5Zone-hot-continuous-v1', building_config=extra_params)
 
 The format of these extra configuration parameters is a **Python dictionary** with their corresponding *keys* and *values*.
 
@@ -22,7 +22,7 @@ timestep_per_hour
 *****************
 
 By default, *Sinergym* applies **4** timesteps per simulated hour, which is the default value in building files. 
-However, you can modify this value using the ``timestep_per_hour`` key in the ``config_params`` dictionary and vary the number of timesteps in each simulated hour.
+However, you can modify this value using the ``timestep_per_hour`` key in the ``building_config`` dictionary and vary the number of timesteps in each simulated hour.
 
 *********
 runperiod

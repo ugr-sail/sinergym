@@ -1,4 +1,4 @@
-﻿sinergym.utils.constants
+sinergym.utils.constants
 ========================
 
 .. automodule:: sinergym.utils.constants

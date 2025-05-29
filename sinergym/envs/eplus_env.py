@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import yaml
 
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
@@ -52,9 +53,9 @@ class EplusEnv(gym.Env):
         ]]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
-        max_ep_data_store_num: int = 10,
+        max_ep_store: int = 10,
         env_name: str = 'eplus-env-v1',
-        config_params: Optional[Dict[str, Any]] = None,
+        building_config: Optional[Dict[str, Any]] = None,
         seed: Optional[int] = None,
     ):
         """Environment with EnergyPlus simulator.
@@ -72,9 +73,9 @@ class EplusEnv(gym.Env):
             weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Ranges can be specified to and a value will be select randomly for each episode. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
-            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
+            max_ep_store (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
-            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
+            building_config (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for building. Defaults to None.
             seed (Optional[int], optional): Seed for random number generator. Defaults to None.
         """
 
@@ -99,8 +100,7 @@ class EplusEnv(gym.Env):
         # building file
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
-        self.weather_files = [weather_files] if isinstance(
-            weather_files, str) else weather_files
+        self.weather_files = weather_files
 
         # ---------------------------------------------------------------------------- #
         #                  Variables, meters and actuators definition                  #
@@ -124,6 +124,8 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                               Building modeling                              #
         # ---------------------------------------------------------------------------- #
+        self.max_ep_store = max_ep_store
+        self.building_config = building_config
 
         self.model = ModelJSON(
             env_name=env_name,
@@ -131,9 +133,9 @@ class EplusEnv(gym.Env):
             weather_files=self.weather_files,
             variables=self.variables,
             meters=self.meters,
-            max_ep_store=max_ep_data_store_num,
-            extra_config=config_params,
-            weather_conf=weather_conf,
+            max_ep_store=self.max_ep_store,
+            building_config=self.building_config,
+            weather_conf=weather_conf
         )
 
         # ---------------------------------------------------------------------------- #
@@ -208,6 +210,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
         # ---------------------------------------------------------------------------- #
+        self.reward_kwargs = reward_kwargs
         self.reward_fn = reward(**reward_kwargs)
 
         # ---------------------------------------------------------------------------- #
@@ -215,6 +218,11 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         self.logger.debug('Passing the environment checker...')
         self._check_eplus_env()
+
+        # ---------------------------------------------------------------------------- #
+        #                 Save environment configuration as a YAML file                #
+        # ---------------------------------------------------------------------------- #
+        self.save_config()
 
         self.logger.info(
             'Environment created successfully.')
@@ -448,6 +456,15 @@ class EplusEnv(gym.Env):
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
 
+    def save_config(self) -> None:
+        """Save environment configuration as a YAML file."""
+        with open(f'{self.workspace_path}/env_config.pyyaml', 'w') as f:
+            yaml.dump(
+                data=self.unwrapped,
+                stream=f,
+                default_flow_style=False,
+                sort_keys=False)
+
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
@@ -615,7 +632,7 @@ class EplusEnv(gym.Env):
 
     @property  # pragma: no cover
     def workspace_path(self) -> str:
-        return self.model.experiment_path
+        return self.model.workspace_path
 
     @property  # pragma: no cover
     def episode_path(self) -> str:
@@ -637,9 +654,40 @@ class EplusEnv(gym.Env):
     def idd_path(self) -> str:
         return self.model.idd_path
 
-    # -------------------------------- class print ------------------------------- #
+    # ---------------------------- formats and prints ---------------------------- #
 
-    def info(self):  # pragma: no cover
+    def to_dict(self) -> Dict[str, Any]:  # pragma: no cover
+        """Convert the environment instance to a Python dictionary.
+
+        Returns:
+            Dict[str, Any]: Environment configuration.
+        """
+        return {
+            'building_file': self.building_file,
+            'weather_files': self.weather_files,
+            'action_space': self.action_space,
+            'time_variables': self.time_variables,
+            'variables': self.variables,
+            'meters': self.meters,
+            'actuators': self.actuators,
+            'context': self.context,
+            'initial_context': self.default_options.get(
+                'initial_context'),
+            'weather_variability': self.default_options.get(
+                'weather_variability'),
+            'reward': self.reward_fn.__class__,
+            'reward_kwargs': self.reward_kwargs,
+            'max_ep_store': self.max_ep_store,
+            'env_name': self.name,
+            'building_config': self.building_config,
+            'seed': self.seed
+        }
+
+    @classmethod  # pragma: no cover
+    def from_dict(cls, data):
+        return cls(**data)
+
+    def to_str(self):  # pragma: no cover
         print(f"""
     #==================================================================================#
         ENVIRONMENT NAME: {self.name}

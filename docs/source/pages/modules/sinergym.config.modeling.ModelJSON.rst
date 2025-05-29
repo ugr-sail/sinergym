@@ -21,6 +21,8 @@
       ~ModelJSON.adapt_building_to_meters
       ~ModelJSON.adapt_building_to_variables
       ~ModelJSON.apply_weather_variability
+      ~ModelJSON.get_eplus_runperiod
+      ~ModelJSON.get_runperiod_len
       ~ModelJSON.get_schedulers
       ~ModelJSON.save_building_model
       ~ModelJSON.set_episode_working_dir

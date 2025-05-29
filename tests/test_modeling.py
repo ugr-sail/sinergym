@@ -121,7 +121,7 @@ def test_adapt_building_to_config(model_5zone, building_5zone):
         0]['number_of_timesteps_per_hour'] == 2
 
     # Check runperiod elements is the same than runperiod from config specified
-    config_runperiod = model_5zone.config['runperiod']
+    config_runperiod = model_5zone.building_config['runperiod']
     runperiod = model_5zone.runperiod
     for i, key in enumerate(
             ['start_day', 'start_month', 'start_year', 'end_day', 'end_month', 'end_year']):
@@ -165,21 +165,22 @@ def test_check_model_wrong_weather(model_5zone_several_weathers):
 def test_check_model_wrong_config(model_5zone_several_weathers):
     model_5zone_several_weathers._check_eplus_config()
     # update config dictionary with wrong values
-    if model_5zone_several_weathers.config.get('timesteps_per_hour'):
-        model_5zone_several_weathers.config['timesteps_per_hour'] = -7
+    if model_5zone_several_weathers.building_config.get('timesteps_per_hour'):
+        model_5zone_several_weathers.building_config['timesteps_per_hour'] = -7
         with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['timesteps_per_hour'] = 2
-    if model_5zone_several_weathers.config.get('runperiod'):
-        model_5zone_several_weathers.config['runperiod'] = (1, 2, 3, 4)
+        model_5zone_several_weathers.building_config['timesteps_per_hour'] = 2
+    if model_5zone_several_weathers.building_config.get('runperiod'):
+        model_5zone_several_weathers.building_config['runperiod'] = (
+            1, 2, 3, 4)
         with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['runperiod'] = 2024
+        model_5zone_several_weathers.building_config['runperiod'] = 2024
         with pytest.raises(TypeError):
             model_5zone_several_weathers._check_eplus_config()
-        model_5zone_several_weathers.config['runperiod'] = (
+        model_5zone_several_weathers.building_config['runperiod'] = (
             1, 2, 1993, 2, 3, 1993)
-    model_5zone_several_weathers.config['Unknown_option'] = 100
+    model_5zone_several_weathers.building_config['Unknown_option'] = 100
     # It will be ignored by sinergym
     model_5zone_several_weathers._check_eplus_config()
 
@@ -202,7 +203,7 @@ def test_update_weather_path(model_5zone_several_weathers):
 
 
 def test_apply_weather_variability(model_5zone):
-    # First set a episode dir in experiment
+    # First set a episode dir in execution
     assert model_5zone.episode_path is None
     model_5zone.set_episode_working_dir()
     assert model_5zone.episode_path is not None
@@ -299,25 +300,25 @@ def test_set_episode_working_dir(model_5zone):
     episode_path = model_5zone.set_episode_working_dir()
     # Check if new episode dir exists
     assert os.path.isdir(episode_path)
-    # Check if experiment_dir is none raise an error
-    model_5zone.experiment_path = None
+    # Check if workspace_path is none raise an error
+    model_5zone.workspace_path = None
     with pytest.raises(Exception):
         model_5zone.set_episode_working_dir()
 
 
-def test_set_experiment_working_dir(model_5zone):
-    # Check current config experiment working dir and if exists
-    current_experiment_path = model_5zone.experiment_path
-    assert 'PYTESTCONFIG-res' in current_experiment_path
-    assert os.path.isdir(current_experiment_path)
-    # Set a new experiment_path
-    new_experiment_path = model_5zone._set_experiment_working_dir(
+def test_set_workspace_dir(model_5zone):
+    # Check current config workspace dir and if exists
+    current_workspace_path = model_5zone.workspace_path
+    assert 'PYTESTCONFIG-res' in current_workspace_path
+    assert os.path.isdir(current_workspace_path)
+    # Set a new workspace_path
+    new_workspace_path = model_5zone._set_workspace_dir(
         env_name='PYTESTCONFIG')
     # The name should be the same except last number id
-    assert current_experiment_path[:-1] == new_experiment_path[:-1]
-    assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
-    # Check if new experiment path exists
-    assert os.path.isdir(new_experiment_path)
+    assert current_workspace_path[:-1] == new_workspace_path[:-1]
+    assert int(current_workspace_path[-1]) < int(new_workspace_path[-1])
+    # Check if new workspace path exists
+    assert os.path.isdir(new_workspace_path)
 
 
 def test_get_working_folder(model_5zone):
@@ -329,14 +330,14 @@ def test_get_working_folder(model_5zone):
 
 
 def test_rm_past_history_dir(model_5zone):
-    # Check num of dir in experiment path is less than 10
-    n_dir = len([i for i in os.listdir(model_5zone.experiment_path)
-                if os.path.isdir(os.path.join(model_5zone.experiment_path, i))])
+    # Check num of dir in workspace path is less than 10
+    n_dir = len([i for i in os.listdir(model_5zone.workspace_path)
+                if os.path.isdir(os.path.join(model_5zone.workspace_path, i))])
     assert n_dir < 10
     # Create more than 10 episodes dir
     for _ in range(15):
         model_5zone.set_episode_working_dir()
     # Check number of dirs is 10 (no more)
-    n_dir = len([i for i in os.listdir(model_5zone.experiment_path)
-                if os.path.isdir(os.path.join(model_5zone.experiment_path, i))])
+    n_dir = len([i for i in os.listdir(model_5zone.workspace_path)
+                if os.path.isdir(os.path.join(model_5zone.workspace_path, i))])
     assert n_dir == 10

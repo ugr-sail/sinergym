@@ -1,13 +1,16 @@
 """Common utilities."""
 
+import importlib
+import os
 from copy import deepcopy
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter
+import yaml
 from eppy.modeleditor import IDF
 
 try:
@@ -16,13 +19,104 @@ except ImportError:
     pass
 
 import sinergym
-from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
+from sinergym.utils.constants import LOG_COMMON_LEVEL
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.rewards import *
 
 logger = TerminalLogger().getLogger(
     name='COMMON',
     level=LOG_COMMON_LEVEL)
+
+# ---------------------------------------------------------------------------- #
+#                                Dynamic imports                               #
+# ---------------------------------------------------------------------------- #
+
+
+def import_from_path(dotted_or_file_path: str):
+    """
+    Import a class or function from a dotted module path or a file path.
+
+    Args:
+        dotted_or_file_path (str): Either 'module:attr' or '/path/to/file.py:attr'
+
+    Returns:
+        The imported attribute (function, class, etc.)
+    """
+    if ':' not in dotted_or_file_path:
+        raise ValueError(
+            f"Invalid format: '{dotted_or_file_path}'. Expected format: 'module:attr' or 'file.py:attr'")
+
+    path_part, attr_name = dotted_or_file_path.split(':', 1)
+
+    if os.path.isfile(path_part):  # Es una ruta de archivo
+        module_name = os.path.splitext(os.path.basename(path_part))[0]
+        spec = importlib.util.spec_from_file_location(module_name, path_part)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"Cannot load module from file: {path_part}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    else:  # Es un módulo en notación de puntos
+        module = importlib.import_module(path_part)
+
+    try:
+        return getattr(module, attr_name)
+    except AttributeError:
+        raise ImportError(
+            f"Module '{path_part}' does not have attribute '{attr_name}'")
+
+# ---------------------------------------------------------------------------- #
+#                            Dictionary deep update                            #
+# ---------------------------------------------------------------------------- #
+
+
+def deep_update(source: Dict, updates: Dict) -> Dict:
+    """
+    Recursively update a dictionary with another dictionary.
+
+    Args:
+        source (Dict): The original dictionary to update.
+        updates (Dict): The dictionary with updates.
+
+    Returns:
+        Dict: The updated dictionary.
+    """
+    result = deepcopy(source)
+    for key, value in updates.items():
+        if isinstance(value, dict) and isinstance(result.get(key), dict):
+            result[key] = deep_update(result[key], value)
+        else:
+            result[key] = deepcopy(value)
+    return result
+
+# ---------------------------------------------------------------------------- #
+#                           ENVIRONMENT CONSTRUCTION                           #
+# ---------------------------------------------------------------------------- #
+
+
+def create_environment(
+        env_id: str,
+        env_params: Dict,
+        wrappers: Dict) -> gym.Env:
+    """ Create a EplusEnv environment with the given parameters and wrappers.
+    Args:
+        env_id (str): Environment ID.
+        env_params (Dict): Environment parameters to overwrite the environment ID defaults.
+        wrappers (Dict): Wrappers to be applied to the environment.
+    Returns:
+        gym.Env: The created environment.
+    """
+
+    # Make environment
+    environment = env_id
+    env = gym.make(environment, **env_params)
+
+    # Apply wrappers
+    if wrappers:
+        # Apply wrappers to environment
+        env = apply_wrappers_info(env, wrappers)
+        # Write wrappers configuration to yaml file
+        get_wrappers_info(env)
+
+    return env
 
 # ---------------------------------------------------------------------------- #
 #                                   WRAPPERS                                   #
@@ -61,6 +155,79 @@ def unwrap_wrapper(env: gym.Env,
             return env_tmp.env
         env_tmp = env_tmp.env
     return None
+
+
+def get_wrappers_info(
+        env: Type[gym.Env], path_to_save: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
+    """Get ordered information about the wrappers applied to the environment.
+
+    Args:
+        env (Type[gym.Env]): Environment to get wrapper information from.
+        path_to_save (str, optional): Path to save the information in a YAML file. Defaults to None.
+
+    Returns:
+        Dict[str, Dict[str, Any]]: Dictionary with wrapper module and class as keys and their arguments dict as values.
+    """
+    wrappers_info = []
+
+    if not path_to_save:
+        path_to_save = f'{
+            env.get_wrapper_attr('workspace_path')}/wrappers_config.pyyaml'
+
+    # Traverse the wrappers and collect their metadata
+    while isinstance(env, gym.Wrapper):
+        wrapper_cls = env.__class__
+        wrapper_name = f'{wrapper_cls.__module__}:{wrapper_cls.__name__}'
+        if env.has_wrapper_attr('__metadata__'):
+            wrappers_info.append(
+                (wrapper_name, env.get_wrapper_attr('__metadata__')))
+        env = env.env
+
+    # Reverse to get application order: outermost to innermost
+    wrappers_info.reverse()
+
+    # Convert to a regular dict (in insertion order)
+    wrappers_dict = {name: metadata for name, metadata in wrappers_info}
+
+    # Save to YAML
+    if path_to_save:
+        with open(path_to_save, 'w') as file:
+            yaml.dump(
+                wrappers_dict,
+                file,
+                sort_keys=False,
+                default_flow_style=False)
+
+    return wrappers_dict
+
+
+def apply_wrappers_info(env: Type[gym.Env],
+                        wrappers_info: Union[Dict[str,
+                                                  Dict[str,
+                                                       Any]],
+                                             str]) -> Type[gym.Env]:
+    """Apply wrapper information to the environment.
+
+    Args:
+        env (Type[gym.Env]): Environment to apply wrapper information to.
+        wrappers_info (Union[Dict[str, Dict[str, Any]], str]): Dictionary with wrapper information or path to a YAML file containing the information.
+
+    Returns:
+        Type[gym.Env]: Environment with applied wrappers.
+    """
+
+    if isinstance(wrappers_info, str):
+        with open(wrappers_info, 'r') as file:
+            wrappers_info_dict = yaml.load(file, Loader=yaml.FullLoader)
+    else:
+        wrappers_info_dict = wrappers_info
+
+    for wrapper_class_name, wrapper_params in wrappers_info_dict.items():
+        # Dynamically import the wrapper class
+        wrapper_cls = import_from_path(wrapper_class_name)
+        env = wrapper_cls(env, **wrapper_params)
+
+    return env
 
 # ---------------------------------------------------------------------------- #
 #                               BUILDING MODELING                              #
@@ -345,10 +512,10 @@ def convert_conf_to_env_parameters(
         'actuators': actuators,
         'context': context,
         'initial_context': conf.get('initial_context'),
-        'reward': eval(conf['reward']),
+        'reward': import_from_path(conf['reward']),
         'reward_kwargs': conf['reward_kwargs'],
-        'max_ep_data_store_num': conf['max_ep_data_store_num'],
-        'config_params': conf.get('config_params')
+        'max_ep_store': conf['max_ep_store'],
+        'building_config': conf.get('building_config')
     }
 
     weather_variability = conf.get('weather_variability')
@@ -406,7 +573,7 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
         }
 
     if env_params.get('reward'):
-        env_params['reward'] = eval(env_params['reward'])
+        env_params['reward'] = import_from_path(env_params['reward'])
 
     if env_params.get('reward_kwargs'):
         for reward_param_name, reward_value in env_params.items():
@@ -418,10 +585,10 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
                 env_params['reward_kwargs'][reward_param_name] = tuple(
                     reward_value)
 
-    if env_params.get('config_params'):
-        if env_params['config_params'].get('runperiod'):
-            env_params['config_params']['runperiod'] = tuple(
-                env_params['config_params']['runperiod'])
+    if env_params.get('building_config'):
+        if env_params['building_config'].get('runperiod'):
+            env_params['building_config']['runperiod'] = tuple(
+                env_params['building_config']['runperiod'])
     # Add more keys if needed...
 
     return env_params
