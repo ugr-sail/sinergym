@@ -67,7 +67,7 @@ try:
         experiment_name = f'{alg_name}_{experiment_date}'
 
     # ---------------------------------------------------------------------------- #
-    #                Load model as starting point if defined                       #
+    #                            Load model path if defined                        #
     # ---------------------------------------------------------------------------- #
     model_path = None
     if conf.get('model'):

@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers
+sinergym.utils.wrappers
 =======================
 
 .. automodule:: sinergym.utils.wrappers
@@ -8,6 +8,13 @@
    
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:                                          
+   
+      store_init_metadata
    
    
 

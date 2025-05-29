@@ -1,4 +1,4 @@
-﻿sinergym.utils.controllers
+sinergym.utils.controllers
 ==========================
 
 .. automodule:: sinergym.utils.controllers
