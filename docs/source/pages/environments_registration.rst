@@ -6,6 +6,16 @@ New *Sinergym* environments can be created using the constructor of the `EplusEn
 
 Since multiple environments can be generated from the same building, *Sinergym* provides an automated way for creating and registering them. Using a YAML file located in `sinergym/data/default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.
 
+You can add new YAML files in addition to the default ones provided by Sinergym in the specified folder. Once your custom configuration is ready, simply execute:
+
+.. code-block:: python
+
+    import sinergym
+
+    sinergym.register_envs_from_yaml(
+        yaml_path="path/to/your/configuration.yaml"
+    )
+
 This section outlines the structure of these YAML configuration files. Moreover, this structure allows for the definition of observation variables (``time_variables``, ``variables`` and ``meters``) and action variables (``actuators``). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.
 
 +----------------------+--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
