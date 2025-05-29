@@ -79,7 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#initial-context">Initial context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#action-space">Action space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#extra-configuration">Extra configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-extra-configuration">Building extra configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#seed">Seed</a></li>
 </ul>
 </li>
@@ -88,6 +88,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
@@ -149,21 +150,28 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">sinergym</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sinergym</span><span class="o">.</span><span class="n">__ids__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sinergym</span><span class="o">.</span><span class="n">ids</span><span class="p">())</span>
 
 <span class="c1"># Make and consult environment</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-stochastic-v1&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;to_str&#39;</span><span class="p">)())</span>
 </pre></div>
 </div>
 <p>Environment names follow the format <code class="docutils literal notranslate"><span class="pre">Eplus-&lt;building-id&gt;-&lt;weather-id&gt;-&lt;control_type&gt;-&lt;stochastic</span> <span class="pre">(optional)&gt;-v1</span></code>.
-These identifiers provide a general summary of the environment’s characteristics. For more detailed information about a specific environment, use the <cite>info</cite> method as shown in the example code.</p>
+These identifiers provide a general summary of the environment’s characteristics. For more detailed information about a specific environment, use the <cite>to_str</cite> method as shown in the example code.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Environments are automatically generated using YAML configuration files
+<p><strong>Environments are automatically generated</strong> using YAML configuration files
 for each building. This eliminates the need to manually register each
 environment ID or set parameters directly in the environment constructor.
 For more information, see <a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments configuration and registration</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Additionally, Sinergym supports <strong>full serialization of environments and wrappers</strong>,
+enabling easy saving, modification, and restoration of experiments. This ensures
+reproducibility and simplifies configuration sharing. For more details, see
+<a class="reference internal" href="serialization.html#serialization-and-configuration-management"><span class="std std-ref">Serialization and Configuration Management</span></a>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -189,12 +197,14 @@ However, you can opt for a continuous environment and apply custom discretizatio
 <h3>Building file<a class="headerlink" href="#building-file" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">building_file</span></code> parameter refers to the <em>epJSON</em> file, an <a class="reference external" href="https://energyplus.readthedocs.io/en/latest/schema.html">adaptation</a> of the <em>IDF</em> (Intermediate Data Format) used to define <em>EnergyPlus</em> building models.</p>
 <p>Before starting the simulation, <em>Sinergym</em> performs a preparatory step to adapt the building model. For more details, refer to the <em>Modeling</em> component in the <em>Sinergym</em> backend diagram.</p>
+<p>This parameter can be set to either a single building file name or a full path, if an external building file is being used.</p>
 </section>
 <section id="weather-files">
 <h3>Weather files<a class="headerlink" href="#weather-files" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">weather_file</span></code> parameter specifies the <em>EPW</em> (<em>EnergyPlus</em> Weather) file, which defines the <strong>climate conditions</strong> for a full year.</p>
 <p>This parameter can be provided as a single weather file name (<code class="docutils literal notranslate"><span class="pre">str</span></code>) or as a list of multiple weather files (<code class="docutils literal notranslate"><span class="pre">List[str]</span></code>). When multiple files are specified, <em>Sinergym</em> will randomly select one <em>EPW</em> file for each episode and automatically adapt the building model accordingly. This feature adds complexity to the environment, if desired.</p>
 <p>The weather file used in each episode is saved in the <em>Sinergym</em> episode output folder. If <strong>variability</strong> (see section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather variability</span></a>) is enabled, the stored <em>EPW</em> file will include the corresponding noise adjustments.</p>
+<p>Alternatively, the weather_file parameter can also be set to a full path, which is useful when using custom or external weather files not located in the default weather directory. This allows greater flexibility in testing specific climate scenarios or regional data.</p>
 <section id="weather-variability">
 <h4>Weather variability<a class="headerlink" href="#weather-variability" title="Link to this heading"></a></h4>
 <p><strong>Weather variability</strong> can be added to an environment using the <code class="docutils literal notranslate"><span class="pre">weather_variability</span></code> parameter.</p>
@@ -249,7 +259,7 @@ names with <em>opyplus</em>, visit <a class="reference external" href="https://o
 <section id="maximum-episode-data-stored-in-sinergym-output">
 <h3>Maximum episode data stored in Sinergym output<a class="headerlink" href="#maximum-episode-data-stored-in-sinergym-output" title="Link to this heading"></a></h3>
 <p><em>Sinergym</em> stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section <a class="reference internal" href="output.html#sinergym-output"><span class="std std-ref">Sinergym output</span></a> for further details). The <code class="docutils literal notranslate"><span class="pre">env_name</span></code> parameter is utilized to generate the <strong>working directory name</strong>, facilitating differentiation between multiple experiments within the same environment.</p>
-<p>The parameter <code class="docutils literal notranslate"><span class="pre">max_ep_data_store_num</span></code> controls the number of episodes’ output data that will be retained. Specifically, the experiment will store the output of the last <code class="docutils literal notranslate"><span class="pre">n</span></code> episodes, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is defined by this parameter.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">max_ep_store</span></code> controls the number of episodes’ output data that will be retained. Specifically, the experiment will store the output of the last <code class="docutils literal notranslate"><span class="pre">n</span></code> episodes, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is defined by this parameter.</p>
 <p>If <em>Sinergym</em>’s CSV storage feature is enabled (refer to section <a class="reference internal" href="wrappers.html#csvlogger"><span class="std std-ref">CSVLogger</span></a>), a <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file will be generated. This file contains summary data for each episode.</p>
 </section>
 <section id="time-variables">
@@ -348,9 +358,9 @@ users are encouraged to explore and experiment with these spaces. For guidance, 
 </div>
 <p><em>Sinergym</em> also offers the option to create <strong>empty action interfaces</strong>. In this case, control is managed by the <strong>default building model schedulers</strong>. For more information, see the usage example in <a class="reference internal" href="notebooks/default_building_control.html#Default-building-control-using-an-empty-action-space"><span class="std std-ref">Default building control using an empty action space</span></a>.</p>
 </section>
-<section id="extra-configuration">
-<h3>Extra configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
-<p>Parameters related to the building model and simulation, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, and <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, can be set as extra configurations. These parameters are specified in the <code class="docutils literal notranslate"><span class="pre">config_params</span></code> argument, a Python Dictionary. For additional information on extra configurations in <em>Sinergym</em>, refer to <a class="reference internal" href="extra-configuration.html#extra-configuration-in-sinergym-simulations"><span class="std std-ref">Extra configuration in Sinergym simulations</span></a>.</p>
+<section id="building-extra-configuration">
+<h3>Building extra configuration<a class="headerlink" href="#building-extra-configuration" title="Link to this heading"></a></h3>
+<p>Parameters related to the building model and simulation, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, and <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, can be set as extra configurations. These parameters are specified in the <code class="docutils literal notranslate"><span class="pre">building_config</span></code> argument, a Python Dictionary. For additional information on extra configurations in <em>Sinergym</em>, refer to <a class="reference internal" href="extra-configuration.html#extra-configuration-in-sinergym-simulations"><span class="std std-ref">Extra configuration in Sinergym simulations</span></a>.</p>
 </section>
 <section id="seed">
 <h3>Seed<a class="headerlink" href="#seed" title="Link to this heading"></a></h3>
@@ -457,6 +467,7 @@ users are encouraged to explore and experiment with these spaces. For guidance, 
             <dd><a href="../../v3.5.0/pages/environments.html">v3.5.0</a></dd>
             <dd><a href="../../v3.6.0/pages/environments.html">v3.6.0</a></dd>
             <dd><a href="../../v3.7.0/pages/environments.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.8.0/pages/environments.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

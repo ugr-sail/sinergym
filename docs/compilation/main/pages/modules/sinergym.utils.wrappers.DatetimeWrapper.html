@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -96,7 +97,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.store_init_metadata.html">sinergym.utils.wrappers.store_init_metadata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.CSVLogger.html">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.DatetimeWrapper</a></li>
@@ -158,12 +161,15 @@
 <h1>sinergym.utils.wrappers.DatetimeWrapper<a class="headerlink" href="#sinergym-utils-wrappers-datetimewrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DatetimeWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper" title="Link to this definition"></a></dt>
-<dd><p>Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
-Observation space is updated automatically.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DatetimeWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper" title="Link to this definition"></a></dt>
+<dd><p>Wrapper to transform datetime variables into a more useful representation:
+- ‘day_of_month’ is replaced with ‘is_weekend’ (1 if weekend, 0 otherwise).
+- ‘hour’ is replaced with its sine and cosine encoding.
+- ‘month’ is replaced with its sine and cosine encoding.
+The observation space is updated automatically.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper.__init__" title="Link to this definition"></a></dt>
 <dd><p>Constructor for the observation wrapper.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -175,7 +181,7 @@ Observation space is updated automatically.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DatetimeWrapper.__init__" title="sinergym.utils.wrappers.DatetimeWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DatetimeWrapper.__init__" title="sinergym.utils.wrappers.DatetimeWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Constructor for the observation wrapper.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
@@ -191,7 +197,7 @@ Observation space is updated automatically.</p>
 <td><p>Checks if the given attribute is within the wrapper or its environment.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DatetimeWrapper.observation" title="sinergym.utils.wrappers.DatetimeWrapper.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs)</p></td>
-<td><p>Applies calculation in is_weekend flag, and sen and cos in hour and month</p></td>
+<td><p>Transforms the observation to replace time variables with encoded representations.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
@@ -250,7 +256,7 @@ Observation space is updated automatically.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper.observation">
 <span class="sig-name descname"><span class="pre">observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper.observation" title="Link to this definition"></a></dt>
-<dd><p>Applies calculation in is_weekend flag, and sen and cos in hour and month</p>
+<dd><p>Transforms the observation to replace time variables with encoded representations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obs</strong> (<em>np.ndarray</em>) – Original observation.</p>
@@ -317,6 +323,7 @@ Observation space is updated automatically.</p>
             <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

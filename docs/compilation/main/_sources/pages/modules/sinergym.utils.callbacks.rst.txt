@@ -1,4 +1,4 @@
-﻿sinergym.utils.callbacks
+sinergym.utils.callbacks
 ========================
 
 .. automodule:: sinergym.utils.callbacks

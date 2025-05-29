@@ -63,6 +63,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -420,7 +421,7 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
                <span class="n">env_name</span><span class="o">=</span><span class="s1">&#39;new_env_name&#39;</span><span class="p">,</span>
-               <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="mi">20</span>
+               <span class="n">max_ep_store</span><span class="o">=</span><span class="mi">20</span>
                <span class="p">)</span>
 </pre></div>
 </div>
@@ -458,7 +459,7 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 <span class="p">}</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
-               <span class="n">config_params</span><span class="o">=</span><span class="n">extra_conf</span>
+               <span class="n">building_config</span><span class="o">=</span><span class="n">extra_conf</span>
                <span class="p">)</span>
 
 <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
@@ -559,6 +560,7 @@ Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:00&lt;00:
             <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/index.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

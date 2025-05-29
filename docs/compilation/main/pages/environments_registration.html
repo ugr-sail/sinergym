@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Logging system overview" href="logging.html" />
+    <link rel="next" title="Serialization and Configuration Management" href="serialization.html" />
     <link rel="prev" title="Environments" href="environments.html" /> 
 </head>
 
@@ -63,6 +63,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#variables-specification">Variables specification</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
@@ -120,6 +121,14 @@
 <h1>Environments configuration and registration<a class="headerlink" href="#environments-configuration-and-registration" title="Link to this heading"></a></h1>
 <p>New <em>Sinergym</em> environments can be created using the constructor of the <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/envs/eplus_env.py">EplusEnv</a> class and the parameters listed in section <a class="reference internal" href="environments.html#available-parameters"><span class="std std-ref">Available parameters</span></a>.</p>
 <p>Since multiple environments can be generated from the same building, <em>Sinergym</em> provides an automated way for creating and registering them. Using a YAML file located in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">sinergym/data/default_configuration</a>, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.</p>
+<p>You can add new YAML files in addition to the default ones provided by Sinergym in the specified folder. Once your custom configuration is ready, simply execute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+
+<span class="n">sinergym</span><span class="o">.</span><span class="n">register_envs_from_yaml</span><span class="p">(</span>
+    <span class="n">yaml_path</span><span class="o">=</span><span class="s2">&quot;path/to/your/configuration.yaml&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p>This section outlines the structure of these YAML configuration files. Moreover, this structure allows for the definition of observation variables (<code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">meters</span></code>) and action variables (<code class="docutils literal notranslate"><span class="pre">actuators</span></code>). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.</p>
 <table class="docutils align-default">
 <thead>
@@ -135,21 +144,21 @@
 </tr>
 <tr class="row-odd"><td><p>building_file</p></td>
 <td><p>No</p></td>
-<td><p>Building model file located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/buildings/</span></code>.</p></td>
+<td><p>Building model file located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/buildings/</span></code>. An external path can also be specified.</p></td>
 </tr>
 <tr class="row-even"><td><p>weather_specification</p></td>
 <td><p>No</p></td>
-<td><p>Set of weather files used to generate different environments. Located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/weather/</span></code>.</p></td>
+<td><p>Set of weather files used to generate different environments. Located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/weather/</span></code>. An external path can also be specified.</p></td>
 </tr>
-<tr class="row-odd"><td><p>config_params</p></td>
+<tr class="row-odd"><td><p>building_config</p></td>
 <td><p>Yes</p></td>
-<td><p>Extra environments parameters (optional).</p></td>
+<td><p>Extra building configuration, modifying the building model automatically (optional).</p></td>
 </tr>
 <tr class="row-even"><td><p>weather_variability</p></td>
 <td><p>Yes</p></td>
 <td><p>Indicates if additional versions of all environments adding episodic weather noise will be created.</p></td>
 </tr>
-<tr class="row-odd"><td><p>max_ep_data_store_num</p></td>
+<tr class="row-odd"><td><p>max_ep_store</p></td>
 <td><p>Yes</p></td>
 <td><p>Maximum number of episodes for which data will be stored. Default: 10.</p></td>
 </tr>
@@ -194,7 +203,7 @@ register the discrete version using this flag.</p></td>
 </tr>
 <tr class="row-odd"><td><p>reward</p></td>
 <td><p>No</p></td>
-<td><p>Reward class name.</p></td>
+<td><p>Reward class name. This should be specified in the format <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;:&lt;class&gt;</span></code>. This is particularly useful when defining a reward function located outside the Sinergym package.</p></td>
 </tr>
 <tr class="row-even"><td><p>reward_kwargs</p></td>
 <td><p>No</p></td>
@@ -234,7 +243,7 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                         BUILDING EXTRA CONFIGURATION                         #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
-<span class="nt">config_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">building_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 
 
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
@@ -250,7 +259,7 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                          EPISODES FOLDER GENERATION                          #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
-<span class="nt">max_ep_data_store_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">max_ep_store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                             OBSERVATION VARIABLES                            #</span>
@@ -339,7 +348,7 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                                REWARD FUNCTION                               #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
-<span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LinearReward</span>
+<span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sinergym.utils.rewards:LinearReward</span>
 
 <span class="nt">reward_kwargs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">temperature_variables</span><span class="p">:</span>
@@ -405,7 +414,7 @@ named as <code class="docutils literal notranslate"><span class="pre">DEFAULT_&l
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="environments.html" class="btn btn-neutral float-left" title="Environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="logging.html" class="btn btn-neutral float-right" title="Logging system overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="serialization.html" class="btn btn-neutral float-right" title="Serialization and Configuration Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -449,6 +458,7 @@ named as <code class="docutils literal notranslate"><span class="pre">DEFAULT_&l
             <dd><a href="../../v3.5.0/pages/environments_registration.html">v3.5.0</a></dd>
             <dd><a href="../../v3.6.0/pages/environments_registration.html">v3.6.0</a></dd>
             <dd><a href="../../v3.7.0/pages/environments_registration.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.8.0/pages/environments_registration.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

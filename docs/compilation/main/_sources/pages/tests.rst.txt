@@ -69,6 +69,8 @@ Tests are available in the ``sinergym/tests`` directory. They are organized by d
 
 - ``test_env.py``. Tests for ``sinergym/sinergym/envs/``. These tests check *Sinergym*'s' Gymnasium environments.
 
+- ``test_serialization.py``. Tests for ``sinergym/sinergym/utils/serialization.py``. These tests check the serialization and restoration of environments and wrappers.
+
 - ``test_controller.py``. Tests the controllers defined in ``sinergym/sinergym/utils/controllers.py``.
 
 - ``test_modeling.py``. Tests for ``sinergym/sinergym/config/modeling.py``. These tests check the simulator configuration, including epJSON and EPW Python modules.

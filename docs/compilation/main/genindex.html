@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pages/architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/rewards.html">Rewards</a></li>
@@ -253,10 +254,10 @@
       </ul></li>
       <li><a href="pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html#sinergym.utils.wrappers.DiscreteIncrementalWrapper.action_mapping">action_mapping() (sinergym.utils.wrappers.DiscreteIncrementalWrapper method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.action_space">action_space (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.logger.LoggerStorage.html#sinergym.utils.logger.LoggerStorage.actions">actions (sinergym.utils.logger.LoggerStorage attribute)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.NormalizeObservation.html#sinergym.utils.wrappers.NormalizeObservation.activate_update">activate_update() (sinergym.utils.wrappers.NormalizeObservation method)</a>
@@ -272,6 +273,12 @@
       <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.adapt_building_to_variables">adapt_building_to_variables() (sinergym.config.modeling.ModelJSON method)</a>
 </li>
       <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.apply_weather_variability">apply_weather_variability() (sinergym.config.modeling.ModelJSON method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.common.apply_wrappers_info.html#sinergym.utils.common.apply_wrappers_info">apply_wrappers_info() (in module sinergym.utils.common)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.array_constructor.html#sinergym.utils.serialization.array_constructor">array_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.array_representer.html#sinergym.utils.serialization.array_representer">array_representer() (in module sinergym.utils.serialization)</a>
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.available_handlers">available_handlers (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
@@ -309,6 +316,10 @@
       </ul></li>
       <li><a href="pages/modules/sinergym.utils.env_checker.check_env.html#sinergym.utils.env_checker.check_env">check_env() (in module sinergym.utils.env_checker)</a>
 </li>
+      <li><a href="pages/modules/sinergym.utils.serialization.class_constructor.html#sinergym.utils.serialization.class_constructor">class_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.class_representer.html#sinergym.utils.serialization.class_representer">class_representer() (in module sinergym.utils.serialization)</a>
+</li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.close">close() (sinergym.envs.eplus_env.EplusEnv method)</a>
 
       <ul>
@@ -326,6 +337,10 @@
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.context_handlers">context_handlers (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.common.convert_conf_to_env_parameters.html#sinergym.utils.common.convert_conf_to_env_parameters">convert_conf_to_env_parameters() (in module sinergym.utils.common)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.common.create_environment.html#sinergym.utils.common.create_environment">create_environment() (in module sinergym.utils.common)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.create_sinergym_yaml_serializers.html#sinergym.utils.serialization.create_sinergym_yaml_serializers">create_sinergym_yaml_serializers() (in module sinergym.utils.serialization)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.CSVLogger.html#sinergym.utils.wrappers.CSVLogger">CSVLogger (class in sinergym.utils.wrappers)</a>
 </li>
@@ -347,16 +362,18 @@
       </ul></li>
       <li><a href="pages/modules/sinergym.utils.wrappers.NormalizeObservation.html#sinergym.utils.wrappers.NormalizeObservation.deactivate_update">deactivate_update() (sinergym.utils.wrappers.NormalizeObservation method)</a>
 </li>
+      <li><a href="pages/modules/sinergym.utils.common.deep_update.html#sinergym.utils.common.deep_update">deep_update() (in module sinergym.utils.common)</a>
+</li>
       <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_5ZONE_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_5ZONE_DISCRETE_FUNCTION">DEFAULT_5ZONE_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_DATACENTER_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_DATACENTER_DISCRETE_FUNCTION">DEFAULT_DATACENTER_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_OFFICE_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_OFFICE_DISCRETE_FUNCTION">DEFAULT_OFFICE_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_OFFICEGRID_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_OFFICEGRID_DISCRETE_FUNCTION">DEFAULT_OFFICEGRID_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_OFFICEGRID_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_OFFICEGRID_DISCRETE_FUNCTION">DEFAULT_OFFICEGRID_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
+</li>
       <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_RADIANT_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_RADIANT_DISCRETE_FUNCTION">DEFAULT_RADIANT_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.constants.DEFAULT_SHOP_DISCRETE_FUNCTION.html#sinergym.utils.constants.DEFAULT_SHOP_DISCRETE_FUNCTION">DEFAULT_SHOP_DISCRETE_FUNCTION() (in module sinergym.utils.constants)</a>
@@ -387,10 +404,14 @@
 </li>
       <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus">EnergyPlus (class in sinergym.simulators.eplus)</a>
 </li>
-      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.episode_length">episode_length (sinergym.envs.eplus_env.EplusEnv property)</a>
+      <li><a href="pages/modules/sinergym.utils.serialization.env_constructor.html#sinergym.utils.serialization.env_constructor">env_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.env_representer.html#sinergym.utils.serialization.env_representer">env_representer() (in module sinergym.utils.serialization)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.episode_length">episode_length (sinergym.envs.eplus_env.EplusEnv property)</a>
+</li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.episode_path">episode_path (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv">EplusEnv (class in sinergym.envs.eplus_env)</a>
@@ -409,11 +430,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.failed">failed() (sinergym.simulators.eplus.EnergyPlus method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.logger.CustomFormatter.html#sinergym.utils.logger.CustomFormatter.format">format() (sinergym.utils.logger.CustomFormatter method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.CustomFormatter.html#sinergym.utils.logger.CustomFormatter.FORMATS">FORMATS (sinergym.utils.logger.CustomFormatter attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.from_dict">from_dict() (sinergym.envs.eplus_env.EplusEnv class method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.function_constructor.html#sinergym.utils.serialization.function_constructor">function_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.function_representer.html#sinergym.utils.serialization.function_representer">function_representer() (in module sinergym.utils.serialization)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -429,11 +456,17 @@
         <li><a href="pages/modules/sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper.get_episode_summary">(sinergym.utils.wrappers.LoggerWrapper method)</a>
 </li>
       </ul></li>
-      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_schedulers">get_schedulers() (sinergym.config.modeling.ModelJSON method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_eplus_runperiod">get_eplus_runperiod() (sinergym.config.modeling.ModelJSON method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_runperiod_len">get_runperiod_len() (sinergym.config.modeling.ModelJSON method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_schedulers">get_schedulers() (sinergym.config.modeling.ModelJSON method)</a>
+</li>
       <li><a href="pages/modules/sinergym.utils.gcloud.get_service_account_token.html#sinergym.utils.gcloud.get_service_account_token">get_service_account_token() (in module sinergym.utils.gcloud)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.common.get_wrappers_info.html#sinergym.utils.common.get_wrappers_info">get_wrappers_info() (in module sinergym.utils.common)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.SimpleLogger.html#sinergym.utils.logger.SimpleLogger.getLogger">getLogger() (sinergym.utils.logger.SimpleLogger method)</a>
 
@@ -463,9 +496,9 @@
         <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.idd_path">(sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
       </ul></li>
-      <li><a href="pages/modules/sinergym.utils.wrappers.IncrementalWrapper.html#sinergym.utils.wrappers.IncrementalWrapper">IncrementalWrapper (class in sinergym.utils.wrappers)</a>
+      <li><a href="pages/modules/sinergym.utils.common.import_from_path.html#sinergym.utils.common.import_from_path">import_from_path() (in module sinergym.utils.common)</a>
 </li>
-      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.info">info() (sinergym.envs.eplus_env.EplusEnv method)</a>
+      <li><a href="pages/modules/sinergym.utils.wrappers.IncrementalWrapper.html#sinergym.utils.wrappers.IncrementalWrapper">IncrementalWrapper (class in sinergym.utils.wrappers)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.LoggerStorage.html#sinergym.utils.logger.LoggerStorage.infos">infos (sinergym.utils.logger.LoggerStorage attribute)</a>
 </li>
@@ -609,6 +642,8 @@
 </li>
         <li><a href="pages/modules/sinergym.utils.rewards.html#module-sinergym.utils.rewards">sinergym.utils.rewards</a>
 </li>
+        <li><a href="pages/modules/sinergym.utils.serialization.html#module-sinergym.utils.serialization">sinergym.utils.serialization</a>
+</li>
         <li><a href="pages/modules/sinergym.utils.wrappers.html#module-sinergym.utils.wrappers">sinergym.utils.wrappers</a>
 </li>
       </ul></li>
@@ -750,6 +785,8 @@
 </li>
       <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.save_building_model">save_building_model() (sinergym.config.modeling.ModelJSON method)</a>
 </li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.save_config">save_config() (sinergym.envs.eplus_env.EplusEnv method)</a>
+</li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.schedulers">schedulers (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.EnergyCostWrapper.html#sinergym.utils.wrappers.EnergyCostWrapper.set_energy_cost_data">set_energy_cost_data() (sinergym.utils.wrappers.EnergyCostWrapper method)</a>
@@ -826,8 +863,6 @@
         <li><a href="pages/modules/sinergym.utils.callbacks.html#module-sinergym.utils.callbacks">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.common
 
@@ -835,6 +870,8 @@
         <li><a href="pages/modules/sinergym.utils.common.html#module-sinergym.utils.common">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.constants
 
@@ -878,12 +915,23 @@
 </li>
       </ul></li>
       <li>
+    sinergym.utils.serialization
+
+      <ul>
+        <li><a href="pages/modules/sinergym.utils.serialization.html#module-sinergym.utils.serialization">module</a>
+</li>
+      </ul></li>
+      <li>
     sinergym.utils.wrappers
 
       <ul>
         <li><a href="pages/modules/sinergym.utils.wrappers.html#module-sinergym.utils.wrappers">module</a>
 </li>
       </ul></li>
+      <li><a href="pages/modules/sinergym.utils.serialization.space_constructor.html#sinergym.utils.serialization.space_constructor">space_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.space_representer.html#sinergym.utils.serialization.space_representer">space_representer() (in module sinergym.utils.serialization)</a>
+</li>
       <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.start">start() (sinergym.simulators.eplus.EnergyPlus method)</a>
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.step">step() (sinergym.envs.eplus_env.EplusEnv method)</a>
@@ -912,6 +960,8 @@
 </li>
       <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.stop">stop() (sinergym.simulators.eplus.EnergyPlus method)</a>
 </li>
+      <li><a href="pages/modules/sinergym.utils.wrappers.store_init_metadata.html#sinergym.utils.wrappers.store_init_metadata">store_init_metadata() (in module sinergym.utils.wrappers)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -922,13 +972,21 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.LoggerStorage.html#sinergym.utils.logger.LoggerStorage.terminateds">terminateds (sinergym.utils.logger.LoggerStorage attribute)</a>
 </li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode">timestep_per_episode (sinergym.envs.eplus_env.EplusEnv property)</a>
+</li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.to_dict">to_dict() (sinergym.envs.eplus_env.EplusEnv method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode">timestep_per_episode (sinergym.envs.eplus_env.EplusEnv property)</a>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.to_str">to_str() (sinergym.envs.eplus_env.EplusEnv method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.TqdmLoggingHandler.html#sinergym.utils.logger.TqdmLoggingHandler">TqdmLoggingHandler (class in sinergym.utils.logger)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.LoggerStorage.html#sinergym.utils.logger.LoggerStorage.truncateds">truncateds (sinergym.utils.logger.LoggerStorage attribute)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.tuple_constructor.html#sinergym.utils.serialization.tuple_constructor">tuple_constructor() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.serialization.tuple_representer.html#sinergym.utils.serialization.tuple_representer">tuple_representer() (in module sinergym.utils.serialization)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1054,6 +1112,7 @@
             <dd><a href="../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../v3.7.0/index.html">v3.7.0</a></dd>
+            <dd><a href="../v3.8.0/index.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

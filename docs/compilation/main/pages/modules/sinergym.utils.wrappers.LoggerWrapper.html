@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -96,7 +97,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.store_init_metadata.html">sinergym.utils.wrappers.store_init_metadata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.CSVLogger.html">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
@@ -158,26 +161,17 @@
 <h1>sinergym.utils.wrappers.LoggerWrapper<a class="headerlink" href="#sinergym-utils-wrappers-loggerwrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~gymnasium.core.Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.LoggerStorage'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~gymnasium.core.Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.LoggerStorage'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Link to this definition"></a></dt>
-<dd><p>Wrapper to log data from environment interaction.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<em>Env</em>) – Original Sinergym environment.</p></li>
-<li><p><strong>storage_class</strong> (<em>Callable</em><em>, </em><em>optional</em>) – Storage class to be used. Defaults to Sinergym LoggerStorage class.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="sinergym.utils.wrappers.LoggerWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, storage_class])</p></td>
-<td><p>Wrapper to log data from environment interaction.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="sinergym.utils.wrappers.LoggerWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics" title="sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_custom_metrics</span></code></a>(obs, action, ...)</p></td>
 <td><p>Calculate custom metrics from current interaction (or passed using self.data_logger attributes)</p></td>
@@ -248,13 +242,13 @@
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics">
-<span class="sig-name descname"><span class="pre">calculate_custom_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calculate_custom_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics" title="Link to this definition"></a></dt>
 <dd><p>Calculate custom metrics from current interaction (or passed using self.data_logger attributes)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obs</strong> (<em>np.ndarray</em>) – Observation from environment.</p></li>
-<li><p><strong>action</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>np.ndarray</em><em>]</em>) – Action taken in environment.</p></li>
+<li><p><strong>action</strong> (<em>np.ndarray</em>) – Action taken in environment.</p></li>
 <li><p><strong>reward</strong> (<em>float</em>) – Reward received from environment.</p></li>
 <li><p><strong>info</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Information from environment.</p></li>
 <li><p><strong>terminated</strong> (<em>bool</em>) – Flag to indicate if episode is terminated.</p></li>
@@ -339,6 +333,7 @@
             <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

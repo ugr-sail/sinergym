@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -96,7 +97,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.store_init_metadata.html">sinergym.utils.wrappers.store_init_metadata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.CSVLogger.html">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
@@ -158,20 +161,17 @@
 <h1>sinergym.utils.wrappers.DeltaTempWrapper<a class="headerlink" href="#sinergym-utils-wrappers-deltatempwrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DeltaTempWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DeltaTempWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setpoint_variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DeltaTempWrapper" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DeltaTempWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DeltaTempWrapper" title="Link to this definition"></a></dt>
 <dd><p>Wrapper to add delta temperature information to the current observation. If setpoint variables
 has only one element, it will be considered as a unique setpoint for all temperature variables.
 IMPORTANT: temperature variables and setpoint of each zone must be defined in the same order.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DeltaTempWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setpoint_variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DeltaTempWrapper.__init__" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DeltaTempWrapper.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor for the observation wrapper.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<em>Env</em>) – Original Gym environment.</p></li>
-<li><p><strong>temperature_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of temperature variables.</p></li>
-<li><p><strong>setpoint_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of setpoint variables. If the length is 1, it will be considered as a unique setpoint for all temperature variables.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>env</strong> – Environment to be wrapped.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -179,8 +179,8 @@ IMPORTANT: temperature variables and setpoint of each zone must be defined in th
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DeltaTempWrapper.__init__" title="sinergym.utils.wrappers.DeltaTempWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env, temperature_variables, ...)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DeltaTempWrapper.__init__" title="sinergym.utils.wrappers.DeltaTempWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Constructor for the observation wrapper.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
 <td><p>Returns the class name of the wrapper.</p></td>
@@ -310,6 +310,7 @@ IMPORTANT: temperature variables and setpoint of each zone must be defined in th
             <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.wrappers.DeltaTempWrapper.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.DeltaTempWrapper.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

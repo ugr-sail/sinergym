@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -96,7 +97,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.store_init_metadata.html">sinergym.utils.wrappers.store_init_metadata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.CSVLogger.html">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
@@ -158,19 +161,15 @@
 <h1>sinergym.utils.wrappers.DiscretizeEnv<a class="headerlink" href="#sinergym-utils-wrappers-discretizeenv" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscretizeEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DiscretizeEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Discrete</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiDiscrete</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiBinary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscretizeEnv" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DiscretizeEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscretizeEnv" title="Link to this definition"></a></dt>
 <dd><p>Wrapper to discretize an action space.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscretizeEnv.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Discrete</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiDiscrete</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiBinary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscretizeEnv.__init__" title="Link to this definition"></a></dt>
-<dd><p>Wrapper for Discretize action space.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscretizeEnv.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor for the action wrapper.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<em>Env</em>) – Original environment.</p></li>
-<li><p><strong>discrete_space</strong> (<em>Union</em><em>[</em><em>gym.spaces.Discrete</em><em>, </em><em>gym.spaces.MultiDiscrete</em><em>, </em><em>gym.spaces.MultiBinary</em><em>]</em>) – Discrete Space.</p></li>
-<li><p><strong>action_mapping</strong> (<em>Callable</em><em>[</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em><em>]</em><em>, </em><em>Union</em><em>[</em><em>float</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em><em>]</em>) – Function with action as argument, its output must match with original env action space, otherwise an error will be raised.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>env</strong> – Environment to be wrapped.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -178,8 +177,8 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscretizeEnv.__init__" title="sinergym.utils.wrappers.DiscretizeEnv.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env, discrete_space, action_mapping)</p></td>
-<td><p>Wrapper for Discretize action space.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscretizeEnv.__init__" title="sinergym.utils.wrappers.DiscretizeEnv.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Constructor for the action wrapper.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscretizeEnv.action" title="sinergym.utils.wrappers.DiscretizeEnv.action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action</span></code></a>(action)</p></td>
 <td><p>Returns a modified action before <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> is called.</p></td>
@@ -325,6 +324,7 @@
             <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.wrappers.DiscretizeEnv.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/pages/modules/sinergym.utils.wrappers.DiscretizeEnv.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.wrappers.DiscretizeEnv.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.DiscretizeEnv.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

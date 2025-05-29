@@ -62,6 +62,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -107,6 +108,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.NormalizedLinearReward.html">sinergym.utils.rewards.NormalizedLinearReward</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
 </li>
@@ -163,7 +165,8 @@
 <li><p><strong>energy_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Name(s) of the energy/power variable(s).</p></li>
 <li><p><strong>range_comfort_winter</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em>) – Temperature comfort range for cold season. Depends on environment you are using.</p></li>
 <li><p><strong>range_comfort_summer</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em>) – Temperature comfort range for hot season. Depends on environment you are using.</p></li>
-<li><p><strong>summer_start</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em>) – Summer session tuple with month and day start. Defaults to (6,1).</p></li>
+<li><p><strong>summer_start</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em>) – Summer s-sum(exp(violation)
+for violation in temp_violations if violation &gt; 0)ession tuple with month and day start. Defaults to (6,1).</p></li>
 <li><p><strong>summer_final</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em>) – Summer session tuple with month and day end. defaults to (9,30).</p></li>
 <li><p><strong>energy_weight</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight given to the energy term. Defaults to 0.4.</p></li>
 <li><p><strong>temperature_weight</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight given to the temperature term. Defaults to 0.4.</p></li>
@@ -244,6 +247,7 @@
             <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.rewards.EnergyCostLinearReward.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.rewards.EnergyCostLinearReward.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

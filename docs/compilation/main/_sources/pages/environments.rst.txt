@@ -11,19 +11,24 @@ Environments
   import gymnasium as gym
   
   print(sinergym.__version__)
-  print(sinergym.__ids__)
+  print(sinergym.ids())
 
   # Make and consult environment
   env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
-  print(env.info())
+  print(env.get_wrapper_attr('to_str')())
 
 Environment names follow the format ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``.  
-These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `info` method as shown in the example code.
+These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `to_str` method as shown in the example code.
 
-.. important:: Environments are automatically generated using YAML configuration files
+.. important:: **Environments are automatically generated** using YAML configuration files
                for each building. This eliminates the need to manually register each 
                environment ID or set parameters directly in the environment constructor.
                For more information, see :ref:`Environments Configuration and Registration`.
+
+.. note:: Additionally, Sinergym supports **full serialization of environments and wrappers**, 
+          enabling easy saving, modification, and restoration of experiments. This ensures 
+          reproducibility and simplifies configuration sharing. For more details, see 
+          :ref:`Serialization and Configuration Management`.
 
 .. note:: Discrete environments are fully customizable. By default, these environments use a basic control scheme.
           However, you can opt for a continuous environment and apply custom discretization using our dedicated wrapper. For further details, refer to :ref:`DiscretizeEnv`.
@@ -53,6 +58,8 @@ The ``building_file`` parameter refers to the *epJSON* file, an `adaptation <htt
 
 Before starting the simulation, *Sinergym* performs a preparatory step to adapt the building model. For more details, refer to the *Modeling* component in the *Sinergym* backend diagram.
 
+This parameter can be set to either a single building file name or a full path, if an external building file is being used.
+
 Weather files
 =============
 
@@ -61,6 +68,8 @@ The ``weather_file`` parameter specifies the *EPW* (*EnergyPlus* Weather) file, 
 This parameter can be provided as a single weather file name (``str``) or as a list of multiple weather files (``List[str]``). When multiple files are specified, *Sinergym* will randomly select one *EPW* file for each episode and automatically adapt the building model accordingly. This feature adds complexity to the environment, if desired.
 
 The weather file used in each episode is saved in the *Sinergym* episode output folder. If **variability** (see section :ref:`Weather Variability`) is enabled, the stored *EPW* file will include the corresponding noise adjustments.
+
+Alternatively, the weather_file parameter can also be set to a full path, which is useful when using custom or external weather files not located in the default weather directory. This allows greater flexibility in testing specific climate scenarios or regional data.
 
 Weather variability
 ~~~~~~~~~~~~~~~~~~~
@@ -129,7 +138,7 @@ Maximum episode data stored in Sinergym output
 
 *Sinergym* stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section :ref:`Sinergym output` for further details). The ``env_name`` parameter is utilized to generate the **working directory name**, facilitating differentiation between multiple experiments within the same environment.
 
-The parameter ``max_ep_data_store_num`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
+The parameter ``max_ep_store`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
 
 If *Sinergym*'s CSV storage feature is enabled (refer to section :ref:`CSVLogger`), a ``progress.csv`` file will be generated. This file contains summary data for each episode.
 
@@ -237,10 +246,10 @@ The ``action_space`` argument adheres to the Gymnasium standard and must be a co
 
 *Sinergym* also offers the option to create **empty action interfaces**. In this case, control is managed by the **default building model schedulers**. For more information, see the usage example in :ref:`Default building control using an empty action space`.
 
-Extra configuration
-===================
+Building extra configuration
+=============================
 
-Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``config_params`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
+Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``building_config`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 
 Seed
 ====

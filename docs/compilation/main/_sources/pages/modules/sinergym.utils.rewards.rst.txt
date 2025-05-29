@@ -1,4 +1,4 @@
-﻿sinergym.utils.rewards
+sinergym.utils.rewards
 ======================
 
 .. automodule:: sinergym.utils.rewards

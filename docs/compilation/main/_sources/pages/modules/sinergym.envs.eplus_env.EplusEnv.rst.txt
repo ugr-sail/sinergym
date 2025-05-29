@@ -17,14 +17,17 @@
    
       ~EplusEnv.__init__
       ~EplusEnv.close
+      ~EplusEnv.from_dict
       ~EplusEnv.get_wrapper_attr
       ~EplusEnv.has_wrapper_attr
-      ~EplusEnv.info
       ~EplusEnv.render
       ~EplusEnv.reset
+      ~EplusEnv.save_config
       ~EplusEnv.set_seed
       ~EplusEnv.set_wrapper_attr
       ~EplusEnv.step
+      ~EplusEnv.to_dict
+      ~EplusEnv.to_str
       ~EplusEnv.update_context
    
    

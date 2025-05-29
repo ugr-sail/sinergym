@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
@@ -125,7 +126,7 @@
 
 <span class="n">extra_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;timesteps_per_hour&#39;</span> <span class="p">:</span> <span class="mi">6</span>
               <span class="s1">&#39;runperiod&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1997</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1998</span><span class="p">)}</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">config_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">building_config</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The format of these extra configuration parameters is a <strong>Python dictionary</strong> with their corresponding <em>keys</em> and <em>values</em>.</p>
@@ -133,7 +134,7 @@
 <section id="timestep-per-hour">
 <h2>timestep_per_hour<a class="headerlink" href="#timestep-per-hour" title="Link to this heading"></a></h2>
 <p>By default, <em>Sinergym</em> applies <strong>4</strong> timesteps per simulated hour, which is the default value in building files.
-However, you can modify this value using the <code class="docutils literal notranslate"><span class="pre">timestep_per_hour</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config_params</span></code> dictionary and vary the number of timesteps in each simulated hour.</p>
+However, you can modify this value using the <code class="docutils literal notranslate"><span class="pre">timestep_per_hour</span></code> key in the <code class="docutils literal notranslate"><span class="pre">building_config</span></code> dictionary and vary the number of timesteps in each simulated hour.</p>
 </section>
 <section id="runperiod">
 <h2>runperiod<a class="headerlink" href="#runperiod" title="Link to this heading"></a></h2>
@@ -202,6 +203,7 @@ February 29th of a leap year in that range. Otherwise, the simulator will fail, 
             <dd><a href="../../v3.5.0/pages/extra-configuration.html">v3.5.0</a></dd>
             <dd><a href="../../v3.6.0/pages/extra-configuration.html">v3.6.0</a></dd>
             <dd><a href="../../v3.7.0/pages/extra-configuration.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.8.0/pages/extra-configuration.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

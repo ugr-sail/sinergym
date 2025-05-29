@@ -63,6 +63,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -1516,10 +1517,10 @@ Observed meters: {}
 <h2>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
 <p>You can also print all the environment information. Just remember to do <code class="docutils literal notranslate"><span class="pre">reset</span></code> beforehand to obtain handlers information too:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;to_str&#39;</span><span class="p">)()</span>
 </pre></div>
 </div>
 </div>
@@ -2685,6 +2686,7 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
             <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/index.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -96,7 +97,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.serialization.html">sinergym.utils.serialization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.store_init_metadata.html">sinergym.utils.wrappers.store_init_metadata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
@@ -158,17 +161,14 @@
 <h1>sinergym.utils.wrappers.CSVLogger<a class="headerlink" href="#sinergym-utils-wrappers-csvlogger" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.CSVLogger">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">CSVLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_excluded_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['reward',</span> <span class="pre">'action',</span> <span class="pre">'timestep',</span> <span class="pre">'month',</span> <span class="pre">'day',</span> <span class="pre">'hour',</span> <span class="pre">'time_elapsed(hours)',</span> <span class="pre">'reward_weight',</span> <span class="pre">'is_raining']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.CSVLogger" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">CSVLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.CSVLogger" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.CSVLogger.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_excluded_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['reward',</span> <span class="pre">'action',</span> <span class="pre">'timestep',</span> <span class="pre">'month',</span> <span class="pre">'day',</span> <span class="pre">'hour',</span> <span class="pre">'time_elapsed(hours)',</span> <span class="pre">'reward_weight',</span> <span class="pre">'is_raining']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.CSVLogger.__init__" title="Link to this definition"></a></dt>
-<dd><p>Logger to save logger data in CSV files while is running. It is required to be wrapped by a BaseLoggerWrapper child class previously.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.CSVLogger.__init__" title="Link to this definition"></a></dt>
+<dd><p>Wraps an environment to allow a modular transformation of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> and <a class="reference internal" href="#sinergym.utils.wrappers.CSVLogger.reset" title="sinergym.utils.wrappers.CSVLogger.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<em>Env</em>) – Original Gym environment in Sinergym.</p></li>
-<li><p><strong>info_excluded_keys</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of keys in info dictionary to be excluded from CSV files. Defaults to [‘reward’, ‘action’, ‘timestep’, ‘month’, ‘day’, ‘hour’, ‘time_elapsed(hours)’, ‘reward_weight’, ‘is_raining’].</p></li>
-</ul>
+<dd class="field-odd"><p><strong>env</strong> – The environment to wrap</p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,8 +176,8 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.CSVLogger.__init__" title="sinergym.utils.wrappers.CSVLogger.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, info_excluded_keys])</p></td>
-<td><p>Logger to save logger data in CSV files while is running.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.CSVLogger.__init__" title="sinergym.utils.wrappers.CSVLogger.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Wraps an environment to allow a modular transformation of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> and <a class="reference internal" href="#sinergym.utils.wrappers.CSVLogger.reset" title="sinergym.utils.wrappers.CSVLogger.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> methods.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
 <td><p>Returns the class name of the wrapper.</p></td>
@@ -186,7 +186,7 @@
 <td><p>Recording last episode summary and close env.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.CSVLogger.dump_log_files" title="sinergym.utils.wrappers.CSVLogger.dump_log_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_log_files</span></code></a>()</p></td>
-<td><p>Dump all logger data in CSV files.</p></td>
+<td><p>Dump all logger data into CSV files.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
@@ -252,7 +252,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.CSVLogger.dump_log_files">
 <span class="sig-name descname"><span class="pre">dump_log_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.CSVLogger.dump_log_files" title="Link to this definition"></a></dt>
-<dd><p>Dump all logger data in CSV files.</p>
+<dd><p>Dump all logger data into CSV files.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -324,6 +324,7 @@ Tuple[np.ndarray, Dict[str, Any]]: Current observation and info context with add
             <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.wrappers.CSVLogger.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/pages/modules/sinergym.utils.wrappers.CSVLogger.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/pages/modules/sinergym.utils.wrappers.CSVLogger.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.CSVLogger.html">v3.8.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
