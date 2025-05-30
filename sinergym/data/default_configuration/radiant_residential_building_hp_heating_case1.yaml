@@ -51,7 +51,7 @@ weather_specification:
       maximum_cold_water_flow: ['Autosize', 'Autosize', 'Autosize', 'Autosize', 'Autosize']
   keys: [hot, mixed, cool, stockholm]
 
-config_params:
+building_config:
   timesteps_per_hour: 12
   north_axis: 270.0
 
@@ -61,7 +61,7 @@ weather_variability:
     - 0.0
     - 24.0
 
-max_ep_data_store_num: 3
+max_ep_store: 3
 
 time_variables:
   - month
@@ -225,7 +225,7 @@ action_space: gym.spaces.Box(low=np.array([25.0], dtype=np.float32), high=np.arr
 
 only_discrete: false
 
-reward: LinearReward
+reward: sinergym.utils.rewards:LinearReward
 
 reward_kwargs:
   temperature_variables:
