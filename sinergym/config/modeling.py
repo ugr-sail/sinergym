@@ -361,14 +361,9 @@ class ModelJSON(object):
                     self.timestep_per_episode}')
 
             # North axis
-            if self.config.get('north_axis'):
+            if self.building_config.get('north_axis'):
                 list(self.building['Building'].values())[0][
-                    'north_axis'] = self.config['north_axis']
-
-            # North axis
-            if self.config.get('north_axis'):
-                list(self.building['Building'].values())[0][
-                    'north_axis'] = self.config['north_axis']
+                    'north_axis'] = self.building_config['north_axis']
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
@@ -778,7 +773,7 @@ class ModelJSON(object):
                 # North axis
                 elif config_key == 'north_axis':
                     try:
-                        assert self.config[config_key] >= 0.0 and self.config[config_key] <= 360.0
+                        assert self.building_config[config_key] >= 0.0 and self.building_config[config_key] <= 360.0
                     except AssertionError as err:
                         self.logger.critical(
                             'Extra Config: North axis specified in extra configuration must be a float value between 0 and 360.')
