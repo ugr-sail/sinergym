@@ -1,134 +1,64 @@
-# ---------------------------------- BASICS ---------------------------------- #
-id: LoadExample
+# ---------------------------------------------------------------------------- #
+#                                    BASICS                                    #
+# ---------------------------------------------------------------------------- #
+experiment_name: Eplus-PPO-load-example-case1
 environment: Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1
-episodes: 10
+episodes: 5
 
-# ------------------------------- SB3 ALGORITHM ------------------------------ #
+# ---------------------------------------------------------------------------- #
+#                                   ALGORITHM                                  #
+# ---------------------------------------------------------------------------- #
 algorithm:
-  name: PPO
+  name: stable_baselines3:PPO
 
-# --------------------------- MODEL FOR EVALUATION --------------------------- #
-# Local Path:
-model: 
-  local_path: /workspaces/sinergym/scripts/eval/PPO_50/best_model.zip
-# load model normalization if needed
-  normalization:
-    mean: /workspaces/sinergym/scripts/eval/PPO_50/mean.txt
-    var: /workspaces/sinergym/scripts/eval/PPO_50/var.txt
+# ---------------------------------------------------------------------------- #
+#                         MODEL TO EVALUATE (REQUIRED)                         #
+# ---------------------------------------------------------------------------- #
 
-# Google Bucket Path:
+# -------------------------------- Local Path -------------------------------- #
+# model: 
+#   local_path: </path/to/model>
+
+# ---------------------------- Google Bucket Path ---------------------------- #
 # model: 
 #   bucket_path: gs://<path_to_model_google_bucket>
-# load model normalization if needed
-#   normalization:
-#     mean: Sinergym_output/evaluation/mean.txt
-#     var: Sinergym_output/evaluation/var.txt
 
-# WANDB model path:
-# model:
-#   project: test-project
-#   entity: sail_ugr
-#   artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPO_training_2025-03-05_12-32_7sws2edy
-#   artifact_type: output
-#   artifact_tag: v0
-#   artifact_path: Sinergym_output/evaluation/
-#   model_path: Sinergym_output/evaluation/best_model.zip
-#   # load model normalization if needed
-#   normalization:
-#     mean: Sinergym_output/evaluation/mean.txt
-#     var: Sinergym_output/evaluation/var.txt
+# ----------------------------- WANDB model Path ----------------------------- #
+model:
+  project: test-project
+  entity: alejandro-campoy
+  artifact_name: Eplus-PPO-case1-Example_2025-05-29_16-43_w6zyzazn
+  artifact_type: output
+  artifact_tag: v0
+  artifact_path: Sinergym_output/
+  model_path: Sinergym_output/evaluation/best_model.zip
 
-
-# -------------------------------- EVALUATION -------------------------------- #
-
-# -------------------------------- ENVIRONMENT ------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                       ENVIRONMENT OVERWRITE PARAMETERS                       #
+# ---------------------------------------------------------------------------- #
+# Yaml file with environment configuration (Optional)
+env_yaml_config: Sinergym_output/env_config.pyyaml
+# In order to overwrite some parameters of the environment, you can use the following
 env_params:
-  
   seed: null
+# reward: sinergym.utils.rewards:LinearReward
+# ... other environment parameters
 
-  reward: MultiZoneRewardV1
-
-  reward_kwargs:
-    energy_weight: 0.50
-    lambda_energy: 0.001
-    energy_variables:
-      - heat_source_electricity_rate
-    comfort_threshold: 1.0
-    lambda_temperature: 1.0
-    temperature_and_setpoints_conf:
-      air_temperature_bed1: htg_setpoint_bed1
-      air_temperature_bed2: htg_setpoint_bed2
-      air_temperature_bed3: htg_setpoint_bed3
-      air_temperature_living: htg_setpoint_living
-      air_temperature_kitchen: htg_setpoint_kitchen
-
-  config_params:
-    north_axis: 270.0
-    timesteps_per_hour: 12
-
-  initial_context:
-    - 20.5
-    - 20.5
-    - 20.5
-    - 20.5
-    - 20.5
-    
-  weather_variability:
-    Dry Bulb Temperature:
-      - 1.0
-      - 0.0
-      - 24.0
-
-  max_ep_data_store_num: 10
-
-# --------------------------------- WRAPPERS --------------------------------- #
-
+# ---------------------------------------------------------------------------- #
+#                              WRAPPERS DEFINITION                             #
+# ---------------------------------------------------------------------------- #
+# Yaml file with wrappers configuration (Optional)
+wrappers_yaml_config: Sinergym_output/wrappers_config.pyyaml
+# This overwrite wrappers in wrappers_yaml_config if defined
 wrappers:
-  - GeneralContextWrapper:
-      configuration:
-        02-01 00:
-          - 21.0
-          - 21.0
-          - 21.0
-          - 21.0
-          - 21.0
-        12-01 00:
-          - 20.0
-          - 20.0
-          - 20.0
-          - 20.0
-          - 20.0
-  - NormalizeAction: {}
-  - NormalizeObservation:
-      mean: null
-      var: null
+  - sinergym.utils.wrappers:NormalizeObservation:
+      mean: Sinergym_output/evaluation/mean.txt
+      var: Sinergym_output/evaluation/var.txt
       automatic_update: false
-  - LoggerWrapper:
-      storage_class: sinergym.utils.logger.LoggerStorage
-  - CSVLogger: {}
-  - ReduceObservationWrapper:
-      obs_reduction:
-        - radiant_hvac_outlet_temperature_living
-        - radiant_hvac_outlet_temperature_kitchen
-        - radiant_hvac_outlet_temperature_bed1
-        - radiant_hvac_outlet_temperature_bed2
-        - radiant_hvac_outlet_temperature_bed3
-        - flow_rate_living
-        - flow_rate_kitchen
-        - flow_rate_bed1
-        - flow_rate_bed2
-        - flow_rate_bed3
-        - heat_source_load_side_heat_transfer_rate
-        - heat_source_load_side_mass_flow_rate
-        - crf
-        - heat_cap_mod
-        - cop_plr_mod
-        - cop_temp_mod
-        - plr_current
 
 # -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
-cloud: 
-  remote_store: null # remote bucket name
-  auto_delete: null # Delete remote instance when finish experiment
+# cloud: 
+#   remote_store: null # remote bucket name
+#   auto_delete: null # Delete remote instance when finish experiment
   # auto_delete:
   #   group_name: group-example

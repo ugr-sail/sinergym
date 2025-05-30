@@ -1,0 +1,115 @@
+# ---------------------------------------------------------------------------- #
+#                                    BASICS                                    #
+# ---------------------------------------------------------------------------- #
+experiment_name: Eplus-PPO-case3-Example
+environment: Eplus-radiant_case3_heating-stockholm-continuous-stochastic-v1
+episodes: 50
+
+# ---------------------------------------------------------------------------- #
+#                                 SB3 ALGORITHM                                #
+# ---------------------------------------------------------------------------- #
+algorithm:
+  name: stable_baselines3:PPO
+  log_interval: 1
+  parameters:
+    policy: MlpPolicy
+    learning_rate: 0.0003
+    n_steps: 2048
+    batch_size: 64
+    n_epochs: 10
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_range: 0.2
+    clip_range_vf: null
+    normalize_advantage: true
+    ent_coef: 0
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+    use_sde: false
+    sde_sample_freq: -1
+    rollout_buffer_class: null
+    rollout_buffer_kwargs: null
+    target_kl: null
+    stats_window_size: 100
+    tensorboard_log: null
+    policy_kwargs: null
+    verbose: 1
+    seed: null
+    device: auto
+    _init_setup_model: true
+
+# ---------------------------------------------------------------------------- #
+#                             INITIAL STATE (MODEL)                            #
+# ---------------------------------------------------------------------------- #
+
+# -------------------------------- Local Path -------------------------------- #
+# model: 
+#   local_path: </path/to/model>
+
+# ---------------------------- Google Bucket Path ---------------------------- #
+# model: 
+#   bucket_path: gs://<path_to_model_google_bucket>
+
+# ----------------------------- WANDB model Path ----------------------------- #
+# model:
+#   project: test-project
+#   entity: alejandro-campoy
+#   artifact_name: Eplus-PPO-training-example_2025-05-23_18-48_edk4lh5z
+#   artifact_type: output
+#   artifact_tag: v0
+#   artifact_path: Sinergym_output/
+#   model_path: Sinergym_output/evaluation/best_model.zip
+
+# ---------------------------------------------------------------------------- #
+#                                  EVALUATION                                  #
+# ---------------------------------------------------------------------------- #
+evaluation:
+  eval_freq: 5
+  eval_length: 2
+
+# ---------------------------------------------------------------------------- #
+#                       ENVIRONMENT OVERWRITE PARAMETERS                       #
+# ---------------------------------------------------------------------------- #
+# Yaml file with environment configuration (Optional)
+env_yaml_config: null
+# In order to overwrite some parameters of the environment, you can use the following
+env_params:
+  seed: null
+  reward: sinergym.utils.rewards:LinearReward
+# ... other environment parameters
+
+
+# ---------------------------------------------------------------------------- #
+#                              WRAPPERS DEFINITION                             #
+# ---------------------------------------------------------------------------- #
+# Yaml file with wrappers configuration (Optional)
+wrappers_yaml_config: null
+# This overwrite wrappers in wrappers_yaml_config if defined
+wrappers:
+  - sinergym.utils.wrappers:NormalizeAction: {}
+  - sinergym.utils.wrappers:NormalizeObservation: {}
+  - sinergym.utils.wrappers:LoggerWrapper:
+      storage_class: sinergym.utils.logger:LoggerStorage
+  - sinergym.utils.wrappers:CSVLogger: {}
+  - sinergym.utils.wrappers:WandBLogger:
+      entity: alejandro-campoy
+      project_name: test-project
+  - sinergym.utils.wrappers:ReduceObservationWrapper:
+      obs_reduction:
+        - radiant_hvac_outlet_temperature_living
+        - radiant_hvac_outlet_temperature_kitchen
+        - radiant_hvac_outlet_temperature_bed1
+        - radiant_hvac_outlet_temperature_bed2
+        - radiant_hvac_outlet_temperature_bed3
+        - flow_rate_living
+        - flow_rate_kitchen
+        - flow_rate_bed1
+        - flow_rate_bed2
+        - flow_rate_bed3
+        - heat_source_load_side_heat_transfer_rate
+        - heat_source_load_side_mass_flow_rate
+        - crf
+        - heat_cap_mod
+        - cop_plr_mod
+        - cop_temp_mod
+        - plr_current

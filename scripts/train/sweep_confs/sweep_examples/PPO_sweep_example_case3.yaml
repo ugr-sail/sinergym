@@ -1,0 +1,194 @@
+program: launch_agent.py
+method: grid
+parameters:
+
+# ---------------------------------------------------------------------------- #
+#                                    BASICS                                    #
+# ---------------------------------------------------------------------------- #
+  experiment_name:
+    value: Eplus-PPO-training-example-case3
+  environment:
+    value: Eplus-radiant_case3_heating-stockholm-continuous-stochastic-v1
+  episodes:
+    value: 10
+  log_interval:
+    value: 10
+
+# ---------------------------------------------------------------------------- #
+#                                   ALGORITHM                                  #
+# ---------------------------------------------------------------------------- #
+  algorithm:
+    value: stable_baselines3:PPO
+  algorithm_parameters:
+    parameters:
+      policy:
+        value: 'MlpPolicy'
+      learning_rate:
+        values: 
+          - 3.0e-4
+          - 1.0e-3
+      n_steps:
+        value: 2048
+      batch_size:
+        values:
+          - 256
+          - 512
+      n_epochs:
+        value: 10
+      gamma:
+        value: 0.99
+      gae_lambda:
+        value: 0.95
+      clip_range:
+        value: 0.2
+      clip_range_vf:
+        value: null
+      normalize_advantage:
+        value: True
+      ent_coef:
+        values: 
+          - 0.0
+      vf_coef:
+        value: 0.5
+      max_grad_norm:
+        value: 0.5
+      use_sde:
+        value: False
+      sde_sample_freq:
+        value: -1
+      rollout_buffer_class:
+        value: null
+      rollout_buffer_kwargs:
+        value: null
+      target_kl:
+        value: null
+      stats_window_size:
+        value: 100
+      tensorboard_log:
+        value: null
+      policy_kwargs:
+        value: null
+      verbose:
+        value: 1
+      seed:
+        value: null
+      device:
+        value: 'auto'
+      _init_setup_model:
+        value: True
+
+# ---------------------------------------------------------------------------- #
+#                             INITIAL STATE (MODEL)                            #
+# ---------------------------------------------------------------------------- #
+
+# -------------------------------- Local Path -------------------------------- #
+  # model:
+  #   value:
+  #     local_path: </path/to/model>
+
+# ---------------------------- Google Bucket Path ---------------------------- #
+  # model:
+  #   value:
+  #     bucket_path: gs://<path_to_model_google_bucket>
+
+# ----------------------------- WANDB model Path ----------------------------- #
+  # model:
+  #   value:
+  #     project: test-project
+  #     entity: alejandro-campoy
+  #     artifact_name: Eplus-PPO-training-example_2025-05-23_18-48_edk4lh5z
+  #     artifact_type: output
+  #     artifact_tag: v0
+  #     artifact_path: Sinergym_output/
+  #     model_path: Sinergym_output/evaluation/best_model.zip
+
+
+# ---------------------------------------------------------------------------- #
+#                                  EVALUATION                                  #
+# ---------------------------------------------------------------------------- #
+  # Set null when you don't want evaluation
+  evaluation:
+    parameters:
+      eval_freq:
+        value: 5
+      eval_length:
+        value: 2
+
+# ---------------------------------------------------------------------------- #
+#                       ENVIRONMENT OVERWRITE PARAMETERS                       #
+# ---------------------------------------------------------------------------- #
+  # Yaml file with wrappers configuration (Optional)
+  env_yaml_config:
+    value: null
+  # In order to overwrite some parameters of the environment, you can use the following
+  env_params:
+    parameters:
+      seed:
+        value: null
+      weather_variability:
+        values:
+        - {
+          Dry Bulb Temperature: [1.0,0.0,24.0]
+        }
+      reward:
+        value: sinergym.utils.rewards:LinearReward
+      # ... other environment parameters
+
+# ---------------------------------------------------------------------------- #
+#                              WRAPPERS DEFINITION                             #
+# ---------------------------------------------------------------------------- #
+  # Yaml file with wrappers configuration for environment (Optional)
+  wrappers_yaml_config:
+    value: null
+  # This overwrite wrappers in wrappers_yaml_config if defined
+  wrappers:
+    value: 
+      - sinergym.utils.wrappers:NormalizeAction: {}
+      - sinergym.utils.wrappers:ExtremeFlowControlWrapper: {}
+      - sinergym.utils.wrappers:NormalizeObservation: {}
+      - sinergym.utils.wrappers:LoggerWrapper:
+          storage_class: sinergym.utils.logger:LoggerStorage
+      - sinergym.utils.wrappers:CSVLogger: {}
+      - sinergym.utils.wrappers:WandBLogger: 
+          save_code: True
+          dump_frequency: 1000
+          artifact_save: True
+          artifact_type: output
+          excluded_info_keys: 
+            - reward
+            - action
+            - timestep
+            - month
+            - day
+            - hour
+            - time_elapsed(hours)
+            - reward_weight
+            - is_raining
+          excluded_episode_summary_keys:
+            - terminated
+            - truncated
+      - sinergym.utils.wrappers:ReduceObservationWrapper:
+          obs_reduction:
+            - radiant_hvac_outlet_temperature_living
+            - radiant_hvac_outlet_temperature_kitchen
+            - radiant_hvac_outlet_temperature_bed1
+            - radiant_hvac_outlet_temperature_bed2
+            - radiant_hvac_outlet_temperature_bed3
+            - flow_rate_living
+            - flow_rate_kitchen
+            - flow_rate_bed1
+            - flow_rate_bed2
+            - flow_rate_bed3
+            - heat_source_load_side_heat_transfer_rate
+            - heat_source_load_side_mass_flow_rate
+            - crf
+            - heat_cap_mod
+            - cop_plr_mod
+            - cop_temp_mod
+            - plr_current
+
+# -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
+# cloud: 
+#   remote_store: null # remote bucket name
+  
+      
