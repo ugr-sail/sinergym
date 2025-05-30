@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
 from datetime import datetime
+from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
@@ -20,11 +21,34 @@ from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
 from sinergym.utils.rewards import EnergyCostLinearReward
 
+# ------------- Decorator for store kwargs in each wrapper layer ------------- #
+
+
+def store_init_metadata(cls):
+    original_init = cls.__init__
+
+    def new_init(self, *args, **kwargs):
+
+        sig = signature(original_init)
+        bound_args = sig.bind(self, *args, **kwargs)
+        bound_args.apply_defaults()
+
+        # Excluye 'self' and 'env' from the metadata
+        self.__metadata__ = {
+            k: v for k,
+            v in bound_args.arguments.items() if k != 'self' and k != 'env'}
+
+        original_init(self, *args, **kwargs)
+
+    cls.__init__ = new_init
+    return cls
+
 # ---------------------------------------------------------------------------- #
 #                             Observation wrappers                             #
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class DatetimeWrapper(gym.ObservationWrapper):
     """Wrapper to transform datetime variables into a more useful representation:
        - 'day_of_month' is replaced with 'is_weekend' (1 if weekend, 0 otherwise).
@@ -111,6 +135,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class PreviousObservationWrapper(gym.ObservationWrapper):
     """Wrapper to add observation values from previous timestep to
     current environment observation"""
@@ -174,6 +199,7 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class MultiObsWrapper(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(name='WRAPPER MultiObsWrapper',
@@ -251,6 +277,7 @@ class MultiObsWrapper(gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class NormalizeObservation(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(name='WRAPPER NormalizeObservation',
@@ -286,9 +313,12 @@ class NormalizeObservation(gym.Wrapper):
             dtype=self.observation_space.dtype)
 
         # Set mean and variance
-        self.obs_rms.mean = self._process_metric(
-            mean, 'mean') or self.obs_rms.mean
-        self.obs_rms.var = self._process_metric(var, 'var') or self.obs_rms.var
+        processed_mean = self._process_metric(mean, 'mean')
+        processed_var = self._process_metric(var, 'var')
+        if processed_mean is not None:
+            self.obs_rms.mean = self._process_metric(mean, 'mean')
+        if processed_var is not None:
+            self.obs_rms.var = processed_var
 
         self.logger.info('Wrapper initialized.')
 
@@ -407,6 +437,7 @@ class NormalizeObservation(gym.Wrapper):
         return (obs - self.obs_rms.mean) / std
 
 
+@store_init_metadata
 class WeatherForecastingWrapper(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(
@@ -566,6 +597,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
         return obs
 
 
+@store_init_metadata
 class EnergyCostWrapper(gym.Wrapper):
     logger = TerminalLogger().getLogger(name='WRAPPER EnergyCostWrapper',
                                         level=LOG_WRAPPERS_LEVEL)
@@ -732,6 +764,7 @@ class EnergyCostWrapper(gym.Wrapper):
         return obs
 
 
+@store_init_metadata
 class DeltaTempWrapper(gym.ObservationWrapper):
     """Wrapper to add delta temperature information to the current observation. If setpoint variables
     has only one element, it will be considered as a unique setpoint for all temperature variables.
@@ -826,7 +859,7 @@ class DeltaTempWrapper(gym.ObservationWrapper):
 #                                Action wrappers                               #
 # ---------------------------------------------------------------------------- #
 
-
+@store_init_metadata
 class IncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental values of desired action variables"""
 
@@ -936,6 +969,7 @@ class IncrementalWrapper(gym.ActionWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class DiscreteIncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental setpoint discrete action space environment.
     WARNING: A environment with only temperature setpoints control must be used
@@ -1040,6 +1074,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class DiscretizeEnv(gym.ActionWrapper):
     """ Wrapper to discretize an action space.
     """
@@ -1093,6 +1128,7 @@ class DiscretizeEnv(gym.ActionWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class NormalizeAction(gym.ActionWrapper):
     """Wrapper to normalize action space.
     """
@@ -1159,6 +1195,7 @@ class NormalizeAction(gym.ActionWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class MultiObjectiveReward(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(name='WRAPPER MultiObjectiveReward',
@@ -1197,6 +1234,7 @@ class MultiObjectiveReward(gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class BaseLoggerWrapper(ABC, gym.Wrapper):
 
     def __init__(
@@ -1312,6 +1350,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class LoggerWrapper(BaseLoggerWrapper):
 
     logger = TerminalLogger().getLogger(name='WRAPPER LoggerWrapper',
@@ -1416,6 +1455,7 @@ class LoggerWrapper(BaseLoggerWrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class CSVLogger(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(name='WRAPPER CSVLogger',
@@ -1608,6 +1648,7 @@ class CSVLogger(gym.Wrapper):
 try:
     import wandb
 
+    @store_init_metadata
     class WandBLogger(gym.Wrapper):  # pragma: no cover
 
         logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
@@ -1883,6 +1924,8 @@ try:
                 else:
                     self.wandb_run.log({key: value}, step=self.global_timestep)
 except ImportError:
+
+    @store_init_metadata
     class WandBLogger():  # pragma: no cover
         logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                             level=LOG_WRAPPERS_LEVEL)
@@ -1896,7 +1939,7 @@ except ImportError:
 
 # ---------------------------------------------------------------------------- #
 
-
+@store_init_metadata
 class ReduceObservationWrapper(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(
@@ -1980,6 +2023,7 @@ class ReduceObservationWrapper(gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class VariabilityContextWrapper(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(
@@ -2110,6 +2154,7 @@ class VariabilityContextWrapper(gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
+@store_init_metadata
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
         gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):

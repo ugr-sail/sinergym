@@ -2,8 +2,8 @@
 #                                 CONFIGURATION                                #
 # ---------------------------------------------------------------------------- #
 # The sweep must be created previously in the wandb dashboard (using the sweep_example.yaml)
-sweep_id: 1fsmij8q
-entity: sail_ugr
+sweep_id: cos95z12
+entity: alejandro-campoy
 project: test-project
 parallel_agents: 1
 sequential_experiments: 1

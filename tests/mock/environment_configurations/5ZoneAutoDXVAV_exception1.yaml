@@ -12,12 +12,12 @@ weather_specification:
     - mixed
     - cool
 
-config_params: null
+building_config: null
 
 weather_variability:
   Dry Bulb Temperature: [1.0, 0.0, 24.0]
 
-max_ep_data_store_num: 10
+max_ep_store: 3
 
 time_variables:
   - month
@@ -99,7 +99,7 @@ action_space: gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high
 
 action_space_discrete: gym.spaces.Discrete(10)
 
-reward: LinearReward
+reward: sinergym.utils.rewards:LinearReward
 
 reward_kwargs:
   temperature_variables: ["air_temperature"]

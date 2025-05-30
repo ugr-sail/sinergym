@@ -23,7 +23,7 @@ weather_specification:
 # ---------------------------------------------------------------------------- #
 #                         BUILDING EXTRA CONFIGURATION                         #
 # ---------------------------------------------------------------------------- #
-config_params: null
+building_config: null
 
 # ---------------------------------------------------------------------------- #
 #                        WEATHER VARIABILITY (OPTIONAL)                        #
@@ -38,7 +38,7 @@ weather_variability:
 # ---------------------------------------------------------------------------- #
 #                          EPISODES FOLDER GENERATION                          #
 # ---------------------------------------------------------------------------- #
-max_ep_data_store_num: 3
+max_ep_store: 3
 
 # ---------------------------------------------------------------------------- #
 #                             OBSERVATION VARIABLES                            #
@@ -160,7 +160,7 @@ action_space_discrete: gym.spaces.Discrete(10)
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: LinearReward
+reward: sinergym.utils.rewards:LinearReward
 
 reward_kwargs:
   temperature_variables:

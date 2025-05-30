@@ -4,17 +4,18 @@ import warnings
 from typing import Union
 
 import gymnasium as gym
+import numpy as np
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
 
-from sinergym.utils.common import convert_conf_to_env_parameters
-from sinergym.utils.constants import *
-from sinergym.utils.rewards import *
+from sinergym.utils.common import convert_conf_to_env_parameters, import_from_path
+from sinergym.utils.serialization import create_sinergym_yaml_serializers
 
-# Ignore epw module warning
-warnings.filterwarnings(
-    "ignore",
-    module='epw')
+# ------------------------ Ignore epw module warning ------------------------ #
+warnings.filterwarnings("ignore", module='epw')
+
+# --------------------- Serialization of Sinergym in YAML -------------------- #
+create_sinergym_yaml_serializers()
 
 # ------------------------- Set __version__ in module ------------------------ #
 version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
@@ -65,32 +66,28 @@ register(
                 'Schedule Value',
                 'CLG-SETP-SCH')
         },
-        'reward': LinearReward,
+        'reward': import_from_path('sinergym.utils.rewards:LinearReward'),
         'reward_kwargs': {
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)},
         'env_name': 'demo-v1',
-        'config_params': {
+        'building_config': {
             'runperiod': (1, 1, 1991, 1, 3, 1991),
             'timesteps_per_hour': 1
         }})
 
 # ------------------- Read environment configuration files ------------------- #
-conf_files = []
-configuration_path = os.path.join(
-    os.path.dirname(__file__),
-    'data/default_configuration')
-for root, dirs, files in os.walk(configuration_path):
-    for file in files:
-        # Obtain the whole path for each configuration file
-        file_path = os.path.join(root, file)
-        conf_files.append(file_path)
 
-# ---------------- For each conf file, set up environments --------------- #
-for conf_file in conf_files:
-    with open(conf_file, 'r') as yaml_conf:
+
+def register_envs_from_yaml(yaml_path: str):
+    """
+    Register environments from a YAML configuration file.
+
+    :param yaml_path: Path to the YAML configuration file.
+    """
+    with open(yaml_path, 'r') as yaml_conf:
         conf = yaml.safe_load(yaml_conf)
 
     # configurations = Dict [key=environment_id, value=env_kwargs dict]
@@ -116,10 +113,10 @@ for conf_file in conf_files:
             env_kwargs_discrete = env_kwargs.copy()
 
             # Action mapping must be included in constants.
-            action_mapping = eval(
-                "DEFAULT_" +
-                conf["id_base"].upper() +
-                "_DISCRETE_FUNCTION")
+            discrete_function = f'DEFAULT_{
+                conf["id_base"].upper()}_DISCRETE_FUNCTION'
+            action_mapping = import_from_path(
+                f'sinergym.utils.constants:{discrete_function}')
 
             discrete_wrapper_spec = WrapperSpec(
                 name='DiscretizeEnv',
@@ -141,9 +138,24 @@ for conf_file in conf_files:
                 kwargs=env_kwargs_discrete
             )
 
-# --------------------------- Set __ids__ in module -------------------------- #
-__ids__ = [env_id for env_id in gym.envs.registration.registry.keys()
-           if env_id.startswith('Eplus')]
+
+# ------------------ Read default configuration files ------------------ #
+configuration_path = os.path.join(
+    os.path.dirname(__file__),
+    'data/default_configuration')
+for root, dirs, files in os.walk(configuration_path):
+    for file in files:
+        # Obtain the whole path for each configuration file
+        file_path = os.path.join(root, file)
+        # For each conf file, set up environments
+        register_envs_from_yaml(file_path)
+
+# ---------------- Available Sinergym environment's ids getter --------------- #
+
+
+def ids():
+    return [env_id for env_id in gym.envs.registration.registry.keys()
+            if env_id.startswith('Eplus')]
 
 
 # ----------------------------- Log level system ----------------------------- #

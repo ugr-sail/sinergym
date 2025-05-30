@@ -1,17 +1,24 @@
 program: launch_agent.py
 method: grid
 parameters:
-# ---------------------------------- BASICS ---------------------------------- #
+
+# ---------------------------------------------------------------------------- #
+#                                    BASICS                                    #
+# ---------------------------------------------------------------------------- #
+  experiment_name:
+    value: Eplus-TD3-training-example
   environment:
-    value: 'Eplus-5zone-hot-continuous-stochastic-v1'
+    value: Eplus-5zone-hot-continuous-stochastic-v1
   episodes:
-    value: 5
+    value: 3
   log_interval:
     value: 10
-# --------------------------------- ALGORITHM -------------------------------- #
+
+# ---------------------------------------------------------------------------- #
+#                                   ALGORITHM                                  #
+# ---------------------------------------------------------------------------- #
   algorithm:
-    value: TD3
-  # Algorithm parameters group
+    value: stable_baselines3:TD3
   algorithm_parameters:
     parameters:
       policy:
@@ -63,15 +70,52 @@ parameters:
         value: 'auto'
       _init_setup_model:
         value: True
-# -------------------------------- EVALUATION -------------------------------- #
-  evaluation: # Set null when you don't want evaluation
+      
+# ---------------------------------------------------------------------------- #
+#                             INITIAL STATE (MODEL)                            #
+# ---------------------------------------------------------------------------- #
+
+# -------------------------------- Local Path -------------------------------- #
+  # model:
+  #   value:
+  #     local_path: </path/to/model>
+
+# ---------------------------- Google Bucket Path ---------------------------- #
+  # model:
+  #   value:
+  #     bucket_path: gs://<path_to_model_google_bucket>
+
+# ----------------------------- WANDB model Path ----------------------------- #
+  # model:
+  #   value:
+  #     project: test-project
+  #     entity: alejandro-campoy
+  #     artifact_name: Eplus-TD3-training-example_2025-05-23_18-48_edk4lh5z
+  #     artifact_type: output
+  #     artifact_tag: v0
+  #     artifact_path: Sinergym_output/
+  #     model_path: Sinergym_output/evaluation/best_model.zip
+ 
+
+# ---------------------------------------------------------------------------- #
+#                                  EVALUATION                                  #
+# ---------------------------------------------------------------------------- #
+  # Set null when you don't want evaluation
+  evaluation:
     parameters:
       eval_freq:
         value: 2
       eval_length:
         value: 1
-# -------------------------------- ENVIRONMENT ------------------------------- #
-  environment_parameters:
+
+# ---------------------------------------------------------------------------- #
+#                       ENVIRONMENT OVERWRITE PARAMETERS                       #
+# ---------------------------------------------------------------------------- #
+  # Yaml file with wrappers configuration (Optional)
+  env_yaml_config:
+    value: null
+  # In order to overwrite some parameters of the environment, you can use the following
+  env_params:
     parameters:
       seed:
         value: null
@@ -81,17 +125,23 @@ parameters:
           Dry Bulb Temperature: [1.0,0.0,24.0]
         }
       reward:
-        value: LinearReward
+        value: sinergym.utils.rewards:LinearReward
       # ... other environment parameters
 
-# --------------------------------- WRAPPERS --------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                              WRAPPERS DEFINITION                             #
+# ---------------------------------------------------------------------------- #
+  # Yaml file with wrappers configuration for environment (Optional)
+  wrappers_yaml_config:
+    value: null
+  # This overwrite wrappers in wrappers_yaml_config if defined
   wrappers:
     value: 
-      - NormalizeObservation: {}
-      - NormalizeAction: {}
-      - LoggerWrapper: {}
-      - CSVLogger: {}
-      - WandBLogger: 
+      - sinergym.utils.wrappers:NormalizeObservation: {}
+      - sinergym.utils.wrappers:NormalizeAction: {}
+      - sinergym.utils.wrappers:LoggerWrapper: {}
+      - sinergym.utils.wrappers:CSVLogger: {}
+      - sinergym.utils.wrappers:WandBLogger: 
           save_code: True
           dump_frequency: 1000
           artifact_save: True
@@ -109,44 +159,6 @@ parameters:
           excluded_episode_summary_keys:
             - terminated
             - truncated
-
-# --------------------------- INITIAL STATE (MODEL) -------------------------- #
-  # Model from scratch:
-  model:
-    value: null
-
-  # Local Path:
-  # model:
-  #   value: 
-  #     local_path: </path/to/model>
-  #     # load model normalization if needed
-  #     normalization:
-  #       mean: Sinergym_output/evaluation/mean.txt
-  #       var: Sinergym_output/evaluation/var.txt
-
-  # Google Bucket Path:
-  # model:
-  #   value:
-  #     bucket_path: gs://<path_to_model_google_bucket>
-  #     # load model normalization if needed
-  #     normalization:
-  #       mean: <<path_to_model_google_bucket_mean.txt>
-  #       var: <<path_to_model_google_bucket_var.txt>
-
-  # WANDB model path:
-  # model:
-  #   value:
-  #     project: test-project
-  #     entity: sail_ugr
-  #     artifact_name: PPO-Eplus-5zone-hot-continuous-stochastic-v1-episodes-5-id-PPOExperimentExample_2025-02-02_18-31_9jau51uy
-  #     artifact_type: output
-  #     artifact_tag: v0
-  #     artifact_path: Sinergym_output/evaluation/
-  #     model_path: Sinergym_output/evaluation/best_model.zip
-  #     # load model normalization if needed
-  #     normalization:
-  #       mean: Sinergym_output/evaluation/mean.txt
-  #       var: Sinergym_output/evaluation/var.txt
 
 # -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
 # cloud: 
