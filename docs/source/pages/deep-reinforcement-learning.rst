@@ -82,7 +82,9 @@ Once executed, the script performs the following steps:
    - Optionally override or add wrappers defined directly in the configuration.
    - Supports custom objects or callables using the ``<module>:<object>`` format.
 
-5. **Create the simulation environment**, applying all parameters and wrappers.
+5. **Create the simulation environment**, applying all parameters configuration and wrappers.
+
+   - The environment ID has a default configuration. These environment parameters will be deeply updated with the ones defined in the configuration file. This deep update can be disabled; in that case, the specified environment parameters will overwrite the default ones.
 
 6. **Log experiment metadata to Weights & Biases**, if ``WandBLogger`` is active:
 
@@ -96,7 +98,7 @@ Once executed, the script performs the following steps:
 
 8. **Set up custom logging**, combining console and WandB logging when ``WandBLogger`` is enabled.
 
-9. **Prepare evaluation**, if enabled:
+9.  **Prepare evaluation**, if enabled:
 
    - Create a separate evaluation environment (excluding ``WandBLogger``).
    - Set up a ``LoggerEvalCallback`` to run periodic evaluations during training.
@@ -156,7 +158,7 @@ During execution, the script performs the following steps:
 1. Generates a unique evaluation name (e.g., ``PPO_2025-05-29_10:12_evaluation``).
 2. Downloads and loads the specified model from the defined source.
 3. Loads environment and wrapper configurations (from YAML environment and wrappers serialization or directly from the config).
-4. Initializes the evaluation environment with all parameters and wrappers.
+4. Initializes the evaluation environment with all parameters and wrappers, following the same deep update logic as described in training usage.
 5. Runs the agent for the defined number of episodes.
 6. Stores results locally or in the cloud, depending on configuration.
 7. Gracefully handles errors and interruptions, ensuring environment closure.
