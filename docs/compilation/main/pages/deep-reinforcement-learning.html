@@ -188,7 +188,11 @@
 <li><p>Supports custom objects or callables using the <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;:&lt;object&gt;</span></code> format.</p></li>
 </ul>
 </li>
-<li><p><strong>Create the simulation environment</strong>, applying all parameters and wrappers.</p></li>
+<li><p><strong>Create the simulation environment</strong>, applying all parameters configuration and wrappers.</p>
+<ul class="simple">
+<li><p>The environment ID has a default configuration. These environment parameters will be deeply updated with the ones defined in the configuration file. This deep update can be disabled; in that case, the specified environment parameters will overwrite the default ones.</p></li>
+</ul>
+</li>
 <li><p><strong>Log experiment metadata to Weights &amp; Biases</strong>, if <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is active:</p>
 <ul class="simple">
 <li><p>Track Sinergym, Python, and Stable-Baselines3 versions.</p></li>
@@ -202,12 +206,15 @@
 </ul>
 </li>
 <li><p><strong>Set up custom logging</strong>, combining console and WandB logging when <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is enabled.</p></li>
-<li><p><strong>Prepare evaluation</strong>, if enabled:</p>
-<ul class="simple">
+<li><p><strong>Prepare evaluation</strong>, if enabled:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
 <li><p>Create a separate evaluation environment (excluding <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code>).</p></li>
 <li><p>Set up a <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> to run periodic evaluations during training.</p></li>
 </ul>
-</li>
+</div></blockquote>
+<ol class="arabic simple" start="10">
 <li><p><strong>Calculate total training timesteps</strong> based on the number of episodes and episode length.</p></li>
 <li><p><strong>Train the model</strong> using the environment and configured callbacks.</p></li>
 <li><p><strong>Save the final model</strong> in the environment’s <code class="docutils literal notranslate"><span class="pre">workspace_path</span></code> after training completes.</p></li>
@@ -261,7 +268,7 @@ be restored explicitly before continuing training or evaluation, setting up the 
 <li><p>Generates a unique evaluation name (e.g., <code class="docutils literal notranslate"><span class="pre">PPO_2025-05-29_10:12_evaluation</span></code>).</p></li>
 <li><p>Downloads and loads the specified model from the defined source.</p></li>
 <li><p>Loads environment and wrapper configurations (from YAML environment and wrappers serialization or directly from the config).</p></li>
-<li><p>Initializes the evaluation environment with all parameters and wrappers.</p></li>
+<li><p>Initializes the evaluation environment with all parameters and wrappers, following the same deep update logic as described in training usage.</p></li>
 <li><p>Runs the agent for the defined number of episodes.</p></li>
 <li><p>Stores results locally or in the cloud, depending on configuration.</p></li>
 <li><p>Gracefully handles errors and interruptions, ensuring environment closure.</p></li>

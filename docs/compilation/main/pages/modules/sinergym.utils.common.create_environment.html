@@ -158,14 +158,16 @@
 <h1>sinergym.utils.common.create_environment<a class="headerlink" href="#sinergym-utils-common-create-environment" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.common.create_environment">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">create_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrappers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Env</span></span></span><a class="headerlink" href="#sinergym.utils.common.create_environment" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">create_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrappers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_deep_update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Env</span></span></span><a class="headerlink" href="#sinergym.utils.common.create_environment" title="Link to this definition"></a></dt>
 <dd><p>Create a EplusEnv environment with the given parameters and wrappers.
 :param env_id: Environment ID.
 :type env_id: str
 :param env_params: Environment parameters to overwrite the environment ID defaults.
 :type env_params: Dict
 :param wrappers: Wrappers to be applied to the environment.
-:type wrappers: Dict</p>
+:type wrappers: Dict
+:param deep_update: If True, the environment parameters will be deeply updated instead of overwritten. Defaults to True.
+:type deep_update: bool</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The created environment.</p>
