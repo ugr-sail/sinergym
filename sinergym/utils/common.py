@@ -12,6 +12,7 @@ import pandas as pd
 import xlsxwriter
 import yaml
 from eppy.modeleditor import IDF
+from gymnasium.envs.registration import registry
 
 try:
     from stable_baselines3.common.noise import NormalActionNoise
@@ -112,7 +113,7 @@ def create_environment(
     # Make environment
     if env_deep_update:
         # Get default environment parameters associated to the environment ID
-        env_default_kwargs = gym.envs.registry[environment].kwargs
+        env_default_kwargs = registry[environment].kwargs
         # Deeply update environment parameters with the given parameters
         env_params = deep_update(env_default_kwargs, env_params)
 
