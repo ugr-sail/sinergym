@@ -13,6 +13,9 @@ coverage:
     project:
       default:
         target: 90
+    patch:
+      default:
+        target: 90
 
 codecov:
   require_ci_to_pass: true

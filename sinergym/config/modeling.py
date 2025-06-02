@@ -686,9 +686,10 @@ class ModelJSON(object):
                         raise ValueError
                 # Runperiod
                 elif config_key == 'runperiod':
-                    if not isinstance(self.building_config[config_key], tuple):
+                    if not isinstance(
+                            self.building_config[config_key], (tuple, list)):
                         self.logger.critical(
-                            f'Building configuration: Runperiod specified in extra configuration must be a tuple (type detected {
+                            f'Building configuration: Runperiod specified in extra configuration must be a tuple or list (type detected {
                                 type(
                                     self.building_config[config_key])})')
                         raise TypeError

@@ -1,6 +1,14 @@
+# Suppress known warning before any imports
+try:
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message=".*epw.data submodule is not installed.*")
+except ImportError:
+    pass
+
 import logging
 import os
-import warnings
 from typing import Union
 
 import gymnasium as gym
@@ -10,9 +18,6 @@ from gymnasium.envs.registration import WrapperSpec, register
 
 from sinergym.utils.common import convert_conf_to_env_parameters, import_from_path
 from sinergym.utils.serialization import create_sinergym_yaml_serializers
-
-# ------------------------ Ignore epw module warning ------------------------ #
-warnings.filterwarnings("ignore", module='epw')
 
 # --------------------- Serialization of Sinergym in YAML -------------------- #
 create_sinergym_yaml_serializers()
