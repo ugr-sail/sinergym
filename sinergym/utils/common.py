@@ -95,18 +95,28 @@ def deep_update(source: Dict, updates: Dict) -> Dict:
 def create_environment(
         env_id: str,
         env_params: Dict,
-        wrappers: Dict) -> gym.Env:
+        wrappers: Dict,
+        env_deep_update: bool = True) -> gym.Env:
     """ Create a EplusEnv environment with the given parameters and wrappers.
     Args:
         env_id (str): Environment ID.
         env_params (Dict): Environment parameters to overwrite the environment ID defaults.
         wrappers (Dict): Wrappers to be applied to the environment.
+        deep_update (bool): If True, the environment parameters will be deeply updated instead of overwritten. Defaults to True.
     Returns:
         gym.Env: The created environment.
     """
 
-    # Make environment
     environment = env_id
+
+    # Make environment
+    if env_deep_update:
+        # Get default environment parameters associated to the environment ID
+        env_default_kwargs = gym.envs.registry[environment].kwargs
+        # Deeply update environment parameters with the given parameters
+        env_params = deep_update(env_default_kwargs, env_params)
+
+    # Make environment with the remaining parameters
     env = gym.make(environment, **env_params)
 
     # Apply wrappers
