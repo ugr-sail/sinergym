@@ -253,29 +253,18 @@ action_space: gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype
 
 only_discrete: false
 
-reward: sinergym.utils.rewards:LinearReward
+reward: sinergym.utils.rewards:MultiZoneRewardV1
 
 reward_kwargs:
-  temperature_variables:
-    - air_temperature_living
-    - air_temperature_kitchen
-    - air_temperature_bed1
-    - air_temperature_bed2
-    - air_temperature_bed3
+  comfort_threshold: 1
   energy_variables:
     - heat_source_electricity_rate
-  range_comfort_winter:
-    - 19.5
-    - 22
-  range_comfort_summer:
-    - 19.5
-    - 22
-  summer_start:
-    - 6
-    - 1
-  summer_final:
-    - 9
-    - 30
   energy_weight: 0.5
   lambda_energy: 0.001
   lambda_temperature: 1
+  temperature_and_setpoints_conf:
+    air_temperature_bed1: htg_setpoint_bed1
+    air_temperature_bed2: htg_setpoint_bed2
+    air_temperature_bed3: htg_setpoint_bed3
+    air_temperature_kitchen: htg_setpoint_kitchen
+    air_temperature_living: htg_setpoint_living
