@@ -5,7 +5,7 @@ import os
 from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timedelta
 from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
@@ -2175,6 +2175,104 @@ class GeneralContextWrapper(gym.Wrapper):
 
     def step(self, action: np.ndarray):
 
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        dt = datetime(YEAR, info['month'], info['day'], info['hour'])
+        str_date = dt.strftime('%m-%d %H')
+
+        if str_date in self.context_configuration:
+            self.get_wrapper_attr('update_context')(
+                self.context_configuration[str_date])
+
+        return obs, reward, terminated, truncated, info
+
+
+@store_init_metadata
+class RandomGeneralContextWrapper(gym.Wrapper):
+    """Wrapper to add random general context changes to the environment."""
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER RandomGeneralContextWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+            self,
+            env: Env,
+            num_changes_range: Tuple[int, int],
+            context_range: Tuple[float, float]):
+        """Initialize wrapper with random configuration.
+
+        Args:
+            env (Env): Original environment.
+            num_changes_range (Tuple[int, int]): Range (min,max) for number of random context changes to generate per episode
+            context_range (Tuple[float, float]): (min,max) range for each context value (all context variables with the same value)
+        """
+        super().__init__(env)
+        self.num_changes_range = num_changes_range
+        self.context_range = context_range
+
+        # Initialize empty configuration that will be populated in reset()
+        self.context_configuration = {}
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self, **kwargs):
+        obs, info = self.env.reset(**kwargs)
+
+        # Generate new random configuration for this episode
+        self.context_configuration = {}
+
+        # Random number of changes for this episode
+        num_changes = np.random.randint(
+            self.num_changes_range[0],
+            self.num_changes_range[1] + 1)
+
+        # Get runperiod from environment
+        runperiod = self.get_wrapper_attr('runperiod')
+
+        # Extract runperiod init datetime and end datetime (using year)
+        begin_datetime = datetime(
+            runperiod['start_year'],
+            runperiod['start_month'],
+            runperiod['start_day'],
+            0)
+        end_datetime = datetime(
+            runperiod['end_year'],
+            runperiod['end_month'],
+            runperiod['end_day'],
+            0)
+
+        total_hours = int(
+            (end_datetime - begin_datetime).total_seconds() / 3600)
+
+        # Generate num_changes random hours
+        random_hours = np.random.randint(0, total_hours, size=num_changes)
+
+        # Create datetime objects and format strings
+        random_dates = [
+            begin_datetime +
+            timedelta(
+                hours=int(hours)) for hours in random_hours]
+        str_dates = [dt.strftime('%m-%d %H') for dt in random_dates]
+
+        # Generate random context values
+        context_values = np.random.uniform(
+            self.context_range[0],
+            self.context_range[1],
+            size=num_changes)
+
+        # Get context variables length once
+        num_context_vars = len(self.get_wrapper_attr('context_variables'))
+
+        # Build configuration
+        self.context_configuration = {
+            str_date: [value] * num_context_vars
+            for str_date, value in zip(str_dates, context_values)
+        }
+
+        return obs, info
+
+    def step(self, action: np.ndarray):
         obs, reward, terminated, truncated, info = self.env.step(action)
 
         dt = datetime(YEAR, info['month'], info['day'], info['hour'])
