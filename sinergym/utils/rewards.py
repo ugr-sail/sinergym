@@ -553,6 +553,49 @@ class NormalizedLinearReward(LinearReward):
         return reward, energy_term, comfort_term
 
 
+class BalancedReward(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.5,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0
+    ):
+
+        super().__init__(temperature_variables,
+                         energy_variables,
+                         range_comfort_winter,
+                         range_comfort_summer,
+                         summer_start,
+                         summer_final,
+                         energy_weight,
+                         lambda_energy,
+                         lambda_temperature)
+
+    def _get_reward(self) -> Tuple[float, ...]:
+        """Compute the final reward value.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+
+        Returns:
+            Tuple[float, ...]: Total reward calculated and reward terms.
+        """
+        comfort_term = self.lambda_temp * \
+            (1 - self.W_energy) * self.comfort_penalty
+        energy_term = self.lambda_energy * self.W_energy * - \
+            (self.total_energy / (1 + self.total_temp_violation / len(self.temp_names)))
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
+
+
 class MultiZoneReward(BaseReward):
 
     def __init__(
