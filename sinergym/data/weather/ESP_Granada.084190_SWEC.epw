@@ -3,7 +3,7 @@ DESIGN CONDITIONS,1,Climate Design Data 2009 ASHRAE Handbook,,Heating,1,-3.8,-2.
 TYPICAL/EXTREME PERIODS,6,Summer - Week Nearest Max Temperature For Period,Extreme,7/20,7/26,Summer - Week Nearest Average Temperature For Period,Typical,7/ 6,7/12,Winter - Week Nearest Min Temperature For Period,Extreme,1/ 6,1/12,Winter - Week Nearest Average Temperature For Period,Typical,1/27,2/ 2,Autumn - Week Nearest Average Temperature For Period,Typical,10/13,10/19,Spring - Week Nearest Average Temperature For Period,Typical,3/15,3/21
 GROUND TEMPERATURES,3,.5,,,,7.53,6.81,8.09,10.09,15.31,19.34,22.06,22.89,21.48,18.35,14.16,10.28,2,,,,10.18,8.90,9.16,10.22,13.72,16.87,19.40,20.76,20.47,18.70,15.81,12.76,4,,,,12.37,11.06,10.77,11.17,13.15,15.27,17.23,18.58,18.90,18.13,16.44,14.37
 HOLIDAYS/DAYLIGHT SAVINGS,No,0,0,0
-COMMENTS 1,Spanish Weather for Energy Calculations (SWEC) created by Prof Pérez-Lombard Escuela Superior de Ingeneiros Sevilla for 52 Spanish provincial capitals.; Synthetically generated using Climed and include constant wind speeds of 6.7 m/s. Converted from DOE-2 binary to EnergyPlus format.
+COMMENTS 1,Spanish Weather for Energy Calculations (SWEC) created by Prof PÃ©rez-Lombard Escuela Superior de Ingeneiros Sevilla for 52 Spanish provincial capitals.; Synthetically generated using Climed and include constant wind speeds of 6.7 m/s. Converted from DOE-2 binary to EnergyPlus format.
 COMMENTS 2, -- Ground temps produced with a standard soil diffusivity of 2.3225760E-03 {m**2/day}
 DATA PERIODS,1,1,Data,Sunday, 1/ 1,12/31
 1989,1,1,1,60,*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?,6.1,-0.7,61,94819,0,0,271,0,0,0,999900,999900,999900,99990,0,6.7,0,0,777.7,77777,0,999999999,0,0.0000,0,88,0.000,0.0,0.0
