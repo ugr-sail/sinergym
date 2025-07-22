@@ -4,6 +4,7 @@ from datetime import datetime
 import logging
 
 import wandb
+from wandb.util import generate_id
 import yaml
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
@@ -55,10 +56,12 @@ def train():
         experiment_date = datetime.today().strftime('%Y-%m-%d_%H-%M')
         if wandb.config.get('experiment_name'):
             experiment_name = f'{
-                wandb.config['experiment_name']}_{experiment_date}'
+                wandb.config['experiment_name']}_{experiment_date}_{
+                generate_id()}'
         else:
             alg_name = wandb.config['algorithm'].split(':')[-1]
-            experiment_name = f'{alg_name}_{experiment_date}'
+            experiment_name = f'{alg_name}_{experiment_date}_{
+                generate_id()}'
 
         run.name = experiment_name
 
