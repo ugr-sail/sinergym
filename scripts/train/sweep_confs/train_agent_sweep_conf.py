@@ -1,16 +1,14 @@
 import sys
 import traceback
 from datetime import datetime
+import logging
 
-import gymnasium as gym
-import numpy as np
 import wandb
 import yaml
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
-from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
@@ -29,6 +27,15 @@ from sinergym.utils.logger import WandBOutputFormat
 
 
 def train():
+
+    # Optional: Terminal log in the same format as Sinergym.
+    # Logger info can be replaced by print.
+    terminal_logger = TerminalLogger()
+    logger = terminal_logger.getLogger(
+        name='TRAINING',
+        level=logging.INFO
+    )
+
     try:
         # ---------------------------------------------------------------------------- #
         #                                  WandB init                                  #
@@ -60,6 +67,7 @@ def train():
         # ---------------------------------------------------------------------------- #
         model_path = None
         if wandb.config.get('model'):
+            logger.info(f'Training from pre-trained model defined in config')
             # ---------------------------- Local model path ----------------------------- #
             if wandb.config['model'].get('local_path'):
                 model_path = wandb.config['model']['local_path']
@@ -99,6 +107,8 @@ def train():
                 gcloud.read_from_bucket(client, bucket_name, model_path)
                 model_path = f'./{model_path}'
 
+            logger.info(f'Model path: {model_path}')
+
         # ---------------------------------------------------------------------------- #
         #                           Environment parameters                              #
         # ---------------------------------------------------------------------------- #
@@ -106,6 +116,9 @@ def train():
 
         # ------- Update env params configuration with env yaml file if exists ------- #
         if wandb.config.get('env_yaml_config'):
+            logger.info(
+                f'Reading environment parameters from {
+                    wandb.config['env_yaml_config']}')
             with open(wandb.config['env_yaml_config'], 'r') as env_yaml_conf:
                 env_params.update(
                     yaml.load(
@@ -114,6 +127,11 @@ def train():
 
         # -- Update env params configuration with specified env parameters if exists -- #
         if wandb.config.get('env_params'):
+            logger.info(
+                f'Reading environment parameters from env_params config')
+            if env_params:
+                logger.info(
+                    f'Overwriting (deep_update) environment parameters from env_yaml_config with env_params config')
             env_params = deep_update(
                 env_params, process_environment_parameters(
                     wandb.config['env_params']))
@@ -127,11 +145,15 @@ def train():
 
         # ------------------ Read wrappers from yaml file if exists ------------------ #
         if wandb.config.get('wrappers_yaml_config'):
+            logger.info(
+                f'Reading wrappers from {
+                    wandb.config['wrappers_yaml_config']}')
             with open(wandb.config['wrappers_yaml_config'], 'r') as f:
                 wrappers = yaml.load(f, Loader=yaml.FullLoader)
 
         # ------ Read wrappers from yaml file and overwrite yaml file if exists ------ #
         if wandb.config.get('wrappers'):
+            logger.info(f'Reading wrappers from wrappers config')
             # Update wrappers with the ones defined in the yaml file
             for wrapper in wandb.config['wrappers']:
                 for wrapper_name, wrapper_arguments in wrapper.items():
@@ -145,6 +167,7 @@ def train():
                 wrappers = deep_update(
                     wrappers, {
                         wrapper_name: wrapper_arguments})
+            logger.info(f'Wrappers updated with wrappers config')
 
         # ---------------------------------------------------------------------------- #
         #                Create environment with parameters and wrappers               #
@@ -154,6 +177,8 @@ def train():
             env_id=wandb.config['environment'],
             env_params=env_params,
             wrappers=wrappers)
+        logger.info(
+            f'Environment created with ultimate environment parameters and wrappers')
 
         # --------------- With sweeps, WandBLogger wrapper is required --------------- #
         assert is_wrapped(
@@ -166,6 +191,8 @@ def train():
         wandb.run.config.__dict__["_locked"] = {}
         wandb.run.config.update(
             {'env_params': env.get_wrapper_attr('to_dict')()}, allow_val_change=True)
+        logger.info(
+            f'Environment parameters registered in wandb')
 
         # ---------------------------------------------------------------------------- #
         #                           Defining model (algorithm)                         #
@@ -180,6 +207,7 @@ def train():
         if model_path is None:
             try:
                 model = alg_cls(env=env, ** alg_params)
+                logger.info(f'Model created from scratch')
             except NameError:
                 raise NameError(
                     'Algorithm {} does not exists. It must be a valid SB3 algorithm.'.format(alg_name))
@@ -190,23 +218,25 @@ def train():
             try:
                 model = alg_cls.load(
                     model_path)
+                logger.info(f'Model loaded from {model_path}')
             except NameError:
                 raise NameError(
                     'Algorithm {} does not exists. It must be a valid SB3 algorithm.'.format(alg_name))
 
             model.set_env(env)
-
+            logger.info(f'Model set to environment')
         # ---------------------------------------------------------------------------- #
         #                              SET UP WANDB LOGGER                             #
         # ---------------------------------------------------------------------------- #
-        logger = SB3Logger(
+        sb3_logger = SB3Logger(
             folder=None,
             output_formats=[
                 HumanOutputFormat(
                     sys.stdout,
                     max_length=120),
                 WandBOutputFormat()])
-        model.set_logger(logger)
+        model.set_logger(sb3_logger)
+        logger.info(f'WandB logger format set to model')
 
         # ---------------------------------------------------------------------------- #
         #                          Application of callback(s)                          #
@@ -218,18 +248,24 @@ def train():
 
             # ------------ Preparing the evaluation environment configuration ------------ #
             env_params['env_name'] = experiment_name + '_EVALUATION'
+            logger.info(
+                f'Evaluation enabled with environment name: {
+                    env_params["env_name"]}')
 
             # By default, the evaluation environment does not use WandBLogger
             if wrappers:
                 key_to_remove = [
                     key for key in wrappers if 'WandBLogger' in key][0]
                 del wrappers[key_to_remove]
-
+                logger.info(
+                    f'Wrappers updated without WandBLogger for evaluations')
             # ----------------------- Create evaluation environment ---------------------- #
             eval_env = create_environment(
                 env_id=wandb.config['environment'],
                 env_params=env_params,
                 wrappers=wrappers)
+            logger.info(
+                f'Evaluation environment created with the same parameters and wrappers (except WandBLogger)')
 
             # ------------------------ Create evaluation callback ------------------------ #
             eval_callback = LoggerEvalCallback(
@@ -254,10 +290,15 @@ def train():
         timesteps = wandb.config['episodes'] * \
             (env.get_wrapper_attr('timestep_per_episode'))
 
+        logger.info(f'Starting training with {timesteps} total timesteps')
         model.learn(
             total_timesteps=timesteps,
             callback=callback,
             log_interval=wandb.config['log_interval'])
+        logger.info(f'Training completed')
+        logger.info(
+            f'Model saved to {
+                env.get_wrapper_attr("workspace_path")}/model')
 
         # ---------------------------------------------------------------------------- #
         #                                Saving results                                #
