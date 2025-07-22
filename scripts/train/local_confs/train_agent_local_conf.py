@@ -182,7 +182,8 @@ try:
     env = create_environment(
         env_id=config['environment'],
         env_params=env_params,
-        wrappers=wrappers)
+        wrappers=wrappers,
+        env_deep_update=config.get('env_deep_update', True))
     logger.info(
         f'Environment created with ultimate environment parameters and wrappers')
 
@@ -277,7 +278,8 @@ try:
         eval_env = create_environment(
             env_id=config['environment'],
             env_params=env_params,
-            wrappers=wrappers)
+            wrappers=wrappers,
+            env_deep_update=config.get('env_deep_update', True))
         logger.info(
             f'Evaluation environment created with the same parameters and wrappers (except WandBLogger)')
 
