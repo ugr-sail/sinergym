@@ -1087,13 +1087,13 @@ class DiscretizeEnv(gym.ActionWrapper):
                  discrete_space: Union[gym.spaces.Discrete,
                                        gym.spaces.MultiDiscrete,
                                        gym.spaces.MultiBinary],
-                 action_mapping: Callable[[Union[int, List[int]]], np.ndarray]):
+                 action_mapping: Callable[[int], np.ndarray]):
         """Wrapper for Discretize action space.
 
         Args:
             env (Env): Original environment.
             discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
-            action_mapping (Callable[[Union[int,List[int]]], np.ndarray]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
+            action_mapping (Callable[[int], np.ndarray]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
         """
         super().__init__(env)
         self.action_space = discrete_space
