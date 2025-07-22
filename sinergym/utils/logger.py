@@ -51,13 +51,13 @@ class TerminalLogger():
     def getLogger(
             self,
             name: str,
-            level: str,
+            level: Union[str, int],
             formatter: Any = CustomFormatter()) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:
             name (str): logger name
-            level (str): logger level
+            level (Union[str, int]): logger level
             formatter (Callable): logger formatter class
 
         Returns:
