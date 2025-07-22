@@ -119,6 +119,9 @@ parameters:
   # Yaml file with wrappers configuration (Optional)
   env_yaml_config:
     value: null
+  # Environment deep update for parameters with dictionary type, it is used to overwrite the environment parameters default is True).
+  env_deep_update:
+    value: true
   # In order to overwrite some parameters of the environment, you can use the following
   env_params:
     parameters:
