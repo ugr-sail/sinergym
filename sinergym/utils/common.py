@@ -1,7 +1,7 @@
 """Common utilities."""
 
-import importlib.util
 import importlib
+import importlib.util
 import os
 from copy import deepcopy
 from datetime import datetime, timedelta

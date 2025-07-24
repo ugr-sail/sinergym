@@ -1,8 +1,8 @@
 import argparse
 import logging
-from datetime import datetime
 import sys
 import traceback
+from datetime import datetime
 
 import wandb
 import yaml
@@ -15,7 +15,6 @@ from sinergym.utils.common import (
     import_from_path,
     process_environment_parameters,
 )
-
 from sinergym.utils.logger import TerminalLogger
 
 # ---------------------------------------------------------------------------- #

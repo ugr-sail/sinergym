@@ -7,7 +7,7 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from inspect import signature
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, SupportsFloat
+from typing import Any, Callable, Dict, List, Optional, SupportsFloat, Tuple, Union
 
 import gymnasium as gym
 import numpy as np

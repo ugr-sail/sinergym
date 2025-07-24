@@ -1,8 +1,8 @@
 import argparse
+import logging
 import sys
 import traceback
 from datetime import datetime
-import logging
 
 import wandb
 import yaml
@@ -14,7 +14,6 @@ from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.callbacks import LoggerEvalCallback
 from sinergym.utils.common import (
     create_environment,
@@ -24,7 +23,7 @@ from sinergym.utils.common import (
     process_algorithm_parameters,
     process_environment_parameters,
 )
-from sinergym.utils.logger import WandBOutputFormat
+from sinergym.utils.logger import TerminalLogger, WandBOutputFormat
 from sinergym.utils.wrappers import WandBLogger
 
 # ---------------------------------------------------------------------------- #

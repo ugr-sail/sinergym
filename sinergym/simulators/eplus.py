@@ -4,10 +4,10 @@ Class for connecting EnergyPlus with Python using pyenergyplus API.
 
 import sys
 import threading
+from ctypes import c_void_p
 from pathlib import Path
 from queue import Empty, Queue
 from typing import Any, Dict, List, Optional, Tuple
-from ctypes import c_void_p
 
 from pyenergyplus.api import EnergyPlusAPI
 from tqdm import tqdm

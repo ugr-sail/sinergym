@@ -1,16 +1,16 @@
+import logging
 import sys
 import traceback
 from datetime import datetime
-import logging
 
 import wandb
-from wandb.util import generate_id
 import yaml
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.noise import NormalActionNoise
+from wandb.util import generate_id
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
