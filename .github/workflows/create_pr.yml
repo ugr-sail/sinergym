@@ -63,11 +63,11 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
           
-      - name: Install pytype
+      - name: Install pyright
         run: poetry install --no-interaction --only typing
 
-      - name: Check pytype
-        run: poetry run pytype -d import-error sinergym/
+      - name: Check pyright
+        run: poetry run pyright sinergym/
 
   documentation-check:
     runs-on: ubuntu-24.04
