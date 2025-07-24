@@ -910,7 +910,7 @@ def test_CSVlogger_wrapper(env_name, request):
         assert len(list(reader)) == 12
 
     # If env is wrapped with normalize obs...
-    if is_wrapped(env, NormalizeObservation):  # type: ignore
+    if is_wrapped(env, NormalizeObservation):
         assert os.path.isfile(episode_path +
                               '/monitor/normalized_observations.csv')
     env.close()
