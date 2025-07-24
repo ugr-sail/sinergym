@@ -51,7 +51,7 @@ class EplusEnv(gym.Env):
             Union[float, Tuple[float, float]]
         ]]] = None,
         reward: Any = LinearReward,
-        reward_kwargs: Optional[Dict[str, Any]] = {},
+        reward_kwargs: Dict[str, Any] = {},
         max_ep_store: int = 10,
         env_name: str = 'eplus-env-v1',
         building_config: Optional[Dict[str, Any]] = None,
@@ -148,10 +148,11 @@ class EplusEnv(gym.Env):
         self.act_queue = Queue(maxsize=1)
         self.context_queue = Queue(maxsize=1)
         # last obs, action and info
-        self.last_obs: Optional[Dict[str, float]] = None
-        self.last_info: Optional[Dict[str, Any]] = None
-        self.last_action: Optional[np.ndarray] = None
-        self.last_context: Optional[Union[List[float], np.ndarray]] = None
+        self.last_obs: Dict[str, float] = {}
+        self.last_info: Dict[str, Any] = {}
+        self.last_action: np.ndarray = np.array([], dtype=np.float32)
+        self.last_context: Union[List[float],
+                                 np.ndarray] = np.array([], dtype=np.float32)
 
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
@@ -393,7 +394,7 @@ class EplusEnv(gym.Env):
 
         # Update info with
         info.update({'action': action.tolist(),
-                     'timestep': self.timestep,
+                    'timestep': self.timestep,
                      'reward': reward})
         info.update(rw_terms)
         self.last_info = info
@@ -467,6 +468,7 @@ class EplusEnv(gym.Env):
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
         # OBSERVATION
+        assert self._observation_space.shape
         if len(self.observation_variables) != self._observation_space.shape[0]:
             self.logger.error(
                 f'Observation space ({
@@ -476,6 +478,7 @@ class EplusEnv(gym.Env):
             raise ValueError
 
         # ACTION
+        assert self._action_space.shape
         if len(self.action_variables) != self._action_space.shape[0]:
             self.logger.error(
                 f'Action space ({
@@ -633,7 +636,7 @@ class EplusEnv(gym.Env):
         return self.model.workspace_path
 
     @property  # pragma: no cover
-    def episode_path(self) -> str:
+    def episode_path(self) -> Optional[str]:
         return self.model.episode_path
 
     @property  # pragma: no cover
@@ -645,11 +648,11 @@ class EplusEnv(gym.Env):
         return self.model.weather_path
 
     @property  # pragma: no cover
-    def ddy_path(self) -> str:
+    def ddy_path(self) -> Optional[str]:
         return self.model.ddy_path
 
     @property  # pragma: no cover
-    def idd_path(self) -> str:
+    def idd_path(self) -> Optional[str]:
         return self.model.idd_path
 
     # ---------------------------- formats and prints ---------------------------- #
