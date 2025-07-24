@@ -657,8 +657,8 @@ class MultiZoneReward(BaseReward):
         self._get_comfort_ranges(obs_dict)
 
         temp_violations = [
-            max(0, min(abs(T - comfort_range[0]), abs(T - comfort_range[1])))
-            if T < comfort_range[0] or T > comfort_range[1] else 0
+            max(0.0, min(abs(T - comfort_range[0]), abs(T - comfort_range[1])))
+            if T < comfort_range[0] or T > comfort_range[1] else 0.0
             for temp_var, comfort_range in self.comfort_ranges.items()
             if (T := obs_dict[temp_var])
         ]
