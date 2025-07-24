@@ -192,9 +192,9 @@ def train():
         #         Update the environment parameters with the ones defined here         #
         # ---------------------------------------------------------------------------- #
         # `delete lock on sweep parameters
-        wandb.run.config.__dict__["_locked"] = {}
-        wandb.run.config.update(
-            {'env_params': env.get_wrapper_attr('to_dict')()}, allow_val_change=True)
+        run.config.__dict__["_locked"] = {}
+        run.config.update({'env_params': env.get_wrapper_attr(
+            'to_dict')()}, allow_val_change=True)
         logger.info(
             f'Environment parameters registered in wandb')
 
@@ -341,7 +341,8 @@ def train():
         print(traceback.print_exc(), file=sys.stderr)
 
         # Current model state save
-        model.save(env.get_wrapper_attr('workspace_path') + '/model')
+        if model:
+            model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
         env.close()
         raise err

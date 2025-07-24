@@ -197,10 +197,10 @@ try:
             'stable-baselines3-version': sb3_version
         }
 
-        wandb.run.config.update(experiment_params)
-        wandb.run.config.update(config)
+        env.get_wrapper_attr('wandb_run').config.update(experiment_params)
+        env.get_wrapper_attr('wandb_run').config.update(config)
         # Overwrite env_params with the full environment parameters
-        wandb.run.config.update(
+        env.get_wrapper_attr('wandb_run').config.update(
             {'env_params': env.get_wrapper_attr('to_dict')()}, allow_val_change=True)
         logger.info(
             f'Experiment and Environment parameters registered in wandb')
@@ -353,7 +353,8 @@ except (Exception, KeyboardInterrupt) as err:
     print(traceback.print_exc(), file=sys.stderr)
 
     # Current model state save
-    model.save(env.get_wrapper_attr('workspace_path') + '/model')
+    if model:
+        model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
     env.close()
 
