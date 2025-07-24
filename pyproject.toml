@@ -84,7 +84,7 @@ isort = "^5.13.2"
 pipdeptree = "^2.23.4"
 
 [tool.poetry.group.typing.dependencies]
-pytype = "^2024.9.13"
+pyright = "^1.1.403"
 urllib3 = "^2.2.3"
 
 [tool.poetry.group.test.dependencies]
