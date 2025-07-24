@@ -1,10 +1,11 @@
 """Common utilities."""
 
+import importlib.util
 import importlib
 import os
 from copy import deepcopy
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Dict, Optional, Tuple, Type, Union
 
 import gymnasium as gym
 import numpy as np
@@ -134,12 +135,12 @@ def create_environment(
 # ---------------------------------------------------------------------------- #
 
 
-def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
+def is_wrapped(env: gym.Env, wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.
 
     Args:
-        env (Type[gym.Env]): Environment to check
+        env (gym.Env): Environment to check
         wrapper_class (Type[gym.Wrapper]): Wrapper class to look for
 
     Returns:
@@ -163,17 +164,17 @@ def unwrap_wrapper(env: gym.Env,
     env_tmp = env
     while isinstance(env_tmp, gym.Wrapper):
         if isinstance(env_tmp, wrapper_class):
-            return env_tmp.env
+            return env_tmp.env  # type: ignore
         env_tmp = env_tmp.env
-    return None
+    return None  # type: ignore
 
 
 def get_wrappers_info(
-        env: Type[gym.Env], path_to_save: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
+        env: gym.Env, path_to_save: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
     """Get ordered information about the wrappers applied to the environment.
 
     Args:
-        env (Type[gym.Env]): Environment to get wrapper information from.
+        env (gym.Env): Environment to get wrapper information from.
         path_to_save (str, optional): Path to save the information in a YAML file. Defaults to None.
 
     Returns:
@@ -183,7 +184,8 @@ def get_wrappers_info(
 
     if not path_to_save:
         path_to_save = f'{
-            env.get_wrapper_attr('workspace_path')}/wrappers_config.pyyaml'
+            env.get_wrapper_attr(
+                name='workspace_path')}/wrappers_config.pyyaml'  # type: ignore
 
     # Traverse the wrappers and collect their metadata
     while isinstance(env, gym.Wrapper):
@@ -191,8 +193,9 @@ def get_wrappers_info(
         wrapper_name = f'{wrapper_cls.__module__}:{wrapper_cls.__name__}'
         if env.has_wrapper_attr('__metadata__'):
             wrappers_info.append(
-                (wrapper_name, env.get_wrapper_attr('__metadata__')))
-        env = env.env
+                (wrapper_name, env.get_wrapper_attr(
+                    name='__metadata__')))  # type: ignore
+        env = env.env  # type: ignore
 
     # Reverse to get application order: outermost to innermost
     wrappers_info.reverse()
@@ -212,19 +215,19 @@ def get_wrappers_info(
     return wrappers_dict
 
 
-def apply_wrappers_info(env: Type[gym.Env],
+def apply_wrappers_info(env: gym.Env,
                         wrappers_info: Union[Dict[str,
                                                   Dict[str,
                                                        Any]],
-                                             str]) -> Type[gym.Env]:
+                                             str]) -> gym.Env:
     """Apply wrapper information to the environment.
 
     Args:
-        env (Type[gym.Env]): Environment to apply wrapper information to.
+        env (gym.Env): Environment to apply wrapper information to.
         wrappers_info (Union[Dict[str, Dict[str, Any]], str]): Dictionary with wrapper information or path to a YAML file containing the information.
 
     Returns:
-        Type[gym.Env]: Environment with applied wrappers.
+        gym.Env: Environment with applied wrappers.
     """
 
     if isinstance(wrappers_info, str):
@@ -283,9 +286,11 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     """
     fields = {
         fieldname.lower().replace('drybulb', 'dry_bulb'):
-        'WetBulb' if (value := element[fieldname]) == 'Wetbulb' else value
-        for fieldname in element.fieldnames
-        if fieldname not in {'Name', 'key'} and element[fieldname] != ''
+        'WetBulb' if (value := element[fieldname]  # type: ignore
+                      ) == 'Wetbulb' else value
+        for fieldname in element.fieldnames  # type: ignore
+        if fieldname not in {'Name', 'key'
+                             } and element[fieldname] != ''  # type: ignore
     }
 
     return {getattr(element, 'Name', '').lower(): fields}
