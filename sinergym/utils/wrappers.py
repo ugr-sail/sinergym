@@ -411,12 +411,12 @@ class NormalizeObservation(gym.Wrapper):
         self.automatic_update = True
 
     @property
-    def mean(self) -> np.float64:
+    def mean(self) -> np.ndarray:
         """Returns the mean value of the observations."""
         return self.obs_rms.mean
 
     @property
-    def var(self) -> np.float64:
+    def var(self) -> np.ndarray:
         """Returns the variance value of the observations."""
         return self.obs_rms.var
 
