@@ -47,14 +47,14 @@ class RBC5Zone(object):
         self.setpoints_summer = np.array((23.0, 26.0), dtype=np.float32)
         self.setpoints_winter = np.array((20.0, 23.5), dtype=np.float32)
 
-    def act(self, observation: List[Any]) -> Sequence[Any]:
+    def act(self, observation: List[Any]) -> np.ndarray:
         """Select action based on indoor temperature.
 
         Args:
             observation (List[Any]): Perceived observation.
 
         Returns:
-            Sequence[Any]: Action chosen.
+            np.ndarray: Action chosen.
         """
         obs_dict = dict(zip(self.observation_variables, observation))
         year = int(obs_dict['year']) if obs_dict.get('year', False) else YEAR
@@ -93,11 +93,11 @@ class RBCDatacenter(object):
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = np.array((18, 27), dtype=np.float32)
 
-    def act(self) -> Sequence[Any]:
+    def act(self) -> np.ndarray:
         """Select same action always, corresponding with comfort range.
 
         Returns:
-            Sequence[Any]: Action chosen.
+            np.ndarray: Action chosen.
         """
         return self.range_datacenter
 
@@ -119,7 +119,7 @@ class RBCIncrementalDatacenter(object):
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = (18, 27)
 
-    def act(self, observation: List[Any]) -> Sequence[Any]:
+    def act(self, observation: List[Any]) -> np.ndarray:
         """Select action based on indoor temperature.
         Args:
             observation (List[Any]): Perceived observation.
