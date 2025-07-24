@@ -153,7 +153,7 @@ extras = [
 [tool.pyright]
 include = ["sinergym", "scripts", "tests", "docs", "examples"]
 typeCheckingMode = "basic"
-reportMissingImports = true
+reportMissingImports = false
 reportMissingModuleSource = false
 reportMissingTypeStubs = false
 
