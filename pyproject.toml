@@ -150,6 +150,13 @@ extras = [
 # -------------------------------------------------------------------------- #
 #                           third parties settings                           #
 # -------------------------------------------------------------------------- #
+[tool.pyright]
+include = ["sinergym", "scripts", "tests", "docs", "examples"]
+typeCheckingMode = "basic"
+reportMissingImports = true
+reportMissingModuleSource = false
+reportMissingTypeStubs = false
+
 [tool.isort]
 profile = "black"
 src_paths = ["sinergym", "tests", "scripts"]
