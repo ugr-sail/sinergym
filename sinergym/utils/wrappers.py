@@ -569,7 +569,8 @@ class WeatherForecastingWrapper(gym.Wrapper):
         """
         # Search for the index corresponding to the time of the current
         # observation.
-        if isinstance(self.forecast_data, pd.DataFrame):
+        if self.forecast_data is not None and isinstance(
+                self.forecast_data, pd.DataFrame):
             filter = (
                 (self.forecast_data['Month'].to_numpy() == info['month']) &
                 (self.forecast_data['Day'].to_numpy() == info['day']) &
@@ -762,7 +763,8 @@ class EnergyCostWrapper(gym.Wrapper):
         """
         # Search for the index corresponding to the time of the current
         # observation.
-        if isinstance(self.energy_cost_data, pd.DataFrame):
+        if self.energy_cost_data is not None and isinstance(
+                self.energy_cost_data, pd.DataFrame):
             filter = (
                 (self.energy_cost_data['Month'].to_numpy() == info['month']) &
                 (self.energy_cost_data['Day'].to_numpy() == info['day']) &
