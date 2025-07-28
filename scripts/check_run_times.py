@@ -8,7 +8,7 @@ import gymnasium as gym
 
 import sinergym
 
-envs_id = [env_spec for env_spec in gym.envs.registration.registry.keys()
+envs_id = [env_spec for env_spec in gym.envs.registration.registry.keys()  # type: ignore
            if env_spec.startswith('Eplus')]
 envs_id = ['Eplus-5zone-mixed-continuous-stochastic-v1',
            'Eplus-datacenter-mixed-continuous-stochastic-v1',

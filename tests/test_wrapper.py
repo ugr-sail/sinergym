@@ -85,8 +85,10 @@ def test_multiobs_wrapper(env_demo):
     assert env.get_wrapper_attr('history') == deque([])
 
     # Check observation space transformation
-    original_shape = env.env.observation_space.shape[0]
-    wrapped_shape = env.observation_space.shape[0]
+    assert env.env.observation_space is not None
+    assert env.observation_space is not None
+    original_shape = env.env.observation_space.shape[0]  # type: ignore
+    wrapped_shape = env.observation_space.shape[0]  # type: ignore
     assert wrapped_shape == original_shape * env.get_wrapper_attr('n')
 
     # Check reset obs
@@ -174,8 +176,10 @@ def test_normalize_observation_calibration(env_demo):
     old_mean = env.get_wrapper_attr('mean').copy()
     assert env.has_wrapper_attr('var')
     old_var = env.get_wrapper_attr('var').copy()
-    assert len(env.get_wrapper_attr('mean')) == env.observation_space.shape[0]
-    assert len(env.get_wrapper_attr('var')) == env.observation_space.shape[0]
+    assert len(env.get_wrapper_attr('mean')
+               ) == env.observation_space.shape[0]  # type: ignore
+    assert len(env.get_wrapper_attr('var')
+               ) == env.observation_space.shape[0]  # type: ignore
 
     # reset
     obs, _ = env.reset()
@@ -211,10 +215,10 @@ def test_normalize_observation_calibration(env_demo):
     # Check that txt has the same lines than observation space shape
     with open(env.get_wrapper_attr('workspace_path') + '/mean.txt', 'r') as f:
         lines = f.readlines()
-        assert len(lines) == env.observation_space.shape[0]
+        assert len(lines) == env.observation_space.shape[0]  # type: ignore
     with open(env.get_wrapper_attr('workspace_path') + '/var.txt', 'r') as f:
         lines = f.readlines()
-        assert len(lines) == env.observation_space.shape[0]
+        assert len(lines) == env.observation_space.shape[0]  # type: ignore
 
 
 def test_normalize_observation_exceptions(env_demo):
@@ -226,9 +230,9 @@ def test_normalize_observation_exceptions(env_demo):
         env = NormalizeObservation(env=env_demo, var='unknown_path')
     # Specify an unknown value (nor str neither list)
     with pytest.raises(IndexError):
-        env = NormalizeObservation(env=env_demo, mean=56)
+        env = NormalizeObservation(env=env_demo, mean=56)  # type: ignore
     with pytest.raises(IndexError):
-        env = NormalizeObservation(env=env_demo, var=56)
+        env = NormalizeObservation(env=env_demo, var=56)  # type: ignore
     # Specify a list with wrong shape
     with pytest.raises(ValueError):
         env = NormalizeObservation(env=env_demo, mean=[0.2, 0.1, 0.3])
@@ -252,8 +256,8 @@ def test_weatherforecasting_wrapper(env_demo):
         for column in env.get_wrapper_attr('columns'):
             assert 'forecast_' + str(i) + '_' + \
                 column in new_observation_variables
-    original_shape = env.env.observation_space.shape[0]
-    wrapped_shape = env.observation_space.shape[0]
+    original_shape = env.env.observation_space.shape[0]  # type: ignore
+    wrapped_shape = env.observation_space.shape[0]  # type: ignore
     assert wrapped_shape == (original_shape +
                              (len(env.get_wrapper_attr('columns')) *
                               env.get_wrapper_attr('n')))
@@ -297,6 +301,7 @@ def test_weatherforecasting_wrapper_forecastdata(env_demo):
     # Get original weather_data
     original_weather_data = Weather()
     original_weather_data.read(env.get_wrapper_attr('weather_path'))
+    assert original_weather_data.dataframe is not None
     original_weather_data = original_weather_data.dataframe.loc[:, [
         'Month', 'Day', 'Hour'] + env.get_wrapper_attr('columns')]
     # Until first reset, forecast data is None
@@ -327,7 +332,7 @@ def test_weatherforecasting_wrapper_exceptions(env_demo):
         env = WeatherForecastingWrapper(env_demo,
                                         n=3,
                                         delta=1,
-                                        forecast_variability={
+                                        forecast_variability={  # type: ignore
                                             'Dry Bulb Temperature': (1.0, 0.0),
                                             'Wind Speed': (3.0, 0.0)}
                                         )
@@ -371,8 +376,8 @@ def test_energycost_wrapper(env_demo):
         'energy_cost_data_path') and env.has_wrapper_attr('energy_cost_data')
 
     # Check observation space transformation
-    original_shape = env.env.observation_space.shape[0]
-    wrapped_shape = env.observation_space.shape[0]
+    original_shape = env.env.observation_space.shape[0]  # type: ignore
+    wrapped_shape = env.observation_space.shape[0]  # type: ignore
     assert 'energy_cost' in env.get_wrapper_attr('observation_variables')
     assert wrapped_shape == (original_shape + 1)
 
@@ -436,7 +441,7 @@ def test_energycost_wrapper_exceptions(env_demo):
             energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
             energy_cost_variability=(
                 1.0,
-                0.0))
+                0.0))  # type: ignore
         env.reset()
 
     # Specify a energy cost file that doesn't exist
@@ -582,7 +587,7 @@ def test_discretize_wrapper(env_demo):
     # Check is a discrete env and original env is continuous
     # Wrapped env
     assert env.get_wrapper_attr('is_discrete')
-    assert env.action_space.n == 10
+    assert env.action_space.n == 10  # type: ignore
     assert isinstance(env.action_mapping(0), np.ndarray)
     # Original continuos env
     original_env = env.env
@@ -631,6 +636,7 @@ def test_deltatemp_wrapper(env_datacenter):
     assert env.has_wrapper_attr('delta_temperatures')
     assert env.has_wrapper_attr('delta_setpoints')
     # Check new space
+    assert env.observation_space.shape is not None
     assert env.observation_space.shape[0] == old_observation_space.shape[0] + 2
     assert len(env.get_wrapper_attr('observation_variables')
                ) == len(old_observation_variables) + 2
@@ -968,8 +974,8 @@ def test_reduced_observation_wrapper(env_demo):
         assert removed_variable not in reduced_observation_variables
 
     # Check that the original observation space has a difference with the new
-    original_shape = env.env.observation_space.shape[0]
-    reduced_shape = env.observation_space.shape[0]
+    original_shape = env.env.observation_space.shape[0]  # type: ignore
+    reduced_shape = env.observation_space.shape[0]  # type: ignore
     assert reduced_shape == original_shape - len(removed_observation_variables)
 
     # Check reset return

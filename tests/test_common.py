@@ -169,7 +169,8 @@ def test_unwrap_wrapper(
     env = common.unwrap_wrapper(
         env_all_wrappers,
         NormalizeObservation)
-    assert not env.has_wrapper_attr('unwrapped_observation')
+    assert env is not None and not env.has_wrapper_attr(
+        'unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
     env = common.unwrap_wrapper(
         env_5zone,
@@ -185,12 +186,13 @@ def test_get_wrappers_info_and_apply_wrappers_info(env_5zone, tmp_path):
     env = NormalizeObservation(env_5zone)
 
     # Patch has_wrapper_attr and get_wrapper_attr for test
-    env.has_wrapper_attr = lambda attr: hasattr(env, attr)
-    env.get_wrapper_attr = lambda attr: getattr(env, attr)
+    env.has_wrapper_attr = lambda name: hasattr(env, name)
+    env.get_wrapper_attr = lambda name: getattr(env, name)
 
     # Test get_wrappers_info and YAML saving
     yaml_path = tmp_path / "wrappers_config.yaml"
-    wrappers_dict = common.get_wrappers_info(env, path_to_save=str(yaml_path))
+    wrappers_dict = common.get_wrappers_info(
+        env, path_to_save=str(yaml_path))  # type: ignore
     assert isinstance(wrappers_dict, dict)
     assert any("NormalizeObservation" in k for k in wrappers_dict.keys())
     assert os.path.exists(yaml_path)

@@ -71,6 +71,8 @@ evaluation:
 # ---------------------------------------------------------------------------- #
 # Yaml file with environment configuration (Optional)
 env_yaml_config: null
+# Environment deep update for parameters with dictionary type, it is used to overwrite the environment parameters default is True).
+env_deep_update: true
 # In order to overwrite some parameters of the environment, you can use the following
 env_params:
   seed: null

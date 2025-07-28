@@ -92,12 +92,12 @@ def my_function(arg1: type1, arg2: type2) -> returntype:
 ## 📏 **Coding Standards**
 - **Code formatting**: Use [autopep8](https://github.com/hhatto/autopep8) (max **79** characters per line, aggressive level 2). Included in devcontainer definition.
 - **Import sorting**: Use [isort](https://github.com/PyCQA/isort).
-- **Type checking**: Run [pytype](https://github.com/google/pytype).
+- **Type checking**: Run [pyright](https://github.com/microsoft/pyright).
 
 📝 **Before submitting a PR, ensure your code passes:** 
 - `autopep8 --exit-code --recursive --diff --aggressive --aggressive .`
 - `isort --check-only --diff .`
-- `pytype -d import-error sinergym/ `
+- `pyright sinergym/ `
 - `pytest tests/ -vvv`
 
 📋 Workflows in the pull request will check it, in any case.
@@ -127,7 +127,7 @@ Indicate the type of change your PR introduces by marking an `x` in the relevant
 - ✅ I have sorted imports using **`isort`**.  
 - ✅ If I modified documentation, I verified that **`cd docs && make spelling && make html`** passes.  
 - ✅ I ensured that **`pytest tests/ -vv`** runs successfully (**required**).  
-- ✅ I checked that **`pytype -d import-error sinergym/`** runs successfully (**required**).  
+- ✅ I checked that **`pyright sinergym/`** runs successfully (**required**).  
 
 ---
 

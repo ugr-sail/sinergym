@@ -159,7 +159,7 @@ for root, dirs, files in os.walk(configuration_path):
 
 
 def ids():
-    return [env_id for env_id in gym.envs.registration.registry.keys()
+    return [env_id for env_id in gym.envs.registration.registry.keys()  # type: ignore
             if env_id.startswith('Eplus')]
 
 

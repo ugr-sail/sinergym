@@ -17,14 +17,14 @@ from sinergym.utils.wrappers import BaseLoggerWrapper, NormalizeObservation, Wan
 
 class LoggerEvalCallback(EventCallback):
 
-    logger = TerminalLogger().getLogger(
+    logger = TerminalLogger().getLogger(  # type: ignore
         name='EVALUATION',
         level=LOG_CALLBACK_LEVEL)
 
     def __init__(
         self,
-        eval_env: Union[gym.Env, VecEnv],
-        train_env: Union[gym.Env, VecEnv],
+        eval_env: gym.Env,
+        train_env: gym.Env,
         n_eval_episodes: int = 5,
         eval_freq_episodes: int = 5,
         deterministic: bool = True,
@@ -78,7 +78,7 @@ class LoggerEvalCallback(EventCallback):
         self.evaluation_columns = [col for col in eval_env.get_wrapper_attr(
             'summary_metrics') if col not in excluded_metrics]
         self.evaluation_metrics = pd.DataFrame(
-            columns=self.evaluation_columns)
+            columns=pd.Index(self.evaluation_columns))
 
         # session is activated
         if self.wandb_log:

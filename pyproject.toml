@@ -6,7 +6,7 @@
 package-mode = true
 name = "sinergym"
 
-version = "3.8.7"
+version = "3.9.0"
 description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
 license = "MIT"
 
@@ -84,7 +84,7 @@ isort = "^5.13.2"
 pipdeptree = "^2.23.4"
 
 [tool.poetry.group.typing.dependencies]
-pytype = "^2024.9.13"
+pyright = "^1.1.403"
 urllib3 = "^2.2.3"
 
 [tool.poetry.group.test.dependencies]
@@ -150,6 +150,15 @@ extras = [
 # -------------------------------------------------------------------------- #
 #                           third parties settings                           #
 # -------------------------------------------------------------------------- #
+[tool.pyright]
+include = ["sinergym", "scripts", "tests", "docs", "examples"]
+typeCheckingMode = "basic"
+reportMissingImports = false
+reportMissingModuleSource = false
+reportMissingTypeStubs = false
+reportOptionalMemberAccess = false
+reportAttributeAccessIssue = false
+
 [tool.isort]
 profile = "black"
 src_paths = ["sinergym", "tests", "scripts"]

@@ -142,8 +142,8 @@ def _check_render(env: gym.Env, warn: bool = True, headless: bool = False) -> No
         if headless and "human" in render_modes:
             render_modes.remove("human")
         # Check all declared render modes
-        for render_mode in render_modes:
-            env.render(mode=render_mode)
+        for _ in render_modes:
+            env.render()
         env.close()
 
 
