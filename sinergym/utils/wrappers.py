@@ -2380,7 +2380,7 @@ class HeatPumpEnergyWrapper(gym.ObservationWrapper):
             low=-5e6,
             high=5e6,
             shape=(
-                self.env.observation_space.shape[0] + 6,
+                self.env.observation_space.shape[0] + 6,  # type: ignore
             ),
             dtype=np.float32)
         self.observation_variables = self.env.get_wrapper_attr('observation_variables') + [
