@@ -127,7 +127,7 @@
 <h2>Pull request<a class="headerlink" href="#pull-request" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Python Code format check</strong>. Each pull request is checked following <strong>pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> for import sorting. Non-compliance triggers a warning.</p></li>
-<li><p><strong>Code type check</strong>. <a class="reference external" href="https://github.com/google/pytype">pytype</a> is used in the <em>Sinergym</em> module to control function and method I/O types. <code class="docutils literal notranslate"><span class="pre">import-error</span></code> types are ignored with <code class="docutils literal notranslate"><span class="pre">pytype</span> <span class="pre">-d</span> <span class="pre">import-error</span> <span class="pre">sinergym/</span></code>. Type errors halt the workflow until resolved.</p></li>
+<li><p><strong>Code type check</strong>. <a class="reference external" href="https://github.com/microsoft/pyright">pyright</a> is used in the <em>Sinergym</em> module to control function and method I/O types. Type errors halt the workflow until resolved.</p></li>
 <li><p><strong>Documentation checks</strong>. Changes in source documentation trigger a <em>Sphinx</em> compilation and spelling check. Errors are raised for compilation issues and unrecognized words. Add unrecognized but correct words to <code class="docutils literal notranslate"><span class="pre">docs/source/spelling_wordlist.txt</span></code>.</p></li>
 </ul>
 <div class="admonition warning">

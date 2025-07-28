@@ -122,7 +122,7 @@
 <p>Let’s try a simple RBC in <em>Sinergym</em> environment.</p>
 <p>First, we import all the necessary libraries. Remember to always import <code class="docutils literal notranslate"><span class="pre">sinergym</span></code>, even if it appears unused, as it is needed to define the environments.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Sequence</span>
@@ -137,7 +137,7 @@
 </div>
 <p>Now we can define the environment:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
@@ -151,17 +151,16 @@
 <div class="highlight"><pre>
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment.
-[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
+[ENVIRONMENT] (INFO) : Name: Eplus-5zone-hot-continuous-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created.
-[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1
-[MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Update building model Output:Variable with variable names.
-[MODELING] (INFO) : Update building model Output:Meter with meter names.
-[MODELING] (INFO) : Runperiod established.
-[MODELING] (INFO) : Episode length (seconds): 31536000.0
-[MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35040
+[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-v1-res1
+[MODEL] (INFO) : Model Config is correct.
+[MODEL] (INFO) : Building model Output:Variable updated with defined variable names.
+[MODEL] (INFO) : Updated building model Output:Meter with meter names.
+[MODEL] (INFO) : Runperiod established.
+[MODEL] (INFO) : Episode length (seconds): 31536000.0
+[MODEL] (INFO) : timestep size (seconds): 900.0
+[MODEL] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
 [ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
@@ -169,7 +168,7 @@
 <p>You should check out the available list of pre-defined RBCs.</p>
 <p>In this example, we extend the pre-defined controller by defining a custom <code class="docutils literal notranslate"><span class="pre">act</span></code> method:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.controllers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBC5Zone</span>
@@ -244,13 +243,14 @@
             <span class="c1"># Weekend or night</span>
             <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.33</span><span class="p">,</span> <span class="mf">23.33</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">action</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p><strong>Note: ``action`` must be a NumPy array for compatibility with the Gymnasium API.</strong></p>
 <p>Now that our controller is ready, we can use it as follows:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Create rule-based controller</span>
@@ -278,57 +278,41 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode.
-[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-v1
+[ENVIRONMENT] (INFO) : Episode 1: Eplus-5zone-hot-continuous-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created.
-[MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model.
-[ENVIRONMENT] (INFO) : Saving episode output path.
-[ENVIRONMENT] (INFO) : Episode 1 started.
+[MODEL] (INFO) : Episode directory created.
+[MODEL] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
+[MODEL] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path in /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-v1-res1/episode-1/output.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Reward:  -0.10122987987606541 {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(13.8), np.float32(30.0)), &#39;timestep&#39;: 1, &#39;reward&#39;: -0.10122987987606541, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: -0.09533249490526607, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: -0.19066498981053215, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.19066498981053215}
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/gymnasium/spaces/box.py:240: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
-  gym.logger.warn(&#34;Casting input x to numpy array.&#34;)
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Simulation Progress [Episode 1]:  10%|█         | 10/100 [00:00&lt;00:09,  9.64%/s, 10% completed] Reward:  -500.8158604654543 {&#39;time_elapsed(hours)&#39;: 744.25, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 2976, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  17%|█▋        | 17/100 [00:01&lt;00:08,  9.88%/s, 17% completed]Reward:  -771.2477959705227 {&#39;time_elapsed(hours)&#39;: 1416.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 5664, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  26%|██▌       | 26/100 [00:02&lt;00:06, 11.30%/s, 26% completed]Reward:  -1099.6675505462101 {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (18.33, 23.33), &#39;timestep&#39;: 8640, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  34%|███▍      | 34/100 [00:03&lt;00:06,  9.53%/s, 34% completed]Reward:  -1443.9892728462598 {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 11520, &#39;reward&#39;: -0.00986244334034497, &#39;energy_term&#39;: -0.00986244334034497, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -197.24886680689937, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 197.24886680689937, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  42%|████▏     | 42/100 [00:04&lt;00:06,  9.08%/s, 42% completed]Reward:  -1850.3837512878513 {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 14496, &#39;reward&#39;: -0.443418973577729, &#39;energy_term&#39;: -0.03306759297397215, &#39;comfort_term&#39;: -0.41035138060375687, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -661.351859479443, &#39;abs_comfort_penalty&#39;: -0.8207027612075137, &#39;total_power_demand&#39;: 661.351859479443, &#39;total_temperature_violation&#39;: 0.8207027612075137}
-Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:05&lt;00:04, 11.44%/s, 51% completed]Reward:  -2994.821084822717 {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (18.33, 23.33), &#39;timestep&#39;: 17376, &#39;reward&#39;: -0.2168368480281406, &#39;energy_term&#39;: -0.03331450494007778, &#39;comfort_term&#39;: -0.1835223430880628, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -666.2900988015556, &#39;abs_comfort_penalty&#39;: -0.3670446861761256, &#39;total_power_demand&#39;: 666.2900988015556, &#39;total_temperature_violation&#39;: 0.3670446861761256}
-Simulation Progress [Episode 1]:  59%|█████▉    | 59/100 [00:06&lt;00:04,  8.89%/s, 59% completed]Reward:  -4192.843264700024 {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 20352, &#39;reward&#39;: -0.4444265580218612, &#39;energy_term&#39;: -0.03655451169123719, &#39;comfort_term&#39;: -0.407872046330624, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -731.0902338247438, &#39;abs_comfort_penalty&#39;: -0.815744092661248, &#39;total_power_demand&#39;: 731.0902338247438, &#39;total_temperature_violation&#39;: 0.815744092661248}
-Simulation Progress [Episode 1]:  67%|██████▋   | 67/100 [00:06&lt;00:02, 11.54%/s, 67% completed]Reward:  -5380.941330999556 {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 23328, &#39;reward&#39;: -0.2973068555116624, &#39;energy_term&#39;: -0.02993733348744081, &#39;comfort_term&#39;: -0.2673695220242216, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -598.7466697488162, &#39;abs_comfort_penalty&#39;: -0.5347390440484432, &#39;total_power_demand&#39;: 598.7466697488162, &#39;total_temperature_violation&#39;: 0.5347390440484432}
-Simulation Progress [Episode 1]:  76%|███████▌  | 76/100 [00:07&lt;00:02, 10.25%/s, 76% completed]Reward:  -6627.123778199568 {&#39;time_elapsed(hours)&#39;: 6552.25, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 26208, &#39;reward&#39;: -0.03177037793883851, &#39;energy_term&#39;: -0.03177037793883851, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -635.4075587767702, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 635.4075587767702, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  84%|████████▍ | 84/100 [00:08&lt;00:01, 11.03%/s, 84% completed]Reward:  -6944.464641871541 {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 29184, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]:  92%|█████████▏| 92/100 [00:09&lt;00:00, 10.92%/s, 92% completed]Reward:  -7259.377698005483 {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (np.float32(18.33), np.float32(23.33)), &#39;timestep&#39;: 32064, &#39;reward&#39;: -0.018698130195533794, &#39;energy_term&#39;: -0.018698130195533794, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -373.96260391067585, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 373.96260391067585, &#39;total_temperature_violation&#39;: 0.0}
-Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:09&lt;00:00, 11.14%/s, 100% completed]Episode  0 Mean reward:  -0.21907941002188872 Cumulative reward:  -7676.542527166982
+[ENVIRONMENT] (INFO) : Episode 1 started.
+Reward:  -0.10041572388949849 {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [13.800000190734863, 30.0], &#39;timestep&#39;: 1, &#39;reward&#39;: -0.10041572388949849, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: -0.09451834601888898, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: -0.18903669203777795, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0.18903669203777795, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  10%|█         | 10/100 [00:01&lt;00:10,  8.40%/s, 10% completed]  Reward:  -358.955216712506 {&#39;time_elapsed(hours)&#39;: 744.25, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 2976, &#39;reward&#39;: -0.005897377870609513, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  17%|█▋        | 17/100 [00:01&lt;00:09,  8.48%/s, 17% completed]Reward:  -575.246118212152 {&#39;time_elapsed(hours)&#39;: 1416.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 5664, &#39;reward&#39;: -0.005897377870609513, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  26%|██▌       | 26/100 [00:02&lt;00:08,  8.60%/s, 26% completed]Reward:  -851.3357056834082 {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 8640, &#39;reward&#39;: -0.005897377870609513, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  34%|███▍      | 34/100 [00:04&lt;00:09,  6.72%/s, 34% completed]Reward:  -1189.0703800741016 {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 11520, &#39;reward&#39;: -0.009862351778960955, &#39;energy_term&#39;: -0.009862351778960955, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -197.24703557921907, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 197.24703557921907, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  42%|████▏     | 42/100 [00:05&lt;00:08,  6.71%/s, 42% completed]Reward:  -1594.6394910495567 {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 14496, &#39;reward&#39;: -0.44330201860495905, &#39;energy_term&#39;: -0.0331394509149559, &#39;comfort_term&#39;: -0.41016256769000314, &#39;energy_penalty&#39;: -662.7890182991179, &#39;comfort_penalty&#39;: -0.8203251353800063, &#39;total_power_demand&#39;: 662.7890182991179, &#39;total_temperature_violation&#39;: 0.8203251353800063, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:06&lt;00:07,  6.84%/s, 51% completed]Reward:  -2738.7219838962233 {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 17376, &#39;reward&#39;: -0.21678233374921216, &#39;energy_term&#39;: -0.033327249345369646, &#39;comfort_term&#39;: -0.1834550844038425, &#39;energy_penalty&#39;: -666.5449869073929, &#39;comfort_penalty&#39;: -0.366910168807685, &#39;total_power_demand&#39;: 666.5449869073929, &#39;total_temperature_violation&#39;: 0.366910168807685, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  59%|█████▉    | 59/100 [00:07&lt;00:05,  6.93%/s, 59% completed]Reward:  -3936.6529299828426 {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 20352, &#39;reward&#39;: -0.44443299855469764, &#39;energy_term&#39;: -0.03655363190508797, &#39;comfort_term&#39;: -0.40787936664960966, &#39;energy_penalty&#39;: -731.0726381017595, &#39;comfort_penalty&#39;: -0.8157587332992193, &#39;total_power_demand&#39;: 731.0726381017595, &#39;total_temperature_violation&#39;: 0.8157587332992193, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  67%|██████▋   | 67/100 [00:09&lt;00:04,  6.83%/s, 67% completed]Reward:  -5124.55480713915 {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 23328, &#39;reward&#39;: -0.29726607311779185, &#39;energy_term&#39;: -0.02991704399019792, &#39;comfort_term&#39;: -0.26734902912759395, &#39;energy_penalty&#39;: -598.3408798039584, &#39;comfort_penalty&#39;: -0.5346980582551879, &#39;total_power_demand&#39;: 598.3408798039584, &#39;total_temperature_violation&#39;: 0.5346980582551879, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  76%|███████▌  | 76/100 [00:10&lt;00:03,  7.35%/s, 76% completed]Reward:  -6370.638753750336 {&#39;time_elapsed(hours)&#39;: 6552.25, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 26208, &#39;reward&#39;: -0.03178420234234498, &#39;energy_term&#39;: -0.03178420234234498, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -635.6840468468996, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 635.6840468468996, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  84%|████████▍ | 84/100 [00:11&lt;00:02,  7.74%/s, 84% completed]Reward:  -6665.020396418986 {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 29184, &#39;reward&#39;: -0.005897377870609513, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  92%|█████████▏| 92/100 [00:12&lt;00:01,  7.82%/s, 92% completed]Reward:  -6932.478810099446 {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.329999923706055, 23.329999923706055], &#39;timestep&#39;: 32064, &#39;reward&#39;: -0.005897377870609513, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:13&lt;00:00,  6.41%/s, 100% completed]Episode  0 Mean reward:  -0.20798321705377112 Cumulative reward:  -7287.73192556414
 </pre></div></div>
 </div>
 <p>Always remember to close the environment:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -340,8 +324,8 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:12&lt;00:00,  8.33%/s, 100% completed]
-[ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
+Simulation Progress [Episode 2]: 100%|██████████| 100/100 [00:19&lt;00:00,  5.04%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [Eplus-5zone-hot-continuous-v1]
 </pre></div></div>
 </div>
 <p>For more information about pre-defined controllers and how to create custom ones, visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/controllers.html">the corresponding documentation</a>.</p>

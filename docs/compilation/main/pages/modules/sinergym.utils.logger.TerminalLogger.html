@@ -167,13 +167,13 @@
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.logger.TerminalLogger.getLogger">
-<span class="sig-name descname"><span class="pre">getLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;sinergym.utils.logger.CustomFormatter</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Logger</span></span></span><a class="headerlink" href="#sinergym.utils.logger.TerminalLogger.getLogger" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;sinergym.utils.logger.CustomFormatter</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Logger</span></span></span><a class="headerlink" href="#sinergym.utils.logger.TerminalLogger.getLogger" title="Link to this definition"></a></dt>
 <dd><p>Return Sinergym logger for the progress output in terminal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – logger name</p></li>
-<li><p><strong>level</strong> (<em>str</em>) – logger level</p></li>
+<li><p><strong>level</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>) – logger level</p></li>
 <li><p><strong>formatter</strong> (<em>Callable</em>) – logger formatter class</p></li>
 </ul>
 </dd>
