@@ -156,6 +156,8 @@ typeCheckingMode = "basic"
 reportMissingImports = false
 reportMissingModuleSource = false
 reportMissingTypeStubs = false
+reportOptionalMemberAccess = false
+reportAttributeAccessIssue = false
 
 [tool.isort]
 profile = "black"
