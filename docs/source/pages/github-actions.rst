@@ -12,7 +12,7 @@ Pull request
 
 - **Python Code format check**. Each pull request is checked following **pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ and `isort <https://github.com/PyCQA/isort>`__ for import sorting. Non-compliance triggers a warning.
 
-- **Code type check**. `pytype <https://github.com/google/pytype>`__ is used in the *Sinergym* module to control function and method I/O types. ``import-error`` types are ignored with ``pytype -d import-error sinergym/``. Type errors halt the workflow until resolved.
+- **Code type check**. `pyright <https://github.com/microsoft/pyright>`__ is used in the *Sinergym* module to control function and method I/O types. Type errors halt the workflow until resolved.
 
 - **Documentation checks**. Changes in source documentation trigger a *Sphinx* compilation and spelling check. Errors are raised for compilation issues and unrecognized words. Add unrecognized but correct words to ``docs/source/spelling_wordlist.txt``.
 

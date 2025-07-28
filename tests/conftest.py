@@ -740,12 +740,12 @@ def energy_cost_linear_reward():
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
         energy_cost_variables=['energy_cost'],
-        range_comfort_winter=[
+        range_comfort_winter=(
             20.0,
-            23.5],
-        range_comfort_summer=[
+            23.5),
+        range_comfort_summer=(
             23.0,
-            26.0],
+            26.0),
         temperature_weight=0.4,
         energy_weight=0.4,
         lambda_energy=1e-4,

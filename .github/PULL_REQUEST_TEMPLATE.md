@@ -39,7 +39,7 @@ If "Other," please describe:
 - [ ] I have reformatted the code using `isort`.
 - [ ] I have ensured `cd docs && make spelling && make html` passes (**required** if documentation was updated).
 - [ ] I have ensured `pytest tests/ -vv` passes (**required**).
-- [ ] I have ensured `pytype -d import-error sinergym/` passes (**required**).
+- [ ] I have ensured `pyright sinergym/` passes (**required**).
 
 ---
 

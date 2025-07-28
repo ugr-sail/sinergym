@@ -8,8 +8,8 @@ installed = {dist.metadata['Name'].lower()
              for dist in metadata.distributions()}
 
 if required <= installed:
-    import stable_baselines3
-    from stable_baselines3.common.noise import NormalActionNoise
+    import stable_baselines3  # type: ignore
+    from stable_baselines3.common.noise import NormalActionNoise  # type: ignore
 
     import sinergym
 
@@ -44,11 +44,12 @@ if required <= installed:
 
         # Check model state
         assert model.action_space == env.action_space
+        assert model.env is not None
         assert model.env.action_space == env.action_space
 
         assert isinstance(
             model.policy,
-            stable_baselines3.common.policies.ActorCriticPolicy)
+            stable_baselines3.common.policies.ActorCriticPolicy)  # type: ignore
 
         # Check model works
 
@@ -92,11 +93,12 @@ if required <= installed:
 
         # Check model state
         assert model.action_space == env.action_space
+        assert model.env is not None
         assert model.env.action_space == env.action_space
 
         assert isinstance(
             model.policy,
-            stable_baselines3.common.policies.ActorCriticPolicy)
+            stable_baselines3.common.policies.ActorCriticPolicy)  # type: ignore
 
         # Check model works
 
@@ -164,11 +166,12 @@ if required <= installed:
 
             # Check model state
             assert model.action_space == env.action_space
+            assert model.env is not None
             assert model.env.action_space == env.action_space
 
             assert isinstance(
                 model.policy,
-                stable_baselines3.dqn.policies.DQNPolicy)
+                stable_baselines3.dqn.policies.DQNPolicy)  # type: ignore
 
             # Check if model works
 
@@ -219,11 +222,12 @@ if required <= installed:
 
             # Check model state
             assert model.action_space == env.action_space
+            assert model.env is not None
             assert model.env.action_space == env.action_space
 
             assert isinstance(
                 model.policy,
-                stable_baselines3.td3.policies.TD3Policy)
+                stable_baselines3.td3.policies.TD3Policy)  # type: ignore
 
             # Check model works
 
@@ -267,11 +271,12 @@ if required <= installed:
 
             # Check model state
             assert model.action_space == env.action_space
+            assert model.env is not None
             assert model.env.action_space == env.action_space
 
             assert isinstance(
                 model.policy,
-                stable_baselines3.sac.policies.SACPolicy)
+                stable_baselines3.sac.policies.SACPolicy)  # type: ignore
 
             # Check if model works
 

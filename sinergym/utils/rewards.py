@@ -38,8 +38,8 @@ class LinearReward(BaseReward):
         self,
         temperature_variables: List[str],
         energy_variables: List[str],
-        range_comfort_winter: Tuple[int, int],
-        range_comfort_summer: Tuple[int, int],
+        range_comfort_winter: Tuple[float, float],
+        range_comfort_summer: Tuple[float, float],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
@@ -57,8 +57,8 @@ class LinearReward(BaseReward):
         Args:
             temperature_variables (List[str]): Name(s) of the temperature variable(s).
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
-            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
@@ -191,8 +191,8 @@ class EnergyCostLinearReward(LinearReward):
         self,
         temperature_variables: List[str],
         energy_variables: List[str],
-        range_comfort_winter: Tuple[int, int],
-        range_comfort_summer: Tuple[int, int],
+        range_comfort_winter: Tuple[float, float],
+        range_comfort_summer: Tuple[float, float],
         energy_cost_variables: List[str],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
@@ -213,8 +213,8 @@ class EnergyCostLinearReward(LinearReward):
         Args:
             temperature_variables (List[str]): Name(s) of the temperature variable(s).
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
-            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer s-sum(exp(violation)
                     for violation in temp_violations if violation > 0)ession tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
@@ -321,8 +321,8 @@ class ExpReward(LinearReward):
         self,
         temperature_variables: List[str],
         energy_variables: List[str],
-        range_comfort_winter: Tuple[int, int],
-        range_comfort_summer: Tuple[int, int],
+        range_comfort_winter: Tuple[float, float],
+        range_comfort_summer: Tuple[float, float],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
@@ -338,8 +338,8 @@ class ExpReward(LinearReward):
         Args:
             temperature_variables (List[str]): Name(s) of the temperature variable(s).
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
-            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
@@ -404,8 +404,8 @@ class HourlyLinearReward(LinearReward):
         self,
         temperature_variables: List[str],
         energy_variables: List[str],
-        range_comfort_winter: Tuple[int, int],
-        range_comfort_summer: Tuple[int, int],
+        range_comfort_winter: Tuple[float, float],
+        range_comfort_summer: Tuple[float, float],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         default_energy_weight: float = 0.5,
@@ -419,8 +419,8 @@ class HourlyLinearReward(LinearReward):
         Args:
             temperature_variables (List[str]]): Name(s) of the temperature variable(s).
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
-            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             default_energy_weight (float, optional): Default weight given to the energy term when thermal comfort is considered. Defaults to 0.5.
@@ -491,8 +491,8 @@ class NormalizedLinearReward(LinearReward):
         self,
         temperature_variables: List[str],
         energy_variables: List[str],
-        range_comfort_winter: Tuple[int, int],
-        range_comfort_summer: Tuple[int, int],
+        range_comfort_winter: Tuple[float, float],
+        range_comfort_summer: Tuple[float, float],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
@@ -505,8 +505,8 @@ class NormalizedLinearReward(LinearReward):
         Args:
             temperature_variables (List[str]]): Name(s) of the temperature variable(s).
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
-            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Default weight given to the energy term when thermal comfort is considered. Defaults to 0.5.
@@ -744,8 +744,8 @@ class MultiZoneRewardV1(BaseReward):
         self._get_comfort_ranges(obs_dict)
 
         temp_violations = [
-            max(0, min(abs(T - comfort_range[0]), abs(T - comfort_range[1])))
-            if T < comfort_range[0] or T > comfort_range[1] else 0
+            max(0.0, min(abs(T - comfort_range[0]), abs(T - comfort_range[1])))
+            if T < comfort_range[0] or T > comfort_range[1] else 0.0
             for temp_var, comfort_range in self.comfort_ranges.items()
             if (T := obs_dict[temp_var])
         ]

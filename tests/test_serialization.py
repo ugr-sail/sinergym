@@ -18,7 +18,7 @@ def test_class_and_function_representer_and_constructor():
     class_yaml = yaml.dump(ModelJSON)
     loaded_class = yaml.load(class_yaml, Loader=yaml.FullLoader)
     assert isinstance(loaded_class, type)
-    assert isinstance(loaded_class, ModelJSON.__class__)
+    assert loaded_class == ModelJSON
 
     # Function
     func_yaml = yaml.dump(get_delta_seconds)

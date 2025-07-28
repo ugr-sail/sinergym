@@ -4,6 +4,7 @@ Class for connecting EnergyPlus with Python using pyenergyplus API.
 
 import sys
 import threading
+from ctypes import c_void_p
 from pathlib import Path
 from queue import Empty, Queue
 from typing import Any, Dict, List, Optional, Tuple
@@ -87,7 +88,7 @@ class EnergyPlus(object):
 
         # ----------------------------- Simulation thread ---------------------------- #
         self.energyplus_thread: Optional[threading.Thread] = None
-        self.energyplus_state: Optional[int] = None
+        self.energyplus_state: Optional[c_void_p] = None
         self.sim_results: Dict[str, Any] = {}
         self.initialized_handlers = False
         self.system_ready = False
@@ -139,23 +140,23 @@ class EnergyPlus(object):
 
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
-            self.energyplus_state, self._progress_update)
+            self.energyplus_state, self._progress_update)  # type: ignore
 
         # register callback used to signal warmup complete
         self.api.runtime.callback_after_new_environment_warmup_complete(
-            self.energyplus_state, self._warmup_complete)
+            self.energyplus_state, self._warmup_complete)  # type: ignore
 
         # register callback used to collect observations
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._collect_obs_and_info)
+            self.energyplus_state, self._collect_obs_and_info)  # type: ignore
 
         # register callback used to send actions
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_action)
+            self.energyplus_state, self._process_action)  # type: ignore
 
         # register callback used to process context
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_context)
+            self.energyplus_state, self._process_context)  # type: ignore
 
         # ------------------- Run EnergyPlus in a non-blocking way ------------------- #
         def _run_energyplus(runtime, cmd_args, state, results):
@@ -186,7 +187,7 @@ class EnergyPlus(object):
         """It forces the simulation ends, cleans all communication queues, thread is deleted (joined) and simulator attributes are
            reset (except handlers, to not initialize again if there is a next thread execution).
         """
-        if self.is_running:
+        if self.energyplus_thread:
             # Kill progress bar
             if self.progress_bar is not None:
                 self.progress_bar.close()
@@ -203,10 +204,11 @@ class EnergyPlus(object):
             # Clean runtime callbacks
             self.api.runtime.clear_callbacks()
             # Clean Energyplus state
-            self.api.state_manager.delete_state(
-                self.energyplus_state)
+            if self.energyplus_state:
+                self.api.state_manager.delete_state(
+                    self.energyplus_state)
             # Set flags to default value
-            self.sim_results: Dict[str, Any] = {}
+            self.sim_results = {}
             self.warmup_complete = False
             self.initialized_handlers = False
             self.system_ready = False
@@ -271,11 +273,11 @@ class EnergyPlus(object):
         self.logger.debug(
             'Warmup process has been completed successfully.')
 
-    def _init_system(self, state_argument: int) -> None:
+    def _init_system(self, state_argument: c_void_p) -> None:
         """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
 
         Args:
-            state_argument (int): EnergyPlus API state
+            state_argument (c_void_p): EnergyPlus API state
         """
         if not self.system_ready:
             self._init_handlers(state_argument)
@@ -284,11 +286,11 @@ class EnergyPlus(object):
             if self.system_ready:
                 self.logger.info('System is ready.')
 
-    def _init_handlers(self, state_argument: int) -> None:
+    def _init_handlers(self, state_argument: c_void_p) -> None:
         """initialize sensors/actuators handlers to interact with during simulation.
 
         Args:
-            state_argument (int): EnergyPlus API state
+            state_argument (c_void_p): EnergyPlus API state
 
         """
         # api data must be fully ready, else nothing happens
@@ -327,8 +329,13 @@ class EnergyPlus(object):
                     state_argument).decode('utf-8')
 
                 # write available_data.csv in parent output_path
-                parent_dir = Path(
-                    self._output_path).parent.parent.absolute().__str__()
+                if self._output_path:
+                    parent_dir = Path(
+                        self._output_path).parent.parent.absolute().__str__()
+                else:
+                    self.logger.error(
+                        'Output path is not set, data_available.txt will not be written')
+                    return
                 data = self.available_data.splitlines()
                 with open(parent_dir + '/data_available.txt', "w") as txt_file:
                     txt_file.writelines([line + '\n' for line in data])
@@ -359,19 +366,19 @@ class EnergyPlus(object):
 
     # ---------------------------- Gymnasium iteration --------------------------- #
 
-    def _collect_obs_and_info(self, state_argument: int) -> None:
+    def _collect_obs_and_info(self, state_argument: c_void_p) -> None:
         """EnergyPlus callback that collects output variables and info
         values and enqueue them in each simulation timestep.
 
         Args:
-            state_argument (int): EnergyPlus API state
+            state_argument (c_void_p): EnergyPlus API state
         """
-
         # if simulation is completed or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(self.energyplus_state)
+            self.api.runtime.stop_simulation(
+                self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
-        self._init_system(self.energyplus_state)
+        self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
             return
 
@@ -389,13 +396,13 @@ class EnergyPlus(object):
             ** {
                 key: self.exchange.get_variable_value(state_argument, handle)
                 for key, handle
-                in self.var_handlers.items()
+                in self.var_handlers.items()  # type: ignore
             },
             # meters (getting value from handlers)
             **{
                 key: self.exchange.get_meter_value(state_argument, handle)
                 for key, handle
-                in self.meter_handlers.items()
+                in self.meter_handlers.items()  # type: ignore
             }
         }
 
@@ -415,18 +422,19 @@ class EnergyPlus(object):
         # self.logger.debug(f'INFO put in QUEUE: {self.next_obs}')
         self.info_queue.put(self.next_info)
 
-    def _process_action(self, state_argument: int) -> None:
+    def _process_action(self, state_argument: c_void_p) -> None:
         """EnergyPlus callback that sets output actuator value(s) from last received action.
 
         Args:
-            state_argument (int): EnergyPlus API state
+            state_argument (c_void_p): EnergyPlus API state
         """
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(self.energyplus_state)
+            self.api.runtime.stop_simulation(
+                self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
-        self._init_system(self.energyplus_state)
+        self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
             return
         # Get next action from queue and check type
@@ -435,7 +443,7 @@ class EnergyPlus(object):
         if not self.simulation_complete:
             # Set the action values obtained in actuator handlers
             for i, (act_name, act_handle) in enumerate(
-                    self.actuator_handlers.items()):
+                    self.actuator_handlers.items()):  # type: ignore
                 self.exchange.set_actuator_value(
                     state=state_argument,
                     actuator_handle=act_handle,
@@ -445,18 +453,19 @@ class EnergyPlus(object):
                 # self.logger.debug(
                 #     f'Set in actuator {act_name} value {next_action[i]}.')
 
-    def _process_context(self, state_argument: int) -> None:
+    def _process_context(self, state_argument: c_void_p) -> None:
         """EnergyPlus callback that sets actuator as a building context, instead of control.
 
         Args:
-            state_argument (int): EnergyPlus API state
+            state_argument (c_void_p): EnergyPlus API state
         """
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(self.energyplus_state)
+            self.api.runtime.stop_simulation(
+                self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
-        self._init_system(self.energyplus_state)
+        self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
             return
         # Get next action from queue and check type
@@ -466,7 +475,7 @@ class EnergyPlus(object):
                 # Set the context values obtained in context handlers
                 # (actuators)
                 for i, (context_name, context_handle) in enumerate(
-                        self.context_handlers.items()):
+                        self.context_handlers.items()):  # type: ignore
                     self.exchange.set_actuator_value(
                         state=state_argument,
                         actuator_handle=context_handle,

@@ -59,23 +59,23 @@ class ModelJSON(object):
             self,
             env_name: str,
             json_file: str,
-            weather_files: List[str],
+            weather_files: Union[str, List[str]],
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
             max_ep_store: int,
-            building_config: Dict[str, Any],
+            building_config: Optional[Dict[str, Any]] = None,
             weather_conf: Optional[Dict[str, Any]] = None):
         """Constructor. Variables and meters are required to update building model scheme.
 
         Args:
             env_name (str): Name of the environment, required for Sinergym output management.
             json_file (str): Json file name, path is calculated by the constructor.
-            weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
+            weather_files (Union[str, List[str]]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor. Use a single str or List[str] with only one element to use the same weather file for all episodes.
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             max_ep_store (int): Number of episodes directories will be stored in workspace_path.
             building_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
-            weather_conf (Optional[Dict[str, Any]]): Weather configuration to apply to building model. Defaults to None.
+            weather_conf (Dict[str, Any]): Dict config with extra configuration which is required to modify weather (may be None).
         """
 
         self.pkg_data_path = PKG_DATA_PATH
@@ -122,7 +122,7 @@ class ModelJSON(object):
 
         # Output paths and config
         self.workspace_path = self._set_workspace_dir(env_name)
-        self.episode_path: Optional[str] = None
+        self.episode_path: str = ''
         self.max_ep_store = max_ep_store
 
         # Specific configuration for building model depending on the weather
@@ -444,6 +444,7 @@ class ModelJSON(object):
 
         base_filename, ext = os.path.splitext(
             os.path.basename(self._weather_path))
+        assert self.weather_data.dataframe is not None
         weather_data_mod = deepcopy(self.weather_data)
 
         # Apply variation to EPW if exists
@@ -452,7 +453,7 @@ class ModelJSON(object):
             # Generate variability configuration
             self.weather_variability_config = {
                 weather_var: tuple(
-                    np.random.uniform(param[0], param[1]) if isinstance(param, tuple) else param
+                    float(np.random.uniform(param[0], param[1])) if isinstance(param, tuple) else float(param)
                     for param in params
                 )
                 for weather_var, params in weather_variability.items()
@@ -461,7 +462,7 @@ class ModelJSON(object):
             # Apply Ornstein-Uhlenbeck process to weather data
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
-                variability_config=self.weather_variability_config)
+                variability_config=self.weather_variability_config)  # type: ignore
 
             self.logger.info(
                 f'Weather noise applied to columns: {

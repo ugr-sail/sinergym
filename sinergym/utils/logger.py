@@ -16,14 +16,14 @@ class CustomFormatter(logging.Formatter):
     red = "\x1b[31;20m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    format = LOG_FORMAT
+    log_format = LOG_FORMAT
 
     FORMATS = {
-        logging.DEBUG: grey + format + reset,
-        logging.INFO: grey + format + reset,
-        logging.WARNING: yellow + format + reset,
-        logging.ERROR: red + format + reset,
-        logging.CRITICAL: bold_red + format + reset
+        logging.DEBUG: grey + log_format + reset,
+        logging.INFO: grey + log_format + reset,
+        logging.WARNING: yellow + log_format + reset,
+        logging.ERROR: red + log_format + reset,
+        logging.CRITICAL: bold_red + log_format + reset
     }
 
     def format(self, record):
@@ -51,13 +51,13 @@ class TerminalLogger():
     def getLogger(
             self,
             name: str,
-            level: str,
+            level: Union[str, int],
             formatter: Any = CustomFormatter()) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:
             name (str): logger name
-            level (str): logger level
+            level (Union[str, int]): logger level
             formatter (Callable): logger formatter class
 
         Returns:
@@ -138,14 +138,14 @@ class LoggerStorage():
             custom_metrics (List[Any]): Custom metric data. Default is None.
         """
         # Convert inputs to consistent formats
-        obs = obs.tolist() if isinstance(obs, np.ndarray) else obs
-        action = action.tolist() if isinstance(
+        obs_list = obs.tolist() if isinstance(obs, np.ndarray) else obs
+        action_list = action.tolist() if isinstance(
             action, np.ndarray) else [action] if isinstance(
-            action, (int, np.int64)) else action
+            action, (int, np.integer)) else action
 
         # Store data
-        self.observations.append(obs)
-        self.actions.append(action)
+        self.observations.append(obs_list)
+        self.actions.append(action_list)
         self.rewards.append(reward)
         self.infos.append(info)
         self.terminateds.append(terminated)
@@ -200,7 +200,8 @@ try:
     import wandb
     from stable_baselines3.common.logger import KVWriter
 
-    class WandBOutputFormat(KVWriter):  # pragma: no cover
+    class WandBOutputFormat(  # type: ignore[reportRedeclaration]
+            KVWriter):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
         """
@@ -243,7 +244,8 @@ try:
             # Log all metrics
             wandb.log(metrics_to_log)
 except ImportError:
-    class WandBOutputFormat():  # pragma: no cover
+    class WandBOutputFormat(
+    ):  # pragma: no cover
         """WandBOutputFormat class for logging in WandB from SB3 logger.
         """
 

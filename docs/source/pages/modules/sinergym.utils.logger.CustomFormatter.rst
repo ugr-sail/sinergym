@@ -1,4 +1,4 @@
-sinergym.utils.logger.CustomFormatter
+﻿sinergym.utils.logger.CustomFormatter
 =====================================
 
 .. currentmodule:: sinergym.utils.logger
@@ -37,6 +37,7 @@ sinergym.utils.logger.CustomFormatter
       ~CustomFormatter.default_msec_format
       ~CustomFormatter.default_time_format
       ~CustomFormatter.grey
+      ~CustomFormatter.log_format
       ~CustomFormatter.red
       ~CustomFormatter.reset
       ~CustomFormatter.yellow

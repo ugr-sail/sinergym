@@ -129,10 +129,10 @@ def test_adapt_building_to_config(model_5zone, building_5zone):
 
 
 def test_save_building_model(model_5zone):
-    assert model_5zone.episode_path is None
+    assert not model_5zone.episode_path
     # Create episode path before save (else a exception will happen)
     model_5zone.set_episode_working_dir()
-    assert model_5zone.episode_path is not None
+    assert model_5zone.episode_path
     # save current model
     path_save = model_5zone.save_building_model()
     # Read the path save and check building model is saved
@@ -204,9 +204,9 @@ def test_update_weather_path(model_5zone_several_weathers):
 
 def test_apply_weather_variability(model_5zone):
     # First set a episode dir in execution
-    assert model_5zone.episode_path is None
+    assert not model_5zone.episode_path
     model_5zone.set_episode_working_dir()
-    assert model_5zone.episode_path is not None
+    assert model_5zone.episode_path
     # Check apply None variation return original weather_path
     path_result = model_5zone.apply_weather_variability(
         weather_variability=None)
@@ -232,6 +232,11 @@ def test_apply_weather_variability(model_5zone):
     original.read(model_5zone._weather_path)
     noise = Weather()
     noise.read(path_result)
+
+    # Ensure dataframes are loaded
+    assert original.dataframe is not None
+    assert noise.dataframe is not None
+
     # Check that the noise is applied in drybulb and windspd columns and not
     # in others
     assert (original.dataframe['Dry Bulb Temperature'] !=
@@ -295,7 +300,7 @@ def test_get_eplus_runperiod(model_5zone):
 
 def test_set_episode_working_dir(model_5zone):
     # Check config has no episode path set up yet
-    assert model_5zone.episode_path is None
+    assert not model_5zone.episode_path
     # Creating episode dir
     episode_path = model_5zone.set_episode_working_dir()
     # Check if new episode dir exists
