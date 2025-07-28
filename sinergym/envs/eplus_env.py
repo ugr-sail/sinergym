@@ -394,7 +394,7 @@ class EplusEnv(gym.Env):
 
         # Update info with
         info.update({'action': action.tolist(),
-                    'timestep': self.timestep,
+                     'timestep': self.timestep,
                      'reward': reward})
         info.update(rw_terms)
         self.last_info = info
