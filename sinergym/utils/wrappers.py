@@ -1252,7 +1252,7 @@ class MultiObjectiveReward(gym.Wrapper):
 
 
 @store_init_metadata
-class BaseLoggerWrapper(ABC, gym.Wrapper):
+class BaseLoggerWrapper(gym.Wrapper, ABC):
 
     def __init__(
         self,
