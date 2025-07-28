@@ -213,58 +213,60 @@ class ModelJSON(object):
         """Apply weather configuration to building model.
         """
 
-        if self.weather_conf.get('cap_nom_heating'):
-            list(self.building['HeatPump:PlantLoop:EIR:Heating'].values())[
-                0]['reference_capacity'] = self.weather_conf['cap_nom_heating']
+        if self.weather_conf:
 
-        if self.weather_conf.get('cap_nom_cooling'):
-            list(self.building['HeatPump:PlantLoop:EIR:Cooling'].values())[
-                0]['reference_capacity'] = self.weather_conf['cap_nom_cooling']
+            if self.weather_conf.get('cap_nom_heating'):
+                list(self.building['HeatPump:PlantLoop:EIR:Heating'].values())[
+                    0]['reference_capacity'] = self.weather_conf['cap_nom_heating']
 
-        if self.weather_conf.get('window_type'):
-            filtered_surfaces = {
+            if self.weather_conf.get('cap_nom_cooling'):
+                list(self.building['HeatPump:PlantLoop:EIR:Cooling'].values())[
+                    0]['reference_capacity'] = self.weather_conf['cap_nom_cooling']
+
+            if self.weather_conf.get('window_type'):
+                filtered_surfaces = {
+                    key: value for key,
+                    value in self.building['FenestrationSurface:Detailed'].items() if key.endswith('_Win')}
+                for definition in list(filtered_surfaces.values()):
+                    definition['construction_name'] = self.weather_conf['window_type']
+
+            if self.weather_conf.get('thickness_roof'):
+                filtered_surfaces = {
+                    key: value for key,
+                    value in self.building['Material'].items() if key.endswith('Roof_Insulation')}
+                for definition in list(filtered_surfaces.values()):
+                    definition['thickness'] = self.weather_conf['thickness_roof']
+
+            if self.weather_conf.get('thickness_wall'):
+                filtered_surfaces = {
+                    key: value for key,
+                    value in self.building['Material'].items() if key.endswith('Wall_Insulation')}
+                for definition in list(filtered_surfaces.values()):
+                    definition['thickness'] = self.weather_conf['thickness_wall']
+
+            if self.weather_conf.get('maximum_hot_water_flow'):
+                for i, definition in enumerate(
+                        list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
+                    definition['maximum_hot_water_flow'] = self.weather_conf['maximum_hot_water_flow'][i]
+
+            if self.weather_conf.get('maximum_cold_water_flow'):
+                for i, definition in enumerate(
+                        list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
+                    definition['maximum_cold_water_flow'] = self.weather_conf['maximum_cold_water_flow'][i]
+
+            design_keys = ['setpoint_control_type',
+                           'heating_control_throttling_range',
+                           'cooling_control_throttling_range']
+            applicable_design_keys = {
                 key: value for key,
-                value in self.building['FenestrationSurface:Detailed'].items() if key.endswith('_Win')}
-            for definition in list(filtered_surfaces.values()):
-                definition['construction_name'] = self.weather_conf['window_type']
+                value in self.weather_conf.items() if key in design_keys}
 
-        if self.weather_conf.get('thickness_roof'):
-            filtered_surfaces = {
-                key: value for key,
-                value in self.building['Material'].items() if key.endswith('Roof_Insulation')}
-            for definition in list(filtered_surfaces.values()):
-                definition['thickness'] = self.weather_conf['thickness_roof']
-
-        if self.weather_conf.get('thickness_wall'):
-            filtered_surfaces = {
-                key: value for key,
-                value in self.building['Material'].items() if key.endswith('Wall_Insulation')}
-            for definition in list(filtered_surfaces.values()):
-                definition['thickness'] = self.weather_conf['thickness_wall']
-
-        if self.weather_conf.get('maximum_hot_water_flow'):
-            for i, definition in enumerate(
-                    list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
-                definition['maximum_hot_water_flow'] = self.weather_conf['maximum_hot_water_flow'][i]
-
-        if self.weather_conf.get('maximum_cold_water_flow'):
-            for i, definition in enumerate(
-                    list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
-                definition['maximum_cold_water_flow'] = self.weather_conf['maximum_cold_water_flow'][i]
-
-        design_keys = ['setpoint_control_type',
-                       'heating_control_throttling_range',
-                       'cooling_control_throttling_range']
-        applicable_design_keys = {
-            key: value for key,
-            value in self.weather_conf.items() if key in design_keys}
-
-        if applicable_design_keys:
-            designs = list(
-                self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'].values())
-            for definition in designs:
-                for key in applicable_design_keys:
-                    definition[key] = applicable_design_keys[key]
+            if applicable_design_keys:
+                designs = list(
+                    self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'].values())
+                for definition in designs:
+                    for key in applicable_design_keys:
+                        definition[key] = applicable_design_keys[key]
 
     def adapt_building_to_variables(self) -> None:
         """Replaces the default Output:Variable entries in the building model with custom variables.

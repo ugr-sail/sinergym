@@ -800,7 +800,7 @@ def normalized_linear_reward():
 
 @pytest.fixture(scope='function')
 def multizone_reward():
-    return MultiZoneReward(
+    return MultiZoneRewardV1(
         energy_variables=['HVAC_electricity_demand_rate'],
         temperature_and_setpoints_conf={
             'air_temperature1': 'setpoint_temperature1',
