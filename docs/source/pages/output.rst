@@ -13,7 +13,7 @@ The contents of this root output directory include the results of the simulation
 
 |
 
-.. note:: Optional files and directories are not shown in the image above. They are explained in the text below.
+.. important:: Optional files and directories are not shown in the image above. They are explained in the text below.
 
 - ``episode-<num_episode>`` directories record the results of each simulation episode. The number of directories retained depends on the value specified by the ``max_ep_store`` parameter (see :ref:`Maximum episode data stored in Sinergym output`). Within these directories, the structure is consistent and follows the same format, including:
 
@@ -50,7 +50,7 @@ The contents of this root output directory include the results of the simulation
 
 - ``data_available.txt``. It is generated when the *EnergyPlus* API initializes all callbacks and handlers for the simulation. In this file, you can find all the available components of the building model, such as actuators, schedulers, meters, variables,  internal variables, etc.
 
-- ``mean.txt`` and ``var.txt``. These files contain the mean and variation values for calibration of normalization in observation space if wrapper ``NormalizeObservation`` is used (see :ref:`NormalizeObservation`).
+- ``mean.txt``, ``var.txt`` and ``count.txt``. These files contain the count, mean and variation values for calibration of normalization in observation space if wrapper ``NormalizeObservation`` is used (see :ref:`NormalizeObservation`).
 
 - ``env_config.pyyaml``. This file contains the environment configuration in YAML format. It is automatically generated when the environment is created and includes all the parameters used to instantiate the environment, such as the building model, weather file, simulation settings, and any user-defined configurations. For more information, see the :ref:`Environment Configuration Serialization` section.
 
@@ -60,7 +60,7 @@ The contents of this root output directory include the results of the simulation
 
     - ``best_model.zip``. This file contains the best model obtained during the training process. It is saved in a compressed format.
 
-    - ``mean.txt`` and ``var.txt``. Same as the files in the root directory, these files contain the mean and variation values for calibration of normalization in observation space, but for best model evaluation moments.
+    - ``mean.txt``, ``var.txt`` and ``count.txt``. Same as the files in the root directory, these files contain the count, mean and variation values for calibration of normalization in observation space, but for best model evaluation moments.
 
     - ``evaluation_summary.csv``. This file contains the evaluation summaries in CSV format. The structure of this file is defined by the ``LoggerEvalCallback`` class.
 
