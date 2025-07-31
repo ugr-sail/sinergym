@@ -176,10 +176,14 @@ def test_normalize_observation_calibration(env_demo):
     old_mean = env.get_wrapper_attr('mean').copy()
     assert env.has_wrapper_attr('var')
     old_var = env.get_wrapper_attr('var').copy()
+    assert env.has_wrapper_attr('count')
+    old_count = env.get_wrapper_attr('count')
     assert len(env.get_wrapper_attr('mean')
                ) == env.observation_space.shape[0]  # type: ignore
     assert len(env.get_wrapper_attr('var')
                ) == env.observation_space.shape[0]  # type: ignore
+    assert isinstance(env.get_wrapper_attr('count'),
+                      float) and env.get_wrapper_attr('count') > 0
 
     # reset
     obs, _ = env.reset()
@@ -192,26 +196,35 @@ def test_normalize_observation_calibration(env_demo):
     # Calibration
     assert (old_mean != env.get_wrapper_attr('mean')).any()
     assert (old_var != env.get_wrapper_attr('var')).any()
+    assert old_count != env.get_wrapper_attr('count')
     old_mean = env.get_wrapper_attr('mean').copy()
     old_var = env.get_wrapper_attr('var').copy()
+    old_count = env.get_wrapper_attr('count')
     env.get_wrapper_attr('deactivate_update')()
     a = env.action_space.sample()
     env.step(a)
     assert (old_mean == env.get_wrapper_attr('mean')).all()
     assert (old_var == env.get_wrapper_attr('var')).all()
+    assert old_count == env.get_wrapper_attr('count')
     env.get_wrapper_attr('activate_update')()
     env.step(a)
     assert (old_mean != env.get_wrapper_attr('mean')).any()
     assert (old_var != env.get_wrapper_attr('var')).any()
+    assert old_count != env.get_wrapper_attr('count')
     env.get_wrapper_attr('set_mean')(old_mean)
     env.get_wrapper_attr('set_var')(old_var)
+    env.get_wrapper_attr('set_count')(old_count)
     assert (old_mean == env.get_wrapper_attr('mean')).all()
     assert (old_var == env.get_wrapper_attr('var')).all()
+    assert old_count == env.get_wrapper_attr('count')
 
     # Check calibration as been saved as txt
     env.close()
     assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/mean.txt')
     assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/var.txt')
+    assert os.path.isfile(
+        env.get_wrapper_attr('workspace_path') +
+        '/count.txt')
     # Check that txt has the same lines than observation space shape
     with open(env.get_wrapper_attr('workspace_path') + '/mean.txt', 'r') as f:
         lines = f.readlines()
@@ -219,6 +232,9 @@ def test_normalize_observation_calibration(env_demo):
     with open(env.get_wrapper_attr('workspace_path') + '/var.txt', 'r') as f:
         lines = f.readlines()
         assert len(lines) == env.observation_space.shape[0]  # type: ignore
+    with open(env.get_wrapper_attr('workspace_path') + '/count.txt', 'r') as f:
+        lines = f.readlines()
+        assert len(lines) == 1
 
 
 def test_normalize_observation_exceptions(env_demo):
