@@ -180,6 +180,10 @@ class LoggerEvalCallback(EventCallback):
                     fname=os.path.join(self.save_path, 'var.txt'),
                     X=self.eval_env.get_wrapper_attr('var')
                 )
+                np.savetxt(
+                    fname=os.path.join(self.save_path, 'count.txt'),
+                    X=[self.eval_env.get_wrapper_attr('count')]
+                )
 
             # Save best model found summary in wandb if its active
             if self.wandb_log:
@@ -203,6 +207,8 @@ class LoggerEvalCallback(EventCallback):
                 get_train_attr('mean'))
             get_eval_attr('set_var')(
                 get_train_attr('var'))
+            get_eval_attr('set_count')(
+                get_train_attr('count'))
 
     def _evaluate_policy(self) -> Dict[str, List[Any]]:
         """
