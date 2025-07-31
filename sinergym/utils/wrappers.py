@@ -288,7 +288,8 @@ class NormalizeObservation(gym.Wrapper):
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
                  mean: Optional[Union[List[float], np.ndarray, str]] = None,
-                 var: Optional[Union[List[float], np.ndarray, str]] = None):
+                 var: Optional[Union[List[float], np.ndarray, str]] = None,
+                 count: Union[float, str] = 1e-4):
         """Initializes the NormalizationWrapper. Mean and var values can be None and being updated during interaction with environment.
 
         Args:
@@ -297,6 +298,7 @@ class NormalizeObservation(gym.Wrapper):
             epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
             mean (Optional[Union[List[float], np.ndarray, str]]): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
             var (Optional[Union[List[float], np.ndarray, str]]): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
+            count (Union[float, str]): The count value used for normalization, this value weighs the updates of the calibrations, so it is important to use if the environment has already been calibrated previously. It can be a count.txt path too. Defaults to 1e-4.
         """
         super().__init__(env)
 
@@ -307,18 +309,22 @@ class NormalizeObservation(gym.Wrapper):
         self.is_vector_env = False
         self.unwrapped_observation = None
 
+        # Set mean, variance and count
+        processed_mean = self._process_metric(mean, 'mean')
+        processed_var = self._process_metric(var, 'var')
+        processed_count = self._process_count(count)
+
         # Initialize normalization calibration
         self.obs_rms = RunningMeanStd(
+            epsilon=processed_count,
             shape=self.observation_space.shape,
             dtype=np.float64)
 
-        # Set mean and variance
-        processed_mean = self._process_metric(mean, 'mean')
-        processed_var = self._process_metric(var, 'var')
         if processed_mean is not None:
             self.obs_rms.mean = processed_mean
         if processed_var is not None:
             self.obs_rms.var = processed_var
+        self.obs_rms.count = processed_count
 
         self.logger.info('Wrapper initialized.')
 
@@ -383,6 +389,16 @@ class NormalizeObservation(gym.Wrapper):
 
         return metric
 
+    def _process_count(self, count: Union[float, str]) -> float:
+        """Validates, loads, and converts count metrics."""
+        if isinstance(count, str):
+            if os.path.exists(count):
+                return float(np.loadtxt(count, dtype=np.float64))
+            self.logger.error(f'count.txt file not found: {count}')
+            raise FileNotFoundError
+
+        return count
+
     def _save_normalization_calibration(self):
         """Saves the normalization calibration data in the output folder as txt files.
         """
@@ -391,8 +407,10 @@ class NormalizeObservation(gym.Wrapper):
 
         np.savetxt(os.path.join(episode_path, 'mean.txt'), self.mean)
         np.savetxt(os.path.join(episode_path, 'var.txt'), self.var)
+        np.savetxt(os.path.join(episode_path, 'count.txt'), [self.count])
         np.savetxt(os.path.join(workspace_path, 'mean.txt'), self.mean)
         np.savetxt(os.path.join(workspace_path, 'var.txt'), self.var)
+        np.savetxt(os.path.join(workspace_path, 'count.txt'), [self.count])
 
         self.logger.info('Normalization calibration saved.')
 
@@ -420,6 +438,11 @@ class NormalizeObservation(gym.Wrapper):
         """Returns the variance value of the observations."""
         return self.obs_rms.var
 
+    @property
+    def count(self) -> float:
+        """Returns the count value of the observations."""
+        return self.obs_rms.count
+
     def set_mean(self, mean: Union[List[float], np.ndarray, str]):
         """Sets the mean value of the observations."""
         processed_mean = self._process_metric(mean, 'mean')
@@ -431,6 +454,12 @@ class NormalizeObservation(gym.Wrapper):
         processed_var = self._process_metric(var, 'var')
         if processed_var is not None:
             self.obs_rms.var = deepcopy(processed_var)
+
+    def set_count(self, count: Union[float, str]):
+        """Sets the count value of the observations."""
+        processed_count = self._process_count(count)
+        if processed_count is not None:
+            self.obs_rms.count = processed_count
 
     def normalize(self, obs: np.ndarray) -> np.ndarray:
         """Normalizes the observation using the running mean and variance of the observations.
