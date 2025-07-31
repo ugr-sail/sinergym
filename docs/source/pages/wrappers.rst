@@ -118,14 +118,18 @@ However, *Sinergym* extends its functionality with some additional features:
 
 - It includes the last unnormalized observation as an environment attribute, which is useful for logging.
 
-- It provides access to the means and standard deviations used for normalization calibration, thus addressing the low-level 
+- It provides access to the means, standard deviations and count values used for normalization calibration, thus addressing the low-level 
   issues found in the original wrapper.
 
-- Similarly, these calibration values can be set via a method or within the wrapper constructor. These values can be specified either as a list or as ``numpy`` array, or simply writing the file path generated. See :ref:`API reference` for more information.
+  - The **mean** and **variance** values are used to normalize the observations following the Welford algorithm.
+
+  - The **count** value is used to weigh the updates of the calibrations. The higher the number of interactions, the higher this value becomes, which causes the calibration updates to become progressively smoother. This is important to use if the environment has already been calibrated previously. This value is only used when automatic update is enabled.
+
+- Similarly, these calibration values can be set via a method or within the wrapper constructor. These values can be specified either as a list or as ``numpy`` array in mean and variance and a float in count, or simply writing the file path generated. See :ref:`API reference` for more information.
 
 - Automatic calibration can be enabled or disabled when interacting with the environment, allowing the calibration to remain static rather than adaptive. This is useful for model evaluation.
 
-In addition, this wrapper saves the **mean and standard deviation** values as part of the *Sinergym* output. These can be used when loading and a evaluating a trained model. 
+In addition, this wrapper saves the **count, mean and standard deviation** values as part of the *Sinergym* output. These can be used when loading and a evaluating a trained model. 
 
 An example of its use can be found in :ref:`Loading and evaluating a trained model`. It is also important that normalization calibration update is disabled during evaluation.
 
@@ -133,8 +137,6 @@ An example of its use can be found in :ref:`Loading and evaluating a trained mod
 best model obtained if :ref:`LoggerEvalCallback` is active during training.
 
 These features are crucial when evaluating models trained using this wrapper. For more details, see `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
-
-|
 
 ***************
 Logger Wrappers
