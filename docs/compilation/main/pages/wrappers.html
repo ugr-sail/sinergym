@@ -219,19 +219,21 @@ It is based on the <a class="reference external" href="https://gymnasium.farama.
 <p>However, <em>Sinergym</em> extends its functionality with some additional features:</p>
 <ul class="simple">
 <li><p>It includes the last unnormalized observation as an environment attribute, which is useful for logging.</p></li>
-<li><p>It provides access to the means and standard deviations used for normalization calibration, thus addressing the low-level
-issues found in the original wrapper.</p></li>
-<li><p>Similarly, these calibration values can be set via a method or within the wrapper constructor. These values can be specified either as a list or as <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array, or simply writing the file path generated. See <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a> for more information.</p></li>
+<li><p>It provides access to the means, standard deviations and count values used for normalization calibration, thus addressing the low-level
+issues found in the original wrapper.</p>
+<ul>
+<li><p>The <strong>mean</strong> and <strong>variance</strong> values are used to normalize the observations following the Welford algorithm.</p></li>
+<li><p>The <strong>count</strong> value is used to weigh the updates of the calibrations. The higher the number of interactions, the higher this value becomes, which causes the calibration updates to become progressively smoother. This is important to use if the environment has already been calibrated previously. This value is only used when automatic update is enabled.</p></li>
+</ul>
+</li>
+<li><p>Similarly, these calibration values can be set via a method or within the wrapper constructor. These values can be specified either as a list or as <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array in mean and variance and a float in count, or simply writing the file path generated. See <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a> for more information.</p></li>
 <li><p>Automatic calibration can be enabled or disabled when interacting with the environment, allowing the calibration to remain static rather than adaptive. This is useful for model evaluation.</p></li>
 </ul>
-<p>In addition, this wrapper saves the <strong>mean and standard deviation</strong> values as part of the <em>Sinergym</em> output. These can be used when loading and a evaluating a trained model.</p>
+<p>In addition, this wrapper saves the <strong>count, mean and standard deviation</strong> values as part of the <em>Sinergym</em> output. These can be used when loading and a evaluating a trained model.</p>
 <p>An example of its use can be found in <a class="reference internal" href="notebooks/drl.html#Loading-and-evaluating-a-trained-model"><span class="std std-ref">Loading and evaluating a trained model</span></a>. It is also important that normalization calibration update is disabled during evaluation.</p>
 <p><em>Sinergym</em> will also save intermediate mean and standard deviation values in files within episode directories, as well as for the
 best model obtained if <a class="reference internal" href="deep-reinforcement-learning.html#loggerevalcallback"><span class="std std-ref">LoggerEvalCallback</span></a> is active during training.</p>
 <p>These features are crucial when evaluating models trained using this wrapper. For more details, see <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/407">#407</a>.</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 </section>
 <section id="logger-wrappers">
 <h2>Logger Wrappers<a class="headerlink" href="#logger-wrappers" title="Link to this heading"></a></h2>
@@ -368,6 +370,7 @@ for login.</p>
             <dd><a href="../../v3.6.0/pages/wrappers.html">v3.6.0</a></dd>
             <dd><a href="../../v3.7.0/pages/wrappers.html">v3.7.0</a></dd>
             <dd><a href="../../v3.8.0/pages/wrappers.html">v3.8.0</a></dd>
+            <dd><a href="../../v3.9.0/pages/wrappers.html">v3.9.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

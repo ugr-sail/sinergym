@@ -533,7 +533,7 @@ Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:00&lt;00:10,  9.14
 &lt;stable_baselines3.ppo.ppo.PPO at 0x7f7ec7eb7740&gt;
 </pre></div></div>
 </div>
-<p>Once the training process has finished, the last version of the model is saved. The <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">var</span></code> values used for normalization are also stored in the in <em>Sinergym</em> training output folder, in order to use them for model evaluation.</p>
+<p>Once the training process has finished, the last version of the model is saved. The <code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">var</span></code> values used for normalization are also stored in the in <em>Sinergym</em> training output folder, in order to use them for model evaluation.</p>
 <p>Visit the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/wrappers.html#normalizeobservation">NormalizeObservation documentation</a> for additional information.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -606,7 +606,7 @@ Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:01&lt;00:28,  3.39
 </div>
 <p>We will now create the Gymnasium environment. We can use the evaluation experiment name to rename the environment.</p>
 <p><strong>It is essential to wrap the environment with the same wrappers used for training if the action or observation spaces were modified</strong>.</p>
-<p>If you are loading a pre-trained model and using the observation space normalization wrapper, you should use both means and standard deviations calibrated during the training process for a fair evaluation. <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">var</span></code> values are saved in the <em>Sinergym</em> training output directory as a .txt file automatically. You can use a list or <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array format, or just set the .txt path directly in the constructor.</p>
+<p>If you are loading a pre-trained model and using the observation space normalization wrapper, you should use count, means and standard deviations calibrated during the training process for a fair evaluation. <code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">var</span></code> values are saved in the <em>Sinergym</em> training output directory as a .txt file automatically. You can use a list or <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array format (float in <code class="docutils literal notranslate"><span class="pre">count</span></code>), or just set the .txt path directly in the constructor.</p>
 <p>It is also important to deactivate calibration update during evaluations. This is done automatically by the <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -614,7 +614,7 @@ Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:01&lt;00:28,  3.39
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">evaluation_name</span><span class="p">)</span>
 <span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span>
-    <span class="s2">&quot;mean&quot;</span><span class="p">),</span> <span class="n">var</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">),</span> <span class="n">automatic_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="s2">&quot;mean&quot;</span><span class="p">),</span> <span class="n">var</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">),</span> <span class="n">count</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">),</span> <span class="n">automatic_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
 <span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
 <span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
@@ -1169,6 +1169,7 @@ Episode  4 Mean reward:  -0.770449260651564 Cumulative reward:  -26996.542093230
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
             <dd><a href="../../../v3.8.0/index.html">v3.8.0</a></dd>
+            <dd><a href="../../../v3.9.0/index.html">v3.9.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
