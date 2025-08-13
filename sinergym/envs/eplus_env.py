@@ -101,6 +101,7 @@ class EplusEnv(gym.Env):
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
         self.weather_files = weather_files
+        self.weather_conf = weather_conf
 
         # ---------------------------------------------------------------------------- #
         #                  Variables, meters and actuators definition                  #
@@ -135,7 +136,7 @@ class EplusEnv(gym.Env):
             meters=self.meters,
             max_ep_store=self.max_ep_store,
             building_config=self.building_config,
-            weather_conf=weather_conf
+            weather_conf=self.weather_conf
         )
 
         # ---------------------------------------------------------------------------- #
@@ -668,6 +669,7 @@ class EplusEnv(gym.Env):
         return {
             'building_file': self.building_file,
             'weather_files': self.weather_files,
+            'weather_conf': self.weather_conf,
             'action_space': self.action_space,
             'time_variables': self.time_variables,
             'variables': self.variables,

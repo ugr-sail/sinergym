@@ -152,6 +152,7 @@ def env_representer(dumper, obj):
     mapping = {
         'building_file': env.building_file,
         'weather_files': env.weather_files,
+        'weather_conf': env.weather_conf,
         'action_space': env.action_space,
         'time_variables': env.time_variables,
         'variables': env.variables,
