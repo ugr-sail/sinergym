@@ -481,10 +481,10 @@ class EplusEnv(gym.Env):
         assert self._action_space.shape
         if len(self.action_variables) != self._action_space.shape[0]:
             self.logger.error(
-                f'Action space ({
-                    self._action_space.shape[0]} variables) has not the same length than specified variable names ({
+                f'Action space defined in environment( with {
+                    self._action_space.shape[0]} variables) has not the same length than specified action variable names ({
                     len(
-                        self.action_variables)}).')
+                        self.action_variables)} variables).')
             raise ValueError
 
         # WEATHER VARIABILITY
