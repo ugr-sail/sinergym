@@ -1,0 +1,16 @@
+version: "0.2"
+language: en
+dictionaryDefinitions:
+  - name: project-words
+    path: ./words.txt
+    addWords: true
+dictionaries:
+  - python
+  - project-words
+ignorePaths:
+  - venv/**
+  - docs/**
+  - .git/**
+  - __pycache__/**
+  - node_modules/**
+  - .mypy_cache/**

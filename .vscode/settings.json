@@ -18,10 +18,14 @@
         "*.pyyaml": "yaml"
     },
     "editor.fontFamily": "JetBrains Mono",
-    "editor.fontLigatures": true,
+    "editor.fontLigatures": false,
+    "editor.fontSize": 14,
+
     "editor.codeActionsOnSave": {
         "source.organizeImports": "always"
     },
     "files.autoSave": "onWindowChange",
-    "editor.minimap.enabled": true
+    "editor.minimap.enabled": true,
+
+    "cSpell.import": ["./.vscode/cspell.yml"]
 }
