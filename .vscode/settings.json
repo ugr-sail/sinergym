@@ -14,8 +14,9 @@
     "black-formatter.args": [
         "--line-length=88"
     ],
-
     "files.associations": {
         "*.pyyaml": "yaml"
     },
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": true,
 }
