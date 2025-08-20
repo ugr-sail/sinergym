@@ -33,7 +33,7 @@ def store_init_metadata(cls):
         bound_args = sig.bind(self, *args, **kwargs)
         bound_args.apply_defaults()
 
-        # Excluye 'self' and 'env' from the metadata
+        # Exclude 'self' and 'env' from the metadata
         self.__metadata__ = {
             k: v for k, v in bound_args.arguments.items() if k != 'self' and k != 'env'
         }
@@ -81,7 +81,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
         self.observation_space = gym.spaces.Box(
             low=obs_space.low[0],
             high=obs_space.high[0],
-            # +2 porque agregamos senos y cosenos
+            # +2 because we added sines and cosines
             shape=(obs_space.shape[0] + 2,),
             dtype=obs_space.dtype,
         )
@@ -644,7 +644,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             # until the required size is reached.
             if len(selected_rows) < self.n:
                 needed_rows = self.n - len(selected_rows)
-                # Ensure adecuate shape
+                # Ensure appropriate shape
                 last_row = selected_rows[-1:]
                 selected_rows = np.vstack(
                     [selected_rows, np.repeat(last_row, needed_rows, axis=0)]
@@ -685,7 +685,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment.
-            energy_cost_data_path (str): Pathfile from which the energy cost data is obtained.
+            energy_cost_data_path (str): Path to file from which the energy cost data is obtained.
             energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data for OU process (sigma, mu and tau).
             reward_kwargs (Dict[str, Any]): Parameters for customizing the reward function.
 
@@ -991,7 +991,7 @@ class IncrementalWrapper(gym.ActionWrapper):
             )
             raise ValueError
 
-        # All posible incremental variations
+        # All possible incremental variations
         self.values_definition = {}
         # Original action space variables
         action_space_low = deepcopy(self.env.get_wrapper_attr('action_space').low)
@@ -1003,7 +1003,7 @@ class IncrementalWrapper(gym.ActionWrapper):
             step_temp,
         ) in incremental_variables_definition.items():
 
-            # Possible incrementations for each incremental variable.
+            # Possible increments for each incremental variable.
             values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
             values = [v for v in [*-np.flip(values), 0, *values]]
 
@@ -1102,7 +1102,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             self.logger.error('Number of variables is different from environment')
             raise ValueError
 
-        # Define all posible setpoint variations
+        # Define all possible setpoint variations
         values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
         values = [v for v in [*values, *-values]]
 
@@ -1115,7 +1115,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.mapping[0] = do_nothing
         n = 1
 
-        # Generate all posible actions
+        # Generate all possible actions
         for k in range(len(self.env.get_wrapper_attr('action_variables'))):
             for v in values:
                 x = deepcopy(do_nothing)
@@ -1471,7 +1471,7 @@ class LoggerWrapper(BaseLoggerWrapper):
         super().__init__(env, storage_class)
         # Overwrite in case you want more metrics
         self.custom_variables = []
-        # Overwite in case you have other summary metrics (same as
+        # Overwrite in case you have other summary metrics (same as
         # self.get_episode_summary return)
         self.summary_metrics = [
             'episode_num',
@@ -1735,7 +1735,7 @@ class CSVLogger(gym.Wrapper):
                 writer.writerow(episode_summary.keys())
             writer.writerow(episode_summary.values())
 
-        # ---------------------- Weather bariability config csv ---------------------- #
+        # ---------------------- Weather variability config csv ---------------------- #
         modeling = self.get_wrapper_attr('model')
 
         if modeling.weather_variability_config:

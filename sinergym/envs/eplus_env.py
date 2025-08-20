@@ -454,7 +454,7 @@ class EplusEnv(gym.Env):
         Args:
             context_values (Union[np.ndarray, List[float]]): List of values to be updated in the building model.
         """
-        # Check context_values concistency with context variables
+        # Check context_values consistency with context variables
         if len(context_values) != len(self.context):
             self.logger.warning(
                 f'Context values must have the same length than context variables specified, and values must be in the same order. The context space is {

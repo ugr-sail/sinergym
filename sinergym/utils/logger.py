@@ -218,7 +218,7 @@ try:
             step: int = 0,
         ) -> None:
 
-            # We store all metrics in a diuctionary to do a single log call
+            # We store all metrics in a dictionary to do a single log call
             metrics_to_log = {}
 
             for (key, value), (_, excluded) in zip(

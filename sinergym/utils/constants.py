@@ -46,7 +46,7 @@ LOG_FORMAT = "[%(name)s] (%(levelname)s) : %(message)s"
 
 
 def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
@@ -70,7 +70,7 @@ def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
 
 def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
@@ -94,7 +94,7 @@ def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
 
 def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
@@ -118,7 +118,7 @@ def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
 
 def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
@@ -142,7 +142,7 @@ def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
 
 def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 
@@ -166,7 +166,7 @@ def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> np.ndarray:
 
 
 def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> np.ndarray:
-    # SB3 algotihms returns a ndarray instead of a int
+    # SB3 algorithms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
         action = int(action.item())
 

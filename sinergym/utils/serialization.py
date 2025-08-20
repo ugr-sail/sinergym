@@ -169,13 +169,13 @@ def env_constructor(loader, node):
 
 
 # ---------------------------------------------------------------------------- #
-#                 Registration of representers and constructors                #
+#                 Registration of representer and constructors                 #
 # ---------------------------------------------------------------------------- #
 
 
 def create_sinergym_yaml_serializers():
     """
-    Register custom YAML representers and constructors for Sinergym
+    Register custom YAML representer and constructors for Sinergym
     environments, gym spaces, numpy arrays and more.
     """
 

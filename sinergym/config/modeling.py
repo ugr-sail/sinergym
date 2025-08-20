@@ -130,7 +130,7 @@ class ModelJSON(object):
         self.episode_path: str = ''
         self.max_ep_store = max_ep_store
 
-        # Input/Output varibles
+        # Input/Output variables
         self._variables = variables
         self._meters = meters
 
@@ -171,7 +171,7 @@ class ModelJSON(object):
         summerday: str = 'Ann Clg .4% Condns DB=>MWB',
         winterday: str = 'Ann Htg 99.6% Condns DB',
     ) -> None:
-        """Given a summer day name and winter day name from DDY file, this method modify Location and DesingDay's in order to adapt building model to EPW.
+        """Given a summer day name and winter day name from DDY file, this method modify Location and DesignDay's in order to adapt building model to EPW.
 
         Args:
             summerday (str): Design day for summer day specifically (DDY has several of them).

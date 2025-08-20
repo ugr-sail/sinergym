@@ -123,7 +123,7 @@ class LoggerEvalCallback(EventCallback):
         if self.wandb_log:
             self.train_env.get_wrapper_attr('set_wandb_finish')(True)
 
-        # We sincronize the evaluation and training envs (for example, for
+        # We synchronize the evaluation and training envs (for example, for
         # normalization calibration data)
         self._sync_envs()
 

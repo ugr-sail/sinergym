@@ -208,14 +208,13 @@ class EnergyCostLinearReward(LinearReward):
             energy_variables (List[str]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[float,float]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[float,float]): Temperature comfort range for hot season. Depends on environment you are using.
-            summer_start (Tuple[int,int]): Summer s-sum(exp(violation)
-                    for violation in temp_violations if violation > 0)ession tuple with month and day start. Defaults to (6,1).
+            summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.4.
             temperature_weight (float, optional): Weight given to the temperature term. Defaults to 0.4.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1.0.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
-            lambda_energy_cost (flota, optional): Constant for removing dimensions from temperature(1/E). Defaults to 1.0.
+            lambda_energy_cost (float, optional): Constant for removing dimensions from temperature(1/E). Defaults to 1.0.
         """
 
         super().__init__(
@@ -526,7 +525,7 @@ class NormalizedLinearReward(LinearReward):
         self.max_comfort_penalty = max_comfort_penalty
 
     def _get_reward(self) -> Tuple[float, ...]:
-        """It calculates reward value using energy consumption and grades of temperature out of comfort range. Aplying normalization
+        """It calculates reward value using energy consumption and grades of temperature out of comfort range. Applying normalization
 
         Returns:
             Tuple[float, ...]: total reward calculated, reward term for energy and reward term for comfort.

@@ -48,14 +48,14 @@ def import_from_path(dotted_or_file_path: str):
 
     path_part, attr_name = dotted_or_file_path.split(':', 1)
 
-    if os.path.isfile(path_part):  # Es una ruta de archivo
+    if os.path.isfile(path_part):  # It is a file path
         module_name = os.path.splitext(os.path.basename(path_part))[0]
         spec = importlib.util.spec_from_file_location(module_name, path_part)
         if spec is None or spec.loader is None:
             raise ImportError(f"Cannot load module from file: {path_part}")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-    else:  # Es un módulo en notación de puntos
+    else:  # It is a module in dotted notation
         module = importlib.import_module(path_part)
 
     try:
