@@ -22,4 +22,6 @@
     "editor.codeActionsOnSave": {
         "source.organizeImports": "always"
     },
+    "files.autoSave": "onWindowChange",
+    "editor.minimap.enabled": true
 }
