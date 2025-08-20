@@ -19,4 +19,7 @@
     },
     "editor.fontFamily": "JetBrains Mono",
     "editor.fontLigatures": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    },
 }
