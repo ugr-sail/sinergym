@@ -10,10 +10,9 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "editor.defaultFormatter": "ms-python.autopep8",
-    "autopep8.args": [
-        "--aggressive",
-        "--aggressive"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "black-formatter.args": [
+        "--line-length=88"
     ],
 
     "files.associations": {
