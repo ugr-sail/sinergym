@@ -2045,12 +2045,19 @@ try:
 
         def save_artifact(self) -> None:
             """Save sinergym output as artifact in WandB platform."""
-            artifact = wandb.Artifact(name=self.wandb_run.name, type=self.artifact_type)
-            artifact.add_dir(
-                local_path=self.get_wrapper_attr('workspace_path'),
-                name='Sinergym_output/',
-            )
-            self.wandb_run.log_artifact(artifact)
+            if self.wandb_run.name:
+                artifact = wandb.Artifact(
+                    name=self.wandb_run.name, type=self.artifact_type
+                )
+                artifact.add_dir(
+                    local_path=self.get_wrapper_attr('workspace_path'),
+                    name='Sinergym_output/',
+                )
+                self.wandb_run.log_artifact(artifact)
+            else:
+                self.logger.warning(
+                    'WandB run name is not set, skipping artifact saving.'
+                )
 
         def set_wandb_finish(self, wandb_finish: bool) -> None:
             """Set if WandB run must be finished when environment is closed.

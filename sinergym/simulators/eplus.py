@@ -136,28 +136,28 @@ class EnergyPlus(object):
 
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
-            self.energyplus_state, self._progress_update
-        )  # type: ignore
+            self.energyplus_state, self._progress_update  # type: ignore
+        )
 
         # register callback used to signal warmup complete
         self.api.runtime.callback_after_new_environment_warmup_complete(
-            self.energyplus_state, self._warmup_complete
-        )  # type: ignore
+            self.energyplus_state, self._warmup_complete  # type: ignore
+        )
 
         # register callback used to collect observations
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._collect_obs_and_info
-        )  # type: ignore
+            self.energyplus_state, self._collect_obs_and_info  # type: ignore
+        )
 
         # register callback used to send actions
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_action
-        )  # type: ignore
+            self.energyplus_state, self._process_action  # type: ignore
+        )
 
         # register callback used to process context
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_context
-        )  # type: ignore
+            self.energyplus_state, self._process_context  # type: ignore
+        )
 
         # ------------------- Run EnergyPlus in a non-blocking way ------------------- #
         def _run_energyplus(runtime, cmd_args, state, results):

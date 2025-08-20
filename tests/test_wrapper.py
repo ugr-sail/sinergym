@@ -191,11 +191,11 @@ def test_normalize_observation_calibration(env_demo):
     assert env.has_wrapper_attr('count')
     old_count = env.get_wrapper_attr('count')
     assert (
-        len(env.get_wrapper_attr('mean')) == env.observation_space.shape[0]
-    )  # type: ignore
+        len(env.get_wrapper_attr('mean')) == env.observation_space.shape[0]  # type: ignore
+    )
     assert (
-        len(env.get_wrapper_attr('var')) == env.observation_space.shape[0]
-    )  # type: ignore
+        len(env.get_wrapper_attr('var')) == env.observation_space.shape[0]  # type: ignore
+    )
     assert (
         isinstance(env.get_wrapper_attr('count'), float)
         and env.get_wrapper_attr('count') > 0
@@ -483,8 +483,8 @@ def test_energycost_wrapper_exceptions(env_demo):
         env = EnergyCostWrapper(
             env_demo,
             energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
-            energy_cost_variability=(1.0, 0.0),
-        )  # type: ignore
+            energy_cost_variability=(1.0, 0.0),  # type: ignore
+        )
         env.reset()
 
     # Specify a energy cost file that doesn't exist

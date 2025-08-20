@@ -121,7 +121,7 @@ class ModelJSON(object):
         self.weather_data = Weather()
         self.weather_data.read(self._weather_path)
         # Weather variability if exists
-        self.weather_variability_config = None
+        self.weather_variability_config: Dict[str, Tuple[float, float, float]] = None
 
         # ----------------------------- Other attributes ----------------------------- #
 
