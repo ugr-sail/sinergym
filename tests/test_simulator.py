@@ -28,16 +28,13 @@ def test_simulator(simulator_5zone, pkg_data_path):
 
     # simulation start
     simulator_5zone.start(
-        building_path=os.path.join(
-            pkg_data_path,
-            'buildings',
-            '5ZoneAutoDXVAV.epJSON'),
+        building_path=os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON'),
         weather_path=os.path.join(
-            pkg_data_path,
-            'weather',
-            'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
+            pkg_data_path, 'weather', 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'
+        ),
         output_path='./PYTESTSIMULATOR/',
-        episode=1)
+        episode=1,
+    )
 
     # Checks status after simulation start
     assert simulator_5zone.energyplus_state is not None
@@ -132,34 +129,36 @@ def test_make_eplus_args(simulator_5zone):
         'expected_weather',
         '-d',
         'expected_output',
-        'expected_building']
+        'expected_building',
+    ]
 
 
 def test_unknown_handlers(simulator_5zone, pkg_data_path):
     # Force adding unknown handlers in simulator
     simulator_5zone.variables['false_variable'] = (
-        'false_variable_name', 'false_variable_key')
+        'false_variable_name',
+        'false_variable_key',
+    )
     simulator_5zone.meters['false_meter'] = 'false_meter_name'
     simulator_5zone.actuators['false_actuator'] = (
         'false_actuator_type',
         'false_actuator_type_name',
-        'false_actuator_name')
+        'false_actuator_name',
+    )
     simulator_5zone.context['false_context'] = (
         'false_actuator_type',
         'false_actuator_type_name',
-        'false_actuator_name')
+        'false_actuator_name',
+    )
     # Start simulation
     simulator_5zone.start(
-        building_path=os.path.join(
-            pkg_data_path,
-            'buildings',
-            '5ZoneAutoDXVAV.epJSON'),
+        building_path=os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON'),
         weather_path=os.path.join(
-            pkg_data_path,
-            'weather',
-            'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
+            pkg_data_path, 'weather', 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'
+        ),
         output_path='./PYTESTSIMULATOR/',
-        episode=1)
+        episode=1,
+    )
     # Until first observation received, system is not initialized
     assert simulator_5zone.var_handlers is None
     assert simulator_5zone.meter_handlers is None

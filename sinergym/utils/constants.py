@@ -12,8 +12,15 @@ import numpy as np
 # Sinergym Data path
 PKG_DATA_PATH = str(resources.files('sinergym') / 'data')
 # Weekday encoding for simulations
-WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
-                    'friday': 4, 'saturday': 5, 'sunday': 6}
+WEEKDAY_ENCODING = {
+    'monday': 0,
+    'tuesday': 1,
+    'wednesday': 2,
+    'thursday': 3,
+    'friday': 4,
+    'saturday': 5,
+    'sunday': 6,
+}
 # Default start year (Non leap year please)
 YEAR = 1991
 # cwd
@@ -53,13 +60,14 @@ def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([18, 24], dtype=np.float32),
         7: np.array([19, 23.25], dtype=np.float32),
         8: np.array([20, 23.25], dtype=np.float32),
-        9: np.array([21, 23.25], dtype=np.float32)
+        9: np.array([21, 23.25], dtype=np.float32),
     }
 
     return mapping[action]
 
 
 # ----------------------------------DATACENTER--------------------------------- #
+
 
 def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> np.ndarray:
     # SB3 algotihms returns a ndarray instead of a int
@@ -76,10 +84,11 @@ def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([21, 24], dtype=np.float32),
         7: np.array([22, 23], dtype=np.float32),
         8: np.array([22, 22.5], dtype=np.float32),
-        9: np.array([21, 22], dtype=np.float32)
+        9: np.array([21, 22], dtype=np.float32),
     }
 
     return mapping[action]
+
 
 # ----------------------------------WAREHOUSE--------------------------------- #
 
@@ -99,10 +108,11 @@ def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([21, 24], dtype=np.float32),
         7: np.array([22, 23], dtype=np.float32),
         8: np.array([22, 22.5], dtype=np.float32),
-        9: np.array([21, 22.5], dtype=np.float32)
+        9: np.array([21, 22.5], dtype=np.float32),
     }
 
     return mapping[action]
+
 
 # ----------------------------------OFFICE--------------------------------- #
 
@@ -122,10 +132,11 @@ def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([21, 24], dtype=np.float32),
         7: np.array([22, 23], dtype=np.float32),
         8: np.array([22, 22.5], dtype=np.float32),
-        9: np.array([21, 22.5], dtype=np.float32)
+        9: np.array([21, 22.5], dtype=np.float32),
     }
 
     return mapping[action]
+
 
 # ----------------------------------OFFICEGRID---------------------------- #
 
@@ -145,10 +156,11 @@ def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([21, 24, 0.0, 0.0], dtype=np.float32),
         7: np.array([22, 23, 0.0, 0.0], dtype=np.float32),
         8: np.array([22, 22.5, 0.0, 0.0], dtype=np.float32),
-        9: np.array([21, 22.5, 0.0, 0.0], dtype=np.float32)
+        9: np.array([21, 22.5, 0.0, 0.0], dtype=np.float32),
     }
 
     return mapping[action]
+
 
 # ----------------------------------SHOP--------------------- #
 
@@ -168,16 +180,16 @@ def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         6: np.array([21, 24], dtype=np.float32),
         7: np.array([22, 23], dtype=np.float32),
         8: np.array([22, 22.5], dtype=np.float32),
-        9: np.array([21, 22.5], dtype=np.float32)
+        9: np.array([21, 22.5], dtype=np.float32),
     }
 
     return mapping[action]
 
+
 # -------------------------------- AUTOBALANCE ------------------------------- #
 
 
-def DEFAULT_RADIANT_DISCRETE_FUNCTION(
-        action: np.ndarray) -> np.ndarray:
+def DEFAULT_RADIANT_DISCRETE_FUNCTION(action: np.ndarray) -> np.ndarray:
     action[5] += 25
     return action.astype(np.float32)
 

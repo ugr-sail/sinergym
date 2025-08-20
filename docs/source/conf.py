@@ -40,18 +40,21 @@ extensions = [
     'sphinx_multitoc_numbering',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
-    'nbsphinx_link']
+    'nbsphinx_link',
+]
 
-autodoc_mock_imports = ['stable_baselines3',
-                        'wandb',
-                        'gym',
-                        'opyplus',
-                        'gcloud',
-                        'googleapiclient',
-                        'oauth2client',
-                        'google',
-                        'google.cloud',
-                        'pyenergyplus']
+autodoc_mock_imports = [
+    'stable_baselines3',
+    'wandb',
+    'gym',
+    'opyplus',
+    'gcloud',
+    'googleapiclient',
+    'oauth2client',
+    'google',
+    'google.cloud',
+    'pyenergyplus',
+]
 for module in ['gymnasium.wrappers.normalize']:
     sys.modules[module] = mock.MagicMock()
 
@@ -115,15 +118,15 @@ html_logo = '_static/logo-sidebar.png'
 html_favicon = '_static/logo-sidebar.png'
 
 # Change sidebar-logo background
-html_theme_options = {'style_nav_header_background': '#a5beba',
-                      'display_version': True,
-                      }
+html_theme_options = {
+    'style_nav_header_background': '#a5beba',
+    'display_version': True,
+}
 
 # Enable global sidebar
-html_sidebars = {'**': ['globaltoc.html',
-                        'relations.html',
-                        'sourcelink.html',
-                        'searchbox.html'], }
+html_sidebars = {
+    '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
+}
 
 # disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True

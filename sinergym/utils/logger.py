@@ -1,4 +1,5 @@
 """Sinergym Loggers"""
+
 import logging
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -11,6 +12,7 @@ from sinergym.utils.constants import LOG_FORMAT
 
 class CustomFormatter(logging.Formatter):
     """Custom logger format for terminal messages"""
+
     grey = "\x1b[38;20m"
     yellow = "\x1b[33;20m"
     red = "\x1b[31;20m"
@@ -23,7 +25,7 @@ class CustomFormatter(logging.Formatter):
         logging.INFO: grey + log_format + reset,
         logging.WARNING: yellow + log_format + reset,
         logging.ERROR: red + log_format + reset,
-        logging.CRITICAL: bold_red + log_format + reset
+        logging.CRITICAL: bold_red + log_format + reset,
     }
 
     def format(self, record):
@@ -44,15 +46,12 @@ class TqdmLoggingHandler(logging.StreamHandler):
             self.handleError(record)
 
 
-class TerminalLogger():
-    """Sinergym terminal logger for simulation executions.
-    """
+class TerminalLogger:
+    """Sinergym terminal logger for simulation executions."""
 
     def getLogger(
-            self,
-            name: str,
-            level: Union[str, int],
-            formatter: Any = CustomFormatter()) -> logging.Logger:
+        self, name: str, level: Union[str, int], formatter: Any = CustomFormatter()
+    ) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:
@@ -74,24 +73,21 @@ class TerminalLogger():
         return logger
 
 
-class SimpleLogger():
-    """Sinergym terminal logger for simulation executions.
-    """
+class SimpleLogger:
+    """Sinergym terminal logger for simulation executions."""
 
-    def getLogger(
-        self
-    ):
+    def getLogger(self):
         """Return Sinergym logger for the progress output in terminal.
 
-            Args:
-                name (str): logger name
-                level (str): logger level
-                formatter (Callable): logger formatter class
+        Args:
+            name (str): logger name
+            level (str): logger level
+            formatter (Callable): logger formatter class
 
-            Returns:
-                logging.logger
+        Returns:
+            logging.logger
 
-            """
+        """
         logger = logging.getLogger('Printer')
         logger.setLevel(logging.INFO)
         # consoleHandler = logging.StreamHandler(stream=sys.stdout)
@@ -101,7 +97,7 @@ class SimpleLogger():
         return logger
 
 
-class LoggerStorage():
+class LoggerStorage:
     """Logger storage for agent interaction with environment. Save all interactions in list or list of lists as attributes.
 
     Attributes:
@@ -118,14 +114,16 @@ class LoggerStorage():
         """Initialize LoggerStorage."""
         self.reset_data()
 
-    def log_interaction(self,
-                        obs: Union[List[float], np.ndarray],
-                        action: Union[int, np.ndarray, List[float]],
-                        reward: float,
-                        info: Dict[str, Any],
-                        terminated: bool,
-                        truncated: bool,
-                        custom_metrics: Optional[List[Any]] = None) -> None:
+    def log_interaction(
+        self,
+        obs: Union[List[float], np.ndarray],
+        action: Union[int, np.ndarray, List[float]],
+        reward: float,
+        info: Dict[str, Any],
+        terminated: bool,
+        truncated: bool,
+        custom_metrics: Optional[List[Any]] = None,
+    ) -> None:
         """Log interaction data.
 
         Args:
@@ -139,9 +137,11 @@ class LoggerStorage():
         """
         # Convert inputs to consistent formats
         obs_list = obs.tolist() if isinstance(obs, np.ndarray) else obs
-        action_list = action.tolist() if isinstance(
-            action, np.ndarray) else [action] if isinstance(
-            action, (int, np.integer)) else action
+        action_list = (
+            action.tolist()
+            if isinstance(action, np.ndarray)
+            else [action] if isinstance(action, (int, np.integer)) else action
+        )
 
         # Store data
         self.observations.append(obs_list)
@@ -162,8 +162,8 @@ class LoggerStorage():
             norm_obs (Union[List[float], np.ndarray]): Normalized observation data.
         """
         self.normalized_observations.append(
-            norm_obs.tolist() if isinstance(
-                norm_obs, np.ndarray) else norm_obs)
+            norm_obs.tolist() if isinstance(norm_obs, np.ndarray) else norm_obs
+        )
 
     def log_obs(self, obs: Union[List[float], np.ndarray]) -> None:
         """Log observation data.
@@ -171,9 +171,7 @@ class LoggerStorage():
         Args:
             obs (Union[List[float], np.ndarray]): Observation data.
         """
-        self.observations.append(
-            obs.tolist() if isinstance(
-                obs, np.ndarray) else obs)
+        self.observations.append(obs.tolist() if isinstance(obs, np.ndarray) else obs)
 
     def log_info(self, info: Dict[str, Any]) -> None:
         """Log info data.
@@ -201,19 +199,17 @@ try:
     from stable_baselines3.common.logger import KVWriter
 
     class WandBOutputFormat(  # type: ignore[reportRedeclaration]
-            KVWriter):  # pragma: no cover
+        KVWriter
+    ):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
         """
 
         def __init__(self):
             # Define X-Axis for SB3 metrics
-            wandb.define_metric('time/*',
-                                step_metric='time/total_timesteps')
-            wandb.define_metric('train/*',
-                                step_metric='time/total_timesteps')
-            wandb.define_metric('rollout/*',
-                                step_metric='time/total_timesteps')
+            wandb.define_metric('time/*', step_metric='time/total_timesteps')
+            wandb.define_metric('train/*', step_metric='time/total_timesteps')
+            wandb.define_metric('rollout/*', step_metric='time/total_timesteps')
 
         def write(
             self,
@@ -243,12 +239,13 @@ try:
 
             # Log all metrics
             wandb.log(metrics_to_log)
+
 except ImportError:
-    class WandBOutputFormat(
-    ):  # pragma: no cover
-        """WandBOutputFormat class for logging in WandB from SB3 logger.
-        """
+
+    class WandBOutputFormat:  # pragma: no cover
+        """WandBOutputFormat class for logging in WandB from SB3 logger."""
 
         def __init__(self):
             print(
-                'WandB or SB3 is not installed. Please install it to use WandBOutputFormat.')
+                'WandB or SB3 is not installed. Please install it to use WandBOutputFormat.'
+            )

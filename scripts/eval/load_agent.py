@@ -23,10 +23,7 @@ from sinergym.utils.logger import TerminalLogger
 # Optional: Terminal log in the same format as Sinergym.
 # Logger info can be replaced by print.
 terminal_logger = TerminalLogger()
-logger = terminal_logger.getLogger(
-    name='EVALUATION',
-    level=logging.INFO
-)
+logger = terminal_logger.getLogger(name='EVALUATION', level=logging.INFO)
 
 # ---------------------------------------------------------------------------- #
 #                                  Parameters                                  #
@@ -39,7 +36,7 @@ parser.add_argument(
     required=True,
     type=str,
     dest='configuration',
-    help='Path to experiment configuration (YAML file)'
+    help='Path to experiment configuration (YAML file)',
 )
 args = parser.parse_args()
 
@@ -75,8 +72,7 @@ try:
 
         api = wandb.Api()
         # Get model path
-        artifact_tag = config['model'].get(
-            'artifact_tag', 'latest')
+        artifact_tag = config['model'].get('artifact_tag', 'latest')
         wandb_path = f'{
             config['model']['entity']}/{
             config['model']['project']}/{
@@ -84,9 +80,7 @@ try:
 
         # Download artifact
         artifact = api.artifact(wandb_path)
-        artifact.download(
-            path_prefix=config['model']['artifact_path'],
-            root='./')
+        artifact.download(path_prefix=config['model']['artifact_path'], root='./')
 
         # Set model path to local wandb downloaded file
         model_path = f'./{config['model']['model_path']}'
@@ -114,20 +108,21 @@ try:
     if config.get('env_yaml_config'):
         logger.info(
             f'Reading environment parameters from {
-                config['env_yaml_config']}')
+                config['env_yaml_config']}'
+        )
         with open(config['env_yaml_config'], 'r') as env_yaml_conf:
             env_params.update(yaml.load(env_yaml_conf, Loader=yaml.FullLoader))
 
     # -- Update env params configuration with specified env parameters if exists -- #
     if config.get('env_params'):
-        logger.info(
-            f'Reading environment parameters from env_params config')
+        logger.info(f'Reading environment parameters from env_params config')
         if env_params:
             logger.info(
-                f'Overwriting (deep_update) environment parameters from env_yaml_config with env_params config')
+                f'Overwriting (deep_update) environment parameters from env_yaml_config with env_params config'
+            )
         env_params = deep_update(
-            env_params, process_environment_parameters(
-                config['env_params']))
+            env_params, process_environment_parameters(config['env_params'])
+        )
 
     # ------------ For this script, the execution name will be updated ----------- #
     env_params.update({'env_name': evaluation_name})
@@ -141,14 +136,14 @@ try:
     if config.get('wrappers_yaml_config'):
         logger.info(
             f'Reading wrappers from {
-                config['wrappers_yaml_config']}')
+                config['wrappers_yaml_config']}'
+        )
         with open(config['wrappers_yaml_config'], 'r') as f:
             wrappers = yaml.load(f, Loader=yaml.FullLoader)
 
     # ----------------------- Delete WandBLogger by default ---------------------- #
     if wrappers:
-        key_to_remove = [
-            key for key in wrappers if 'WandBLogger' in key][0]
+        key_to_remove = [key for key in wrappers if 'WandBLogger' in key][0]
         del wrappers[key_to_remove]
         logger.info(f'WandBLogger removed from wrappers if exists')
 
@@ -174,9 +169,11 @@ try:
         env_id=config['environment'],
         env_params=env_params,
         wrappers=wrappers,
-        env_deep_update=config.get('env_deep_update', True))
+        env_deep_update=config.get('env_deep_update', True),
+    )
     logger.info(
-        f'Environment created with ultimate environment parameters and wrappers')
+        f'Environment created with ultimate environment parameters and wrappers'
+    )
 
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
@@ -214,7 +211,8 @@ try:
                 client,
                 src_path=env.get_wrapper_attr('workspace_path'),
                 dest_bucket_name=config['cloud']['remote_store'],
-                dest_path=evaluation_name)
+                dest_path=evaluation_name,
+            )
 
         # ---------------------------------------------------------------------------- #
         #                          Auto-delete remote container                        #
@@ -223,7 +221,8 @@ try:
             print('Deleting remote container')
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                config['cloud']['auto_delete']['group_name'], token)
+                config['cloud']['auto_delete']['group_name'], token
+            )
 
 except (Exception, KeyboardInterrupt) as err:
     print("Error or interruption in process detected")
@@ -237,5 +236,6 @@ except (Exception, KeyboardInterrupt) as err:
             print('Deleting remote container')
             token = gcloud.get_service_account_token()
             gcloud.delete_instance_MIG_from_container(
-                config['cloud']['auto_delete']['group_name'], token)
+                config['cloud']['auto_delete']['group_name'], token
+            )
     raise err
