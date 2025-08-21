@@ -69,7 +69,7 @@ Your contributions can fall into two main categories:
 Follow the **Google-style docstrings** ([Napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)):
 
 ```python
-def my_function(arg1: type1, arg2: type2) -> returntype:
+def my_function(arg1: type1, arg2: type2) -> return_type:
     """Brief summary of the function.
 
     Args:
@@ -77,7 +77,7 @@ def my_function(arg1: type1, arg2: type2) -> returntype:
         arg2 (type2): Description of arg2.
 
     Returns:
-        returntype: Description of return value.
+        return_type: Description of return value.
     """
     ...
     return my_variable

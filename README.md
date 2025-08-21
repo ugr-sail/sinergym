@@ -91,7 +91,7 @@ This repository is organized into the following directories:
 - `docs/`: *Sinergym*'s documentation sources.
 - `examples/`: notebooks with several examples illustrating how to use *Sinergym*.
 - `tests/`: *Sinergym* tests code.
-- `scripts/`: auxiliar and help scripts.
+- `scripts/`: auxiliary and helper scripts.
 
 ## Available environments
 

@@ -9,7 +9,6 @@ dictionaries:
   - project-words
 ignorePaths:
   - venv/**
-  - docs/**
   - .git/**
   - __pycache__/**
   - node_modules/**

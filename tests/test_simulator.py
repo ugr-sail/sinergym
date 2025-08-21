@@ -91,7 +91,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     setpoints = list(map(lambda x: x + 1, setpoints))
 
     # Check 4 more interactions
-    for i in range(4):
+    for _ in range(4):
         # Observation and info
         obs = None
         info = None

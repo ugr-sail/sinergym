@@ -212,7 +212,7 @@ def train():
                     )
                 )
 
-        # --------------------- Traning from a pre-trained model --------------------- #
+        # --------------------- Training from a pre-trained model --------------------- #
         else:
             model = None
             try:

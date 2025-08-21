@@ -42,7 +42,7 @@ def test_datetime_wrapper(env_demo):
     # Delete hour variable from observation variables and observation space
     env_demo.observation_variables.remove('hour')
     with pytest.raises(ValueError):
-        env_exception = DatetimeWrapper(env=env_demo)
+        DatetimeWrapper(env=env_demo)
 
 
 def test_previous_observation_wrapper(env_demo):
@@ -254,19 +254,19 @@ def test_normalize_observation_exceptions(env_demo):
 
     # Specify an unknown path file
     with pytest.raises(FileNotFoundError):
-        env = NormalizeObservation(env=env_demo, mean='unknown_path')
+        NormalizeObservation(env=env_demo, mean='unknown_path')
     with pytest.raises(FileNotFoundError):
-        env = NormalizeObservation(env=env_demo, var='unknown_path')
+        NormalizeObservation(env=env_demo, var='unknown_path')
     # Specify an unknown value (nor str neither list)
     with pytest.raises(IndexError):
-        env = NormalizeObservation(env=env_demo, mean=56)  # type: ignore
+        NormalizeObservation(env=env_demo, mean=56)  # type: ignore
     with pytest.raises(IndexError):
-        env = NormalizeObservation(env=env_demo, var=56)  # type: ignore
+        NormalizeObservation(env=env_demo, var=56)  # type: ignore
     # Specify a list with wrong shape
     with pytest.raises(ValueError):
-        env = NormalizeObservation(env=env_demo, mean=[0.2, 0.1, 0.3])
+        NormalizeObservation(env=env_demo, mean=[0.2, 0.1, 0.3])
     with pytest.raises(ValueError):
-        env = NormalizeObservation(env=env_demo, var=[0.2, 0.1, 0.3])
+        NormalizeObservation(env=env_demo, var=[0.2, 0.1, 0.3])
 
 
 def test_weatherforecasting_wrapper(env_demo):
@@ -309,7 +309,7 @@ def test_weatherforecasting_wrapper(env_demo):
     # Checks exceptional case 2
     env.forecast_data = env.get_wrapper_attr('forecast_data').head(2)
     a = env.action_space.sample()
-    obs, reward, terminated, truncated, info = env.step(a)
+    obs, _, _, _, _ = env.step(a)
 
     assert isinstance(obs, np.ndarray)
     assert len(obs) == wrapped_shape
@@ -317,7 +317,7 @@ def test_weatherforecasting_wrapper(env_demo):
     # Checks exceptional case 1
     env.forecast_data = env.get_wrapper_attr('forecast_data').head(1)
     a = env.action_space.sample()
-    obs, reward, terminated, truncated, info = env.step(a)
+    obs, _, _, _, _ = env.step(a)
 
     assert isinstance(obs, np.ndarray)
     assert len(obs) == wrapped_shape
@@ -518,9 +518,7 @@ def test_incremental_wrapper(env_demo):
         env.get_wrapper_attr('current_values')
         == [old_values[i] + rounded_action[i] for i in range(len(old_values))]
     ).all()
-    for i, (index, values) in enumerate(
-        env.get_wrapper_attr('values_definition').items()
-    ):
+    for i, (index, _) in enumerate(env.get_wrapper_attr('values_definition').items()):
         assert env.get_wrapper_attr('current_values')[i] == info['action'][index]
 
 
@@ -581,7 +579,7 @@ def test_discrete_incremental_wrapper(env_demo):
     _, _, _, _, info = env.step(action)
     assert (env.get_wrapper_attr('current_setpoints') == info['action']).all()
     # Check environment clip actions(
-    for i in range(10):
+    for _ in range(10):
         env.step(2)  # [1,0]
     assert env.unwrapped.action_space.contains(
         env.get_wrapper_attr('current_setpoints')
@@ -767,7 +765,7 @@ def test_multiobjective_wrapper(env_demo):
     assert env.has_wrapper_attr('reward_terms')
     env.reset()
     action = env.action_space.sample()
-    _, reward, _, _, info = env.step(action)
+    _, reward, _, _, _ = env.step(action)
     assert isinstance(reward, list)
     assert len(reward) == len(env.get_wrapper_attr('reward_terms'))
 
@@ -1015,7 +1013,7 @@ def test_logger_exceptions(env_demo):
     # Use a Logger without previous BaseLoggerWrapper child class should raise
     # exception
     with pytest.raises(ValueError):
-        env = CSVLogger(env=env_demo)
+        CSVLogger(env=env_demo)
 
 
 def test_reduced_observation_wrapper(env_demo):
@@ -1196,13 +1194,13 @@ def test_env_wrappers(env_all_wrappers):
     assert env_all_wrappers.has_wrapper_attr('progress_file_path')
     # ReduceObservation
     assert env_all_wrappers.has_wrapper_attr('removed_observation_variables')
-    # Multiobs
+    # Multi obs
     assert env_all_wrappers.has_wrapper_attr('n')
     assert env_all_wrappers.has_wrapper_attr('ind_flat')
     assert env_all_wrappers.has_wrapper_attr('history')
 
     # GENERAL CHECKS
-    # Check history multiobs is empty
+    # Check history multi obs is empty
     assert env_all_wrappers.history == deque([])
     # Start env
     obs, _ = env_all_wrappers.reset()
@@ -1212,7 +1210,7 @@ def test_env_wrappers(env_all_wrappers):
 
     # Execute a short episode in order to check logger
     for _ in range(10):
-        _, reward, _, _, info = env_all_wrappers.step(
+        _, reward, _, _, _ = env_all_wrappers.step(
             env_all_wrappers.action_space.sample()
         )
         # reward should be a vector

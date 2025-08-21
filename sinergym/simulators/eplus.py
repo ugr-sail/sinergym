@@ -452,7 +452,7 @@ class EnergyPlus(object):
         # self.logger.debug(f'ACTION get from queue: {next_action}')
         if not self.simulation_complete:
             # Set the action values obtained in actuator handlers
-            for i, (act_name, act_handle) in enumerate(
+            for i, (_, act_handle) in enumerate(
                 self.actuator_handlers.items()
             ):  # type: ignore
                 self.exchange.set_actuator_value(
@@ -484,7 +484,7 @@ class EnergyPlus(object):
             if not self.simulation_complete:
                 # Set the context values obtained in context handlers
                 # (actuators)
-                for i, (context_name, context_handle) in enumerate(
+                for i, (_, context_handle) in enumerate(
                     self.context_handlers.items()
                 ):  # type: ignore
                     self.exchange.set_actuator_value(

@@ -329,7 +329,7 @@ def export_schedulers_to_excel(
         worksheet.write(current_row, 0, key, actuator_format)
         worksheet.write(current_row, 1, info.get('Type', 'Unknown'), cells_format)
 
-        col_offset = 2  # Offset inicial después de 'Type'
+        col_offset = 2  # Offset after 'Type'
         for object_name, values in info.items():
             if isinstance(values, dict):
                 worksheet.write(current_row, col_offset, f'Name: {object_name}')
@@ -349,7 +349,7 @@ def export_schedulers_to_excel(
                             "table_name",
                             "N/A")}',
                 )
-                col_offset += 3  # Avanzar columnas según los datos escritos
+                col_offset += 3  # Advance columns according to the written data
 
         max_col = max(max_col, col_offset)
         current_row += 1
@@ -365,7 +365,7 @@ def export_schedulers_to_excel(
 
 
 # ---------------------------------------------------------------------------- #
-#                          ORNSTEIN UHLENBECK PROCCESS                         #
+#                          ORNSTEIN UHLENBECK PROCESS                          #
 # ---------------------------------------------------------------------------- #
 
 

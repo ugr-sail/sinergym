@@ -202,12 +202,12 @@ def test_global_reproducibility():
         'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
     )
     env1 = NormalizeObservation(env1)
-    values1 = _check_reset_reproducibility_with_seed(env1)
+    _check_reset_reproducibility_with_seed(env1)
     env2 = gym.make(
         'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
     )
     env2 = NormalizeObservation(env2)
-    values2 = _check_reset_reproducibility_with_seed(env2)
+    _check_reset_reproducibility_with_seed(env2)
 
     # Check first and second execution have the same results
     # if isinstance(values1, list) and isinstance(values2, list):
