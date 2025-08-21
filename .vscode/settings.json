@@ -25,7 +25,12 @@
         "source.organizeImports": "always"
     },
     "files.autoSave": "onWindowChange",
+
     "editor.minimap.enabled": true,
+    "editor.minimap.scale": 3,
+    "editor.minimap.maxColumn": 88,
+    "editor.minimap.renderCharacters": true,
+    "editor.minimap.side": "right",
 
     "cSpell.import": ["./.vscode/cspell.yml"]
 }
