@@ -79,7 +79,7 @@ google-cloud-storage = { version = ">=3.3.0", optional = true }
 #                        Group dependencies (develop)                        #
 # -------------------------------------------------------------------------- #
 [tool.poetry.group.format.dependencies]
-black = ">=25.1.0"
+black = {version = ">=25.1.0", extras = ["jupyter"]}
 ruff = ">=0.12.9"
 pipdeptree = ">=2.28.0"
 
