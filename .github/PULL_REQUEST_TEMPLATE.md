@@ -35,11 +35,11 @@ If "Other," please describe:
 - [ ] My changes require an update in the documentation.
 - [ ] I have updated the tests.
 - [ ] I have updated the documentation accordingly.
-- [ ] I have reformatted the code using `autopep8 --aggressive --aggressive`.
-- [ ] I have reformatted the code using `isort`.
+- [ ] I have reformatted the code using `black --check <project-root-path>`.
+- [ ] I have reformatted the code using `ruff check <project-root-path>`.
 - [ ] I have ensured `cd docs && make spelling && make html` passes (**required** if documentation was updated).
 - [ ] I have ensured `pytest tests/ -vv` passes (**required**).
-- [ ] I have ensured `pyright sinergym/` passes (**required**).
+- [ ] I have ensured `pyright <project-root-path>` passes (**required**).
 
 ---
 
