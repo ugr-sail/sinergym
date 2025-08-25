@@ -1,18 +1,17 @@
 {
     "recommendations": [
-        "cameron.vscode-pytest",                   
-        "codecov.codecov",                                                  
+        "cameron.vscode-pytest",
+        "codecov.codecov",
         "christian-kohler.path-intellisense",
-        "streetsidesoftware.code-spell-checker-cspell-bundled-dictionaries",   
+        "streetsidesoftware.code-spell-checker-cspell-bundled-dictionaries",
         "nickmillerdev.pytest-fixtures",
         "njpwerner.autodocstring",
-        "redhat.vscode-yaml",                                      
-        "kamilturek.vscode-pyproject-toml-snippets", 
-        "ms-toolsai.jupyter",                     
+        "redhat.vscode-yaml",
+        "kamilturek.vscode-pyproject-toml-snippets",
+        "ms-toolsai.jupyter",
         "ms-toolsai.jupyter-renderers",
         "ms-toolsai.vscode-jupyter-slideshow",
         "charliermarsh.ruff",
-      
         // OPTIONALS                        
         "vscode-icons-team.vscode-icons",
         "github.copilot",
@@ -29,7 +28,6 @@
         "grapecity.gc-excelviewer",
         "karyfoundation.idf",
         "lextudio.restructuredtext",
-        "me-dutour-mathieu.vscode-github-actions",
         "mechatroner.rainbow-csv",
         "ms-azuretools.vscode-containers",
         "ms-azuretools.vscode-docker",
@@ -48,6 +46,13 @@
         "stackbreak.comment-divider",
         "tamasfe.even-better-toml",
         "tomoki1207.pdf",
-        "zeshuaro.vscode-python-poetry"
-    ]
-  }
+        "zeshuaro.vscode-python-poetry",
+        "ue.alphabetical-sorter",
+        "fabiospampinato.vscode-diff",
+        "ecmel.vscode-html-css",
+        "adamvoss.vscode-languagetool",
+        "github.vscode-github-actions",
+        "bierner.markdown-preview-github-styles"
+    ],
+    "unwantedRecommendations": []
+}
