@@ -642,7 +642,9 @@ def test_normalize_action_wrapper(env_demo):
     action = env.action_space.sample()
     assert env.get_wrapper_attr('normalized_space').contains(action)
     _, _, _, _, info = env.step(action)
-    assert env.unwrapped.action_space.contains(info['action'])
+    assert env.unwrapped.action_space.contains(
+        np.array(info['action'], dtype=np.float32)
+    )
 
 
 def test_deltatemp_wrapper(env_datacenter):
