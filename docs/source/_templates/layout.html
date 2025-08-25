@@ -1,16 +1,15 @@
 {% extends "!layout.html" %}
-{% block footer %} {{ super() }}
 
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
+{% block menu %}
+  {{ super() }}
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/{{ github_user }}/{{ github_repo }}" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/{{ github_user }}/{{ github_repo }}/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/{{ github_user }}/{{ github_repo }}/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
 {% endblock %}

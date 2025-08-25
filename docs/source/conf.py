@@ -111,7 +111,7 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['doc_theme.css']
+html_css_files = ['doc_theme.css', 'github_style.css']
 
 # Modify icons
 html_logo = '_static/logo-sidebar.png'
@@ -120,12 +120,25 @@ html_favicon = '_static/logo-sidebar.png'
 # Change sidebar-logo background
 html_theme_options = {
     'style_nav_header_background': '#a5beba',
-    'display_version': True,
+}
+
+html_context = {
+    "display_github": True,
+    "github_user": "ugr-sail",
+    "github_repo": "sinergym",
+    "github_version": "main",
+    "conf_py_path": "/docs/source/",
 }
 
 # Enable global sidebar
 html_sidebars = {
-    '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
+    '**': [
+        'versions.html',
+        'globaltoc.html',
+        'relations.html',
+        'sourcelink.html',
+        'searchbox.html',
+    ],
 }
 
 # disable nbsphinx errors to suppress import checks not working
