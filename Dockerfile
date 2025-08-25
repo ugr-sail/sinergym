@@ -44,7 +44,7 @@ ENV POETRY_VIRTUALENVS_CREATE=0
 ENV POETRY_CACHE_DIR=/tmp/poetry_cache
 
 
-# ------------------------- SINERGYM EXTRA LIBRERIES ------------------------- #
+# ------------------------- SINERGYM EXTRA LIBRARIES ------------------------- #
 
 ARG SINERGYM_EXTRAS=""
 
@@ -76,7 +76,7 @@ RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     # Remove the broken symlinks
     && cd /usr/local/bin find -L . -type l -delete
 
-# ------------------------ PYTHON AND PIP CONFIGURTION ----------------------- #
+# ------------------------ PYTHON AND PIP CONFIGURATION ----------------------- #
 
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
     && python3 get-pip.py \
@@ -87,7 +87,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
     && echo "Y\r" | apt install python3-enchant -y \
     && echo "Y\r" | apt install pandoc -y 
 
-# ---------------------------- POETRY CONFIGURTION --------------------------- #
+# ---------------------------- POETRY CONFIGURATION --------------------------- #
 
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -

@@ -14,10 +14,7 @@ from sinergym.utils.wrappers import (
 
 # Logger
 terminal_logger = TerminalLogger()
-logger = terminal_logger.getLogger(
-    name='MAIN',
-    level=logging.INFO
-)
+logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Create environment and apply wrappers for normalization and logging
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
@@ -52,6 +49,9 @@ for i in range(3):
             logger.info('Reward: {}'.format(sum(rewards)))
             logger.info('Info: {}'.format(info))
 
-    logger.info('Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(i,
-                                                                              np.mean(rewards), sum(rewards)))
+    logger.info(
+        'Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(
+            i, np.mean(rewards), sum(rewards)
+        )
+    )
 env.close()

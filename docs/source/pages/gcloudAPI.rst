@@ -77,7 +77,7 @@ It is also required to enable **Google Cloud services** in the *API library*. Yo
 
 |
 
-If *Sinergym* and optional dependencias such as SB3 are installed, the **Google Cloud SDK must be linked with other Python modules** for some functionalities to work. Execute the following command in your terminal:
+If *Sinergym* and optional dependencies such as SB3 are installed, the **Google Cloud SDK must be linked with other Python modules** for some functionalities to work. Execute the following command in your terminal:
 
 .. code:: sh
 

@@ -10,7 +10,7 @@ The following procedures are implemented:
 Pull request
 ************
 
-- **Python Code format check**. Each pull request is checked following **pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ and `isort <https://github.com/PyCQA/isort>`__ for import sorting. Non-compliance triggers a warning.
+- **Python Code format check**. Each pull request is checked following `black formatter <https://black.readthedocs.io/en/stable/>`__ and `ruff <https://docs.astral.sh/ruff/>`__ for import sorting. Non-compliance triggers a warning.
 
 - **Code type check**. `pyright <https://github.com/microsoft/pyright>`__ is used in the *Sinergym* module to control function and method I/O types. Type errors halt the workflow until resolved.
 
@@ -33,7 +33,7 @@ Push to main (or merge a pull request)
 
 The following workflows are executed sequentially:
 
-- **Apply format**. A bot applies necessary format changes (**autopep8** level 2 aggressive and/or **isort** module) 
+- **Apply format**. A bot applies necessary format changes (**black** and/or **ruff** module) 
   in the main branch.
 
 - **Update Documentation build to GitHub pages**. A bot updates the documentation build in the **main** branch when necessary, including spelling checks.

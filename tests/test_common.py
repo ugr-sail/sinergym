@@ -16,18 +16,14 @@ from sinergym.utils.wrappers import NormalizeObservation
         # st_time=00:00:00 and ed_time=24:00:00
         (2021, 5, 5, 2021, 5, 5, 3600 * 24),
         (2004, 7, 1, 2004, 6, 1, -2505600),  # Negative delta seconds test
-    ]
+    ],
 )
 def test_get_delta_seconds(
-        st_year,
-        st_mon,
-        st_day,
-        end_year,
-        end_mon,
-        end_day,
-        expected):
+    st_year, st_mon, st_day, end_year, end_mon, end_day, expected
+):
     delta_sec = common.get_delta_seconds(
-        st_year, st_mon, st_day, end_year, end_mon, end_day)
+        st_year, st_mon, st_day, end_year, end_mon, end_day
+    )
     assert isinstance(delta_sec, float)
     assert delta_sec == expected
 
@@ -69,7 +65,9 @@ def foo():
 
     def fake_spec(*args, **kwargs):
         return None
+
     import importlib.util
+
     monkeypatch.setattr(importlib.util, "spec_from_file_location", fake_spec)
     with pytest.raises(ImportError):
         common.import_from_path(f"{file_path2}:foo")
@@ -126,18 +124,15 @@ def test_create_environment_and_wrappers_with_normalize(env_5zone, tmp_path):
         NormalizeObservation.__module__}:{
         NormalizeObservation.__name__}"
     wrappers_info = {
-        wrapper_class: {'mean': None,
-                        'var': None,
-                        'automatic_update': False}
+        wrapper_class: {'mean': None, 'var': None, 'automatic_update': False}
     }
 
     # Test create_environment without wrappers
     env_params = env_5zone.get_wrapper_attr('to_dict')()
     env_params['seed'] = 33
     env = common.create_environment(
-        env_id="Eplus-5zone-hot-continuous-v1",
-        env_params=env_params,
-        wrappers={})
+        env_id="Eplus-5zone-hot-continuous-v1", env_params=env_params, wrappers={}
+    )
     assert isinstance(env, gym.Env)
     assert env.get_wrapper_attr('seed') == 33
 
@@ -145,36 +140,28 @@ def test_create_environment_and_wrappers_with_normalize(env_5zone, tmp_path):
     env_wrapped = common.create_environment(
         env_id="Eplus-5zone-hot-continuous-v1",
         env_params=env_5zone.get_wrapper_attr('to_dict')(),
-        wrappers=wrappers_info)
+        wrappers=wrappers_info,
+    )
 
     assert isinstance(env_wrapped, gym.Wrapper)
     assert isinstance(env_wrapped, NormalizeObservation)
     assert env_wrapped.get_wrapper_attr('automatic_update') is False
 
 
-def test_is_wrapped(
-        env_5zone,
-        env_all_wrappers):
+def test_is_wrapped(env_5zone, env_all_wrappers):
     # Check returns
     assert not common.is_wrapped(env_5zone, NormalizeObservation)
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
 
 
-def test_unwrap_wrapper(
-        env_5zone,
-        env_all_wrappers):
+def test_unwrap_wrapper(env_5zone, env_all_wrappers):
     # Check if env_wrapper_normalization unwrapped is env_5zone
     assert not env_5zone.has_wrapper_attr('unwrapped_observation')
     assert env_all_wrappers.has_wrapper_attr('unwrapped_observation')
-    env = common.unwrap_wrapper(
-        env_all_wrappers,
-        NormalizeObservation)
-    assert env is not None and not env.has_wrapper_attr(
-        'unwrapped_observation')
+    env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
+    assert env is not None and not env.has_wrapper_attr('unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
-    env = common.unwrap_wrapper(
-        env_5zone,
-        NormalizeObservation)
+    env = common.unwrap_wrapper(env_5zone, NormalizeObservation)
     assert env is None
 
 
@@ -192,7 +179,8 @@ def test_get_wrappers_info_and_apply_wrappers_info(env_5zone, tmp_path):
     # Test get_wrappers_info and YAML saving
     yaml_path = tmp_path / "wrappers_config.yaml"
     wrappers_dict = common.get_wrappers_info(
-        env, path_to_save=str(yaml_path))  # type: ignore
+        env, path_to_save=str(yaml_path)
+    )  # type: ignore
     assert isinstance(wrappers_dict, dict)
     assert any("NormalizeObservation" in k for k in wrappers_dict.keys())
     assert os.path.exists(yaml_path)
@@ -264,19 +252,16 @@ def test_ornstein_uhlenbeck_process(weather_data):
     # Specify variability configuration for each desired column
     variability_conf = {
         'Dry Bulb Temperature': (1.0, 0.0, 24.0),
-        'Wind Speed': (3.0, 0.0, 48.0)
+        'Wind Speed': (3.0, 0.0, 48.0),
     }
     # Calculate dataframe with noise
     noise = common.ornstein_uhlenbeck_process(
-        data=df, variability_config=variability_conf)
+        data=df, variability_config=variability_conf
+    )
 
     # Columns specified in variability_conf should be different
-    assert (df['Dry Bulb Temperature'] !=
-            noise['Dry Bulb Temperature']).any()
-    assert (df['Wind Speed'] !=
-            noise['Wind Speed']).any()
+    assert (df['Dry Bulb Temperature'] != noise['Dry Bulb Temperature']).any()
+    assert (df['Wind Speed'] != noise['Wind Speed']).any()
     # Columns not specified in variability_conf should be equal
-    assert (df['Relative Humidity'] ==
-            noise['Relative Humidity']).all()
-    assert (df['Wind Direction'] ==
-            noise['Wind Direction']).all()
+    assert (df['Relative Humidity'] == noise['Relative Humidity']).all()
+    assert (df['Wind Direction'] == noise['Wind Direction']).all()

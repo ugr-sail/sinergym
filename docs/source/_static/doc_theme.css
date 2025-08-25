@@ -1,3 +1,14 @@
 .wy-nav-content {
     max-width: 70%;
 }
+
+/* Sidebar header (and top-bar for mobile) */
+.wy-side-nav-search,
+.wy-nav-top {
+    background: #a5beba;
+}
+
+/* Sidebar */
+.wy-nav-side {
+    background: #2b3435;
+}

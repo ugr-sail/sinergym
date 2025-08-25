@@ -12,55 +12,58 @@ from sinergym.utils.env_checker import check_env
 from sinergym.utils.wrappers import DiscretizeEnv, NormalizeObservation
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_5zone'),
-                          ('env_5zone_stochastic')
-                          ])
+@pytest.mark.parametrize('env_name', [('env_5zone'), ('env_5zone_stochastic')])
 def test_reset(env_name, request):
     env = request.getfixturevalue(env_name)
     # Check state before reset
     assert env.get_wrapper_attr('episode') == 0
     assert env.get_wrapper_attr('timestep') == 0
-    assert env.get_wrapper_attr(
-        'energyplus_simulator').energyplus_state is None
+    assert env.get_wrapper_attr('energyplus_simulator').energyplus_state is None
     obs, info = env.reset()
     # Check after reset
     assert env.get_wrapper_attr('episode') == 1
     assert env.get_wrapper_attr('timestep') == 0
-    assert env.get_wrapper_attr(
-        'energyplus_simulator').energyplus_state is not None
-    assert len(obs) == len(env.get_wrapper_attr('time_variables')) + len(env.get_wrapper_attr(
-        # year, month, day and hour
-        'variables')) + len(env.get_wrapper_attr('meters'))
+    assert env.get_wrapper_attr('energyplus_simulator').energyplus_state is not None
+    assert len(obs) == len(env.get_wrapper_attr('time_variables')) + len(
+        env.get_wrapper_attr(
+            # year, month, day and hour
+            'variables'
+        )
+    ) + len(env.get_wrapper_attr('meters'))
     assert isinstance(info, dict)
     assert len(info) > 0
     # default_options check
     if 'stochastic' not in env_name:
         assert not env.get_wrapper_attr('default_options').get(
-            'weather_variability', False)
+            'weather_variability', False
+        )
     else:
-        assert isinstance(env.get_wrapper_attr('default_options')[
-                          'weather_variability'], dict)
+        assert isinstance(
+            env.get_wrapper_attr('default_options')['weather_variability'], dict
+        )
 
 
 def test_reset_custom_options(env_5zone_stochastic):
-    assert isinstance(env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'], dict)
-    assert len(env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability']) == 1
-    custom_options = {
-        'weather_variability': {
-            'Dry Bulb Temperature': (
-                1.1, 0.1, 30.0)}}
+    assert isinstance(
+        env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'],
+        dict,
+    )
+    assert (
+        len(
+            env_5zone_stochastic.get_wrapper_attr('default_options')[
+                'weather_variability'
+            ]
+        )
+        == 1
+    )
+    custom_options = {'weather_variability': {'Dry Bulb Temperature': (1.1, 0.1, 30.0)}}
     env_5zone_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
     weather_path = env_5zone_stochastic.model._weather_path
     weather_file = weather_path.split('/')[-1][:-4]
     assert os.path.isfile(
-        env_5zone_stochastic.episode_path +
-        '/' +
-        weather_file +
-        '_OU_Noise.epw')
+        env_5zone_stochastic.episode_path + '/' + weather_file + '_OU_Noise.epw'
+    )
 
 
 def test_step(env_5zone):
@@ -110,17 +113,17 @@ def test_update_context(env_5zone):
     a = env_5zone.action_space.sample()
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the occupancy value of initial context
-    obs_dict = dict(
-        zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = dict(zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
     # Context occupancy is a percentage of 20 people
-    assert obs_dict['people_occupant'] == env_5zone.get_wrapper_attr(
-        'last_context')[-1] * 20
+    assert (
+        obs_dict['people_occupant']
+        == env_5zone.get_wrapper_attr('last_context')[-1] * 20
+    )
     # Try to update context with a new value
     env_5zone.update_context([0.5])
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the new occupancy value
-    obs_dict = dict(
-        zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = dict(zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
     assert obs_dict['people_occupant'] == 10
     assert env_5zone.get_wrapper_attr('last_context')[-1] == 0.5
 
@@ -129,9 +132,8 @@ def test_reset_reproducibility():
 
     # Disable environment global seed
     env = gym.make(
-        'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='PYTESTGYM',
-        seed=None)
+        'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=None
+    )
 
     # Check that the environment is reproducible
     action1 = env.action_space.sample()
@@ -162,7 +164,8 @@ def test_reset_reproducibility():
 def test_global_reproducibility():
 
     def _check_reset_reproducibility_with_seed(
-            env: gym.Env) -> Union[List[float], bool]:
+        env: gym.Env,
+    ) -> Union[List[float], bool]:
         # Check seed is available
         if env.get_wrapper_attr('seed') is not None:
             # Store environment interaction info
@@ -189,23 +192,22 @@ def test_global_reproducibility():
                 obs_0_step2_0,
                 obs_1_reset_0,
                 obs_1_step1_0,
-                obs_1_step2_0]
+                obs_1_step2_0,
+            ]
         else:
             return False
 
     # With seed 1234
     env1 = gym.make(
-        'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='PYTESTGYM',
-        seed=1234)
+        'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
+    )
     env1 = NormalizeObservation(env1)
-    values1 = _check_reset_reproducibility_with_seed(env1)
+    _check_reset_reproducibility_with_seed(env1)
     env2 = gym.make(
-        'Eplus-5zone-hot-continuous-stochastic-v1',
-        env_name='PYTESTGYM',
-        seed=1234)
+        'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
+    )
     env2 = NormalizeObservation(env2)
-    values2 = _check_reset_reproducibility_with_seed(env2)
+    _check_reset_reproducibility_with_seed(env2)
 
     # Check first and second execution have the same results
     # if isinstance(values1, list) and isinstance(values2, list):
@@ -215,8 +217,11 @@ def test_global_reproducibility():
 
 def test_all_environments():
 
-    envs_id = [env_id for env_id in gym.envs.registration.registry.keys(  # type: ignore
-    ) if env_id.startswith('Eplus')]
+    envs_id = [
+        env_id
+        for env_id in gym.envs.registration.registry.keys()  # type: ignore
+        if env_id.startswith('Eplus')
+    ]
     # Select 10 environments randomly (test would be too large)
     samples_id = sample(envs_id, 5)
     for env_id in samples_id:
@@ -226,19 +231,25 @@ def test_all_environments():
         check_env(env)
 
         # Rename directory with name TEST for future remove
-        os.rename(env.get_wrapper_attr('workspace_path'), 'PYTEST' +
-                  env.get_wrapper_attr('workspace_path').split('/')[-1])
+        os.rename(
+            env.get_wrapper_attr('workspace_path'),
+            'PYTEST' + env.get_wrapper_attr('workspace_path').split('/')[-1],
+        )
 
         env.close()
+
 
 # -------------------------- Exceptions or rare test cases ------------------------- #
 
 
-@pytest.mark.parametrize('action',
-                         [(np.array([17.5], dtype=np.float32)),
-                          (np.array([5.5, 22.5], dtype=np.float32)),
-                          (np.array([5.5, 22.5, 22.5], dtype=np.float32))
-                          ])
+@pytest.mark.parametrize(
+    'action',
+    [
+        (np.array([17.5], dtype=np.float32)),
+        (np.array([5.5, 22.5], dtype=np.float32)),
+        (np.array([5.5, 22.5, 22.5], dtype=np.float32)),
+    ],
+)
 def test_wrong_action_space(env_5zone, action):
     env_5zone.reset()
     # Forcing wrong action for current action space
@@ -263,7 +274,8 @@ def test_step_in_completed_episode(env_demo):
     truncated = terminated = False
     while not terminated and not truncated:
         obs, _, terminated, truncated, info = env_demo.step(
-            env_demo.action_space.sample())
+            env_demo.action_space.sample()
+        )
     # Save last values
     last_obs = obs
     last_info = info
@@ -276,7 +288,8 @@ def test_step_in_completed_episode(env_demo):
     for _ in range(2):
 
         obs, _, terminated, truncated, info = env_demo.step(
-            env_demo.action_space.sample())
+            env_demo.action_space.sample()
+        )
         # It does not raise exception, but it should return a truncated True again
         # and observation and info should be the same as last step
         assert not terminated
@@ -301,43 +314,38 @@ def test_action_contradiction(env_demo):
 
 def test_wrong_weather_variability_conf(env_5zone_stochastic):
 
-    env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'] = {
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
-        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     # It should accept ranges
     env_5zone_stochastic._check_eplus_env()
 
     # It should raise an exception if is not a tuple or with wrong length (3)
-    env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'] = {
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
-        'Wind Speed': (3.0, (30.0, 35.0))
+        'Wind Speed': (3.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
     # It should raise an exception if is not a tuple or with wrong length (3)
-    env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'] = {
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': 25.0,
-        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
     # It should raise an exception if the param is not a tuple or float
-    env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'] = {
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ('a', (-0.5, 0.5), 24.0),
-        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
     # It should raise an exception if the range has not 2 values
-    env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'] = {
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ((1.0, 2.0, 3.0), (-0.5, 0.5), 24.0),
-        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
@@ -350,7 +358,8 @@ def test_is_discrete_property(env_5zone):
     env_5zone = DiscretizeEnv(
         env=env_5zone,
         discrete_space=gym.spaces.Discrete(10),
-        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION)
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION,
+    )
 
     assert isinstance(env_5zone.action_space, gym.spaces.Discrete)
     assert env_5zone.is_discrete

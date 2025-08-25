@@ -14,7 +14,10 @@
       <img alt="pypi version" src="https://img.shields.io/pypi/v/sinergym" />
     </a>
     <a href="https://github.com/ugr-sail/sinergym/stargazers">
-      <img alt="pypi downloads" src="https://img.shields.io/pypi/dm/sinergym" />
+      <img alt="total PyPI downloads" src="https://static.pepy.tech/badge/sinergym" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/stargazers">
+      <img alt="month PyPI downloads" src="https://static.pepy.tech/badge/sinergym/month" />
     </a>
     <a href="https://codecov.io/gh/ugr-sail/sinergym">
       <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/main/graph/badge.svg" />
@@ -91,7 +94,7 @@ This repository is organized into the following directories:
 - `docs/`: *Sinergym*'s documentation sources.
 - `examples/`: notebooks with several examples illustrating how to use *Sinergym*.
 - `tests/`: *Sinergym* tests code.
-- `scripts/`: auxiliar and help scripts.
+- `scripts/`: auxiliary and helper scripts.
 
 ## Available environments
 

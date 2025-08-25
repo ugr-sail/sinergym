@@ -26,6 +26,7 @@ def sinergym_path():
     sinergym_resource = resources.files('sinergym')
     return os.path.abspath(os.path.join(str(sinergym_resource), os.pardir))
 
+
 # ---------------------------------------------------------------------------- #
 #                                     Paths                                    #
 # ---------------------------------------------------------------------------- #
@@ -52,7 +53,9 @@ def weather_path_pittsburgh(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
-        'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
+        'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+    )
+
 
 # ---------------------------------------------------------------------------- #
 #                         Default Environment Arguments                        #
@@ -70,52 +73,38 @@ def ACTION_SPACE_5ZONE():
         low=np.array([12.0, 23.25], dtype=np.float32),
         high=np.array([23.25, 30.0], dtype=np.float32),
         shape=(2,),
-        dtype=np.float32
+        dtype=np.float32,
     )
 
 
 @pytest.fixture(scope='function')
 def VARIABLES_5ZONE():
     return {
-        'outdoor_temperature': (
-            'Site Outdoor Air DryBulb Temperature',
-            'Environment'),
-        'outdoor_humidity': (
-            'Site Outdoor Air Relative Humidity',
-            'Environment'),
-        'wind_speed': (
-            'Site Wind Speed',
-            'Environment'),
-        'wind_direction': (
-            'Site Wind Direction',
-            'Environment'),
+        'outdoor_temperature': ('Site Outdoor Air DryBulb Temperature', 'Environment'),
+        'outdoor_humidity': ('Site Outdoor Air Relative Humidity', 'Environment'),
+        'wind_speed': ('Site Wind Speed', 'Environment'),
+        'wind_direction': ('Site Wind Direction', 'Environment'),
         'diffuse_solar_radiation': (
             'Site Diffuse Solar Radiation Rate per Area',
-            'Environment'),
+            'Environment',
+        ),
         'direct_solar_radiation': (
             'Site Direct Solar Radiation Rate per Area',
-            'Environment'),
-        'htg_setpoint': (
-            'Zone Thermostat Heating Setpoint Temperature',
-            'SPACE5-1'),
-        'clg_setpoint': (
-            'Zone Thermostat Cooling Setpoint Temperature',
-            'SPACE5-1'),
-        'air_temperature': (
-            'Zone Air Temperature',
-            'SPACE5-1'),
-        'air_humidity': (
-            'Zone Air Relative Humidity',
-            'SPACE5-1'),
-        'people_occupant': (
-            'Zone People Occupant Count',
-            'SPACE5-1'),
+            'Environment',
+        ),
+        'htg_setpoint': ('Zone Thermostat Heating Setpoint Temperature', 'SPACE5-1'),
+        'clg_setpoint': ('Zone Thermostat Cooling Setpoint Temperature', 'SPACE5-1'),
+        'air_temperature': ('Zone Air Temperature', 'SPACE5-1'),
+        'air_humidity': ('Zone Air Relative Humidity', 'SPACE5-1'),
+        'people_occupant': ('Zone People Occupant Count', 'SPACE5-1'),
         'co2_emission': (
             'Environmental Impact Total CO2 Emissions Carbon Equivalent Mass',
-            'site'),
+            'site',
+        ),
         'HVAC_electricity_demand_rate': (
             'Facility Total HVAC Electricity Demand Rate',
-            'Whole Building')
+            'Whole Building',
+        ),
     }
 
 
@@ -127,25 +116,14 @@ def METERS_5ZONE():
 @pytest.fixture(scope='function')
 def ACTUATORS_5ZONE():
     return {
-        'Heating_Setpoint_RL': (
-            'Schedule:Compact',
-            'Schedule Value',
-            'HTG-SETP-SCH'),
-        'Cooling_Setpoint_RL': (
-            'Schedule:Compact',
-            'Schedule Value',
-            'CLG-SETP-SCH')
+        'Heating_Setpoint_RL': ('Schedule:Compact', 'Schedule Value', 'HTG-SETP-SCH'),
+        'Cooling_Setpoint_RL': ('Schedule:Compact', 'Schedule Value', 'CLG-SETP-SCH'),
     }
 
 
 @pytest.fixture(scope='function')
 def CONTEXT_5ZONE():
-    return {
-        'Occupancy': (
-            'Schedule:Compact',
-            'Schedule Value',
-            'OCCUPY-1')
-    }
+    return {'Occupancy': ('Schedule:Compact', 'Schedule Value', 'OCCUPY-1')}
 
 
 @pytest.fixture(scope='function')
@@ -164,7 +142,7 @@ def ACTION_SPACE_DATACENTER():
         low=np.array([15.0, 22.0], dtype=np.float32),
         high=np.array([22.0, 30.0], dtype=np.float32),
         shape=(2,),
-        dtype=np.float32
+        dtype=np.float32,
     )
 
 
@@ -175,27 +153,72 @@ def VARIABLES_DATACENTER():
         'outdoor_humidity': ('Site Outdoor Air Relative Humidity', 'Environment'),
         'wind_speed': ('Site Wind Speed', 'Environment'),
         'wind_direction': ('Site Wind Direction', 'Environment'),
-        'diffuse_solar_radiation': ('Site Diffuse Solar Radiation Rate per Area', 'Environment'),
-        'direct_solar_radiation': ('Site Direct Solar Radiation Rate per Area', 'Environment'),
-        'west_zone_htg_setpoint': ('Zone Thermostat Heating Setpoint Temperature', 'West Zone'),
-        'east_zone_htg_setpoint': ('Zone Thermostat Heating Setpoint Temperature', 'East Zone'),
-        'west_zone_clg_setpoint': ('Zone Thermostat Cooling Setpoint Temperature', 'West Zone'),
-        'east_zone_clg_setpoint': ('Zone Thermostat Cooling Setpoint Temperature', 'East Zone'),
+        'diffuse_solar_radiation': (
+            'Site Diffuse Solar Radiation Rate per Area',
+            'Environment',
+        ),
+        'direct_solar_radiation': (
+            'Site Direct Solar Radiation Rate per Area',
+            'Environment',
+        ),
+        'west_zone_htg_setpoint': (
+            'Zone Thermostat Heating Setpoint Temperature',
+            'West Zone',
+        ),
+        'east_zone_htg_setpoint': (
+            'Zone Thermostat Heating Setpoint Temperature',
+            'East Zone',
+        ),
+        'west_zone_clg_setpoint': (
+            'Zone Thermostat Cooling Setpoint Temperature',
+            'West Zone',
+        ),
+        'east_zone_clg_setpoint': (
+            'Zone Thermostat Cooling Setpoint Temperature',
+            'East Zone',
+        ),
         'west_zone_air_temperature': ('Zone Air Temperature', 'West Zone'),
         'east_zone_air_temperature': ('Zone Air Temperature', 'East Zone'),
-        'west_zone_thermal_comfort_mean_radiant_temperature': ('Zone Thermal Comfort Mean Radiant Temperature', 'West Zone PEOPLE'),
-        'east_zone_thermal_comfort_mean_radiant_temperature': ('Zone Thermal Comfort Mean Radiant Temperature', 'East Zone PEOPLE'),
+        'west_zone_thermal_comfort_mean_radiant_temperature': (
+            'Zone Thermal Comfort Mean Radiant Temperature',
+            'West Zone PEOPLE',
+        ),
+        'east_zone_thermal_comfort_mean_radiant_temperature': (
+            'Zone Thermal Comfort Mean Radiant Temperature',
+            'East Zone PEOPLE',
+        ),
         'west_zone_air_humidity': ('Zone Air Relative Humidity', 'West Zone'),
         'east_zone_air_humidity': ('Zone Air Relative Humidity', 'East Zone'),
-        'west_zone_thermal_comfort_clothing_value': ('Zone Thermal Comfort Clothing Value', 'West Zone PEOPLE'),
-        'east_zone_thermal_comfort_clothing_value': ('Zone Thermal Comfort Clothing Value', 'East Zone PEOPLE'),
-        'west_zone_thermal_comfort_fanger_model_ppd': ('Zone Thermal Comfort Fanger Model PPD', 'West Zone PEOPLE'),
-        'east_zone_thermal_comfort_fanger_model_ppd': ('Zone Thermal Comfort Fanger Model PPD', 'East Zone PEOPLE'),
+        'west_zone_thermal_comfort_clothing_value': (
+            'Zone Thermal Comfort Clothing Value',
+            'West Zone PEOPLE',
+        ),
+        'east_zone_thermal_comfort_clothing_value': (
+            'Zone Thermal Comfort Clothing Value',
+            'East Zone PEOPLE',
+        ),
+        'west_zone_thermal_comfort_fanger_model_ppd': (
+            'Zone Thermal Comfort Fanger Model PPD',
+            'West Zone PEOPLE',
+        ),
+        'east_zone_thermal_comfort_fanger_model_ppd': (
+            'Zone Thermal Comfort Fanger Model PPD',
+            'East Zone PEOPLE',
+        ),
         'west_zone_people_occupant': ('Zone People Occupant Count', 'West Zone'),
         'east_zone_people_occupant': ('Zone People Occupant Count', 'East Zone'),
-        'west_zone_people_air_temperature': ('People Air Temperature', 'West Zone PEOPLE'),
-        'east_zone_people_air_temperature': ('People Air Temperature', 'East Zone PEOPLE'),
-        'HVAC_electricity_demand_rate': ('Facility Total HVAC Electricity Demand Rate', 'Whole Building')
+        'west_zone_people_air_temperature': (
+            'People Air Temperature',
+            'West Zone PEOPLE',
+        ),
+        'east_zone_people_air_temperature': (
+            'People Air Temperature',
+            'East Zone PEOPLE',
+        ),
+        'HVAC_electricity_demand_rate': (
+            'Facility Total HVAC Electricity Demand Rate',
+            'Whole Building',
+        ),
     }
 
 
@@ -210,12 +233,15 @@ def ACTUATORS_DATACENTER():
         'Heating_Setpoint_RL': (
             'Schedule:Compact',
             'Schedule Value',
-            'Heating Setpoints'),
+            'Heating Setpoints',
+        ),
         'Cooling_Setpoint_RL': (
             'Schedule:Compact',
             'Schedule Value',
-            'Cooling Setpoints')
+            'Cooling Setpoints',
+        ),
     }
+
 
 # ---------------------------------------------------------------------------- #
 #                       Default environment configurations                     #
@@ -225,9 +251,8 @@ def ACTUATORS_DATACENTER():
 @pytest.fixture(scope='function')
 def conf_5zone(pkg_mock_path):
     conf_path = os.path.join(
-        pkg_mock_path,
-        'environment_configurations',
-        '5ZoneAutoDXVAV.yaml')
+        pkg_mock_path, 'environment_configurations', '5ZoneAutoDXVAV.yaml'
+    )
     with open(conf_path, 'r') as yaml_conf:
         conf = yaml.safe_load(yaml_conf)
     return conf
@@ -237,9 +262,11 @@ def conf_5zone(pkg_mock_path):
 def conf_5zone_exceptions(pkg_mock_path):
     conf_exceptions = []
     for i in range(1, 6):
-        conf_path = os.path.join(pkg_mock_path,
-                                 'environment_configurations',
-                                 '5ZoneAutoDXVAV_exception{}.yaml'.format(i))
+        conf_path = os.path.join(
+            pkg_mock_path,
+            'environment_configurations',
+            '5ZoneAutoDXVAV_exception{}.yaml'.format(i),
+        )
         with open(conf_path, 'r') as yaml_conf:
             conf_exceptions.append(yaml.safe_load(yaml_conf))
 
@@ -253,13 +280,14 @@ def conf_5zone_exceptions(pkg_mock_path):
 
 @pytest.fixture(scope='function')
 def env_demo(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE,
-        CONTEXT_5ZONE,
-        INITIAL_CONTEXT):
+    ACTION_SPACE_5ZONE,
+    TIME_VARIABLES,
+    VARIABLES_5ZONE,
+    METERS_5ZONE,
+    ACTUATORS_5ZONE,
+    CONTEXT_5ZONE,
+    INITIAL_CONTEXT,
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -274,27 +302,19 @@ def env_demo(
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (1, 1, 1991, 31, 1, 1991)
-        }
+        building_config={'runperiod': (1, 1, 1991, 31, 1, 1991)},
     )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_demo_energy_cost(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE):
+    ACTION_SPACE_5ZONE, TIME_VARIABLES, VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -307,30 +327,23 @@ def env_demo_energy_cost(
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (1, 1, 1991, 31, 1, 1991)
-        }
+        building_config={'runperiod': (1, 1, 1991, 31, 1, 1991)},
     )
     env = EnergyCostWrapper(
         env,
-        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv')
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
+    )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_demo_summer(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE):
+    ACTION_SPACE_5ZONE, TIME_VARIABLES, VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -343,27 +356,19 @@ def env_demo_summer(
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (7, 1, 1991, 31, 7, 1991)
-        }
+        building_config={'runperiod': (7, 1, 1991, 31, 7, 1991)},
     )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_demo_summer_energy_cost(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE):
+    ACTION_SPACE_5ZONE, TIME_VARIABLES, VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -376,38 +381,38 @@ def env_demo_summer_energy_cost(
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (7, 1, 1991, 31, 7, 1991)
-        }
+        building_config={'runperiod': (7, 1, 1991, 31, 7, 1991)},
     )
     env = EnergyCostWrapper(
         env,
-        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv')
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
+    )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_demo_discrete(env_demo):
-    return DiscretizeEnv(env=env_demo, discrete_space=gym.spaces.Discrete(
-        10), action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION)
+    return DiscretizeEnv(
+        env=env_demo,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION,
+    )
 
 
 @pytest.fixture(scope='function')
 def env_5zone(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE,
-        CONTEXT_5ZONE,
-        INITIAL_CONTEXT):
+    ACTION_SPACE_5ZONE,
+    TIME_VARIABLES,
+    VARIABLES_5ZONE,
+    METERS_5ZONE,
+    ACTUATORS_5ZONE,
+    CONTEXT_5ZONE,
+    INITIAL_CONTEXT,
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -422,70 +427,49 @@ def env_5zone(
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (1, 1, 1991, 31, 3, 1991)
-        }
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
     )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_5zone_stochastic(
-        ACTION_SPACE_5ZONE,
-        TIME_VARIABLES,
-        VARIABLES_5ZONE,
-        METERS_5ZONE,
-        ACTUATORS_5ZONE):
+    ACTION_SPACE_5ZONE, TIME_VARIABLES, VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE
+):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
-        weather_files=[
-            'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'],
+        weather_files=['USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'],
         action_space=ACTION_SPACE_5ZONE,
         time_variables=TIME_VARIABLES,
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
-        weather_variability={
-            'Dry Bulb Temperature': (
-                1.0,
-                0.0,
-                24.0)},
+        weather_variability={'Dry Bulb Temperature': (1.0, 0.0, 24.0)},
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (
-                1,
-                1,
-                1991,
-                31,
-                3,
-                1991)})
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
+    )
     return env
 
 
 @pytest.fixture(scope='function')
 def env_datacenter(
-        ACTION_SPACE_DATACENTER,
-        TIME_VARIABLES,
-        VARIABLES_DATACENTER,
-        METERS_DATACENTER,
-        ACTUATORS_DATACENTER):
+    ACTION_SPACE_DATACENTER,
+    TIME_VARIABLES,
+    VARIABLES_DATACENTER,
+    METERS_DATACENTER,
+    ACTUATORS_DATACENTER,
+):
     env = EplusEnv(
         building_file='2ZoneDataCenterHVAC_wEconomizer.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
@@ -498,20 +482,17 @@ def env_datacenter(
         reward_kwargs={
             'temperature_variables': [
                 'west_zone_air_temperature',
-                'east_zone_air_temperature'],
+                'east_zone_air_temperature',
+            ],
             'energy_variables': ['HVAC_electricity_demand_rate'],
-            'range_comfort_winter': (
-                18,
-                27),
-            'range_comfort_summer': (
-                18,
-                27)},
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27),
+        },
         env_name='PYTESTGYM',
-        building_config={
-            'runperiod': (1, 1, 1991, 31, 3, 1991)
-        }
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
     )
     return env
+
 
 # ---------------------------------------------------------------------------- #
 #                                  Simulators                                  #
@@ -526,6 +507,7 @@ def simulator_5zone(env_5zone):
 @pytest.fixture(scope='function')
 def simulator_datacenter(env_datacenter):
     return env_datacenter.energyplus_simulator
+
 
 # ---------------------------------------------------------------------------- #
 #                               Modeling classes                               #
@@ -552,32 +534,28 @@ def model_5zone(VARIABLES_5ZONE, METERS_5ZONE):
         building_config={
             'timesteps_per_hour': 2,
             'runperiod': (1, 2, 1993, 2, 3, 1993),
-        })
+        },
+    )
 
 
 @pytest.fixture(scope='function')
-def model_5zone_several_weathers(
-        VARIABLES_5ZONE,
-        METERS_5ZONE):
+def model_5zone_several_weathers(VARIABLES_5ZONE, METERS_5ZONE):
     return ModelJSON(
         env_name='PYTESTCONFIG',
         json_file='5ZoneAutoDXVAV.epJSON',
         weather_files=[
             'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-            'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'],
+            'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
+        ],
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         max_ep_store=10,
         building_config={
             'timesteps_per_hour': 2,
-            'runperiod': (
-                1,
-                2,
-                1993,
-                2,
-                3,
-                1993),
-        })
+            'runperiod': (1, 2, 1993, 2, 3, 1993),
+        },
+    )
+
 
 # ---------------------------------------------------------------------------- #
 #                          Environments with Wrappers                          #
@@ -588,10 +566,7 @@ def model_5zone_several_weathers(
 def custom_logger_wrapper():
     class CustomLoggerWrapper(BaseLoggerWrapper):
 
-        def __init__(
-                self,
-                env: gym.Env,
-                logger_class: Callable = LoggerStorage):
+        def __init__(self, env: gym.Env, logger_class: Callable = LoggerStorage):
 
             super(CustomLoggerWrapper, self).__init__(env, logger_class)
             # DEFINE CUSTOM VARIABLES AND SUMMARY VARIABLES
@@ -599,24 +574,28 @@ def custom_logger_wrapper():
             self.summary_variables = [
                 'episode_num',
                 'double_mean_reward',
-                'half_power_demand']
+                'half_power_demand',
+            ]
 
         # DEFINE ABSTRACT METHODS FOR METRICS CALCULATION
 
-        def calculate_custom_metrics(self,
-                                     obs: np.ndarray,
-                                     action: Union[int, np.ndarray],
-                                     reward: float,
-                                     info: Dict[str, Any],
-                                     terminated: bool,
-                                     truncated: bool):
+        def calculate_custom_metrics(
+            self,
+            obs: np.ndarray,
+            action: Union[int, np.ndarray],
+            reward: float,
+            info: Dict[str, Any],
+            terminated: bool,
+            truncated: bool,
+        ):
             # Variables combining information
             return [obs[0] * 2, obs[-1] + reward]
 
         def get_episode_summary(self) -> Dict[str, float]:
             # Get information from logger
-            power_demands = [info['total_power_demand']
-                             for info in self.data_logger.infos[1:]]
+            power_demands = [
+                info['total_power_demand'] for info in self.data_logger.infos[1:]
+            ]
 
             # Data summary
             data_summary = {
@@ -632,30 +611,25 @@ def custom_logger_wrapper():
 @pytest.fixture(scope='function')
 def env_all_wrappers(env_demo):
     env = MultiObjectiveReward(
-        env=env_demo,
-        reward_terms=[
-            'energy_term',
-            'comfort_term'])
-    env = PreviousObservationWrapper(env, previous_variables=[
-        'htg_setpoint',
-        'clg_setpoint',
-        'air_temperature'])
+        env=env_demo, reward_terms=['energy_term', 'comfort_term']
+    )
+    env = PreviousObservationWrapper(
+        env, previous_variables=['htg_setpoint', 'clg_setpoint', 'air_temperature']
+    )
     env = DatetimeWrapper(env)
     env = DiscreteIncrementalWrapper(
-        env, initial_values=[
-            21.0, 25.0], delta_temp=2, step_temp=0.5)
-    env = NormalizeObservation(
-        env=env)
+        env, initial_values=[21.0, 25.0], delta_temp=2, step_temp=0.5
+    )
+    env = NormalizeObservation(env=env)
     env = LoggerWrapper(env=env)
     env = CSVLogger(env=env)
     env = ReduceObservationWrapper(
         env=env,
-        obs_reduction=[
-            'outdoor_temperature',
-            'outdoor_humidity',
-            'air_temperature'])
+        obs_reduction=['outdoor_temperature', 'outdoor_humidity', 'air_temperature'],
+    )
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
+
 
 # ---------------------------------------------------------------------------- #
 #                                  Controllers                                 #
@@ -681,6 +655,7 @@ def datacenter_controller(env_datacenter):
 def datacenter_incremental_controller(env_datacenter):
     return RBCIncrementalDatacenter(env=env_datacenter)
 
+
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #
 # ---------------------------------------------------------------------------- #
@@ -698,6 +673,7 @@ def weather_data(weather_path_pittsburgh):
     weather_data = Weather()
     weather_data.read(weather_path_pittsburgh)
     return weather_data
+
 
 # ---------------------------------------------------------------------------- #
 #                                    Rewards                                   #
@@ -726,12 +702,9 @@ def linear_reward():
     return LinearReward(
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
-        range_comfort_winter=(
-            20.0,
-            23.5),
-        range_comfort_summer=(
-            23.0,
-            26.0))
+        range_comfort_winter=(20.0, 23.5),
+        range_comfort_summer=(23.0, 26.0),
+    )
 
 
 @pytest.fixture(scope='function')
@@ -740,17 +713,14 @@ def energy_cost_linear_reward():
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
         energy_cost_variables=['energy_cost'],
-        range_comfort_winter=(
-            20.0,
-            23.5),
-        range_comfort_summer=(
-            23.0,
-            26.0),
+        range_comfort_winter=(20.0, 23.5),
+        range_comfort_summer=(23.0, 26.0),
         temperature_weight=0.4,
         energy_weight=0.4,
         lambda_energy=1e-4,
         lambda_temperature=1.0,
-        lambda_energy_cost=1.0)
+        lambda_energy_cost=1.0,
+    )
 
 
 @pytest.fixture(scope='function')
@@ -758,12 +728,9 @@ def exponential_reward():
     return ExpReward(
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
-        range_comfort_winter=(
-            20.0,
-            23.5),
-        range_comfort_summer=(
-            23.0,
-            26.0))
+        range_comfort_winter=(20.0, 23.5),
+        range_comfort_summer=(23.0, 26.0),
+    )
 
 
 @pytest.fixture(scope='function')
@@ -771,12 +738,9 @@ def hourly_linear_reward():
     return HourlyLinearReward(
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
-        range_comfort_winter=(
-            20.0,
-            23.5),
-        range_comfort_summer=(
-            23.0,
-            26.0))
+        range_comfort_winter=(20.0, 23.5),
+        range_comfort_summer=(23.0, 26.0),
+    )
 
 
 @pytest.fixture(scope='function')
@@ -784,12 +748,8 @@ def normalized_linear_reward():
     return NormalizedLinearReward(
         temperature_variables=['air_temperature'],
         energy_variables=['HVAC_electricity_demand_rate'],
-        range_comfort_winter=(
-            20.0,
-            23.5),
-        range_comfort_summer=(
-            23.0,
-            26.0),
+        range_comfort_winter=(20.0, 23.5),
+        range_comfort_summer=(23.0, 26.0),
         summer_start=(6, 1),
         summer_final=(9, 30),
         energy_weight=0.5,
@@ -804,11 +764,14 @@ def multizone_reward():
         energy_variables=['HVAC_electricity_demand_rate'],
         temperature_and_setpoints_conf={
             'air_temperature1': 'setpoint_temperature1',
-            'air_temperature2': 'setpoint_temperature2'},
+            'air_temperature2': 'setpoint_temperature2',
+        },
         comfort_threshold=0.5,
         energy_weight=0.5,
         lambda_energy=1.0,
-        lambda_temperature=1.0)
+        lambda_temperature=1.0,
+    )
+
 
 # ---------------------------------------------------------------------------- #
 #                         WHEN TESTS HAVE BEEN FINISHED                        #
@@ -816,7 +779,7 @@ def multizone_reward():
 
 
 def pytest_sessionfinish(session, exitstatus):
-    """ whole test run finishes. """
+    """whole test run finishes."""
     # Deleting all temporal directories generated during tests (environments)
     directories = glob('PYTEST*/')
     for directory in directories:

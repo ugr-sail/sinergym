@@ -40,18 +40,21 @@ extensions = [
     'sphinx_multitoc_numbering',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
-    'nbsphinx_link']
+    'nbsphinx_link',
+]
 
-autodoc_mock_imports = ['stable_baselines3',
-                        'wandb',
-                        'gym',
-                        'opyplus',
-                        'gcloud',
-                        'googleapiclient',
-                        'oauth2client',
-                        'google',
-                        'google.cloud',
-                        'pyenergyplus']
+autodoc_mock_imports = [
+    'stable_baselines3',
+    'wandb',
+    'gym',
+    'opyplus',
+    'gcloud',
+    'googleapiclient',
+    'oauth2client',
+    'google',
+    'google.cloud',
+    'pyenergyplus',
+]
 for module in ['gymnasium.wrappers.normalize']:
     sys.modules[module] = mock.MagicMock()
 
@@ -108,27 +111,40 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['doc_theme.css']
+html_css_files = ['doc_theme.css', 'github_style.css']
 
 # Modify icons
 html_logo = '_static/logo-sidebar.png'
 html_favicon = '_static/logo-sidebar.png'
 
 # Change sidebar-logo background
-html_theme_options = {'style_nav_header_background': '#a5beba',
-                      'display_version': True,
-                      }
+html_theme_options = {
+    'style_nav_header_background': '#a5beba',
+}
+
+html_context = {
+    "display_github": True,
+    "github_user": "ugr-sail",
+    "github_repo": "sinergym",
+    "github_version": "main",
+    "conf_py_path": "/docs/source/",
+}
 
 # Enable global sidebar
-html_sidebars = {'**': ['globaltoc.html',
-                        'relations.html',
-                        'sourcelink.html',
-                        'searchbox.html'], }
+html_sidebars = {
+    '**': [
+        'versions.html',
+        'globaltoc.html',
+        'relations.html',
+        'sourcelink.html',
+        'searchbox.html',
+    ],
+}
 
-# disable nbsphinx errors to suppres imports checks not working
+# disable nbsphinx errors to suppress import checks not working
 nbsphinx_allow_errors = True
 
 # disable nbsphinx nodes execution (it fails to import sinergym)
 # if a node is previously executed it will include the output
-# but nbsphonx will not execute it if the output is missing.
+# but nbsphinx will not execute it if the output is missing.
 nbsphinx_execute = 'never'

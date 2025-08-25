@@ -1,4 +1,5 @@
 """Implementation of basic controllers."""
+
 from datetime import datetime
 from typing import Any, List, Sequence
 
@@ -40,8 +41,7 @@ class RBC5Zone(object):
 
         self.env = env
 
-        self.observation_variables = env.get_wrapper_attr(
-            'observation_variables')
+        self.observation_variables = env.get_wrapper_attr('observation_variables')
         self.action_variables = env.get_wrapper_attr('action_variables')
 
         self.setpoints_summer = np.array((23.0, 26.0), dtype=np.float32)
@@ -67,7 +67,9 @@ class RBC5Zone(object):
         current_dt = datetime(year, month, day)
 
         # Get season comfort range
-        if current_dt >= summer_start_date and current_dt <= summer_final_date:  # pragma: no cover
+        if (
+            current_dt >= summer_start_date and current_dt <= summer_final_date
+        ):  # pragma: no cover
             season_range = self.setpoints_summer
         else:  # pragma: no cover
             season_range = self.setpoints_winter
@@ -86,8 +88,7 @@ class RBCDatacenter(object):
         """
 
         self.env = env
-        self.observation_variables = env.get_wrapper_attr(
-            'observation_variables')
+        self.observation_variables = env.get_wrapper_attr('observation_variables')
         self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
@@ -112,8 +113,7 @@ class RBCIncrementalDatacenter(object):
         """
 
         self.env = env
-        self.observation_variables = env.get_wrapper_attr(
-            'observation_variables')
+        self.observation_variables = env.get_wrapper_attr('observation_variables')
         self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
@@ -129,13 +129,15 @@ class RBCIncrementalDatacenter(object):
         obs_dict = dict(zip(self.observation_variables, observation))
 
         # Mean temp in datacenter zones
-        mean_temp = np.mean([obs_dict['west_zone_air_temperature'],
-                             obs_dict['east_zone_air_temperature']])
+        mean_temp = np.mean(
+            [
+                obs_dict['west_zone_air_temperature'],
+                obs_dict['east_zone_air_temperature'],
+            ]
+        )
 
-        current_heat_setpoint = obs_dict[
-            'west_zone_htg_setpoint']
-        current_cool_setpoint = obs_dict[
-            'west_zone_clg_setpoint']
+        current_heat_setpoint = obs_dict['west_zone_htg_setpoint']
+        current_cool_setpoint = obs_dict['west_zone_clg_setpoint']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
@@ -147,7 +149,4 @@ class RBCIncrementalDatacenter(object):
             new_cool_setpoint = current_cool_setpoint - 1
             new_heat_setpoint = current_heat_setpoint - 1
 
-        return np.array(
-            (new_heat_setpoint,
-             new_cool_setpoint),
-            dtype=np.float32)
+        return np.array((new_heat_setpoint, new_cool_setpoint), dtype=np.float32)

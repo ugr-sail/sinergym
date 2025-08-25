@@ -69,7 +69,7 @@ Your contributions can fall into two main categories:
 Follow the **Google-style docstrings** ([Napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)):
 
 ```python
-def my_function(arg1: type1, arg2: type2) -> returntype:
+def my_function(arg1: type1, arg2: type2) -> return_type:
     """Brief summary of the function.
 
     Args:
@@ -77,7 +77,7 @@ def my_function(arg1: type1, arg2: type2) -> returntype:
         arg2 (type2): Description of arg2.
 
     Returns:
-        returntype: Description of return value.
+        return_type: Description of return value.
     """
     ...
     return my_variable
@@ -90,13 +90,14 @@ def my_function(arg1: type1, arg2: type2) -> returntype:
 # 🎨 Code Style & Formatting
 
 ## 📏 **Coding Standards**
-- **Code formatting**: Use [autopep8](https://github.com/hhatto/autopep8) (max **79** characters per line, aggressive level 2). Included in devcontainer definition.
-- **Import sorting**: Use [isort](https://github.com/PyCQA/isort).
+> **Note**: Configuration for these tools is automatically applied and included in the pyproject.toml definition.
+- **Code formatting**: Use [black](https://black.readthedocs.io/en/stable/) (max **88** characters per line).
+- **Import sorting**: Use [ruff](https://docs.astral.sh/ruff/).
 - **Type checking**: Run [pyright](https://github.com/microsoft/pyright).
 
 📝 **Before submitting a PR, ensure your code passes:** 
-- `autopep8 --exit-code --recursive --diff --aggressive --aggressive .`
-- `isort --check-only --diff .`
+- `black --check .`
+- `ruff check .`
 - `pyright sinergym/ `
 - `pytest tests/ -vvv`
 
@@ -123,8 +124,8 @@ Indicate the type of change your PR introduces by marking an `x` in the relevant
 - ✅ My changes require updates to the documentation.  
 - ✅ I have updated the necessary documentation accordingly.  
 - ✅ I have added or updated the necessary tests.  
-- ✅ I have reformatted the code using **`autopep8`** (aggressive level 2).  
-- ✅ I have sorted imports using **`isort`**.  
+- ✅ I have reformatted the code using **`black`**.  
+- ✅ I have sorted imports using **`ruff`**.  
 - ✅ If I modified documentation, I verified that **`cd docs && make spelling && make html`** passes.  
 - ✅ I ensured that **`pytest tests/ -vv`** runs successfully (**required**).  
 - ✅ I checked that **`pyright sinergym/`** runs successfully (**required**).  

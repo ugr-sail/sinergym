@@ -15,7 +15,7 @@
    information on how to report issues is available
    `here <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__. 
 
-*Synergym* includes the following features:
+*Sinergym* includes the following features:
 
    - ⚙️  **Simulation engines compatibility**. *Sinergym* is currently compatible with the `EnergyPlus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ for controller-building communication. Future updates may include additional engines such as `OpenModelica <https://openmodelica.org/>`__.
 

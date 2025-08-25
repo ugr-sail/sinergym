@@ -20,6 +20,7 @@ def init_storage_client() -> storage.Client:
     client = storage.Client()
     return client
 
+
 ####################### GCLOUD BUCKETS MANIPULATION #######################
 
 
@@ -43,10 +44,8 @@ def read_from_bucket(client, bucket_name, blob_prefix):
 
 
 def upload_to_bucket(
-        client: storage.Client,
-        src_path: str,
-        dest_bucket_name: str,
-        dest_path: str):
+    client: storage.Client, src_path: str, dest_bucket_name: str, dest_path: str
+):
     """Upload a file or a directory (recursively) from local file system to specified bucket.
 
     Args:
@@ -65,9 +64,13 @@ def upload_to_bucket(
             blob = bucket.blob(os.path.join(dest_path, os.path.basename(item)))
             blob.upload_from_filename(item)
         else:
-            upload_to_bucket(client,
-                             item, dest_bucket_name, os.path.join(
-                                 dest_path, os.path.basename(item)))
+            upload_to_bucket(
+                client,
+                item,
+                dest_bucket_name,
+                os.path.join(dest_path, os.path.basename(item)),
+            )
+
 
 ######## OPERATION DESIGNED TO BE EXECUTED FROM REMOTE CONTAINER ########
 
@@ -80,14 +83,11 @@ def get_service_account_token() -> str:
     """
     url_token = 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token'
     headers_token = {'Metadata-Flavor': 'Google'}
-    token = requests.get(url_token, headers=headers_token).json()[
-        'access_token']
+    token = requests.get(url_token, headers=headers_token).json()['access_token']
     return token
 
 
-def _get_instance_group_len(
-        instance_group_name: str,
-        token: str) -> int:
+def _get_instance_group_len(instance_group_name: str, token: str) -> int:
     """Get number of instances in a specific Managed Instance Groups (MIG).
 
     Args:
@@ -97,19 +97,24 @@ def _get_instance_group_len(
     Returns:
         int: Number of instances inner Managed Instance Groups
     """
-    url_list = 'https://compute.googleapis.com/compute/v1/projects/' + \
-        os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name + '/listManagedInstances'
+    url_list = (
+        'https://compute.googleapis.com/compute/v1/projects/'
+        + os.environ['gce_project_id']
+        + '/zones/'
+        + os.environ['gce_zone']
+        + '/instanceGroupManagers/'
+        + instance_group_name
+        + '/listManagedInstances'
+    )
     header_auth = {'Authorization': 'Bearer ' + token}
-    response = requests.post(
-        url_list,
-        headers=header_auth)
+    response = requests.post(url_list, headers=header_auth)
 
     return len(response.json()['managedInstances'])
 
 
 def delete_instance_MIG_from_container(
-        instance_group_name: str,
-        token: str) -> requests.Response:
+    instance_group_name: str, token: str
+) -> requests.Response:
     """Delete the instance group inner Managed Instance Groups where container is executing. Whether this VM is alone in MIG, MIG will be removed too.
 
     Args:
@@ -122,23 +127,35 @@ def delete_instance_MIG_from_container(
     header_auth = {'Authorization': 'Bearer ' + token}
     if _get_instance_group_len(instance_group_name, token) == 1:
         # We can delete entire instance group
-        url_delete = 'https://compute.googleapis.com/compute/v1/projects/' + \
-            os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name
+        url_delete = (
+            'https://compute.googleapis.com/compute/v1/projects/'
+            + os.environ['gce_project_id']
+            + '/zones/'
+            + os.environ['gce_zone']
+            + '/instanceGroupManagers/'
+            + instance_group_name
+        )
         response = requests.delete(url_delete, headers=header_auth)
     else:
         # We can only delete specific machine from instance group
-        url_delete = 'https://compute.googleapis.com/compute/v1/projects/' + \
-            os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name + '/deleteInstances'
+        url_delete = (
+            'https://compute.googleapis.com/compute/v1/projects/'
+            + os.environ['gce_project_id']
+            + '/zones/'
+            + os.environ['gce_zone']
+            + '/instanceGroupManagers/'
+            + instance_group_name
+            + '/deleteInstances'
+        )
 
         data_delete = {
             "instances": [
-                'zones/' +
-                os.environ['gce_zone'] +
-                '/instances/' +
-                os.environ['HOSTNAME']],
-            "skipInstancesOnValidationError": True}
-        response = requests.post(
-            url_delete,
-            headers=header_auth,
-            data=data_delete)
+                'zones/'
+                + os.environ['gce_zone']
+                + '/instances/'
+                + os.environ['HOSTNAME']
+            ],
+            "skipInstancesOnValidationError": True,
+        }
+        response = requests.post(url_delete, headers=header_auth, data=data_delete)
     return response

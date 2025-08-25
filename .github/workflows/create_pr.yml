@@ -4,7 +4,7 @@ on: pull_request
 # pwd: /home/runner/work/sinergym/sinergym
 
 jobs:
-  autopep8-isort-check:
+  black-ruff-check:
     runs-on: ubuntu-24.04
     steps:
 
@@ -24,23 +24,23 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
           
-      - name: Install autopep8 and isort
+      - name: Install black and ruff
         run: poetry install --no-interaction --only format
 
-      - name: autopep8 check
-        id: autopep8
-        run: poetry run autopep8 --exit-code --recursive --diff --aggressive --aggressive .
+      - name: ruff check
+        id: ruff
+        run: poetry run ruff check .
         continue-on-error: true
 
-      - name: isort check
-        id: isort
-        run: poetry run isort --check-only --diff .
+      - name: black check
+        id: black
+        run: poetry run black .
         continue-on-error: true
 
-      - name: Fail if autopep8/isort found diffs
-        if: steps.autopep8.outcome != 'success' || steps.isort.outcome != 'success'
+      - name: Fail if black/ruff found diffs
+        if: steps.black.outcome != 'success' || steps.ruff.outcome != 'success'
         run: |
-          echo "Error detected in code formatting (autopep8 and/or isort)."
+          echo "Error detected in code formatting (black and/or ruff)."
           exit 1
 
   type-check:
