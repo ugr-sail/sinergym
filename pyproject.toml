@@ -169,6 +169,7 @@ include = '\.pyi?$'
 exclude = '''
 /(
     \.git
+  | \.venv
   | \.mypy_cache
   | \.pytest_cache
   | build
