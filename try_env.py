@@ -6,21 +6,21 @@ import numpy as np
 import sinergym
 from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (
+    CSVLogger,
+    ExtremeFlowControlWrapper,
+    HeatPumpEnergyWrapper,
     LoggerWrapper,
     NormalizeAction,
     NormalizeObservation,
-    ExtremeFlowControlWrapper,
-    HeatPumpEnergyWrapper,
     ReduceObservationWrapper,
-    CSVLogger)
+)
 
 # Logger
 terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Creating environment and applying wrappers for normalization and logging
-env = gym.make(
-    'Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1')
+env = gym.make('Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1')
 # env = RoundActionWrapper(env)
 # env = HeatPumpEnergyWrapper(env)
 env = NormalizeObservation(env)
@@ -47,7 +47,9 @@ env = ReduceObservationWrapper(
         'heat_cap_mod',
         'cop_plr_mod',
         'cop_temp_mod',
-        'plr_current'])
+        'plr_current',
+    ],
+)
 
 # Execute 3 episodes
 for i in range(3):
