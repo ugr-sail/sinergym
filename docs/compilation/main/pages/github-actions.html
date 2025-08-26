@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Github actions &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -95,6 +95,17 @@
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -111,7 +122,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Github actions</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/github-actions.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/github-actions.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -126,7 +137,7 @@
 <section id="pull-request">
 <h2>Pull request<a class="headerlink" href="#pull-request" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><strong>Python Code format check</strong>. Each pull request is checked following <strong>pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> for import sorting. Non-compliance triggers a warning.</p></li>
+<li><p><strong>Python Code format check</strong>. Each pull request is checked following <a class="reference external" href="https://black.readthedocs.io/en/stable/">black formatter</a> and <a class="reference external" href="https://docs.astral.sh/ruff/">ruff</a> for import sorting. Non-compliance triggers a warning.</p></li>
 <li><p><strong>Code type check</strong>. <a class="reference external" href="https://github.com/microsoft/pyright">pyright</a> is used in the <em>Sinergym</em> module to control function and method I/O types. Type errors halt the workflow until resolved.</p></li>
 <li><p><strong>Documentation checks</strong>. Changes in source documentation trigger a <em>Sphinx</em> compilation and spelling check. Errors are raised for compilation issues and unrecognized words. Add unrecognized but correct words to <code class="docutils literal notranslate"><span class="pre">docs/source/spelling_wordlist.txt</span></code>.</p></li>
 </ul>
@@ -152,7 +163,7 @@ See issue <a class="reference external" href="https://github.com/ugr-sail/sinerg
 <h2>Push to main (or merge a pull request)<a class="headerlink" href="#push-to-main-or-merge-a-pull-request" title="Link to this heading"></a></h2>
 <p>The following workflows are executed sequentially:</p>
 <ul class="simple">
-<li><p><strong>Apply format</strong>. A bot applies necessary format changes (<strong>autopep8</strong> level 2 aggressive and/or <strong>isort</strong> module)
+<li><p><strong>Apply format</strong>. A bot applies necessary format changes (<strong>black</strong> and/or <strong>ruff</strong> module)
 in the main branch.</p></li>
 <li><p><strong>Update Documentation build to GitHub pages</strong>. A bot updates the documentation build in the <strong>main</strong> branch when necessary, including spelling checks.</p></li>
 <li><p><strong>Update the Docker Hub repository</strong>. A container with all extra requirements is built and pushed to our <a class="reference external" href="https://hub.docker.com/r/sailugr/sinergym">Docker Hub repository</a> using the <em>latest</em> tag. A minimal container is also included with the <em>lite</em> tag.</p></li>
@@ -239,21 +250,7 @@ with the release tag version.</p></li>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

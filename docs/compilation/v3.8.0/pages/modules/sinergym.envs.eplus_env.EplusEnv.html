@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.envs.eplus_env.EplusEnv &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -101,6 +101,17 @@
 </li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -120,7 +131,7 @@
           <li class="breadcrumb-item"><a href="sinergym.envs.eplus_env.html">sinergym.envs.eplus_env</a></li>
       <li class="breadcrumb-item active">sinergym.envs.eplus_env.EplusEnv</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/modules/sinergym.envs.eplus_env.EplusEnv.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/modules/sinergym.envs.eplus_env.EplusEnv.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -132,7 +143,7 @@
 <h1>sinergym.envs.eplus_env.EplusEnv<a class="headerlink" href="#sinergym-envs-eplus-env-eplusenv" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">context:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">initial_context:</span> <span class="pre">~typing.List[float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float]]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">seed:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">context:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">initial_context:</span> <span class="pre">~typing.List[float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float]]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">seed:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">context:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">initial_context:</span> <span class="pre">~typing.List[float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float],</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float]]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">seed:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="Link to this definition"></a></dt>
@@ -293,22 +304,22 @@
 </table>
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.action_space">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.action_space" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.action_space" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.actuator_handlers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actuator_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handlers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actuator_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.available_handlers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.available_handlers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.available_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.building_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">building_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.building_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">building_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.building_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -319,27 +330,27 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.context_handlers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">context_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.context_handlers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">context_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.context_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.ddy_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ddy_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.ddy_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ddy_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.ddy_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.episode_length">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">episode_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.episode_length" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">episode_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.episode_length" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.episode_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">episode_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.episode_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">episode_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.episode_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.idd_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">idd_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.idd_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">idd_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.idd_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -349,12 +360,12 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.is_discrete">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_discrete</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_discrete</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.is_running">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_running</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_running</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -369,12 +380,12 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.meter_handlers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meter_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meter_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.observation_space">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observation_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observation_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -410,12 +421,12 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.runperiod">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runperiod</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">runperiod</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.schedulers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedulers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedulers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -453,12 +464,12 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.step_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timestep_per_episode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timestep_per_episode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -474,22 +485,22 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.var_handlers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.weather_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weather_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weather_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.workspace_path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">workspace_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">workspace_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.zone_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zone_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zone_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -557,21 +568,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

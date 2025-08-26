@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,24 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LoggerWrapper customization &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -51,6 +48,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -97,6 +95,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -113,7 +122,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">LoggerWrapper customization</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/notebooks/personalize_loggerwrapper.nblink.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/notebooks/personalize_loggerwrapper.nblink" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -130,8 +139,14 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">CSVLogger</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseLoggerWrapper</span><span class="p">,</span>
+    <span class="n">CSVLogger</span><span class="p">,</span>
+    <span class="n">LoggerWrapper</span><span class="p">,</span>
+    <span class="n">WandBLogger</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -144,9 +159,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerStorage</span><span class="p">,</span> <span class="n">TerminalLogger</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG_WRAPPERS_LEVEL</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerStorage</span><span class="p">,</span> <span class="n">TerminalLogger</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomLoggerWrapper</span><span class="p">(</span><span class="n">BaseLoggerWrapper</span><span class="p">):</span>
@@ -350,21 +366,7 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

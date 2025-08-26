@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sinergym output &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -90,6 +90,17 @@
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -106,7 +117,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Sinergym output</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/output.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/output.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -118,7 +129,8 @@
 <h1>Sinergym output<a class="headerlink" href="#sinergym-output" title="Link to this heading"></a></h1>
 <p>When a simulation is running, it creates a directory named <code class="docutils literal notranslate"><span class="pre">&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The <code class="docutils literal notranslate"><span class="pre">modeling</span></code> module is responsible for managing the directory structure generated during a simulation.</p>
 <p>The contents of this root output directory include the results of the simulation, and consists of the following:</p>
-<a class="reference internal image-reference" href="../_images/output_structure.png"><img alt="Output directories and files." class="align-center" src="../_images/output_structure.png" style="width: 702.0px; height: 1042.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/output_structure.png"><img alt="Output directories and files." class="align-center" src="../_images/output_structure.png" style="width: 702.0px; height: 1042.0px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -155,7 +167,7 @@ visit the <a class="reference external" href="https://bigladdersoftware.com/epx/
 </div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">progress.csv</span></code>. This file contains information about general simulation results. Each row contains episode information registering relevant data such as mean power consumption, rewards or comfort penalties. This file is only available when the environment has been wrapped with a <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> and <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> (see <a class="reference internal" href="wrappers.html#logger-wrappers"><span class="std std-ref">Logger Wrappers</span></a> for more information). The structure of this file is defined by the <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> class.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">weather_variability_config.csv</span></code>. This file contains the configuration of the weather variability for each episode. It is only created when the environment has been wrapped with <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> and <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code>. It is very useful when you are using ranges in weather variability paramters (more information in <a class="reference internal" href="environments.html#weather-variability"><span class="std std-ref">Weather variability</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weather_variability_config.csv</span></code>. This file contains the configuration of the weather variability for each episode. It is only created when the environment has been wrapped with <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> and <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code>. It is very useful when you are using ranges in weather variability parameters (more information in <a class="reference internal" href="environments.html#weather-variability"><span class="std std-ref">Weather variability</span></a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">data_available.txt</span></code>. It is generated when the <em>EnergyPlus</em> API initializes all callbacks and handlers for the simulation. In this file, you can find all the available components of the building model, such as actuators, schedulers, meters, variables,  internal variables, etc.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mean.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">var.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">count.txt</span></code>. These files contain the count, mean and variation values for calibration of normalization in observation space if wrapper <code class="docutils literal notranslate"><span class="pre">NormalizeObservation</span></code> is used (see <a class="reference internal" href="wrappers.html#normalizeobservation"><span class="std std-ref">NormalizeObservation</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">env_config.pyyaml</span></code>. This file contains the environment configuration in YAML format. It is automatically generated when the environment is created and includes all the parameters used to instantiate the environment, such as the building model, weather file, simulation settings, and any user-defined configurations. For more information, see the <a class="reference internal" href="serialization.html#environment-configuration-serialization"><span class="std std-ref">Environment Configuration Serialization</span></a> section.</p></li>
@@ -238,21 +250,7 @@ be declared in the building model first. To view all variables or meters specifi
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>12. Wrappers &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
@@ -107,6 +107,17 @@
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -123,7 +134,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active"><span class="section-number">12. </span>Wrappers</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/wrappers.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/wrappers.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -162,7 +173,8 @@ as some of them only work correctly with normalized values, making environments 
 when the wrapper is instantiated.</p>
 <p><em>Sinergym</em> <strong>parses</strong> these values to the real action space defined in the original environment internally
 before sending it to the <em>EnergyPlus</em> Simulator via the API middleware.</p>
-<a class="reference internal image-reference" href="../_images/normalize_action_wrapper.png"><img alt="Normalize action wrapper graph." class="align-center" src="../_images/normalize_action_wrapper.png" style="width: 752.0px; height: 551.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/normalize_action_wrapper.png"><img alt="Normalize action wrapper graph." class="align-center" src="../_images/normalize_action_wrapper.png" style="width: 752.0px; height: 551.0px;" />
+</a>
 </section>
 <section id="discretizeenv">
 <h2><span class="section-number">12.5. </span>DiscretizeEnv<a class="headerlink" href="#discretizeenv" title="Link to this heading"></a></h2>
@@ -179,7 +191,8 @@ environment action space.</p>
 <p>Users can define this action mapping function to specify the transition from discrete to continuous values.
 If the output of the action mapping function doesn’t align with the original environment action space,
 an error will be raised. Refer to <a class="reference internal" href="notebooks/wrappers_examples.html#Environment-Discretization-Wrapper"><span class="std std-ref">Environment Discretization Wrapper</span></a> for a usage example.</p>
-<a class="reference internal image-reference" href="../_images/discretize_wrapper.png"><img alt="Discretize wrapper graph." class="align-center" src="../_images/discretize_wrapper.png" style="width: 800.0px; height: 512.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/discretize_wrapper.png"><img alt="Discretize wrapper graph." class="align-center" src="../_images/discretize_wrapper.png" style="width: 800.0px; height: 512.0px;" />
+</a>
 </section>
 <section id="incrementalwrapper">
 <h2><span class="section-number">12.6. </span>IncrementalWrapper<a class="headerlink" href="#incrementalwrapper" title="Link to this heading"></a></h2>
@@ -194,7 +207,8 @@ which creates a set of possible increments for each desired variable.</p>
 </ul>
 <p>The following figure illustrates its operation. Essentially, the values are rounded to the nearest increment
 value and added to the current real values of the simulation:</p>
-<a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 991.0px; height: 941.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 991.0px; height: 941.0px;" />
+</a>
 </section>
 <section id="discreteincrementalwrapper">
 <h2><span class="section-number">12.7. </span>DiscreteIncrementalWrapper<a class="headerlink" href="#discreteincrementalwrapper" title="Link to this heading"></a></h2>
@@ -208,7 +222,8 @@ the increase, rather than the discrete value action, which is intended to define
 <p>This wrapper fully changes the action space from continuous to discrete, meaning that increments/decrements
 apply to all variables. In essence, selecting variables individually as in IncrementalWrapper is not possible.</p>
 </div>
-<a class="reference internal image-reference" href="../_images/discrete_incremental_wrapper.png"><img alt="Discrete incremental wrapper graph." class="align-center" src="../_images/discrete_incremental_wrapper.png" style="width: 850.0px; height: 570.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/discrete_incremental_wrapper.png"><img alt="Discrete incremental wrapper graph." class="align-center" src="../_images/discrete_incremental_wrapper.png" style="width: 850.0px; height: 570.0px;" />
+</a>
 </section>
 <section id="normalizeobservation">
 <h2><span class="section-number">12.8. </span>NormalizeObservation<a class="headerlink" href="#normalizeobservation" title="Link to this heading"></a></h2>
@@ -242,7 +257,8 @@ For more details, visit <a class="reference external" href="https://github.com/u
 interactions. For more details, see <a class="reference internal" href="logging.html#logging-system-overview"><span class="std std-ref">Logging System Overview</span></a>.</p>
 <p>The diagram below illustrates the relationship between the wrappers and the logger, with explanations
 provided in the following subsections.</p>
-<a class="reference internal image-reference" href="../_images/logger_structure.png"><img alt="Logger wrappers graph." class="align-center" src="../_images/logger_structure.png" style="width: 763.0px; height: 886.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/logger_structure.png"><img alt="Logger wrappers graph." class="align-center" src="../_images/logger_structure.png" style="width: 763.0px; height: 886.0px;" />
+</a>
 <section id="loggerwrapper">
 <h3><span class="section-number">12.9.1. </span>LoggerWrapper<a class="headerlink" href="#loggerwrapper" title="Link to this heading"></a></h3>
 <p><strong>BaseLoggerWrapper</strong> is the abstract class for logger wrappers. It stores all information during
@@ -377,21 +393,7 @@ A wrapper works on top of the previous one. The order is flexible since <em>Sine
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

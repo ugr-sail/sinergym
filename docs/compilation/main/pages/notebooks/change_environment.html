@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,24 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Changing an environment registered in Sinergym &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -51,6 +48,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -99,6 +97,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -115,7 +124,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Changing an environment registered in Sinergym</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/notebooks/change_environment.nblink.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/notebooks/change_environment.nblink" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -144,11 +153,12 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+Couldn&#39;t import dot_parser, loading of dot files will not be possible.
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment.
 [ENVIRONMENT] (INFO) : Name: Eplus-5zone-hot-continuous-stochastic-v1
 #==============================================================================================#
-[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-stochastic-v1-res1
+[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-stochastic-v1-res2
 [MODEL] (INFO) : Model Config is correct.
 [MODEL] (INFO) : Building model Output:Variable updated with defined variable names.
 [MODEL] (INFO) : Updated building model Output:Meter with meter names.
@@ -178,8 +188,8 @@ leaving the original untouched.</p>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.rewards</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExpReward</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;temperature_variables&#39;</span><span class="p">:</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;energy_variables&#39;</span><span class="p">:</span> <span class="s1">&#39;HVAC_electricity_demand_rate&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;temperature_variables&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;air_temperature&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;energy_variables&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HVAC_electricity_demand_rate&#39;</span><span class="p">],</span>
     <span class="s1">&#39;range_comfort_winter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
     <span class="s1">&#39;range_comfort_summer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
     <span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
@@ -195,7 +205,7 @@ leaving the original untouched.</p>
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment.
 [ENVIRONMENT] (INFO) : Name: Eplus-5zone-hot-continuous-v1
 #==============================================================================================#
-[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-v1-res1
+[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-v1-res3
 [MODEL] (INFO) : Model Config is correct.
 [MODEL] (INFO) : Building model Output:Variable updated with defined variable names.
 [MODEL] (INFO) : Updated building model Output:Meter with meter names.
@@ -213,14 +223,14 @@ leaving the original untouched.</p>
 <p>You can configure the weather dataset (and weather variability for stochastic environments) used by the environment with a new one.</p>
 <p>The approach is similar as for the reward case:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
                <span class="n">weather_files</span><span class="o">=</span><span class="s1">&#39;PRT_Lisboa.085360_INETI.epw&#39;</span><span class="p">,</span>
                <span class="n">weather_variability</span><span class="o">=</span><span class="p">{</span>
-                   <span class="s2">&quot;drybulb&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
-                   <span class="s2">&quot;windspd&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+                   <span class="s2">&quot;Dry Bulb Temperature&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
+                   <span class="s2">&quot;Wind Speed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
                <span class="p">})</span>
 </pre></div>
 </div>
@@ -567,21 +577,7 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

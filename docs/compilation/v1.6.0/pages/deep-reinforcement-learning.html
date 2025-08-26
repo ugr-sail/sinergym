@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deep Reinforcement Learning Integration &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
@@ -71,6 +71,17 @@
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -87,7 +98,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Deep Reinforcement Learning Integration</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/deep-reinforcement-learning.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/deep-reinforcement-learning.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -308,7 +319,8 @@ Each algorithm has its own differences about how information is extracted which 
 </div>
 <p>This callback derives <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> from Stable Baselines 3 while <code class="docutils literal notranslate"><span class="pre">BaseCallBack</span></code> uses <a class="reference external" href="https://www.tensorflow.org/tensorboard?hl=es-419">Tensorboard</a> on the background at the same time.
 With Tensorboard, it’s possible to visualize all DRL training in real time and compare between different executions. This is an example:</p>
-<a class="reference internal image-reference" href="../_images/tensorboard_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/tensorboard_example.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/tensorboard_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/tensorboard_example.png" style="width: 800px;" />
+</a>
 <p>There are tables which are in some algorithms and not in others and vice versa. It is important the difference between <code class="docutils literal notranslate"><span class="pre">OnPolicyAlgorithms</span></code> and <code class="docutils literal notranslate"><span class="pre">OffPolicyAlgorithms</span></code>:</p>
 <ul class="simple">
 <li><p><strong>OnPolicyAlgorithms</strong> can be recorded each timestep, we can set a <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> in learn process in order to specify the step frequency log.</p></li>
@@ -452,7 +464,8 @@ specify train <code class="docutils literal notranslate"><span class="pre">times
 <p>As you have been able to see in usage examples, it is using <a class="reference external" href="https://mlflow.org/">Mlflow</a> in order to tracking experiments and recorded them methodically. It is recommended to use it.
 You can start a local server with information stored during the battery of experiments such as initial and ending date of execution, hyperparameters, duration, etc.
 Here is an example:</p>
-<a class="reference internal image-reference" href="../_images/mlflow_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/mlflow_example.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/mlflow_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/mlflow_example.png" style="width: 800px;" />
+</a>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For information about how use <em>Tensorboard</em> and <em>Mlflow</em> with a Cloud Computing paradigm, see <a class="reference internal" href="gcloudAPI.html#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a> and <a class="reference internal" href="gcloudAPI.html#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a></p>
@@ -525,21 +538,7 @@ Here is an example:</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>

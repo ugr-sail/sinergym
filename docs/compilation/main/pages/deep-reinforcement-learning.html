@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,21 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deep Reinforcement Learning integration &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=642ef2a8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,6 +47,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -102,6 +102,17 @@
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
         </div>
       </div>
     </nav>
@@ -118,7 +129,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Deep Reinforcement Learning integration</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/deep-reinforcement-learning.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/deep-reinforcement-learning.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -162,12 +173,12 @@
 <p>We distinguish between <em>mandatory</em> and <em>optional</em> configuration parameters:</p>
 <ul class="simple">
 <li><p><strong>Mandatory</strong>: environment, number of training episodes, and algorithm (including non-default hyperparameters if needed).</p></li>
-<li><p><strong>Optional</strong>: environment parameters (override defaults), random seed, pretrained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.</p></li>
+<li><p><strong>Optional</strong>: environment parameters (override defaults), random seed, pre-trained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.</p></li>
 </ul>
 <p>Once executed, the script performs the following steps:</p>
 <ol class="arabic simple">
 <li><p><strong>Generate the experiment name</strong> using the format <code class="docutils literal notranslate"><span class="pre">&lt;experiment_name&gt;_&lt;date&gt;</span></code> if <code class="docutils literal notranslate"><span class="pre">experiment_name</span></code> is specified, or <code class="docutils literal notranslate"><span class="pre">&lt;algorithm_name&gt;_&lt;date&gt;</span></code> otherwise.</p></li>
-<li><p><strong>Load a pretrained model</strong>, if defined in the configuration:</p>
+<li><p><strong>Load a pre-trained model</strong>, if defined in the configuration:</p>
 <ul class="simple">
 <li><p>From a local file path.</p></li>
 <li><p>From a Weights &amp; Biases (WandB) artifact.</p></li>
@@ -202,7 +213,7 @@
 <li><p><strong>Initialize the RL algorithm</strong> using the specified hyperparameters:</p>
 <ul class="simple">
 <li><p>If no model is loaded, training starts from scratch. Using the algorithm hyperparameters defined in the configuration.</p></li>
-<li><p>If a pretrained model is available, it resumes training from the saved state.</p></li>
+<li><p>If a pre-trained model is available, it resumes training from the saved state.</p></li>
 </ul>
 </li>
 <li><p><strong>Set up custom logging</strong>, combining console and WandB logging when <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is enabled.</p></li>
@@ -234,7 +245,7 @@ options—making it straightforward to set up your own experiments. Visit <a cla
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If you are loading a pretrained model that was trained with <strong>observation normalization</strong>,
+<p>If you are loading a pre-trained model that was trained with <strong>observation normalization</strong>,
 it is <strong>critical</strong> to also load the <strong>normalization statistics</strong> (i.e., the running mean and variance)
 used during its original training (see <a class="reference internal" href="wrappers.html#normalizeobservation"><span class="std std-ref">NormalizeObservation</span></a>). Otherwise, the model may perform poorly or behave unpredictably due
 to mismatched input distributions. These statistics are typically saved along with the model and should
@@ -344,21 +355,7 @@ the agent receives inputs with the expected distribution. See <a class="referenc
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
-
-<style>
-    /* Sidebar header (and topbar for mobile) */
-    .wy-side-nav-search,
-    .wy-nav-top {
-        background: #a5beba;
-    }
-
-    /* Sidebar */
-    .wy-nav-side {
-        background: #2b3435;
-    }
-</style>
-
+  </script> 
 
 </body>
 </html>
