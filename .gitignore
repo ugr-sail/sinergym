@@ -56,3 +56,6 @@ artifacts/
 
 #fcntl
 .lock
+
+#ruff
+.ruff_cache/

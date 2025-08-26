@@ -24,9 +24,7 @@ import sinergym
 from sinergym.utils.constants import LOG_COMMON_LEVEL
 from sinergym.utils.logger import TerminalLogger
 
-logger = TerminalLogger().getLogger(
-    name='COMMON',
-    level=LOG_COMMON_LEVEL)
+logger = TerminalLogger().getLogger(name='COMMON', level=LOG_COMMON_LEVEL)
 
 # ---------------------------------------------------------------------------- #
 #                                Dynamic imports                               #
@@ -45,25 +43,26 @@ def import_from_path(dotted_or_file_path: str):
     """
     if ':' not in dotted_or_file_path:
         raise ValueError(
-            f"Invalid format: '{dotted_or_file_path}'. Expected format: 'module:attr' or 'file.py:attr'")
+            f"Invalid format: '{dotted_or_file_path}'. Expected format: 'module:attr' or 'file.py:attr'"
+        )
 
     path_part, attr_name = dotted_or_file_path.split(':', 1)
 
-    if os.path.isfile(path_part):  # Es una ruta de archivo
+    if os.path.isfile(path_part):  # It is a file path
         module_name = os.path.splitext(os.path.basename(path_part))[0]
         spec = importlib.util.spec_from_file_location(module_name, path_part)
         if spec is None or spec.loader is None:
             raise ImportError(f"Cannot load module from file: {path_part}")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-    else:  # Es un módulo en notación de puntos
+    else:  # It is a module in dotted notation
         module = importlib.import_module(path_part)
 
     try:
         return getattr(module, attr_name)
     except AttributeError:
-        raise ImportError(
-            f"Module '{path_part}' does not have attribute '{attr_name}'")
+        raise ImportError(f"Module '{path_part}' does not have attribute '{attr_name}'")
+
 
 # ---------------------------------------------------------------------------- #
 #                            Dictionary deep update                            #
@@ -89,17 +88,16 @@ def deep_update(source: Dict, updates: Dict) -> Dict:
             result[key] = deepcopy(value)
     return result
 
+
 # ---------------------------------------------------------------------------- #
 #                           ENVIRONMENT CONSTRUCTION                           #
 # ---------------------------------------------------------------------------- #
 
 
 def create_environment(
-        env_id: str,
-        env_params: Dict,
-        wrappers: Dict,
-        env_deep_update: bool = True) -> gym.Env:
-    """ Create a EplusEnv environment with the given parameters and wrappers.
+    env_id: str, env_params: Dict, wrappers: Dict, env_deep_update: bool = True
+) -> gym.Env:
+    """Create a EplusEnv environment with the given parameters and wrappers.
     Args:
         env_id (str): Environment ID.
         env_params (Dict): Environment parameters to overwrite the environment ID defaults.
@@ -130,6 +128,7 @@ def create_environment(
 
     return env
 
+
 # ---------------------------------------------------------------------------- #
 #                                   WRAPPERS                                   #
 # ---------------------------------------------------------------------------- #
@@ -149,8 +148,9 @@ def is_wrapped(env: gym.Env, wrapper_class: Type[gym.Wrapper]) -> bool:
     return unwrap_wrapper(env, wrapper_class) is not None
 
 
-def unwrap_wrapper(env: gym.Env,
-                   wrapper_class: Type[gym.Wrapper]) -> Optional[gym.Wrapper]:
+def unwrap_wrapper(
+    env: gym.Env, wrapper_class: Type[gym.Wrapper]
+) -> Optional[gym.Wrapper]:
     """
     Retrieve a wrapper object by recursively searching.
 
@@ -170,7 +170,8 @@ def unwrap_wrapper(env: gym.Env,
 
 
 def get_wrappers_info(
-        env: gym.Env, path_to_save: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
+    env: gym.Env, path_to_save: Optional[str] = None
+) -> Dict[str, Dict[str, Any]]:
     """Get ordered information about the wrappers applied to the environment.
 
     Args:
@@ -193,8 +194,8 @@ def get_wrappers_info(
         wrapper_name = f'{wrapper_cls.__module__}:{wrapper_cls.__name__}'
         if env.has_wrapper_attr('__metadata__'):
             wrappers_info.append(
-                (wrapper_name, env.get_wrapper_attr(
-                    name='__metadata__')))  # type: ignore
+                (wrapper_name, env.get_wrapper_attr(name='__metadata__'))
+            )  # type: ignore
         env = env.env  # type: ignore
 
     # Reverse to get application order: outermost to innermost
@@ -206,20 +207,14 @@ def get_wrappers_info(
     # Save to YAML
     if path_to_save:
         with open(path_to_save, 'w') as file:
-            yaml.dump(
-                wrappers_dict,
-                file,
-                sort_keys=False,
-                default_flow_style=False)
+            yaml.dump(wrappers_dict, file, sort_keys=False, default_flow_style=False)
 
     return wrappers_dict
 
 
-def apply_wrappers_info(env: gym.Env,
-                        wrappers_info: Union[Dict[str,
-                                                  Dict[str,
-                                                       Any]],
-                                             str]) -> gym.Env:
+def apply_wrappers_info(
+    env: gym.Env, wrappers_info: Union[Dict[str, Dict[str, Any]], str]
+) -> gym.Env:
     """Apply wrapper information to the environment.
 
     Args:
@@ -243,18 +238,15 @@ def apply_wrappers_info(env: gym.Env,
 
     return env
 
+
 # ---------------------------------------------------------------------------- #
 #                               BUILDING MODELING                              #
 # ---------------------------------------------------------------------------- #
 
 
 def get_delta_seconds(
-        st_year: int,
-        st_mon: int,
-        st_day: int,
-        end_year: int,
-        end_mon: int,
-        end_day: int) -> float:
+    st_year: int, st_mon: int, st_day: int, end_year: int, end_mon: int, end_day: int
+) -> float:
     """Returns the delta seconds between st year:st mon:st day:0:0:0 and
     end year:end mon:end day:24:0:0.
 
@@ -285,19 +277,21 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
         Dict[str,Dict[str,str]]: Python dictionary with epJSON format of eppy element.
     """
     fields = {
-        fieldname.lower().replace('drybulb', 'dry_bulb'):
-        'WetBulb' if (value := element[fieldname]  # type: ignore
-                      ) == 'Wetbulb' else value
+        fieldname.lower().replace('drybulb', 'dry_bulb'): (
+            'WetBulb'
+            if (value := element[fieldname]) == 'Wetbulb'  # type: ignore
+            else value
+        )
         for fieldname in element.fieldnames  # type: ignore
-        if fieldname not in {'Name', 'key'
-                             } and element[fieldname] != ''  # type: ignore
+        if fieldname not in {'Name', 'key'} and element[fieldname] != ''  # type: ignore
     }
 
     return {getattr(element, 'Name', '').lower(): fields}
 
 
 def export_schedulers_to_excel(
-        schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
+    schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str
+) -> None:  # pragma: no cover
     """Exports scheduler information from a dictionary to an Excel file.
 
     Args:
@@ -311,10 +305,18 @@ def export_schedulers_to_excel(
 
     # Creating cell format configuration
     keys_format = workbook.add_format(
-        {'bold': True, 'font_size': 20, 'align': 'center', 'bg_color': 'gray', 'border': True})
+        {
+            'bold': True,
+            'font_size': 20,
+            'align': 'center',
+            'bg_color': 'gray',
+            'border': True,
+        }
+    )
     cells_format = workbook.add_format({'align': 'center'})
     actuator_format = workbook.add_format(
-        {'bold': True, 'align': 'center', 'bg_color': 'gray'})
+        {'bold': True, 'align': 'center', 'bg_color': 'gray'}
+    )
 
     # Headers
     worksheet.write(0, 0, 'Name', keys_format)
@@ -325,32 +327,29 @@ def export_schedulers_to_excel(
 
     for key, info in schedulers.items():
         worksheet.write(current_row, 0, key, actuator_format)
-        worksheet.write(
-            current_row, 1, info.get(
-                'Type', 'Unknown'), cells_format)
+        worksheet.write(current_row, 1, info.get('Type', 'Unknown'), cells_format)
 
-        col_offset = 2  # Offset inicial después de 'Type'
+        col_offset = 2  # Offset after 'Type'
         for object_name, values in info.items():
             if isinstance(values, dict):
-                worksheet.write(
-                    current_row,
-                    col_offset,
-                    f'Name: {object_name}')
+                worksheet.write(current_row, col_offset, f'Name: {object_name}')
                 worksheet.write(
                     current_row,
                     col_offset + 1,
                     f'Field: {
                         values.get(
                             "field_name",
-                            "N/A")}')
+                            "N/A")}',
+                )
                 worksheet.write(
                     current_row,
                     col_offset + 2,
                     f'Table type: {
                         values.get(
                             "table_name",
-                            "N/A")}')
-                col_offset += 3  # Avanzar columnas según los datos escritos
+                            "N/A")}',
+                )
+                col_offset += 3  # Advance columns according to the written data
 
         max_col = max(max_col, col_offset)
         current_row += 1
@@ -364,14 +363,15 @@ def export_schedulers_to_excel(
 
     workbook.close()
 
+
 # ---------------------------------------------------------------------------- #
-#                          ORNSTEIN UHLENBECK PROCCESS                         #
+#                          ORNSTEIN UHLENBECK PROCESS                          #
 # ---------------------------------------------------------------------------- #
 
 
 def ornstein_uhlenbeck_process(
-        data: pd.DataFrame,
-        variability_config: Dict[str, Tuple[float, float, float]]) -> pd.DataFrame:
+    data: pd.DataFrame, variability_config: Dict[str, Tuple[float, float, float]]
+) -> pd.DataFrame:
     """Add noise to the data using the Ornstein-Uhlenbeck process.
 
     Args:
@@ -386,7 +386,7 @@ def ornstein_uhlenbeck_process(
     data_mod = deepcopy(data)
 
     # Total time.
-    T = 1.
+    T = 1.0
     # get first column of df
     n = data_mod.shape[0]
     # dt = T / n  # tau defined as percentage of epw
@@ -398,27 +398,30 @@ def ornstein_uhlenbeck_process(
     # Tau = time constant.
 
     for variable, (sigma, mu, tau) in variability_config.items():
-        sigma_bis = sigma * np.sqrt(2. / tau)
+        sigma_bis = sigma * np.sqrt(2.0 / tau)
         sqrtdt = np.sqrt(dt)
 
         # Create noise
         noise = np.zeros(n)
         for i in range(n - 1):
-            noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                sigma_bis * sqrtdt * np.random.randn()
+            noise[i + 1] = (
+                noise[i]
+                + dt * (-(noise[i] - mu) / tau)
+                + sigma_bis * sqrtdt * np.random.randn()
+            )
 
         # Add noise
         data_mod[variable] += noise
 
     return data_mod
 
+
 # ---------------------------------------------------------------------------- #
 #                    READING YAML ENVIRONMENT CONFIGURATION                    #
 # ---------------------------------------------------------------------------- #
 
 
-def parse_variables_settings(
-        variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
+def parse_variables_settings(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
     """Convert Sinergym YAML variable settings to EnergyPlus API format.
 
     Args:
@@ -445,13 +448,13 @@ def parse_variables_settings(
         elif isinstance(var_names, list) and isinstance(keys, list):
             if len(var_names) != len(keys):
                 raise ValueError(
-                    f"'variable_names' and 'keys' must have the same length in {variable}")
+                    f"'variable_names' and 'keys' must have the same length in {variable}"
+                )
             for var_name, key in zip(var_names, keys):
                 output[var_name] = (variable, key)
 
         else:
-            logger.error(
-                f'Invalid variable_names or keys format in {variable}')
+            logger.error(f'Invalid variable_names or keys format in {variable}')
             raise RuntimeError
 
     return output
@@ -470,7 +473,8 @@ def parse_meters_settings(meters: Dict[str, str]) -> Dict[str, str]:
 
 
 def parse_actuators_settings(
-        actuators: Dict[str, Dict[str, str]]) -> Dict[str, Tuple[str, str, str]]:
+    actuators: Dict[str, Dict[str, str]],
+) -> Dict[str, Tuple[str, str, str]]:
     """Convert actuators dictionary from Sinergym YAML settings to EnergyPlus format.
 
     Args:
@@ -485,8 +489,7 @@ def parse_actuators_settings(
     }
 
 
-def convert_conf_to_env_parameters(
-        conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def convert_conf_to_env_parameters(conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     """Convert YAML configuration to a dictionary of possible environments.
 
     Args:
@@ -512,9 +515,11 @@ def convert_conf_to_env_parameters(
     # Check weathers configuration
     if len(weather_keys) != len(weather_files):
         logger.error(
-            f'Weather files and id keys must have the same length: ' f'{
+            f'Weather files and id keys must have the same length: '
+            f'{
                 len(weather_files)} weather files != {
-                len(weather_keys)} keys')
+                len(weather_keys)} keys'
+        )
         raise ValueError
 
     # Base ID and kwargs
@@ -531,34 +536,41 @@ def convert_conf_to_env_parameters(
         'reward': import_from_path(conf['reward']),
         'reward_kwargs': conf['reward_kwargs'],
         'max_ep_store': conf['max_ep_store'],
-        'building_config': conf.get('building_config')
+        'building_config': conf.get('building_config'),
     }
 
     weather_variability = conf.get('weather_variability')
     # Convert lists to tuples for consistency
     if weather_variability:
         weather_variability = {
-            var: tuple(tuple(param) if isinstance(param, list) else param
-                       for param in params)
+            var: tuple(
+                tuple(param) if isinstance(param, list) else param for param in params
+            )
             for var, params in weather_variability.items()
         }
 
     # Build environment configurations
     for weather_id, weather_file, weather_conf in zip(
-            weather_keys, weather_files, weather_configs):
-        configurations[f'{base_id}-{weather_id}-continuous-v1'] = {**base_kwargs,
-                                                                   'weather_files': weather_file,
-                                                                   'weather_conf': weather_conf,
-                                                                   'env_name': f'{base_id}-{weather_id}-continuous-v1'}
+        weather_keys, weather_files, weather_configs
+    ):
+        configurations[f'{base_id}-{weather_id}-continuous-v1'] = {
+            **base_kwargs,
+            'weather_files': weather_file,
+            'weather_conf': weather_conf,
+            'env_name': f'{base_id}-{weather_id}-continuous-v1',
+        }
         # Build stochastic versions if weather variability is present
         if weather_variability:
-            configurations[f'{base_id}-{weather_id}-continuous-stochastic-v1'] = {**base_kwargs,
-                                                                                  'weather_files': weather_file,
-                                                                                  'weather_conf': weather_conf,
-                                                                                  'weather_variability': weather_variability,
-                                                                                  'env_name': f'{base_id}-{weather_id}-continuous-stochastic-v1'}
+            configurations[f'{base_id}-{weather_id}-continuous-stochastic-v1'] = {
+                **base_kwargs,
+                'weather_files': weather_file,
+                'weather_conf': weather_conf,
+                'weather_variability': weather_variability,
+                'env_name': f'{base_id}-{weather_id}-continuous-stochastic-v1',
+            }
 
     return configurations
+
 
 # ---------------------------------------------------------------------------- #
 #                          Process YAML configurations                         #
@@ -568,8 +580,7 @@ def convert_conf_to_env_parameters(
 def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cover
     # Transform required str's into Callables or lists in tuples
     if env_params.get('action_space'):
-        env_params['action_space'] = eval(
-            env_params['action_space'])
+        env_params['action_space'] = eval(env_params['action_space'])
 
     if env_params.get('variables'):
         for variable_name, components in env_params['variables'].items():
@@ -597,14 +608,15 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
                 'range_comfort_winter',
                 'range_comfort_summer',
                 'summer_start',
-                    'summer_final']:
-                env_params['reward_kwargs'][reward_param_name] = tuple(
-                    reward_value)
+                'summer_final',
+            ]:
+                env_params['reward_kwargs'][reward_param_name] = tuple(reward_value)
 
     if env_params.get('building_config'):
         if env_params['building_config'].get('runperiod'):
             env_params['building_config']['runperiod'] = tuple(
-                env_params['building_config']['runperiod'])
+                env_params['building_config']['runperiod']
+            )
     # Add more keys if needed...
 
     return env_params
@@ -613,8 +625,7 @@ def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cove
 def process_algorithm_parameters(alg_params: dict):  # pragma: no cover
 
     # Transform required str's into Callables or list in tuples
-    if alg_params.get('train_freq') and isinstance(
-            alg_params.get('train_freq'), list):
+    if alg_params.get('train_freq') and isinstance(alg_params.get('train_freq'), list):
         alg_params['train_freq'] = tuple(alg_params['train_freq'])
 
     if alg_params.get('action_noise'):
@@ -623,7 +634,8 @@ def process_algorithm_parameters(alg_params: dict):  # pragma: no cover
 
     return alg_params
 
- # --------------------- Functions that are no longer used -------------------- #
+
+# --------------------- Functions that are no longer used -------------------- #
 
 # def ranges_getter(output_path: str,
 #                   last_result: Optional[Dict[str, List[float]]] = None

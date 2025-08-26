@@ -5177,7 +5177,7 @@
         "CLGSETP_SCH_Actuator": {
             "actuated_component_control_type": "Schedule Value",
             "actuated_component_type": "Schedule:Compact",
-            "actuated_component_unique_name": "CLGSETP_SCH_Yes_Optimum"
+            "actuated_component_unique_name": "CLGSETP_SCH_Yes_Optimum_original"
         },
         "CLGSETP_SCH_w_SB_Actuator": {
             "actuated_component_control_type": "Schedule Value",
@@ -5202,7 +5202,7 @@
         "HTGSETP_SCH_Actuator": {
             "actuated_component_control_type": "Schedule Value",
             "actuated_component_type": "Schedule:Compact",
-            "actuated_component_unique_name": "HTGSETP_SCH_Yes_Optimum"
+            "actuated_component_unique_name": "HTGSETP_SCH_Yes_Optimum_original"
         },
         "HTGSETP_SCH_w_SB_Actuator": {
             "actuated_component_control_type": "Schedule Value",
@@ -15061,8 +15061,8 @@
             "heating_setpoint_temperature_schedule_name": "HTGSETP_SCH_YES_OPTIMUM"
         },
         "Perimeter_mid_ZN_2 DualSPSched": {
-            "cooling_setpoint_temperature_schedule_name": "CLGSETP_SCH_YES_OPTIMUM_w_SB",
-            "heating_setpoint_temperature_schedule_name": "HTGSETP_SCH_YES_OPTIMUM_w_SB"
+            "cooling_setpoint_temperature_schedule_name": "CLGSETP_SCH_YES_OPTIMUM",
+            "heating_setpoint_temperature_schedule_name": "HTGSETP_SCH_YES_OPTIMUM"
         },
         "Perimeter_mid_ZN_3 DualSPSched": {
             "cooling_setpoint_temperature_schedule_name": "CLGSETP_SCH_YES_OPTIMUM",

@@ -1,4 +1,5 @@
 """Class and utilities for backend modeling in Python with Sinergym (building_config, weather_variability, building model modification and files management)"""
+
 import fcntl
 import json
 import os
@@ -29,42 +30,41 @@ from sinergym.utils.logger import TerminalLogger
 class ModelJSON(object):
     """Class to manage backend models (building, weathers...) and folders in Sinergym (JSON version).
 
-        :param _json_path: JSON path origin to create the building model.
-        :param weather_files: Available weather files for each episode.
-        :param _weather_path: EPW path origin for apply weather to simulation in current episode.
-        :param _ddy_path: DDY path origin for get DesignDays and weather Location.
-        :param _idd: IDD eppy object to set up Epm.
-        :param _variables: Output:Variable(s) information about building model.
-        :param _meters: Output:Meter(s) information about building model.
-        :param workspace_path: Path for Sinergym workspace output.
-        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
-        :param max_ep_store: Number of episodes directories will be stored in workspace_path.
-        :param building_config: Dict with extra configuration which is required to modify building model (may be None).
-        :param building: Building model (Dictionary extracted from JSON).
-        :param ddy_model: eppy object with DDY model.
-        :param weather_data: epw module Weather class instance with EPW data.
-        :param zone_names: List of the zone names available in the building.
-        :param schedulers: Information in Dict format about all building schedulers.
-        :param runperiod: Information in Dict format about runperiod that determine an episode.
-        :param episode_length: Time in seconds that an episode has.
-        :param step_size: Time in seconds that an step has.
-        :param timestep_per_episode: Timestep in a runperiod (simulation episode).
+    :param _json_path: JSON path origin to create the building model.
+    :param weather_files: Available weather files for each episode.
+    :param _weather_path: EPW path origin for apply weather to simulation in current episode.
+    :param _ddy_path: DDY path origin for get DesignDays and weather Location.
+    :param _idd: IDD eppy object to set up Epm.
+    :param _variables: Output:Variable(s) information about building model.
+    :param _meters: Output:Meter(s) information about building model.
+    :param workspace_path: Path for Sinergym workspace output.
+    :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
+    :param max_ep_store: Number of episodes directories will be stored in workspace_path.
+    :param building_config: Dict with extra configuration which is required to modify building model (may be None).
+    :param building: Building model (Dictionary extracted from JSON).
+    :param ddy_model: eppy object with DDY model.
+    :param weather_data: epw module Weather class instance with EPW data.
+    :param zone_names: List of the zone names available in the building.
+    :param schedulers: Information in Dict format about all building schedulers.
+    :param runperiod: Information in Dict format about runperiod that determine an episode.
+    :param episode_length: Time in seconds that an episode has.
+    :param step_size: Time in seconds that an step has.
+    :param timestep_per_episode: Timestep in a runperiod (simulation episode).
     """
 
-    logger = TerminalLogger().getLogger(
-        name='MODEL',
-        level=LOG_MODEL_LEVEL)
+    logger = TerminalLogger().getLogger(name='MODEL', level=LOG_MODEL_LEVEL)
 
     def __init__(
-            self,
-            env_name: str,
-            json_file: str,
-            weather_files: Union[str, List[str]],
-            variables: Dict[str, Tuple[str, str]],
-            meters: Dict[str, str],
-            max_ep_store: int,
-            building_config: Optional[Dict[str, Any]] = None,
-            weather_conf: Optional[Dict[str, Any]] = None):
+        self,
+        env_name: str,
+        json_file: str,
+        weather_files: Union[str, List[str]],
+        variables: Dict[str, Tuple[str, str]],
+        meters: Dict[str, str],
+        max_ep_store: int,
+        building_config: Optional[Dict[str, Any]] = None,
+        weather_conf: Optional[Dict[str, Any]] = None,
+    ):
         """Constructor. Variables and meters are required to update building model scheme.
 
         Args:
@@ -83,20 +83,27 @@ class ModelJSON(object):
         # ----------------- Transform filenames in paths if required ----------------- #
 
         # JSON
-        self._json_path = self._json_path = json_file if os.path.isfile(
-            json_file) else os.path.join(self.pkg_data_path, 'buildings', json_file)
+        self._json_path = self._json_path = (
+            json_file
+            if os.path.isfile(json_file)
+            else os.path.join(self.pkg_data_path, 'buildings', json_file)
+        )
 
         # EPW
-        self.weather_files = weather_files if isinstance(
-            weather_files, list) else [weather_files]
+        self.weather_files = (
+            weather_files if isinstance(weather_files, list) else [weather_files]
+        )
 
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
         # Select one weather randomly (if there are more than one)
         choice = np.random.choice(self.weather_files)
-        self._weather_path = choice if os.path.isfile(
-            choice) else os.path.join(self.pkg_data_path, 'weather', choice)
+        self._weather_path = (
+            choice
+            if os.path.isfile(choice)
+            else os.path.join(self.pkg_data_path, 'weather', choice)
+        )
 
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
@@ -116,7 +123,7 @@ class ModelJSON(object):
         self.weather_data = Weather()
         self.weather_data.read(self._weather_path)
         # Weather variability if exists
-        self.weather_variability_config = None
+        self.weather_variability_config: Dict[str, Tuple[float, float, float]] = None
 
         # ----------------------------- Other attributes ----------------------------- #
 
@@ -153,8 +160,7 @@ class ModelJSON(object):
         self.runperiod = self.get_eplus_runperiod()
         self.episode_length = self.get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-        self.timestep_per_episode = int(
-            self.episode_length / self.step_size)
+        self.timestep_per_episode = int(self.episode_length / self.step_size)
 
         self.logger.info('Runperiod established.')
         self.logger.debug(f'Runperiod: {self.runperiod}')
@@ -167,10 +173,11 @@ class ModelJSON(object):
     # ---------------------------------------------------------------------------- #
 
     def adapt_building_to_epw(
-            self,
-            summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-            winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
-        """Given a summer day name and winter day name from DDY file, this method modify Location and DesingDay's in order to adapt building model to EPW.
+        self,
+        summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+        winterday: str = 'Ann Htg 99.6% Condns DB',
+    ) -> None:
+        """Given a summer day name and winter day name from DDY file, this method modify Location and DesignDay's in order to adapt building model to EPW.
 
         Args:
             summerday (str): Design day for summer day specifically (DDY has several of them).
@@ -182,24 +189,24 @@ class ModelJSON(object):
 
         # LOCATION
         self.building['Site:Location'] = eppy_element_to_dict(
-            next(location for location in self.ddy_model.idfobjects['Site:Location']))
+            next(location for location in self.ddy_model.idfobjects['Site:Location'])
+        )
 
         # DESIGNDAYS
         ddy_designdays = self.ddy_model.idfobjects['SizingPeriod:DesignDay']
 
         try:
-            summer_designday = next(
-                dd for dd in ddy_designdays if summerday in dd.Name)
-            winter_designday = next(
-                dd for dd in ddy_designdays if winterday in dd.Name)
+            summer_designday = next(dd for dd in ddy_designdays if summerday in dd.Name)
+            winter_designday = next(dd for dd in ddy_designdays if winterday in dd.Name)
         except StopIteration:
             self.logger.error(
-                f"Design day not found: Summer='{summerday}', Winter='{winterday}'")
+                f"Design day not found: Summer='{summerday}', Winter='{winterday}'"
+            )
             raise ValueError
 
         self.building['SizingPeriod:DesignDay'] = {
             **eppy_element_to_dict(winter_designday),
-            **eppy_element_to_dict(summer_designday)
+            **eppy_element_to_dict(summer_designday),
         }
 
         self.logger.info('Adapting weather to building model.')
@@ -210,60 +217,90 @@ class ModelJSON(object):
             self.apply_weather_conf()
 
     def apply_weather_conf(self) -> None:
-        """Apply weather configuration to building model.
-        """
+        """Apply weather configuration to building model."""
 
         if self.weather_conf:
 
             if self.weather_conf.get('cap_nom_heating'):
-                list(self.building['HeatPump:PlantLoop:EIR:Heating'].values())[
-                    0]['reference_capacity'] = self.weather_conf['cap_nom_heating']
+                list(self.building['HeatPump:PlantLoop:EIR:Heating'].values())[0][
+                    'reference_capacity'
+                ] = self.weather_conf['cap_nom_heating']
 
             if self.weather_conf.get('cap_nom_cooling'):
-                list(self.building['HeatPump:PlantLoop:EIR:Cooling'].values())[
-                    0]['reference_capacity'] = self.weather_conf['cap_nom_cooling']
+                list(self.building['HeatPump:PlantLoop:EIR:Cooling'].values())[0][
+                    'reference_capacity'
+                ] = self.weather_conf['cap_nom_cooling']
 
             if self.weather_conf.get('window_type'):
                 filtered_surfaces = {
-                    key: value for key,
-                    value in self.building['FenestrationSurface:Detailed'].items() if key.endswith('_Win')}
+                    key: value
+                    for key, value in self.building[
+                        'FenestrationSurface:Detailed'
+                    ].items()
+                    if key.endswith('_Win')
+                }
                 for definition in list(filtered_surfaces.values()):
                     definition['construction_name'] = self.weather_conf['window_type']
 
             if self.weather_conf.get('thickness_roof'):
                 filtered_surfaces = {
-                    key: value for key,
-                    value in self.building['Material'].items() if key.endswith('Roof_Insulation')}
+                    key: value
+                    for key, value in self.building['Material'].items()
+                    if key.endswith('Roof_Insulation')
+                }
                 for definition in list(filtered_surfaces.values()):
                     definition['thickness'] = self.weather_conf['thickness_roof']
 
             if self.weather_conf.get('thickness_wall'):
                 filtered_surfaces = {
-                    key: value for key,
-                    value in self.building['Material'].items() if key.endswith('Wall_Insulation')}
+                    key: value
+                    for key, value in self.building['Material'].items()
+                    if key.endswith('Wall_Insulation')
+                }
                 for definition in list(filtered_surfaces.values()):
                     definition['thickness'] = self.weather_conf['thickness_wall']
 
             if self.weather_conf.get('maximum_hot_water_flow'):
                 for i, definition in enumerate(
-                        list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
-                    definition['maximum_hot_water_flow'] = self.weather_conf['maximum_hot_water_flow'][i]
+                    list(
+                        self.building[
+                            'ZoneHVAC:LowTemperatureRadiant:VariableFlow'
+                        ].values()
+                    )
+                ):
+                    definition['maximum_hot_water_flow'] = self.weather_conf[
+                        'maximum_hot_water_flow'
+                    ][i]
 
             if self.weather_conf.get('maximum_cold_water_flow'):
                 for i, definition in enumerate(
-                        list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
-                    definition['maximum_cold_water_flow'] = self.weather_conf['maximum_cold_water_flow'][i]
+                    list(
+                        self.building[
+                            'ZoneHVAC:LowTemperatureRadiant:VariableFlow'
+                        ].values()
+                    )
+                ):
+                    definition['maximum_cold_water_flow'] = self.weather_conf[
+                        'maximum_cold_water_flow'
+                    ][i]
 
-            design_keys = ['setpoint_control_type',
-                           'heating_control_throttling_range',
-                           'cooling_control_throttling_range']
+            design_keys = [
+                'setpoint_control_type',
+                'heating_control_throttling_range',
+                'cooling_control_throttling_range',
+            ]
             applicable_design_keys = {
-                key: value for key,
-                value in self.weather_conf.items() if key in design_keys}
+                key: value
+                for key, value in self.weather_conf.items()
+                if key in design_keys
+            }
 
             if applicable_design_keys:
                 designs = list(
-                    self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'].values())
+                    self.building[
+                        'ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'
+                    ].values()
+                )
                 for definition in designs:
                     for key in applicable_design_keys:
                         definition[key] = applicable_design_keys[key]
@@ -284,18 +321,19 @@ class ModelJSON(object):
             f'Output:Variable {i}': {
                 'key_value': variable_key,
                 'variable_name': variable_name,
-                'reporting_frequency': 'Timestep'} for i,
-            (variable_name,
-             variable_key) in enumerate(
-                self._variables.values(),
-                start=1)}
+                'reporting_frequency': 'Timestep',
+            }
+            for i, (variable_name, variable_key) in enumerate(
+                self._variables.values(), start=1
+            )
+        }
 
         self.logger.info(
-            'Building model Output:Variable updated with defined variable names.')
+            'Building model Output:Variable updated with defined variable names.'
+        )
 
     def adapt_building_to_meters(self) -> None:
-        """Reads all meters and updates the building model with Output:Meter fields.
-        """
+        """Reads all meters and updates the building model with Output:Meter fields."""
 
         # Remove existing Output:Meters
         self.building['Output:Meter'] = {}
@@ -304,16 +342,15 @@ class ModelJSON(object):
         self.building['Output:Meter'] = {
             f'Output:Meter {i}': {
                 'key_name': meter_name,
-                'reporting_frequency': 'Timestep'} for i,
-            meter_name in enumerate(self._meters.values(), start=1)
+                'reporting_frequency': 'Timestep',
+            }
+            for i, meter_name in enumerate(self._meters.values(), start=1)
         }
 
-        self.logger.info(
-            'Updated building model Output:Meter with meter names.')
+        self.logger.info('Updated building model Output:Meter with meter names.')
 
     def adapt_building_to_config(self) -> None:
-        """Set extra configuration in building model
-        """
+        """Set extra configuration in building model"""
 
         if not self.building_config:
             return
@@ -322,50 +359,55 @@ class ModelJSON(object):
         timesteps = self.building_config.get('timesteps_per_hour')
         if timesteps:
             next(iter(self.building['Timestep'].values()), {})[
-                'number_of_timesteps_per_hour'] = self.building_config['timesteps_per_hour']
+                'number_of_timesteps_per_hour'
+            ] = self.building_config['timesteps_per_hour']
             next(iter(self.building['Sizing:Parameters'].values()), {})[
-                'timesteps_in_averaging_window'] = self.building_config['timesteps_per_hour']
+                'timesteps_in_averaging_window'
+            ] = self.building_config['timesteps_per_hour']
 
             self.logger.debug(
                 f'Building configuration: timesteps_per_hour set up to {
-                    self.building_config['timesteps_per_hour']}')
+                    self.building_config['timesteps_per_hour']}'
+            )
 
         # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
         # end_day, end_month, end_year)
         runperiod = self.building_config.get('runperiod')
         if runperiod:
-            next(iter(self.building['RunPeriod'].values()), {}).update({
-                'begin_day_of_month': int(runperiod[0]),
-                'begin_month': int(runperiod[1]),
-                'begin_year': int(runperiod[2]),
-                'end_day_of_month': int(runperiod[3]),
-                'end_month': int(runperiod[4]),
-                'end_year': int(runperiod[5])
-            })
+            next(iter(self.building['RunPeriod'].values()), {}).update(
+                {
+                    'begin_day_of_month': int(runperiod[0]),
+                    'begin_month': int(runperiod[1]),
+                    'begin_year': int(runperiod[2]),
+                    'end_day_of_month': int(runperiod[3]),
+                    'end_month': int(runperiod[4]),
+                    'end_year': int(runperiod[5]),
+                }
+            )
 
             # Update runperiod and episode related attributes
             self.runperiod = self.get_eplus_runperiod()
             self.episode_length = self.get_runperiod_len()
             self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-            self.timestep_per_episode = int(
-                self.episode_length / self.step_size)
+            self.timestep_per_episode = int(self.episode_length / self.step_size)
 
             # Log updated values in terminal
             self.logger.info(
                 f'Building configuration: runperiod updated to {
-                    self.runperiod}')
-            self.logger.info(
-                f'Updated episode length (seconds): {self.episode_length}')
-            self.logger.info(
-                f'Updated timestep size (seconds): {self.step_size}')
+                    self.runperiod}'
+            )
+            self.logger.info(f'Updated episode length (seconds): {self.episode_length}')
+            self.logger.info(f'Updated timestep size (seconds): {self.step_size}')
             self.logger.info(
                 f'Updated timesteps per episode: {
-                    self.timestep_per_episode}')
+                    self.timestep_per_episode}'
+            )
 
             # North axis
             if self.building_config.get('north_axis'):
-                list(self.building['Building'].values())[0][
-                    'north_axis'] = self.building_config['north_axis']
+                list(self.building['Building'].values())[0]['north_axis'] = (
+                    self.building_config['north_axis']
+                )
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
@@ -377,11 +419,13 @@ class ModelJSON(object):
         # If no path specified, then use json_path to save it.
         if not self.episode_path:
             self.logger.error(
-                'Episode path should be set before saving building model.')
+                'Episode path should be set before saving building model.'
+            )
             raise RuntimeError
 
-        episode_json_path = os.path.join(self.episode_path,
-                                         os.path.basename(self._json_path))
+        episode_json_path = os.path.join(
+            self.episode_path, os.path.basename(self._json_path)
+        )
 
         try:
             with open(episode_json_path, 'w') as outfile:
@@ -389,8 +433,7 @@ class ModelJSON(object):
             self.logger.debug(f'Building model saved at: {episode_json_path}')
 
         except OSError:
-            self.logger.error(
-                f'Failed to save building model: {episode_json_path}')
+            self.logger.error(f'Failed to save building model: {episode_json_path}')
             raise OSError
 
         return episode_json_path
@@ -400,8 +443,7 @@ class ModelJSON(object):
     # ---------------------------------------------------------------------------- #
 
     def update_weather_path(self) -> None:
-        """When this method is called, weather file is changed randomly and building model is adapted to new one.
-        """
+        """When this method is called, weather file is changed randomly and building model is adapted to new one."""
 
         if not self.weather_files:
             self.logger.error('No weather files available to choose from.')
@@ -409,13 +451,12 @@ class ModelJSON(object):
 
         # Select a new weather file randomly
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', np.random.choice(
-                self.weather_files))
+            self.pkg_data_path, 'weather', np.random.choice(self.weather_files)
+        )
 
         # Verify file exists
         if not os.path.isfile(self._weather_path):
-            self.logger.error(
-                f'Weather file {self._weather_path} does not exist.')
+            self.logger.error(f'Weather file {self._weather_path} does not exist.')
             raise FileNotFoundError
 
         # Update ddy path for the same than weather
@@ -425,16 +466,21 @@ class ModelJSON(object):
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data.read(self._weather_path)
 
-        self.logger.info(
-            f'Weather file {self._weather_path.split('/')[-1]} used.')
+        self.logger.info(f'Weather file {self._weather_path.split('/')[-1]} used.')
 
     def apply_weather_variability(
-            self,
-            weather_variability: Optional[Dict[str, Tuple[
-            Union[float, Tuple[float, float]],
-            Union[float, Tuple[float, float]],
-            Union[float, Tuple[float, float]]
-            ]]] = None) -> str:
+        self,
+        weather_variability: Optional[
+            Dict[
+                str,
+                Tuple[
+                    Union[float, Tuple[float, float]],
+                    Union[float, Tuple[float, float]],
+                    Union[float, Tuple[float, float]],
+                ],
+            ]
+        ] = None,
+    ) -> str:
         """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
 
         Args:
@@ -444,8 +490,7 @@ class ModelJSON(object):
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
 
-        base_filename, ext = os.path.splitext(
-            os.path.basename(self._weather_path))
+        base_filename, ext = os.path.splitext(os.path.basename(self._weather_path))
         assert self.weather_data.dataframe is not None
         weather_data_mod = deepcopy(self.weather_data)
 
@@ -455,7 +500,11 @@ class ModelJSON(object):
             # Generate variability configuration
             self.weather_variability_config = {
                 weather_var: tuple(
-                    float(np.random.uniform(param[0], param[1])) if isinstance(param, tuple) else float(param)
+                    (
+                        float(np.random.uniform(param[0], param[1]))
+                        if isinstance(param, tuple)
+                        else float(param)
+                    )
                     for param in params
                 )
                 for weather_var, params in weather_variability.items()
@@ -464,32 +513,31 @@ class ModelJSON(object):
             # Apply Ornstein-Uhlenbeck process to weather data
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
-                variability_config=self.weather_variability_config)  # type: ignore
+                variability_config=self.weather_variability_config,
+            )  # type: ignore
 
             self.logger.info(
                 f'Weather noise applied to columns: {
-                    list(self.weather_variability_config.keys())}')
+                    list(self.weather_variability_config.keys())}'
+            )
 
             # Modify filename to reflect noise addition
             base_filename += '_OU_Noise'
 
         # Define output path
-        episode_weather_path = os.path.join(
-            self.episode_path, f'{base_filename}{ext}')
+        episode_weather_path = os.path.join(self.episode_path, f'{base_filename}{ext}')
         # Write new weather file
         weather_data_mod.write(episode_weather_path)
 
-        self.logger.debug(
-            f'Saved modified weather file: {episode_weather_path}')
+        self.logger.debug(f'Saved modified weather file: {episode_weather_path}')
 
         return episode_weather_path
 
-# ---------------------------------------------------------------------------- #
-#                          Schedulers info extraction                          #
-# ---------------------------------------------------------------------------- #
+    # ---------------------------------------------------------------------------- #
+    #                          Schedulers info extraction                          #
+    # ---------------------------------------------------------------------------- #
 
-    def get_schedulers(self) -> Dict[str,
-                                     Dict[str, Union[str, Dict[str, str]]]]:
+    def get_schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
         """Extract all schedulers available in the building model to be controlled.
 
         Returns:
@@ -524,16 +572,15 @@ class ModelJSON(object):
                                 # table where belong to
                                 result[sch_name][element_name] = {
                                     'field_name': field_key,
-                                    'table_name': table
+                                    'table_name': table,
                                 }
         return result
 
-# ---------------------------------------------------------------------------- #
-#                           Runperiod info extraction                          #
-# ---------------------------------------------------------------------------- #
+    # ---------------------------------------------------------------------------- #
+    #                           Runperiod info extraction                          #
+    # ---------------------------------------------------------------------------- #
 
-    def get_eplus_runperiod(
-            self) -> Dict[str, int]:
+    def get_eplus_runperiod(self) -> Dict[str, int]:
         """This method reads building runperiod information and returns it.
 
         Returns:
@@ -550,11 +597,11 @@ class ModelJSON(object):
         end_day = runperiod.get('end_day_of_month', 0)
         end_year = runperiod.get('end_year', YEAR)
 
-        start_weekday = WEEKDAY_ENCODING[runperiod['day_of_week_for_start_day'].lower(
-        )]
+        start_weekday = WEEKDAY_ENCODING[runperiod['day_of_week_for_start_day'].lower()]
 
-        n_steps_per_hour = list(self.building['Timestep'].values())[
-            0]['number_of_timesteps_per_hour']
+        n_steps_per_hour = list(self.building['Timestep'].values())[0][
+            'number_of_timesteps_per_hour'
+        ]
 
         return {
             'start_day': start_day,
@@ -564,7 +611,8 @@ class ModelJSON(object):
             'end_month': end_month,
             'end_year': end_year,
             'start_weekday': start_weekday,
-            'n_steps_per_hour': n_steps_per_hour}
+            'n_steps_per_hour': n_steps_per_hour,
+        }
 
     def get_runperiod_len(self) -> float:
         """Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.
@@ -580,7 +628,8 @@ class ModelJSON(object):
             self.runperiod['start_day'],
             self.runperiod['end_year'],
             self.runperiod['end_month'],
-            self.runperiod['end_day'])
+            self.runperiod['end_day'],
+        )
 
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #
@@ -604,8 +653,7 @@ class ModelJSON(object):
             try:
                 # Generate workspace_path
                 workspace_path = self._get_working_folder(
-                    directory_path=CWD,
-                    base_name=f'{env_name}-res'
+                    directory_path=CWD, base_name=f'{env_name}-res'
                 )
 
                 # Create directory
@@ -618,15 +666,13 @@ class ModelJSON(object):
         # Set path as an instance attribute
         self.workspace_path = workspace_path
 
-        self.logger.info(
-            f'Working directory created: {workspace_path}')
+        self.logger.info(f'Working directory created: {workspace_path}')
 
         return workspace_path
 
     def _get_working_folder(
-            self,
-            directory_path: str,
-            base_name: str = 'sinergym-run') -> str:
+        self, directory_path: str, base_name: str = 'sinergym-run'
+    ) -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
            Assumes folders in parent_dir have suffix <env_name>-run{run_number}. Finds the highest run number and sets the output folder to that number + 1.
 
@@ -647,14 +693,17 @@ class ModelJSON(object):
         pattern = re.compile(rf'^{re.escape(base_name)}(\d+)$')
 
         # Extract valid numbers from existing folder names
-        existing_numbers = [int(match.group(1)) for folder in os.listdir(directory_path) if (
-            match := pattern.match(folder)) and os.path.isdir(os.path.join(directory_path, folder))]
+        existing_numbers = [
+            int(match.group(1))
+            for folder in os.listdir(directory_path)
+            if (match := pattern.match(folder))
+            and os.path.isdir(os.path.join(directory_path, folder))
+        ]
 
         # Determine the next execution ID
         execution_id = max(existing_numbers, default=0) + 1
 
-        working_dir = os.path.join(
-            directory_path, f'{base_name}{execution_id}')
+        working_dir = os.path.join(directory_path, f'{base_name}{execution_id}')
 
         return working_dir
 
@@ -674,8 +723,8 @@ class ModelJSON(object):
             raise Exception
         else:
             episode_path = self._get_working_folder(
-                directory_path=self.workspace_path,
-                base_name='episode-')
+                directory_path=self.workspace_path, base_name='episode-'
+            )
             # Create directory
             os.makedirs(episode_path)
             # set path like config attribute
@@ -684,10 +733,8 @@ class ModelJSON(object):
             # Remove redundant past working directories
             self._rm_past_history_dir(episode_path, 'episode-')
 
-            self.logger.info(
-                'Episode directory created.')
-            self.logger.debug(
-                f'Episode directory path: {episode_path}')
+            self.logger.info('Episode directory created.')
+            self.logger.debug(f'Episode directory path: {episode_path}')
 
             return episode_path
 
@@ -701,15 +748,13 @@ class ModelJSON(object):
         # Extract directory ID safely using regex
         match = re.search(rf"{re.escape(base_name)}(\d+)$", episode_path)
         if not match:
-            self.logger.error(
-                f"Could not extract episode ID from: {episode_path}")
+            self.logger.error(f"Could not extract episode ID from: {episode_path}")
             raise ValueError
 
         try:
             cur_dir_id = int(match.group(1))
         except ValueError:
-            self.logger.error(
-                f"Invalid episode ID extracted from: {episode_path}")
+            self.logger.error(f"Invalid episode ID extracted from: {episode_path}")
             raise ValueError
 
         # Compute the directory ID to remove
@@ -719,35 +764,33 @@ class ModelJSON(object):
 
         # Construct full path of the directory to remove
         rm_dir_full_name = os.path.join(
-            os.path.dirname(episode_path),
-            f"{base_name}{rm_dir_id}")
+            os.path.dirname(episode_path), f"{base_name}{rm_dir_id}"
+        )
 
         # Safely remove only if the directory exists
-        if os.path.exists(rm_dir_full_name) and os.path.isdir(
-                rm_dir_full_name):
+        if os.path.exists(rm_dir_full_name) and os.path.isdir(rm_dir_full_name):
             rmtree(rm_dir_full_name)
-            self.logger.debug(
-                f"Deleted old episode directory: {rm_dir_full_name}")
+            self.logger.debug(f"Deleted old episode directory: {rm_dir_full_name}")
         else:
             self.logger.warning(
-                f"No old episode directory found to delete: {rm_dir_full_name}")
+                f"No old episode directory found to delete: {rm_dir_full_name}"
+            )
 
     # ---------------------------------------------------------------------------- #
     #                             Model class checker                              #
     # ---------------------------------------------------------------------------- #
 
     def _check_eplus_config(self) -> None:
-        """Check Eplus Environment config definition is correct.
-        """
+        """Check Eplus Environment config definition is correct."""
 
         # COMMON
         # Check weather files exist
         for w_file in self.weather_files:
-            w_path = os.path.join(
-                self.pkg_data_path, 'weather', w_file)
+            w_path = os.path.join(self.pkg_data_path, 'weather', w_file)
             if not os.path.isfile(w_path):
                 self.logger.critical(
-                    f'Weather files: {w_file} is not a weather file available in Sinergym.')
+                    f'Weather files: {w_file} is not a weather file available in Sinergym.'
+                )
                 raise FileNotFoundError
 
         # BUILDING EXTRA CONFIGURATION
@@ -759,32 +802,39 @@ class ModelJSON(object):
                     if self.building_config[config_key] < 1:
                         self.logger.critical(
                             f'Building configuration: timestep_per_hour must be a positive int value, the value specified is {
-                                self.building_config[config_key]}')
+                                self.building_config[config_key]}'
+                        )
                         raise ValueError
                 # Runperiod
                 elif config_key == 'runperiod':
-                    if not isinstance(
-                            self.building_config[config_key], (tuple, list)):
+                    if not isinstance(self.building_config[config_key], (tuple, list)):
                         self.logger.critical(
                             f'Building configuration: Runperiod specified in extra configuration must be a tuple or list (type detected {
                                 type(
-                                    self.building_config[config_key])})')
+                                    self.building_config[config_key])})'
+                        )
                         raise TypeError
                     if len(self.building_config[config_key]) != 6:
                         self.logger.critical(
-                            'Building configuration: Runperiod specified in extra configuration must have 6 elements.')
+                            'Building configuration: Runperiod specified in extra configuration must have 6 elements.'
+                        )
                         raise ValueError
                 # North axis
                 elif config_key == 'north_axis':
                     try:
-                        assert self.building_config[config_key] >= 0.0 and self.building_config[config_key] <= 360.0
+                        assert (
+                            self.building_config[config_key] >= 0.0
+                            and self.building_config[config_key] <= 360.0
+                        )
                     except AssertionError as err:
                         self.logger.critical(
-                            'Extra Config: North axis specified in extra configuration must be a float value between 0 and 360.')
+                            'Extra Config: North axis specified in extra configuration must be a float value between 0 and 360.'
+                        )
                         raise err
                 else:
                     self.logger.error(
-                        f'Building configuration: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.')
+                        f'Building configuration: Key name specified in config called [{config_key}] is not available in Sinergym, it will be ignored.'
+                    )
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

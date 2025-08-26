@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  apply-autopep8-isort:
-    name: Autopep8 and isort auto-format by a bot
+  apply-black-ruff:
+    name: black and ruff auto-format by a bot
     runs-on: ubuntu-24.04
     steps:
 
@@ -26,27 +26,27 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Install autopep8 and isort
+      - name: Install black and ruff
         run: poetry install --no-interaction --only format
 
-      - name: Apply isort
-        id: isort
-        run: poetry run isort .
+      - name: Apply ruff
+        id: ruff
+        run: poetry run ruff check . --fix
         continue-on-error: true
 
-      - name: apply autopep8
-        id: autopep8
-        run: poetry run autopep8 --exit-code --recursive --in-place --aggressive --aggressive .
+      - name: apply black
+        id: black
+        run: poetry run black --check .
         continue-on-error: true
 
       - name: Commit format changes
-        if: steps.autopep8.outcome != 'success' || steps.isort.outcome != 'success'
+        if: steps.black.outcome != 'success' || steps.ruff.outcome != 'success'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Automatic format fixes (autopep8 + isort)
+          commit_message: Automatic format fixes (black + ruff)
 
   apply-documentation:
-    needs: [apply-autopep8-isort]
+    needs: [apply-black-ruff]
     runs-on: ubuntu-24.04
     steps:
 
@@ -101,7 +101,7 @@ jobs:
           enable_jekyll: true
 
   tests:
-    needs: [apply-autopep8-isort]
+    needs: [apply-black-ruff]
     name: tests execution and CodeCov upload
     runs-on: ubuntu-24.04
     steps:
@@ -127,7 +127,7 @@ jobs:
           verbose: true
 
   update-dockerhub:
-    needs: [apply-autopep8-isort]
+    needs: [apply-black-ruff]
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

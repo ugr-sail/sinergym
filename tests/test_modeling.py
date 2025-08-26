@@ -19,9 +19,7 @@ def test_adapt_building_to_epw(model_5zone):
     assert len(designdays) == 2
 
     # Check old location is correct
-    assert locations.get(
-        'CHICAGO_IL_USA TMY2-94846',
-        False)
+    assert locations.get('CHICAGO_IL_USA TMY2-94846', False)
     location = locations['CHICAGO_IL_USA TMY2-94846']
     assert isinstance(location.get('latitude'), float)
     assert isinstance(location.get('longitude'), float)
@@ -30,13 +28,17 @@ def test_adapt_building_to_epw(model_5zone):
 
     # Check old Designday is correct
     assert designdays.get(
-        'CHICAGO_IL_USA Annual Heating 99% Design Conditions DB', False)
+        'CHICAGO_IL_USA Annual Heating 99% Design Conditions DB', False
+    )
     winter_day = designdays['CHICAGO_IL_USA Annual Heating 99% Design Conditions DB']
     assert winter_day['day_type'] == 'WinterDesignDay'
 
     assert designdays.get(
-        'CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB', False)
-    summer_day = designdays['CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB']
+        'CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB', False
+    )
+    summer_day = designdays[
+        'CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB'
+    ]
     assert summer_day['day_type'] == 'SummerDesignDay'
 
     # Existing DesignDay names
@@ -68,8 +70,7 @@ def test_adapt_building_to_epw(model_5zone):
     assert winter_day.get('barometric_pressure', False)
     assert winter_day.get('wind_speed', False)
 
-    assert designdays.get(
-        'davis monthan afb ann clg .4% condns db=>mwb', False)
+    assert designdays.get('davis monthan afb ann clg .4% condns db=>mwb', False)
     summer_day = designdays['davis monthan afb ann clg .4% condns db=>mwb']
     assert summer_day['day_type'] == 'SummerDesignDay'
     assert winter_day.get('month', False)
@@ -83,15 +84,12 @@ def test_adapt_building_to_variables(model_5zone, building_5zone):
     # State before method
     assert not building_5zone.get('Output:Variable', False)
     # State after method
-    assert len(
-        model_5zone.building['Output:Variable']) == len(
-        model_5zone._variables)
+    assert len(model_5zone.building['Output:Variable']) == len(model_5zone._variables)
     # Check all variable names are correct
     original_varible_names = [
-        variable for variable, _ in list(
-            model_5zone._variables.values())]
-    for output_variable in list(
-            model_5zone.building['Output:Variable'].values()):
+        variable for variable, _ in list(model_5zone._variables.values())
+    ]
+    for output_variable in list(model_5zone.building['Output:Variable'].values()):
         assert output_variable['variable_name'] in original_varible_names
 
 
@@ -99,32 +97,34 @@ def test_adapt_building_to_meters(model_5zone, building_5zone):
     # State before method
     assert not building_5zone.get('Output:Meter', False)
     # State after method
-    assert len(
-        model_5zone.building['Output:Meter']) == len(
-        model_5zone._meters)
+    assert len(model_5zone.building['Output:Meter']) == len(model_5zone._meters)
     # Check all meter names are correct
-    original_meter_names = [
-        meter for meter in list(
-            model_5zone._meters.values())]
-    for output_meter in list(
-            model_5zone.building['Output:Meter'].values()):
+    original_meter_names = [meter for meter in list(model_5zone._meters.values())]
+    for output_meter in list(model_5zone.building['Output:Meter'].values()):
         assert output_meter['key_name'] in original_meter_names
 
 
 def test_adapt_building_to_config(model_5zone, building_5zone):
     # Check default config
-    assert list(building_5zone['Timestep'].values())[
-        0]['number_of_timesteps_per_hour'] == 4
+    assert (
+        list(building_5zone['Timestep'].values())[0]['number_of_timesteps_per_hour']
+        == 4
+    )
 
     # Check new config
-    assert list(model_5zone.building['Timestep'].values())[
-        0]['number_of_timesteps_per_hour'] == 2
+    assert (
+        list(model_5zone.building['Timestep'].values())[0][
+            'number_of_timesteps_per_hour'
+        ]
+        == 2
+    )
 
     # Check runperiod elements is the same than runperiod from config specified
     config_runperiod = model_5zone.building_config['runperiod']
     runperiod = model_5zone.runperiod
     for i, key in enumerate(
-            ['start_day', 'start_month', 'start_year', 'end_day', 'end_month', 'end_year']):
+        ['start_day', 'start_month', 'start_year', 'end_day', 'end_month', 'end_year']
+    ):
         assert config_runperiod[i] == runperiod[key]
 
 
@@ -149,6 +149,7 @@ def test_save_building_model(model_5zone):
     with pytest.raises(OSError):
         model_5zone.save_building_model()
 
+
 # ---------------------------------------------------------------------------- #
 #                        EPW and Weather Data management                       #
 # ---------------------------------------------------------------------------- #
@@ -171,15 +172,20 @@ def test_check_model_wrong_config(model_5zone_several_weathers):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.building_config['timesteps_per_hour'] = 2
     if model_5zone_several_weathers.building_config.get('runperiod'):
-        model_5zone_several_weathers.building_config['runperiod'] = (
-            1, 2, 3, 4)
+        model_5zone_several_weathers.building_config['runperiod'] = (1, 2, 3, 4)
         with pytest.raises(ValueError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.building_config['runperiod'] = 2024
         with pytest.raises(TypeError):
             model_5zone_several_weathers._check_eplus_config()
         model_5zone_several_weathers.building_config['runperiod'] = (
-            1, 2, 1993, 2, 3, 1993)
+            1,
+            2,
+            1993,
+            2,
+            3,
+            1993,
+        )
     model_5zone_several_weathers.building_config['Unknown_option'] = 100
     # It will be ignored by sinergym
     model_5zone_several_weathers._check_eplus_config()
@@ -208,18 +214,18 @@ def test_apply_weather_variability(model_5zone):
     model_5zone.set_episode_working_dir()
     assert model_5zone.episode_path
     # Check apply None variation return original weather_path
-    path_result = model_5zone.apply_weather_variability(
-        weather_variability=None)
+    path_result = model_5zone.apply_weather_variability(weather_variability=None)
     original_filename = model_5zone._weather_path.split('/')[-1]
     path_filename = path_result.split('/')[-1]
     assert original_filename == path_filename
     # Check with a variation
     weather_variability = {
         'Dry Bulb Temperature': (1.0, 0.0, 24.0),
-        'Wind Speed': (3.0, 0.0, 35.0)
+        'Wind Speed': (3.0, 0.0, 35.0),
     }
     path_result = model_5zone.apply_weather_variability(
-        weather_variability=weather_variability)
+        weather_variability=weather_variability
+    )
     filename = model_5zone._weather_path.split('/')[-1]
     filename = filename.split('.epw')[0]
     filename += '_OU_Noise.epw'
@@ -239,14 +245,18 @@ def test_apply_weather_variability(model_5zone):
 
     # Check that the noise is applied in drybulb and windspd columns and not
     # in others
-    assert (original.dataframe['Dry Bulb Temperature'] !=
-            noise.dataframe['Dry Bulb Temperature']).any()
-    assert (original.dataframe['Wind Speed'] !=
-            noise.dataframe['Wind Speed']).any()
-    assert (original.dataframe['Relative Humidity'] ==
-            noise.dataframe['Relative Humidity']).all()
-    assert (original.dataframe['Wind Direction'] ==
-            noise.dataframe['Wind Direction']).all()
+    assert (
+        original.dataframe['Dry Bulb Temperature']
+        != noise.dataframe['Dry Bulb Temperature']
+    ).any()
+    assert (original.dataframe['Wind Speed'] != noise.dataframe['Wind Speed']).any()
+    assert (
+        original.dataframe['Relative Humidity'] == noise.dataframe['Relative Humidity']
+    ).all()
+    assert (
+        original.dataframe['Wind Direction'] == noise.dataframe['Wind Direction']
+    ).all()
+
 
 # ---------------------------------------------------------------------------- #
 #                          Schedulers info extraction                          #
@@ -255,8 +265,7 @@ def test_apply_weather_variability(model_5zone):
 
 def test_get_schedulers(model_5zone):
     # Testing scheduler attribute structure is correct
-    assert len(model_5zone.schedulers) == len(
-        model_5zone.building['Schedule:Compact'])
+    assert len(model_5zone.schedulers) == len(model_5zone.building['Schedule:Compact'])
     for scheduler_name, definition in model_5zone.schedulers.items():
         assert isinstance(scheduler_name, str)
         assert isinstance(definition, dict)
@@ -264,15 +273,12 @@ def test_get_schedulers(model_5zone):
         for key, value in definition.items():
             if key != 'Type':
                 assert isinstance(value, dict)
-                assert set(['field_name', 'table_name']
-                           ) == set(value.keys())
-                assert isinstance(
-                    value['field_name'],
-                    str) and isinstance(
-                    value['table_name'],
-                    str)
-                assert key in list(
-                    model_5zone.building[value['table_name']].keys())
+                assert set(['field_name', 'table_name']) == set(value.keys())
+                assert isinstance(value['field_name'], str) and isinstance(
+                    value['table_name'], str
+                )
+                assert key in list(model_5zone.building[value['table_name']].keys())
+
 
 # ---------------------------------------------------------------------------- #
 #                           Runperiod info extraction                          #
@@ -289,9 +295,17 @@ def test_get_eplus_runperiod(model_5zone):
     assert runperiod['end_day'] == building_runperiod['end_day_of_month']
     assert runperiod['end_month'] == building_runperiod['end_month']
     assert runperiod['end_year'] == building_runperiod['end_year']
-    assert runperiod['start_weekday'] == WEEKDAY_ENCODING[building_runperiod['day_of_week_for_start_day'].lower()]
-    assert runperiod['n_steps_per_hour'] == list(
-        model_5zone.building['Timestep'].values())[0]['number_of_timesteps_per_hour']
+    assert (
+        runperiod['start_weekday']
+        == WEEKDAY_ENCODING[building_runperiod['day_of_week_for_start_day'].lower()]
+    )
+    assert (
+        runperiod['n_steps_per_hour']
+        == list(model_5zone.building['Timestep'].values())[0][
+            'number_of_timesteps_per_hour'
+        ]
+    )
+
 
 # ---------------------------------------------------------------------------- #
 #                  Working Folder for Simulation Management                    #
@@ -317,8 +331,7 @@ def test_set_workspace_dir(model_5zone):
     assert 'PYTESTCONFIG-res' in current_workspace_path
     assert os.path.isdir(current_workspace_path)
     # Set a new workspace_path
-    new_workspace_path = model_5zone._set_workspace_dir(
-        env_name='PYTESTCONFIG')
+    new_workspace_path = model_5zone._set_workspace_dir(env_name='PYTESTCONFIG')
     # The name should be the same except last number id
     assert current_workspace_path[:-1] == new_workspace_path[:-1]
     assert int(current_workspace_path[-1]) < int(new_workspace_path[-1])
@@ -336,13 +349,23 @@ def test_get_working_folder(model_5zone):
 
 def test_rm_past_history_dir(model_5zone):
     # Check num of dir in workspace path is less than 10
-    n_dir = len([i for i in os.listdir(model_5zone.workspace_path)
-                if os.path.isdir(os.path.join(model_5zone.workspace_path, i))])
+    n_dir = len(
+        [
+            i
+            for i in os.listdir(model_5zone.workspace_path)
+            if os.path.isdir(os.path.join(model_5zone.workspace_path, i))
+        ]
+    )
     assert n_dir < 10
     # Create more than 10 episodes dir
     for _ in range(15):
         model_5zone.set_episode_working_dir()
     # Check number of dirs is 10 (no more)
-    n_dir = len([i for i in os.listdir(model_5zone.workspace_path)
-                if os.path.isdir(os.path.join(model_5zone.workspace_path, i))])
+    n_dir = len(
+        [
+            i
+            for i in os.listdir(model_5zone.workspace_path)
+            if os.path.isdir(os.path.join(model_5zone.workspace_path, i))
+        ]
+    )
     assert n_dir == 10

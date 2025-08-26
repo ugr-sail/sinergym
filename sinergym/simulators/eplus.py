@@ -23,22 +23,21 @@ class EnergyPlus(object):
     #                           Simulator Terminal Logger                          #
     # ---------------------------------------------------------------------------- #
 
-    logger = TerminalLogger().getLogger(
-        name='SIMULATOR',
-        level=LOG_SIM_LEVEL)
+    logger = TerminalLogger().getLogger(name='SIMULATOR', level=LOG_SIM_LEVEL)
 
     def __init__(
-            self,
-            name: str,
-            obs_queue: Queue,
-            info_queue: Queue,
-            act_queue: Queue,
-            context_queue: Queue,
-            time_variables: List[str] = [],
-            variables: Dict[str, Tuple[str, str]] = {},
-            meters: Dict[str, str] = {},
-            actuators: Dict[str, Tuple[str, str, str]] = {},
-            context: Dict[str, Tuple[str, str, str]] = {}):
+        self,
+        name: str,
+        obs_queue: Queue,
+        info_queue: Queue,
+        act_queue: Queue,
+        context_queue: Queue,
+        time_variables: List[str] = [],
+        variables: Dict[str, Tuple[str, str]] = {},
+        meters: Dict[str, str] = {},
+        actuators: Dict[str, Tuple[str, str, str]] = {},
+        context: Dict[str, Tuple[str, str, str]] = {},
+    ):
         """EnergyPlus runner class. This class run an episode in a thread when start() is called.
 
         Args:
@@ -106,11 +105,9 @@ class EnergyPlus(object):
     # ---------------------------------------------------------------------------- #
     #                                 Main methods                                 #
     # ---------------------------------------------------------------------------- #
-    def start(self,
-              building_path: str,
-              weather_path: str,
-              output_path: str,
-              episode: int) -> None:
+    def start(
+        self, building_path: str, weather_path: str, output_path: str, episode: int
+    ) -> None:
         """Initializes all callbacks and handlers using EnergyPlus API, prepare the simulation system
            and start running the simulation in a Python thread.
 
@@ -132,36 +129,39 @@ class EnergyPlus(object):
         self.energyplus_state = self.api.state_manager.new_state()
 
         # --------------------- Disable default Energyplus Output -------------------- #
-        self.api.runtime.set_console_output_status(
-            self.energyplus_state, False)
+        self.api.runtime.set_console_output_status(self.energyplus_state, False)
 
         # ------------------------ Progress bar for simulation ----------------------- #
         self.progress_bar = None
 
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
-            self.energyplus_state, self._progress_update)  # type: ignore
+            self.energyplus_state, self._progress_update  # type: ignore
+        )
 
         # register callback used to signal warmup complete
         self.api.runtime.callback_after_new_environment_warmup_complete(
-            self.energyplus_state, self._warmup_complete)  # type: ignore
+            self.energyplus_state, self._warmup_complete  # type: ignore
+        )
 
         # register callback used to collect observations
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._collect_obs_and_info)  # type: ignore
+            self.energyplus_state, self._collect_obs_and_info  # type: ignore
+        )
 
         # register callback used to send actions
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_action)  # type: ignore
+            self.energyplus_state, self._process_action  # type: ignore
+        )
 
         # register callback used to process context
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._process_context)  # type: ignore
+            self.energyplus_state, self._process_context  # type: ignore
+        )
 
         # ------------------- Run EnergyPlus in a non-blocking way ------------------- #
         def _run_energyplus(runtime, cmd_args, state, results):
-            self.logger.debug(
-                f'Running EnergyPlus with args: {cmd_args}')
+            self.logger.debug(f'Running EnergyPlus with args: {cmd_args}')
 
             # start simulation
             results["exit_code"] = runtime.run_energyplus(state, cmd_args)
@@ -175,9 +175,9 @@ class EnergyPlus(object):
                 self.api.runtime,
                 self.make_eplus_args(),
                 self.energyplus_state,
-                self.sim_results
+                self.sim_results,
             ),
-            daemon=True
+            daemon=True,
         )
 
         self.energyplus_thread.start()
@@ -185,7 +185,7 @@ class EnergyPlus(object):
 
     def stop(self) -> None:
         """It forces the simulation ends, cleans all communication queues, thread is deleted (joined) and simulator attributes are
-           reset (except handlers, to not initialize again if there is a next thread execution).
+        reset (except handlers, to not initialize again if there is a next thread execution).
         """
         if self.energyplus_thread:
             # Kill progress bar
@@ -205,8 +205,7 @@ class EnergyPlus(object):
             self.api.runtime.clear_callbacks()
             # Clean Energyplus state
             if self.energyplus_state:
-                self.api.state_manager.delete_state(
-                    self.energyplus_state)
+                self.api.state_manager.delete_state(self.energyplus_state)
             # Set flags to default value
             self.sim_results = {}
             self.warmup_complete = False
@@ -231,11 +230,13 @@ class EnergyPlus(object):
             List[str]: List of the argument components for energyplus bash command
         """
         eplus_args = []
-        eplus_args += ["-w",
-                       self._weather_path,
-                       "-d",
-                       self._output_path,
-                       self._building_path]
+        eplus_args += [
+            "-w",
+            self._weather_path,
+            "-d",
+            self._output_path,
+            self._building_path,
+        ]
         return eplus_args
 
     # ---------------------------------------------------------------------------- #
@@ -258,7 +259,8 @@ class EnergyPlus(object):
                     position=0,
                     ascii=False,
                     dynamic_ncols=True,
-                    file=sys.stdout)
+                    file=sys.stdout,
+                )
 
             percent = percent + 1 if percent < 100 else percent
             self.progress_bar.update(percent - self.progress_bar.n)
@@ -270,8 +272,7 @@ class EnergyPlus(object):
     def _warmup_complete(self, state: Any) -> None:
         self.warmup_complete = True
         self.warmup_queue.put(True)
-        self.logger.debug(
-            'Warmup process has been completed successfully.')
+        self.logger.debug('Warmup process has been completed successfully.')
 
     def _init_system(self, state_argument: c_void_p) -> None:
         """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
@@ -281,8 +282,10 @@ class EnergyPlus(object):
         """
         if not self.system_ready:
             self._init_handlers(state_argument)
-            self.system_ready = self.initialized_handlers and not self.exchange.warmup_flag(
-                state_argument)
+            self.system_ready = (
+                self.initialized_handlers
+                and not self.exchange.warmup_flag(state_argument)
+            )
             if self.system_ready:
                 self.logger.info('System is ready.')
 
@@ -294,10 +297,16 @@ class EnergyPlus(object):
 
         """
         # api data must be fully ready, else nothing happens
-        if self.exchange.api_data_fully_ready(
-                state_argument) and not self.initialized_handlers:
+        if (
+            self.exchange.api_data_fully_ready(state_argument)
+            and not self.initialized_handlers
+        ):
 
-            if self.var_handlers is None or self.meter_handlers is None or self.actuator_handlers is None:
+            if (
+                self.var_handlers is None
+                or self.meter_handlers is None
+                or self.actuator_handlers is None
+            ):
                 # Get variable handlers using variables info
                 self.var_handlers = {
                     key: self.exchange.get_variable_handle(state_argument, *var)
@@ -312,29 +321,30 @@ class EnergyPlus(object):
 
                 # Get actuator handlers using actuators info
                 self.actuator_handlers = {
-                    key: self.exchange.get_actuator_handle(
-                        state_argument, *actuator)
+                    key: self.exchange.get_actuator_handle(state_argument, *actuator)
                     for key, actuator in self.actuators.items()
                 }
 
                 # Get context handlers using context info
                 self.context_handlers = {
-                    key: self.exchange.get_actuator_handle(
-                        state_argument, *context)
+                    key: self.exchange.get_actuator_handle(state_argument, *context)
                     for key, context in self.context.items()
                 }
 
                 # Save available_data information
                 self.available_data = self.exchange.list_available_api_data_csv(
-                    state_argument).decode('utf-8')
+                    state_argument
+                ).decode('utf-8')
 
                 # write available_data.csv in parent output_path
                 if self._output_path:
-                    parent_dir = Path(
-                        self._output_path).parent.parent.absolute().__str__()
+                    parent_dir = (
+                        Path(self._output_path).parent.parent.absolute().__str__()
+                    )
                 else:
                     self.logger.error(
-                        'Output path is not set, data_available.txt will not be written')
+                        'Output path is not set, data_available.txt will not be written'
+                    )
                     return
                 data = self.available_data.splitlines()
                 with open(parent_dir + '/data_available.txt', "w") as txt_file:
@@ -344,19 +354,22 @@ class EnergyPlus(object):
                 for variable_name, handle_value in self.var_handlers.items():
                     if handle_value < 0:
                         self.logger.error(
-                            f'Variable handlers: {variable_name} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt')
+                            f'Variable handlers: {variable_name} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt'
+                        )
                         # raise ValueError
 
                 for meter_name, handle_value in self.meter_handlers.items():
                     if handle_value < 0:
                         self.logger.error(
-                            f'Meter handlers: {meter_name} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt')
+                            f'Meter handlers: {meter_name} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt'
+                        )
                         # raise ValueError
 
                 for actuator_name, handle_value in self.actuator_handlers.items():
                     if handle_value < 0:
                         self.logger.error(
-                            f'Actuator handlers: {actuator_name} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt')
+                            f'Actuator handlers: {actuator_name} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt'
+                        )
                         # raise ValueError
 
                 self.logger.info('handlers initialized.')
@@ -375,8 +388,7 @@ class EnergyPlus(object):
         """
         # if simulation is completed or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(
-                self.energyplus_state)  # type: ignore
+            self.api.runtime.stop_simulation(self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
@@ -387,23 +399,22 @@ class EnergyPlus(object):
         self.next_obs = {
             # time variables (calling in exchange module directly)
             **{
-                t_variable: eval('self.exchange.' +
-                                 t_variable +
-                                 '(self.energyplus_state)', {'self': self})
+                t_variable: eval(
+                    'self.exchange.' + t_variable + '(self.energyplus_state)',
+                    {'self': self},
+                )
                 for t_variable in self.time_variables
             },
             # variables (getting value from handlers)
-            ** {
+            **{
                 key: self.exchange.get_variable_value(state_argument, handle)
-                for key, handle
-                in self.var_handlers.items()  # type: ignore
+                for key, handle in self.var_handlers.items()  # type: ignore
             },
             # meters (getting value from handlers)
             **{
                 key: self.exchange.get_meter_value(state_argument, handle)
-                for key, handle
-                in self.meter_handlers.items()  # type: ignore
-            }
+                for key, handle in self.meter_handlers.items()  # type: ignore
+            },
         }
 
         # Mount the info dict in queue
@@ -413,7 +424,7 @@ class EnergyPlus(object):
             'month': self.exchange.month(state_argument),
             'day': self.exchange.day_of_month(state_argument),
             'hour': self.exchange.hour(state_argument),
-            'is_raining': self.exchange.is_raining(state_argument)
+            'is_raining': self.exchange.is_raining(state_argument),
         }
 
         # Put in the queues the observation and info
@@ -431,8 +442,7 @@ class EnergyPlus(object):
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(
-                self.energyplus_state)  # type: ignore
+            self.api.runtime.stop_simulation(self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
@@ -442,12 +452,13 @@ class EnergyPlus(object):
         # self.logger.debug(f'ACTION get from queue: {next_action}')
         if not self.simulation_complete:
             # Set the action values obtained in actuator handlers
-            for i, (act_name, act_handle) in enumerate(
-                    self.actuator_handlers.items()):  # type: ignore
+            for i, (_, act_handle) in enumerate(
+                self.actuator_handlers.items()
+            ):  # type: ignore
                 self.exchange.set_actuator_value(
                     state=state_argument,
                     actuator_handle=act_handle,
-                    actuator_value=next_action[i]
+                    actuator_value=next_action[i],
                 )
 
                 # self.logger.debug(
@@ -462,8 +473,7 @@ class EnergyPlus(object):
 
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
-            self.api.runtime.stop_simulation(
-                self.energyplus_state)  # type: ignore
+            self.api.runtime.stop_simulation(self.energyplus_state)  # type: ignore
         # Check system is ready (only is executed is not)
         self._init_system(self.energyplus_state)  # type: ignore
         if not self.system_ready:
@@ -474,25 +484,26 @@ class EnergyPlus(object):
             if not self.simulation_complete:
                 # Set the context values obtained in context handlers
                 # (actuators)
-                for i, (context_name, context_handle) in enumerate(
-                        self.context_handlers.items()):  # type: ignore
+                for i, (_, context_handle) in enumerate(
+                    self.context_handlers.items()
+                ):  # type: ignore
                     self.exchange.set_actuator_value(
                         state=state_argument,
                         actuator_handle=context_handle,
-                        actuator_value=next_context[i]
+                        actuator_value=next_context[i],
                     )
         except Empty:
             pass
 
     def _flush_queues(self) -> None:
-        """It empties all values allocated in observation, action and warmup queues
-        """
+        """It empties all values allocated in observation, action and warmup queues"""
         for q in [
-                self.obs_queue,
-                self.act_queue,
-                self.info_queue,
-                self.context_queue,
-                self.warmup_queue]:
+            self.obs_queue,
+            self.act_queue,
+            self.info_queue,
+            self.context_queue,
+            self.warmup_queue,
+        ]:
             while not q.empty():
                 q.get()
         self.logger.debug('Simulator queues emptied.')
