@@ -1,11 +1,11 @@
 # Suppress known warning before any imports
 try:
     import warnings
-    warnings.filterwarnings(
-        "ignore",
-        message=".*epw.data submodule is not installed.*")
+
+    warnings.filterwarnings("ignore", message=".*epw.data submodule is not installed.*")
 except ImportError:
     pass
+
 
 import logging
 import os
@@ -38,50 +38,56 @@ register(
             low=np.array([15.0, 22.5], dtype=np.float32),
             high=np.array([22.5, 30.0], dtype=np.float32),
             shape=(2,),
-            dtype=np.float32),
+            dtype=np.float32,
+        ),
         'time_variables': ['month', 'day_of_month', 'hour'],
         'variables': {
             'outdoor_temperature': (
                 'Site Outdoor Air DryBulb Temperature',
-                'Environment'),
+                'Environment',
+            ),
             'htg_setpoint': (
                 'Zone Thermostat Heating Setpoint Temperature',
-                'SPACE5-1'),
+                'SPACE5-1',
+            ),
             'clg_setpoint': (
                 'Zone Thermostat Cooling Setpoint Temperature',
-                'SPACE5-1'),
-            'air_temperature': (
-                'Zone Air Temperature',
-                'SPACE5-1'),
-            'air_humidity': (
-                'Zone Air Relative Humidity',
-                'SPACE5-1'),
+                'SPACE5-1',
+            ),
+            'air_temperature': ('Zone Air Temperature', 'SPACE5-1'),
+            'air_humidity': ('Zone Air Relative Humidity', 'SPACE5-1'),
             'HVAC_electricity_demand_rate': (
                 'Facility Total HVAC Electricity Demand Rate',
-                'Whole Building')
+                'Whole Building',
+            ),
         },
         'meters': {},
         'actuators': {
             'Heating_Setpoint_RL': (
                 'Schedule:Compact',
                 'Schedule Value',
-                'HTG-SETP-SCH'),
+                'HTG-SETP-SCH',
+            ),
             'Cooling_Setpoint_RL': (
                 'Schedule:Compact',
                 'Schedule Value',
-                'CLG-SETP-SCH')
+                'CLG-SETP-SCH',
+            ),
         },
         'reward': import_from_path('sinergym.utils.rewards:LinearReward'),
         'reward_kwargs': {
             'temperature_variables': ['air_temperature'],
             'energy_variables': ['HVAC_electricity_demand_rate'],
             'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)},
+            'range_comfort_summer': (23.0, 26.0),
+        },
         'env_name': 'demo-v1',
         'building_config': {
             'runperiod': (1, 1, 1991, 1, 3, 1991),
-            'timesteps_per_hour': 1
-        }})
+            'timesteps_per_hour': 1,
+        },
+    },
+)
 
 # ------------------- Read environment configuration files ------------------- #
 
@@ -108,7 +114,7 @@ def register_envs_from_yaml(yaml_path: str):
                 # additional_wrappers=additional_wrappers,
                 # order_enforce=False,
                 # disable_env_checker=True,
-                kwargs=env_kwargs
+                kwargs=env_kwargs,
             )
 
         # If discrete space is included, add the same environment with
@@ -121,18 +127,22 @@ def register_envs_from_yaml(yaml_path: str):
             discrete_function = f'DEFAULT_{
                 conf["id_base"].upper()}_DISCRETE_FUNCTION'
             action_mapping = import_from_path(
-                f'sinergym.utils.constants:{discrete_function}')
+                f'sinergym.utils.constants:{discrete_function}'
+            )
 
             discrete_wrapper_spec = WrapperSpec(
                 name='DiscretizeEnv',
                 entry_point='sinergym.utils.wrappers:DiscretizeEnv',
                 kwargs={
                     'discrete_space': eval(conf['action_space_discrete']),
-                    'action_mapping': action_mapping})
+                    'action_mapping': action_mapping,
+                },
+            )
             additional_wrappers = (discrete_wrapper_spec,)
 
             env_kwargs_discrete['env_name'] = env_kwargs_discrete['env_name'].replace(
-                'continuous', 'discrete')
+                'continuous', 'discrete'
+            )
 
             register(
                 id=env_id.replace('continuous', 'discrete'),
@@ -140,14 +150,14 @@ def register_envs_from_yaml(yaml_path: str):
                 additional_wrappers=additional_wrappers,
                 # order_enforce=False,
                 # disable_env_checker=True,
-                kwargs=env_kwargs_discrete
+                kwargs=env_kwargs_discrete,
             )
 
 
 # ------------------ Read default configuration files ------------------ #
 configuration_path = os.path.join(
-    os.path.dirname(__file__),
-    'data/default_configuration')
+    os.path.dirname(__file__), 'data/default_configuration'
+)
 for root, dirs, files in os.walk(configuration_path):
     for file in files:
         # Obtain the whole path for each configuration file
@@ -159,8 +169,11 @@ for root, dirs, files in os.walk(configuration_path):
 
 
 def ids():
-    return [env_id for env_id in gym.envs.registration.registry.keys()  # type: ignore
-            if env_id.startswith('Eplus')]
+    return [
+        env_id
+        for env_id in gym.envs.registration.registry.keys()  # type: ignore
+        if env_id.startswith('Eplus')
+    ]
 
 
 # ----------------------------- Log level system ----------------------------- #

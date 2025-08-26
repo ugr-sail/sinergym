@@ -24,7 +24,7 @@ if __name__ == '__main__':
         required=True,
         type=str,
         dest='configuration',
-        help='Path to launch agents configuration (YAML file)'
+        help='Path to launch agents configuration (YAML file)',
     )
     args = parser.parse_args()
 
@@ -66,8 +66,7 @@ if __name__ == '__main__':
         # Execute the module in the new namespace
         spec.loader.exec_module(train)
     else:
-        raise ImportError(
-            f"The script could not be imported from {train_script_path}")
+        raise ImportError(f"The script could not be imported from {train_script_path}")
 
     # ---------------------------------------------------------------------------- #
     #                                Launch agent(s)                               #
@@ -85,7 +84,7 @@ if __name__ == '__main__':
                 entity=entity,
                 project=project,
                 count=sequential_experiments,
-                function=train.train
+                function=train.train,
             )
         )
         process.start()

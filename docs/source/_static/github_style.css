@@ -1,0 +1,66 @@
+/* --- GitHub block --- */
+.sidebar-block.github-block {
+    margin: 1em 0;
+    padding: 0.8em;
+    background: linear-gradient(135deg, #24292e, #2f363d);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sidebar-block.github-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.sidebar-block.github-block h3 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 0.6em;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: #fff;
+}
+
+.sidebar-block.github-block h3 i {
+    font-size: 1.2em;
+}
+
+/* --- Links inside the block --- */
+.sidebar-block.github-block ul.simple {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sidebar-block.github-block ul.simple li {
+    margin: 0.4em 0;
+}
+
+.sidebar-block.github-block ul.simple li a {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.3em 0.5em;
+    color: #a5beba;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-block.github-block ul.simple li a:hover {
+    background: #3a4549;
+    color: #ffffff;
+}
+
+.sidebar-block.github-block ul.simple li a i {
+    font-size: 0.9em;
+}
+
+/* --- Optional: small icon for issues and releases --- */
+.sidebar-block.github-block ul.simple li a .fa-rocket,
+.sidebar-block.github-block ul.simple li a .fa-bug {
+    color: #f0ad4e;
+}

@@ -6,7 +6,7 @@ def test_random_controller(random_controller):
     env = random_controller.env
     env.reset()
 
-    for i in range(3):
+    for _ in range(3):
         action = random_controller.act()
         assert action is not None
     env.close()
@@ -16,7 +16,7 @@ def test_controller_5Zone(zone5_controller):
     env = zone5_controller.env
     obs, info = env.reset()
 
-    for i in range(3):
+    for _ in range(3):
         action = zone5_controller.act(obs)
         assert isinstance(action, np.ndarray)
         assert len(action) == 2
@@ -38,7 +38,7 @@ def test_incremental_controller_datacenter(datacenter_incremental_controller):
     env = datacenter_incremental_controller.env
     obs, info = env.reset()
 
-    for i in range(3):
+    for _ in range(3):
         action = datacenter_incremental_controller.act(obs)
         assert isinstance(action, np.ndarray)
         for value in action:

@@ -46,7 +46,7 @@ The contents of this root output directory include the results of the simulation
 
 - ``progress.csv``. This file contains information about general simulation results. Each row contains episode information registering relevant data such as mean power consumption, rewards or comfort penalties. This file is only available when the environment has been wrapped with a ``LoggerWrapper`` and ``CSVLogger`` (see :ref:`Logger Wrappers` for more information). The structure of this file is defined by the ``LoggerWrapper`` class.
 
-- ``weather_variability_config.csv``. This file contains the configuration of the weather variability for each episode. It is only created when the environment has been wrapped with ``LoggerWrapper`` and ``CSVLogger``. It is very useful when you are using ranges in weather variability paramters (more information in :ref:`Weather variability`)
+- ``weather_variability_config.csv``. This file contains the configuration of the weather variability for each episode. It is only created when the environment has been wrapped with ``LoggerWrapper`` and ``CSVLogger``. It is very useful when you are using ranges in weather variability parameters (more information in :ref:`Weather variability`)
 
 - ``data_available.txt``. It is generated when the *EnergyPlus* API initializes all callbacks and handlers for the simulation. In this file, you can find all the available components of the building model, such as actuators, schedulers, meters, variables,  internal variables, etc.
 

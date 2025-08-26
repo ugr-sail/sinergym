@@ -58,13 +58,13 @@ We distinguish between *mandatory* and *optional* configuration parameters:
 
 * **Mandatory**: environment, number of training episodes, and algorithm (including non-default hyperparameters if needed).
 
-* **Optional**: environment parameters (override defaults), random seed, pretrained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.
+* **Optional**: environment parameters (override defaults), random seed, pre-trained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.
 
 Once executed, the script performs the following steps:
 
 1. **Generate the experiment name** using the format ``<experiment_name>_<date>`` if ``experiment_name`` is specified, or ``<algorithm_name>_<date>`` otherwise.
 
-2. **Load a pretrained model**, if defined in the configuration:
+2. **Load a pre-trained model**, if defined in the configuration:
 
    - From a local file path.
    - From a Weights & Biases (WandB) artifact.
@@ -94,7 +94,7 @@ Once executed, the script performs the following steps:
 7. **Initialize the RL algorithm** using the specified hyperparameters:
 
    - If no model is loaded, training starts from scratch. Using the algorithm hyperparameters defined in the configuration.
-   - If a pretrained model is available, it resumes training from the saved state.
+   - If a pre-trained model is available, it resumes training from the saved state.
 
 8. **Set up custom logging**, combining console and WandB logging when ``WandBLogger`` is enabled.
 
@@ -119,7 +119,7 @@ Once executed, the script performs the following steps:
    These examples clearly illustrate how to define your environment, wrappers, algorithm, and other training 
    options—making it straightforward to set up your own experiments. Visit `sinergym/scripts/train/local_confs/conf_examples <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examples>`__.
 
-.. warning:: If you are loading a pretrained model that was trained with **observation normalization**,  
+.. warning:: If you are loading a pre-trained model that was trained with **observation normalization**,  
    it is **critical** to also load the **normalization statistics** (i.e., the running mean and variance)  
    used during its original training (see :ref:`NormalizeObservation`). Otherwise, the model may perform poorly or behave unpredictably due  
    to mismatched input distributions. These statistics are typically saved along with the model and should  
