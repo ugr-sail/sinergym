@@ -1,0 +1,28 @@
+#!/bin/sh
+# Pre-commit hook to run black, ruff, and pyright
+
+echo "🔍 Running black..."
+black --check .
+
+if [ $? -ne 0 ]; then
+  echo "❌ Black failed. Please fix formatting."
+  exit 1
+fi
+
+echo "🔍 Running ruff..."
+ruff check .
+
+if [ $? -ne 0 ]; then
+  echo "❌ Ruff found issues."
+  exit 1
+fi
+
+echo "🔍 Running pyright..."
+pyright .
+
+if [ $? -ne 0 ]; then
+  echo "❌ Pyright found type errors."
+  exit 1
+fi
+
+echo "✅ All checks passed. Proceeding with commit."
