@@ -1,30 +1,30 @@
 {
-    "python.linting.pycodestyleEnabled": false,
     "editor.formatOnSave": true,
-    "window.zoomLevel": 2,
+    "files.autoSave": "onWindowChange",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    },
+    "cursorpyright.analysis.diagnosticMode": "workspace",
+
+    "cSpell.import": ["./.vscode/cspell.yml"],
+
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "black-formatter.args": [
+        "--line-length=88"
+    ],
+
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [
         "--cov=.",
         "tests/",
         "--cov-report",
         "xml:cov.xml"
     ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "black-formatter.args": [
-        "--line-length=88"
-    ],
+
     "files.associations": {
         "*.pyyaml": "yaml"
     },
-    "editor.fontFamily": "JetBrains Mono",
-    "editor.fontLigatures": false,
-    "editor.fontSize": 14,
-
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": "always"
-    },
-    "files.autoSave": "onWindowChange",
 
     "editor.minimap.enabled": true,
     "editor.minimap.scale": 3,
@@ -32,5 +32,4 @@
     "editor.minimap.renderCharacters": true,
     "editor.minimap.side": "right",
 
-    "cSpell.import": ["./.vscode/cspell.yml"]
 }

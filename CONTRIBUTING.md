@@ -101,6 +101,13 @@ def my_function(arg1: type1, arg2: type2) -> return_type:
 - `pyright sinergym/ `
 - `pytest tests/ -vvv`
 
+📎 **Git Hooks Setup**: To ensure code quality standards are met before committing, we recommend setting up the provided git hooks:
+```bash
+chmod +x hooks/*
+git config core.hooksPath hooks
+```
+This will automatically run `black`, `ruff`, and `pyright` (with project's specific settings) checks before each commit.
+
 📋 Workflows in the pull request will check it, in any case.
 
 ---

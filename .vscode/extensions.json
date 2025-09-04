@@ -51,7 +51,7 @@
         "fabiospampinato.vscode-diff",
         "ecmel.vscode-html-css",
         "adamvoss.vscode-languagetool",
-        "github.vscode-github-actions",
+        //"github.vscode-github-actions",
         "bierner.markdown-preview-github-styles"
     ],
     "unwantedRecommendations": []
