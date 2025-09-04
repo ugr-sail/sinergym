@@ -135,6 +135,16 @@ To report questions and issues, [open an issue](https://github.com/ugr-sail/sine
 
 Check out [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for specific details on how to contribute.
 
+To better adhere to the required standards of this repository, we recommend running the following command:
+
+```bash
+chmod +x hooks/*
+git config core.hooksPath hooks
+```
+
+This will add git hooks that execute before using typical commands (add, commit, push, etc.) 
+to verify that the methodology is correct before proceeding with the process.
+
 ## Projects using Sinergym
 
 The following are some of the projects using *Sinergym*:
