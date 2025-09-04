@@ -203,6 +203,13 @@ information on how to report issues is available
 <li><p>Assisting in the development of new features or fixing existing bugs.</p></li>
 </ul>
 <p>Before contributing, please refer to <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for additional information.</p>
+<p>To better adhere to the required standards of this repository, we recommend running the following command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">hooks/*</span>
+<span class="pre">git</span> <span class="pre">config</span> <span class="pre">core.hooksPath</span> <span class="pre">hooks</span>
+<span class="pre">`</span></code></p>
+<p>This will add git hooks that execute before using typical commands (add, commit, push, etc.)
+to verify that the methodology is correct before proceeding with the process.</p>
 </section>
 <section id="projects-using-sinergym">
 <h2>Projects using <em>Sinergym</em><a class="headerlink" href="#projects-using-sinergym" title="Link to this heading"></a></h2>
