@@ -195,9 +195,8 @@ class LoggerStorage:
 
 
 try:
-    from stable_baselines3.common.logger import KVWriter
-
     import wandb
+    from stable_baselines3.common.logger import KVWriter
 
     class WandBOutputFormat(  # type: ignore[reportRedeclaration]
         KVWriter

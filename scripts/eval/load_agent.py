@@ -4,11 +4,11 @@ import sys
 import traceback
 from datetime import datetime
 
+import wandb
 import yaml
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-import wandb
 from sinergym.utils.common import (
     create_environment,
     deep_update,

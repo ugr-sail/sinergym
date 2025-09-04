@@ -6,11 +6,11 @@ import os
 import sys
 import types
 
+import wandb
 import yaml
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-import wandb
 
 if __name__ == '__main__':
 

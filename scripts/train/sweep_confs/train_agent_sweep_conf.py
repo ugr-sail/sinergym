@@ -3,16 +3,17 @@ import sys
 import traceback
 from datetime import datetime
 
+import wandb
 import yaml
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.noise import NormalActionNoise
+from wandb.util import generate_id
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-import wandb
 from sinergym.utils.callbacks import *
 from sinergym.utils.common import (
     create_environment,
@@ -24,7 +25,6 @@ from sinergym.utils.common import (
 )
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
-from wandb.util import generate_id
 
 
 def train():

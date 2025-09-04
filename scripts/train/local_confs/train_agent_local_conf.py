@@ -4,6 +4,7 @@ import sys
 import traceback
 from datetime import datetime
 
+import wandb
 import yaml
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
@@ -13,7 +14,6 @@ from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-import wandb
 from sinergym.utils.callbacks import LoggerEvalCallback
 from sinergym.utils.common import (
     create_environment,

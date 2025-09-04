@@ -191,6 +191,7 @@ exclude = [
     ".pytest_cache"
 ]
 
+
 [tool.ruff.lint]
 select = [
     # "F",  # Pyflakes: unused variables/imports, simple errors
@@ -198,6 +199,9 @@ select = [
     # "E",  # Pycodestyle: minor style errors
 ]
 
+[tool.ruff.lint.isort]
+known-third-party = ["wandb", "stable_baselines3", "gymnasium"]
+known-first-party = ["sinergym"]
 # -------------------------------------------------------------------------- #
 #                         Poetry build configuration                         #
 # -------------------------------------------------------------------------- #
