@@ -399,6 +399,8 @@ class EplusEnv(gym.Env):
                     'STEP queues not receive value, simulation must be completed. changing TRUNCATED flag to TRUE'
                 )
                 truncated = True
+                # No real transition happened, roll back timestep counter
+                self.timestep -= 1
                 obs = self.last_obs
                 info = self.last_info
 
@@ -450,7 +452,6 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def update_context(self, context_values: Union[np.ndarray, List[float]]) -> None:
         """Update real-time building context (actuators which are not controlled by the agent).
-
         Args:
             context_values (Union[np.ndarray, List[float]]): List of values to be updated in the building model.
         """

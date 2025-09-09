@@ -1394,6 +1394,10 @@ class BaseLoggerWrapper(gym.Wrapper, ABC):
         if self.has_normalization:
             self.data_logger.log_norm_obs(obs)
 
+        # Skip logging if no environment transition happened (end-of-episode timeout)
+        if truncated or terminated:
+            return obs, reward, terminated, truncated, info
+
         log_data = {
             "obs": (
                 obs
