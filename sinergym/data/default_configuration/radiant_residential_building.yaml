@@ -249,29 +249,18 @@ only_discrete: true
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: sinergym.utils.rewards:LinearReward
+reward: sinergym.utils.rewards:MultiZoneRewardV1
 
 reward_kwargs:
-  temperature_variables:
-    - firstfloor:livingroom_air_temperature
-    - firstfloor:kitchen_air_temperature
-    - secondfloor:bedroom01_air_temperature
-    - secondfloor:bedroom02_air_temperature
-    - secondfloor:bedroom03_air_temperature
+  comfort_threshold: 1.25
   energy_variables:
-    - HVAC_electricity_demand_rate
-  range_comfort_winter:
-    - 19.0
-    - 21.0
-  range_comfort_summer:
-    - 19.0
-    - 21.0
-  summer_start:
-    - 6
-    - 1
-  summer_final:
-    - 9
-    - 30
-  energy_weight: 0.5
-  lambda_energy: 1.0
-  lambda_temperature: 1.0
+    - heat_source_electricity_rate
+  energy_weight: 0.25,
+  lambda_energy: 0.001,
+  lambda_temperature: 1,
+  temperature_and_setpoints_conf: 
+    air_temperature_bed1: htg_setpoint_bed1,
+    air_temperature_bed2: htg_setpoint_bed2,
+    air_temperature_bed3: htg_setpoint_bed3,
+    air_temperature_kitchen: htg_setpoint_kitchen,
+    air_temperature_living: htg_setpoint_living
