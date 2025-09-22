@@ -140,6 +140,9 @@ variables:
       - SecondFloor:Bedroom01 radiant surface
       - SecondFloor:Bedroom02 radiant surface
       - SecondFloor:Bedroom03 radiant surface
+  System Node Setpoint Temperature:
+    variable_names: system_node_setpoint_temperature
+    keys: HW Loop Supply Side Outlet
   System Node Mass Flow Rate:
     variable_names:
       - flow_rate_living

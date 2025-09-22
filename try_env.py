@@ -20,7 +20,7 @@ terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Creating environment and applying wrappers for normalization and logging
-env = gym.make('Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1')
+env = gym.make('Eplus-radiant_case3_heating-stockholm-continuous-stochastic-v1')
 # env = RoundActionWrapper(env)
 # env = HeatPumpEnergyWrapper(env)
 env = NormalizeObservation(env)
@@ -36,6 +36,7 @@ env = ReduceObservationWrapper(
         'radiant_hvac_outlet_temperature_bed1',
         'radiant_hvac_outlet_temperature_bed2',
         'radiant_hvac_outlet_temperature_bed3',
+        'system_node_setpoint_temperature',
         'flow_rate_living',
         'flow_rate_kitchen',
         'flow_rate_bed1',
