@@ -121,10 +121,6 @@ actuators:
     variable_name: Cooling_Setpoint_RL
     element_type: Schedule:Compact
     value_type: Schedule Value
-  SUPPLY AIR SETPOINT SCHEDULE:
-    variable_name: Supply_Air_RL
-    element_type: Schedule:Compact
-    value_type: Schedule Value
 
 # ---------------------------------------------------------------------------- #
 #                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
@@ -134,7 +130,7 @@ context: {}
 # ---------------------------------------------------------------------------- #
 #                                 ACTIONS SPACE                                #
 # ---------------------------------------------------------------------------- #
-action_space: gym.spaces.Box(low=np.array([20.0, 5.0], dtype=np.float32), high=np.array([40.0, 15.0], dtype=np.float32), shape=(2,), dtype=np.float32)
+action_space: gym.spaces.Box(low=np.array([20.0], dtype=np.float32), high=np.array([40.0], dtype=np.float32), shape=(1,), dtype=np.float32)
 
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
