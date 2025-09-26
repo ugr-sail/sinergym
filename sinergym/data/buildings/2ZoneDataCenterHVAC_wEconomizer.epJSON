@@ -1606,7 +1606,7 @@
             "actuator_node_name": "East Outside Air Inlet Node",
             "economizer_control_type": "FixedDryBulb",
             "economizer_maximum_limit_dewpoint_temperature": 13.5,
-            "economizer_maximum_limit_dry_bulb_temperature": 16.0,
+            "economizer_maximum_limit_dry_bulb_temperature": 23.0,
             "economizer_minimum_limit_dry_bulb_temperature": -20.0,
             "lockout_type": "NoLockout",
             "maximum_outdoor_air_flow_rate": "Autosize",
@@ -1883,7 +1883,7 @@
     },
     "ElectricEquipment:ITE:AirCooled": {
         "EastDataCenter_Equip": {
-            "air_flow_calculation_method": "FlowControlWithApproachTemperatures",
+            "air_flow_calculation_method": "FlowFromSystem",
             "air_flow_function_of_loading_and_air_temperature_curve_name": "Data Center Servers Airflow fLoadTemp",
             "air_inlet_connection_type": "AdjustedSupply",
             "cpu_end_use_subcategory": "ITE-CPU",
