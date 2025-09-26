@@ -2898,19 +2898,19 @@
                     "field": "Until:  7:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -2927,7 +2927,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0.0
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
