@@ -2,12 +2,12 @@
 # ---------------------------------------------------------------------------- #
 #                        ID BASE FROM ENVIRONMNET NAMES                        #
 # ---------------------------------------------------------------------------- #
-id_base: datacenter
+id_base: datacenter_dx
 
 # ---------------------------------------------------------------------------- #
 #                         BUILDING AND WEATHER SETTINGS                        #
 # ---------------------------------------------------------------------------- #
-building_file: 2ZoneDataCenterHVAC_wEconomizer.epJSON
+building_file: 2ZoneDataCenterHVAC_wEconomizer_DX.epJSON
 
 # A environment alternative for each weather key
 weather_specification:
@@ -75,52 +75,107 @@ variables:
     keys: Environment
   Zone Thermostat Heating Setpoint Temperature:
     variable_names: htg_setpoint
-    keys:
-      - West Zone
-      - East Zone
+    keys: East Zone
+    # keys:
+    #   - East Zone
+    #   - West Zone
   Zone Thermostat Cooling Setpoint Temperature:
     variable_names: clg_setpoint
-    keys:
-      - West Zone
-      - East Zone
+    keys: East Zone
+      # keys:
+      #   - East Zone
+      #   - West Zone
   Zone Air Temperature:
     variable_names: air_temperature
     keys:
-      - West Zone
       - East Zone
+      - West Zone
+  Zone Mean Radiant Temperature:
+    variable_names: mean_radiant_temperature
+    keys:
+      - East Zone
+      - West Zone
   Zone Air Relative Humidity:
     variable_names: air_humidity
     keys:
-      - West Zone
       - East Zone
-  Zone Thermal Comfort Mean Radiant Temperature:
-    variable_names: thermal_comfort_mean_radiant_temperature
-    keys:
-      - West Zone PEOPLE
-      - East Zone PEOPLE
-  Zone Thermal Comfort Clothing Value:
-    variable_names: thermal_comfort_clothing_value
-    keys:
-      - West Zone PEOPLE
-      - East Zone PEOPLE
-  Zone Thermal Comfort Fanger Model PPD:
-    variable_names: thermal_comfort_fanger_model_ppd
-    keys:
-      - West Zone PEOPLE
-      - East Zone PEOPLE
-  Zone People Occupant Count:
-    variable_names: people_occupant
-    keys:
       - West Zone
-      - East Zone
-  People Air Temperature:
-    variable_names: people_air_temperature
+  System Node Temperature:
+    variable_names:
+      - east_zone_inlet_temperature
+      - east_air_loop_outlet_temperature
+      - west_zone_inlet_temperature
+      - west_air_loop_outlet_temperature
     keys:
-      - West Zone PEOPLE
-      - East Zone PEOPLE
+      - East Zone Inlet Node
+      - East Air Loop Outlet Node
+      - West Zone Inlet Node
+      - West Air Loop Outlet Node
+      # - East Zone CCoil Air Outlet Node
+      # - West Zone CCoil Air Outlet Node
+      # - East Zone Mixed Air Node
+      # - West Zone Mixed Air Node
+  Performance Curve Input Variable 1 Value:
+    variable_names: cpu_loading_fraction
+    keys: Data Center Servers Power fLoadTemp
+  System Node Mass Flow Rate:
+    variable_names: 
+      - east_mass_flow_rate
+      - west_mass_flow_rate
+    keys:
+      - East Zone Inlet Node
+      - West Zone Inlet Node
+      # - East Zone CCoil Air Outlet Node
+      # - West Zone CCoil Air Outlet Node
+  Cooling Coil Total Cooling Rate:
+    variable_names: 
+      - east_dx_total_cooling_rate
+      - west_dx_total_cooling_rate
+    keys:
+      - East DX Cooling Coil
+      - West DX Cooling Coil
+  Evaporative Cooler Electricity Rate:
+    variable_names: 
+      - east_dec_electricity_rate
+      - east_iec_electricity_rate
+      - west_dec_electricity_rate
+      - west_iec_electricity_rate
+    keys:
+      - East Data Center DEC
+      - East Data Center IEC
+      - West Data Center DEC
+      - West Data Center IEC
+  Fan Electricity Rate:
+    variable_names: 
+      - east_fan_electricity_rate
+      - west_fan_electricity_rate
+    keys: 
+      - East Zone Supply Fan
+      - West Zone Supply Fan
+  # Cooling Tower Fan Electricity Rate:
+  #   variable_names: cooling_tower_fan_electricity_rate
+  #   keys: Cooling Tower
+  Cooling Tower Basin Heater Electricity Rate:
+    variable_names: cooling_tower_basin_heater_electricity_rate
+    keys: Cooling Tower
+  # Cooling Coil Crankcase Heater Electricity Rate:
+  #   variable_names:
+  #     - east_dx_crankcase_heater_electricity_rate
+  #     - west_dx_crankcase_heater_electricity_rate
+  #   keys:
+  #     - East DX Cooling Coil
+  #     - West DX Cooling Coil
+  Zone ITE CPU Electricity Rate:
+    variable_names: cpu_demand_rate
+    keys: 
+      - East Zone
+      - West Zone
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
+  # Facility Total Building Electricity Demand Rate:
+  #   variable_names: building_electricity_demand_rate
+  #   keys: Whole Building
 
 # ------------------------------- OUTPUT:METERS ------------------------------ #
 meters: {}
@@ -131,14 +186,11 @@ meters: {}
 
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
-  # Heating Setpoints:
-  #   variable_name: Heating_Setpoint_RL
-  #   element_type: Schedule:Compact
-  #   value_type: Schedule Value
   Cooling Setpoints:
     variable_name: Cooling_Setpoint_RL
     element_type: Schedule:Compact
     value_type: Schedule Value
+  # flow rate
 
 # ---------------------------------------------------------------------------- #
 #                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
