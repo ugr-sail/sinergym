@@ -131,10 +131,10 @@ meters: {}
 
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
-  Heating Setpoints:
-    variable_name: Heating_Setpoint_RL
-    element_type: Schedule:Compact
-    value_type: Schedule Value
+  # Heating Setpoints:
+  #   variable_name: Heating_Setpoint_RL
+  #   element_type: Schedule:Compact
+  #   value_type: Schedule Value
   Cooling Setpoints:
     variable_name: Cooling_Setpoint_RL
     element_type: Schedule:Compact
@@ -148,7 +148,7 @@ context: {}
 # ---------------------------------------------------------------------------- #
 #                                 ACTIONS SPACE                                #
 # ---------------------------------------------------------------------------- #
-action_space: gym.spaces.Box(low=np.array([15.0, 22.0], dtype=np.float32), high=np.array([22.0, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)
+action_space: gym.spaces.Box(low=np.array([20.0], dtype=np.float32), high=np.array([30.0], dtype=np.float32), shape=(1,), dtype=np.float32)
 
 action_space_discrete: gym.spaces.Discrete(10)
 
