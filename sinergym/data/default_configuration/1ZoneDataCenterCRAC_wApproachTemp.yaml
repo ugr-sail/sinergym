@@ -74,9 +74,6 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys: Main Zone
   Zone Thermostat Cooling Setpoint Temperature:
     variable_names: clg_setpoint
     keys: Main Zone
