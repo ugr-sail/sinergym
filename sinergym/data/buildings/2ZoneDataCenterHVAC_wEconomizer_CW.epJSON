@@ -1606,7 +1606,7 @@
             "actuator_node_name": "East Outside Air Inlet Node",
             "economizer_control_type": "FixedDryBulb",
             "economizer_maximum_limit_dewpoint_temperature": 13.5,
-            "economizer_maximum_limit_dry_bulb_temperature": 16.0,
+            "economizer_maximum_limit_dry_bulb_temperature": 23.0,
             "economizer_minimum_limit_dry_bulb_temperature": -20.0,
             "lockout_type": "NoLockout",
             "maximum_outdoor_air_flow_rate": "Autosize",
@@ -1883,7 +1883,7 @@
     },
     "ElectricEquipment:ITE:AirCooled": {
         "EastDataCenter_Equip": {
-            "air_flow_calculation_method": "FlowControlWithApproachTemperatures",
+            "air_flow_calculation_method": "FlowFromSystem",
             "air_flow_function_of_loading_and_air_temperature_curve_name": "Data Center Servers Airflow fLoadTemp",
             "air_inlet_connection_type": "AdjustedSupply",
             "cpu_end_use_subcategory": "ITE-CPU",
@@ -3201,7 +3201,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0.0
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3218,19 +3218,19 @@
                     "field": "Until:  7:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1.0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3361,11 +3361,9 @@
     },
     "SimulationControl": {
         "SimulationControl 1": {
-            "do_hvac_sizing_simulation_for_sizing_periods": "No",
-            "do_plant_sizing_calculation": "No",
+            "do_plant_sizing_calculation": "Yes",
             "do_system_sizing_calculation": "Yes",
             "do_zone_sizing_calculation": "Yes",
-            "maximum_number_of_hvac_sizing_simulation_passes": 1,
             "run_simulation_for_sizing_periods": "No",
             "run_simulation_for_weather_file_run_periods": "Yes"
         }

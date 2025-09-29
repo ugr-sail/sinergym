@@ -55,6 +55,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air DryBulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -73,22 +75,8 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys:
-      - FirstFloor:LivingRoom
-      - FirstFloor:Kitchen
-      - SecondFloor:Bedroom01
-      - SecondFloor:Bedroom02
-      - SecondFloor:Bedroom03
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys:
-      - FirstFloor:LivingRoom
-      - FirstFloor:Kitchen
-      - SecondFloor:Bedroom01
-      - SecondFloor:Bedroom02
-      - SecondFloor:Bedroom03
+  
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
     keys:
@@ -145,6 +133,24 @@ variables:
       - People SecondFloor:Bedroom01
       - People SecondFloor:Bedroom02
       - People SecondFloor:Bedroom03
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Heating Setpoint Temperature:
+    variable_names: htg_setpoint
+    keys:
+      - FirstFloor:LivingRoom
+      - FirstFloor:Kitchen
+      - SecondFloor:Bedroom01
+      - SecondFloor:Bedroom02
+      - SecondFloor:Bedroom03
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys:
+      - FirstFloor:LivingRoom
+      - FirstFloor:Kitchen
+      - SecondFloor:Bedroom01
+      - SecondFloor:Bedroom02
+      - SecondFloor:Bedroom03
   Zone Radiant HVAC Outlet Temperature:
     variable_names: radiant_hvac_outlet_temperature
     keys:
@@ -194,6 +200,8 @@ variables:
   Boiler Outlet Temperature:
     variable_names: boiler_temperature
     keys: Boiler
+
+  # ---------------------------------- ENERGY ---------------------------------- #
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building

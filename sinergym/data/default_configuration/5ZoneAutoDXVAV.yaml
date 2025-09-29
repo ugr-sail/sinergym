@@ -54,6 +54,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air DryBulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -72,12 +74,8 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys: SPACE5-1
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys: SPACE5-1
+
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
     keys: SPACE5-1
@@ -87,6 +85,16 @@ variables:
   Zone People Occupant Count:
     variable_names: people_occupant
     keys: SPACE5-1
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Heating Setpoint Temperature:
+    variable_names: htg_setpoint
+    keys: SPACE5-1
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys: SPACE5-1
+
+  # ---------------------------------- ENERGY ---------------------------------- #
   Environmental Impact Total CO2 Emissions Carbon Equivalent Mass:
     variable_names: co2_emission
     keys: site
