@@ -285,6 +285,8 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 
 <span class="c1"># ----------------------------- OUTPUT:VARIABLES ----------------------------- #</span>
 <span class="nt">variables</span><span class="p">:</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- OUTDOOR --------------------------------- #</span>
 <span class="w">  </span><span class="nt">Site Outdoor Air DryBulb Temperature</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outdoor_temperature</span>
 <span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
@@ -303,12 +305,8 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="w">  </span><span class="nt">Site Direct Solar Radiation Rate per Area</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">direct_solar_radiation</span>
 <span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
-<span class="w">  </span><span class="nt">Zone Thermostat Heating Setpoint Temperature</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">htg_setpoint</span>
-<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
-<span class="w">  </span><span class="nt">Zone Thermostat Cooling Setpoint Temperature</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clg_setpoint</span>
-<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+
+<span class="w">  </span><span class="c1"># -------------------------------- ZONE INDOOR ------------------------------- #</span>
 <span class="w">  </span><span class="nt">Zone Air Temperature</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_temperature</span>
 <span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
@@ -318,6 +316,16 @@ For additional details, refer to <a class="reference internal" href="wrappers.ht
 <span class="w">  </span><span class="nt">Zone People Occupant Count</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">people_occupant</span>
 <span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- SYSTEM ---------------------------------- #</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Heating Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">htg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Cooling Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- ENERGY ---------------------------------- #</span>
 <span class="w">  </span><span class="nt">Environmental Impact Total CO2 Emissions Carbon Equivalent Mass</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">co2_emission</span>
 <span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">site</span>
