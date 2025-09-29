@@ -55,6 +55,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air Drybulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -73,18 +75,8 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys: East Zone
-    # keys:
-    #   - East Zone
-    #   - West Zone
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys: East Zone
-      # keys:
-      #   - East Zone
-      #   - West Zone
+
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
     keys:
@@ -100,24 +92,29 @@ variables:
     keys:
       - East Zone
       - West Zone
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys: East Zone
+      # keys:
+      #   - East Zone
+      #   - West Zone
   System Node Temperature:
     variable_names:
-      - east_zone_inlet_temperature
-      - east_air_loop_outlet_temperature
-      - west_zone_inlet_temperature
-      - west_air_loop_outlet_temperature
+      - east_return_temperature
+      - east_supply_temperature
+      - west_return_temperature
+      - west_supply_temperature
     keys:
-      - East Zone Inlet Node
+      - East Zone Return Air Node
       - East Air Loop Outlet Node
-      - West Zone Inlet Node
+      - West Zone Return Air Node
       - West Air Loop Outlet Node
       # - East Zone CCoil Air Outlet Node
       # - West Zone CCoil Air Outlet Node
       # - East Zone Mixed Air Node
       # - West Zone Mixed Air Node
-  Performance Curve Input Variable 1 Value:
-    variable_names: cpu_loading_fraction
-    keys: Data Center Servers Power fLoadTemp
   System Node Mass Flow Rate:
     variable_names: 
       - east_mass_flow_rate
@@ -131,6 +128,25 @@ variables:
     variable_names: 
       - east_dx_total_cooling_rate
       - west_dx_total_cooling_rate
+    keys:
+      - East DX Cooling Coil
+      - West DX Cooling Coil
+  Cooling Coil Sensible Cooling Rate:
+    variable_names: 
+      - east_dx_sensible_cooling_rate
+      - west_dx_sensible_cooling_rate
+    keys:
+      - East DX Cooling Coil
+      - West DX Cooling Coil
+  Performance Curve Input Variable 1 Value:
+    variable_names: cpu_loading_fraction
+    keys: Data Center Servers Power fLoadTemp
+
+  # ---------------------------------- ENERGY ---------------------------------- #
+  Cooling Coil Electricity Rate:
+    variable_names: 
+      - east_dx_electricity_rate
+      - west_dx_electricity_rate
     keys:
       - East DX Cooling Coil
       - West DX Cooling Coil
@@ -165,17 +181,14 @@ variables:
   #   keys:
   #     - East DX Cooling Coil
   #     - West DX Cooling Coil
-  Zone ITE CPU Electricity Rate:
-    variable_names: cpu_demand_rate
-    keys: 
-      - East Zone
-      - West Zone
+  # Zone ITE CPU Electricity Rate:
+  #   variable_names: cpu_demand_rate
+  #   keys: 
+  #     - East Zone
+  #     - West Zone
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
-  # Facility Total Building Electricity Demand Rate:
-  #   variable_names: building_electricity_demand_rate
-  #   keys: Whole Building
 
 # ------------------------------- OUTPUT:METERS ------------------------------ #
 meters: {}
@@ -190,7 +203,6 @@ actuators:
     variable_name: Cooling_Setpoint_RL
     element_type: Schedule:Compact
     value_type: Schedule Value
-  # flow rate
 
 # ---------------------------------------------------------------------------- #
 #                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
