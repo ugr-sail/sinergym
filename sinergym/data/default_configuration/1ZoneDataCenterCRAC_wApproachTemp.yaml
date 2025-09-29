@@ -56,6 +56,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air Drybulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -74,38 +76,57 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys: Main Zone
+
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
+    keys: Main Zone
+  Zone Mean Radiant Temperature:
+    variable_names: mean_radiant_temperature
     keys: Main Zone
   Zone Air Relative Humidity:
     variable_names: air_humidity
     keys: Main Zone
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys: Main Zone
+  System Node Temperature:
+    variable_names:
+      - supply_air_temperature
+      - return_air_temperature
+    keys:
+      - Supply Outlet Node
+      - Main Zone Outlet Node
+  System Node Mass Flow Rate:
+    variable_names: supply_mass_flow_rate
+    keys: Supply Outlet Node
+  Cooling Coil Total Cooling Rate:
+    variable_names: cooling_coil_total_cooling_rate
+    keys: MAIN COOLING COIL 1
+  Cooling Coil Sensible Cooling Rate:
+    variable_names: cooling_coil_sensible_cooling_rate
+    keys: MAIN COOLING COIL 1
+
+  # ---------------------------------- ENERGY ---------------------------------- #
   Cooling Coil Electricity Rate:
-    variable_names: cooling_coil_demand_rate
+    variable_names: cooling_coil_electricity_rate
     keys: MAIN COOLING COIL 1
   Fan Electricity Rate:
-    variable_names: fan_demand_rate
+    variable_names: fan_electricity_rate
     keys: EC PLUG FAN 1
-  ITE UPS Electricity Rate:
-    variable_names: ups_demand_rate
-    keys: DATA CENTER SERVERS
-  ITE Fan Electricity Rate:
-    variable_names: ite_fan_demand_rate
-    keys: DATA CENTER SERVERS
-  ITE CPU Electricity Rate:
-    variable_names: cpu_demand_rate
-    keys: DATA CENTER SERVERS
+  # ITE UPS Electricity Rate:
+  #   variable_names: ups_demand_rate
+  #   keys: DATA CENTER SERVERS
+  # ITE Fan Electricity Rate:
+  #   variable_names: ite_fan_demand_rate
+  #   keys: DATA CENTER SERVERS
+  # ITE CPU Electricity Rate:
+  #   variable_names: cpu_demand_rate
+  #   keys: DATA CENTER SERVERS
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
-    keys: Whole Building
-  Facility Total Building Electricity Demand Rate:
-    variable_names: building_electricity_demand_rate
-    keys: Whole Building
-  Facility Total Electricity Demand Rate:
-    variable_names: total_electricity_demand_rate
     keys: Whole Building
 
 # ------------------------------- OUTPUT:METERS ------------------------------ #
@@ -141,7 +162,7 @@ reward_kwargs:
   temperature_variables:
     - air_temperature
   energy_variables:
-    - total_electricity_demand_rate
+    - HVAC_electricity_demand_rate
   range_comfort_winter:
     - 18
     - 27
