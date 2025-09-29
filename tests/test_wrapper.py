@@ -666,7 +666,7 @@ def test_deltatemp_wrapper(env_datacenter):
             'west_zone_air_temperature',
             'east_zone_air_temperature',
         ],
-        setpoint_variables=['west_zone_htg_setpoint', 'east_zone_htg_setpoint'],
+        setpoint_variables=['clg_setpoint'],
     )
 
     # Check attributes exist in wrapped env
@@ -690,11 +690,11 @@ def test_deltatemp_wrapper(env_datacenter):
     assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
     assert (
         obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['west_zone_htg_setpoint']
+        == obs_dict['west_zone_air_temperature'] - obs_dict['clg_setpoint']
     )
     assert (
         obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['east_zone_htg_setpoint']
+        == obs_dict['east_zone_air_temperature'] - obs_dict['clg_setpoint']
     )
 
     a = env.action_space.sample()
@@ -702,48 +702,11 @@ def test_deltatemp_wrapper(env_datacenter):
     obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
     assert (
         obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['west_zone_htg_setpoint']
+        == obs_dict['west_zone_air_temperature'] - obs_dict['clg_setpoint']
     )
     assert (
         obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['east_zone_htg_setpoint']
-    )
-
-    env.close()
-
-    # Unique setpoint value for all temperature values
-    env = DeltaTempWrapper(
-        env_datacenter,
-        temperature_variables=[
-            'west_zone_air_temperature',
-            'east_zone_air_temperature',
-        ],
-        setpoint_variables=['west_zone_htg_setpoint'],
-    )
-
-    # Check observation values
-    obs, _ = env.reset()
-    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
-    assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
-    assert (
-        obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['west_zone_htg_setpoint']
-    )
-    assert (
-        obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['east_zone_htg_setpoint']
-    )
-
-    a = env.action_space.sample()
-    obs, _, _, _, _ = env.step(a)
-    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
-    assert (
-        obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['west_zone_htg_setpoint']
-    )
-    assert (
-        obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['west_zone_htg_setpoint']
+        == obs_dict['east_zone_air_temperature'] - obs_dict['clg_setpoint']
     )
 
     env.close()

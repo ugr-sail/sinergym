@@ -136,17 +136,13 @@ class RBCIncrementalDatacenter(object):
             ]
         )
 
-        current_heat_setpoint = obs_dict['west_zone_htg_setpoint']
-        current_cool_setpoint = obs_dict['west_zone_clg_setpoint']
+        current_cool_setpoint = obs_dict['clg_setpoint']
 
-        new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
 
         if mean_temp < self.range_datacenter[0]:  # pragma: no cover
-            new_heat_setpoint = current_heat_setpoint + 1
             new_cool_setpoint = current_cool_setpoint + 1
         elif mean_temp > self.range_datacenter[1]:  # pragma: no cover
             new_cool_setpoint = current_cool_setpoint - 1
-            new_heat_setpoint = current_heat_setpoint - 1
 
-        return np.array((new_heat_setpoint, new_cool_setpoint), dtype=np.float32)
+        return np.array([new_cool_setpoint], dtype=np.float32)

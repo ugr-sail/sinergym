@@ -53,6 +53,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air DryBulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -71,17 +73,8 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys:
-      - Zone1 Office
-      - Zone2 Fine Storage
-      - Zone3 Bulk Storage
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys:
-      - Zone1 Office
-      - Zone2 Fine Storage
+  
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
     keys:
@@ -98,6 +91,21 @@ variables:
     variable_names: people_occupant
     keys:
       - Zone1 Office
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Heating Setpoint Temperature:
+    variable_names: htg_setpoint
+    keys:
+      - Zone1 Office
+      - Zone2 Fine Storage
+      - Zone3 Bulk Storage
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys:
+      - Zone1 Office
+      - Zone2 Fine Storage
+
+  # ---------------------------------- ENERGY ---------------------------------- #
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
