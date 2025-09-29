@@ -75,16 +75,16 @@ def DEFAULT_DATACENTER_DX_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         action = int(action.item())
 
     mapping = {
-        0: np.array([15], dtype=np.float32),
-        1: np.array([16], dtype=np.float32),
-        2: np.array([17], dtype=np.float32),
-        3: np.array([18], dtype=np.float32),
-        4: np.array([19], dtype=np.float32),
-        5: np.array([20], dtype=np.float32),
-        6: np.array([21], dtype=np.float32),
-        7: np.array([22], dtype=np.float32),
-        8: np.array([22], dtype=np.float32),
-        9: np.array([21], dtype=np.float32),
+        0: np.array([20], dtype=np.float32),
+        1: np.array([21], dtype=np.float32),
+        2: np.array([22], dtype=np.float32),
+        3: np.array([23], dtype=np.float32),
+        4: np.array([24], dtype=np.float32),
+        5: np.array([25], dtype=np.float32),
+        6: np.array([26], dtype=np.float32),
+        7: np.array([27], dtype=np.float32),
+        8: np.array([28], dtype=np.float32),
+        9: np.array([29], dtype=np.float32),
     }
 
     return mapping[action]
@@ -96,16 +96,16 @@ def DEFAULT_DATACENTER_CW_DISCRETE_FUNCTION(action: int) -> np.ndarray:
         action = int(action.item())
 
     mapping = {
-        0: np.array([15], dtype=np.float32),
-        1: np.array([16], dtype=np.float32),
-        2: np.array([17], dtype=np.float32),
-        3: np.array([18], dtype=np.float32),
-        4: np.array([19], dtype=np.float32),
-        5: np.array([20], dtype=np.float32),
-        6: np.array([21], dtype=np.float32),
-        7: np.array([22], dtype=np.float32),
-        8: np.array([22], dtype=np.float32),
-        9: np.array([21], dtype=np.float32),
+        0: np.array([20, 10], dtype=np.float32),
+        1: np.array([21, 9], dtype=np.float32),
+        2: np.array([22, 8], dtype=np.float32),
+        3: np.array([23, 7], dtype=np.float32),
+        4: np.array([24, 6], dtype=np.float32),
+        5: np.array([25, 5], dtype=np.float32),
+        6: np.array([26, 5], dtype=np.float32),
+        7: np.array([27, 6], dtype=np.float32),
+        8: np.array([28, 7], dtype=np.float32),
+        9: np.array([29, 8], dtype=np.float32),
     }
 
     return mapping[action]

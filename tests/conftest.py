@@ -139,9 +139,9 @@ def ACTION_SPACE_DISCRETE_5ZONE():
 @pytest.fixture(scope='function')
 def ACTION_SPACE_DATACENTER():
     return gym.spaces.Box(
-        low=np.array([15.0, 22.0], dtype=np.float32),
-        high=np.array([22.0, 30.0], dtype=np.float32),
-        shape=(2,),
+        low=np.array([20.0], dtype=np.float32),
+        high=np.array([30.0], dtype=np.float32),
+        shape=(1,),
         dtype=np.float32,
     )
 
@@ -149,8 +149,14 @@ def ACTION_SPACE_DATACENTER():
 @pytest.fixture(scope='function')
 def VARIABLES_DATACENTER():
     return {
-        'outdoor_temperature': ('Site Outdoor Air Drybulb Temperature', 'Environment'),
-        'outdoor_humidity': ('Site Outdoor Air Relative Humidity', 'Environment'),
+        'outdoor_temperature': (
+            'Site Outdoor Air Drybulb Temperature',
+            'Environment',
+        ),
+        'outdoor_humidity': (
+            'Site Outdoor Air Relative Humidity',
+            'Environment',
+        ),
         'wind_speed': ('Site Wind Speed', 'Environment'),
         'wind_direction': ('Site Wind Direction', 'Environment'),
         'diffuse_solar_radiation': (
@@ -161,59 +167,101 @@ def VARIABLES_DATACENTER():
             'Site Direct Solar Radiation Rate per Area',
             'Environment',
         ),
-        'west_zone_htg_setpoint': (
-            'Zone Thermostat Heating Setpoint Temperature',
-            'West Zone',
-        ),
-        'east_zone_htg_setpoint': (
-            'Zone Thermostat Heating Setpoint Temperature',
-            'East Zone',
-        ),
-        'west_zone_clg_setpoint': (
-            'Zone Thermostat Cooling Setpoint Temperature',
-            'West Zone',
-        ),
-        'east_zone_clg_setpoint': (
-            'Zone Thermostat Cooling Setpoint Temperature',
-            'East Zone',
-        ),
-        'west_zone_air_temperature': ('Zone Air Temperature', 'West Zone'),
         'east_zone_air_temperature': ('Zone Air Temperature', 'East Zone'),
-        'west_zone_thermal_comfort_mean_radiant_temperature': (
-            'Zone Thermal Comfort Mean Radiant Temperature',
-            'West Zone PEOPLE',
+        'west_zone_air_temperature': ('Zone Air Temperature', 'West Zone'),
+        'east_zone_mean_radiant_temperature': (
+            'Zone Mean Radiant Temperature',
+            'East Zone',
         ),
-        'east_zone_thermal_comfort_mean_radiant_temperature': (
-            'Zone Thermal Comfort Mean Radiant Temperature',
-            'East Zone PEOPLE',
+        'west_zone_mean_radiant_temperature': (
+            'Zone Mean Radiant Temperature',
+            'West Zone',
         ),
-        'west_zone_air_humidity': ('Zone Air Relative Humidity', 'West Zone'),
         'east_zone_air_humidity': ('Zone Air Relative Humidity', 'East Zone'),
-        'west_zone_thermal_comfort_clothing_value': (
-            'Zone Thermal Comfort Clothing Value',
-            'West Zone PEOPLE',
+        'west_zone_air_humidity': ('Zone Air Relative Humidity', 'West Zone'),
+        'clg_setpoint': (
+            'Zone Thermostat Cooling Setpoint Temperature',
+            'East Zone',
         ),
-        'east_zone_thermal_comfort_clothing_value': (
-            'Zone Thermal Comfort Clothing Value',
-            'East Zone PEOPLE',
+        'east_return_temperature': (
+            'System Node Temperature',
+            'East Zone Return Air Node',
         ),
-        'west_zone_thermal_comfort_fanger_model_ppd': (
-            'Zone Thermal Comfort Fanger Model PPD',
-            'West Zone PEOPLE',
+        'east_supply_temperature': (
+            'System Node Temperature',
+            'East Air Loop Outlet Node',
         ),
-        'east_zone_thermal_comfort_fanger_model_ppd': (
-            'Zone Thermal Comfort Fanger Model PPD',
-            'East Zone PEOPLE',
+        'west_return_temperature': (
+            'System Node Temperature',
+            'West Zone Return Air Node',
         ),
-        'west_zone_people_occupant': ('Zone People Occupant Count', 'West Zone'),
-        'east_zone_people_occupant': ('Zone People Occupant Count', 'East Zone'),
-        'west_zone_people_air_temperature': (
-            'People Air Temperature',
-            'West Zone PEOPLE',
+        'west_supply_temperature': (
+            'System Node Temperature',
+            'West Air Loop Outlet Node',
         ),
-        'east_zone_people_air_temperature': (
-            'People Air Temperature',
-            'East Zone PEOPLE',
+        'east_mass_flow_rate': (
+            'System Node Mass Flow Rate',
+            'East Zone Inlet Node',
+        ),
+        'west_mass_flow_rate': (
+            'System Node Mass Flow Rate',
+            'West Zone Inlet Node',
+        ),
+        'east_dx_total_cooling_rate': (
+            'Cooling Coil Total Cooling Rate',
+            'East DX Cooling Coil',
+        ),
+        'west_dx_total_cooling_rate': (
+            'Cooling Coil Total Cooling Rate',
+            'West DX Cooling Coil',
+        ),
+        'east_dx_sensible_cooling_rate': (
+            'Cooling Coil Sensible Cooling Rate',
+            'East DX Cooling Coil',
+        ),
+        'west_dx_sensible_cooling_rate': (
+            'Cooling Coil Sensible Cooling Rate',
+            'West DX Cooling Coil',
+        ),
+        'cpu_loading_fraction': (
+            'Performance Curve Input Variable 1 Value',
+            'Data Center Servers Power fLoadTemp',
+        ),
+        'east_dx_electricity_rate': (
+            'Cooling Coil Electricity Rate',
+            'East DX Cooling Coil',
+        ),
+        'west_dx_electricity_rate': (
+            'Cooling Coil Electricity Rate',
+            'West DX Cooling Coil',
+        ),
+        'east_dec_electricity_rate': (
+            'Evaporative Cooler Electricity Rate',
+            'East Data Center DEC',
+        ),
+        'east_iec_electricity_rate': (
+            'Evaporative Cooler Electricity Rate',
+            'East Data Center IEC',
+        ),
+        'west_dec_electricity_rate': (
+            'Evaporative Cooler Electricity Rate',
+            'West Data Center DEC',
+        ),
+        'west_iec_electricity_rate': (
+            'Evaporative Cooler Electricity Rate',
+            'West Data Center IEC',
+        ),
+        'east_fan_electricity_rate': (
+            'Fan Electricity Rate',
+            'East Zone Supply Fan',
+        ),
+        'west_fan_electricity_rate': (
+            'Fan Electricity Rate',
+            'West Zone Supply Fan',
+        ),
+        'cooling_tower_basin_heater_electricity_rate': (
+            'Cooling Tower Basin Heater Electricity Rate',
+            'Cooling Tower',
         ),
         'HVAC_electricity_demand_rate': (
             'Facility Total HVAC Electricity Demand Rate',
@@ -230,11 +278,6 @@ def METERS_DATACENTER():
 @pytest.fixture(scope='function')
 def ACTUATORS_DATACENTER():
     return {
-        'Heating_Setpoint_RL': (
-            'Schedule:Compact',
-            'Schedule Value',
-            'Heating Setpoints',
-        ),
         'Cooling_Setpoint_RL': (
             'Schedule:Compact',
             'Schedule Value',
@@ -471,8 +514,8 @@ def env_datacenter(
     ACTUATORS_DATACENTER,
 ):
     env = EplusEnv(
-        building_file='2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        building_file='2ZoneDataCenterHVAC_wEconomizer_DX.epJSON',
+        weather_files='USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
         action_space=ACTION_SPACE_DATACENTER,
         time_variables=TIME_VARIABLES,
         variables=VARIABLES_DATACENTER,
