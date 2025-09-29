@@ -53,6 +53,8 @@ time_variables:
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
 variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
   Site Outdoor Air DryBulb Temperature:
     variable_names: outdoor_temperature
     keys: Environment
@@ -71,12 +73,8 @@ variables:
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
-  Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
-    keys: Basement
-  Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
-    keys: Basement
+  
+  # -------------------------------- ZONE INDOOR ------------------------------- #
   Zone Air Temperature:
     variable_names: air_temperature
     keys:
@@ -140,9 +138,19 @@ variables:
       - Perimeter_top_ZN_2
       - Perimeter_top_ZN_3
       - Perimeter_top_ZN_4
+
+  # ---------------------------------- SYSTEM ---------------------------------- #
+  Zone Thermostat Heating Setpoint Temperature:
+    variable_names: htg_setpoint
+    keys: Basement
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names: clg_setpoint
+    keys: Basement
   Electric Storage Simple Charge State:
     variable_names: battery_charge_state
     keys: Battery
+
+  # ---------------------------------- ENERGY ---------------------------------- #
   Facility Total HVAC Electricity Demand Rate:
     variable_names: HVAC_electricity_demand_rate
     keys: Whole Building
