@@ -25,7 +25,8 @@ weather_specification:
 # ---------------------------------------------------------------------------- #
 #                         BUILDING EXTRA CONFIGURATION                         #
 # ---------------------------------------------------------------------------- #
-building_config: null
+building_config:
+  timesteps_per_hour: 6
 
 
 # ---------------------------------------------------------------------------- #
@@ -108,6 +109,9 @@ variables:
   Cooling Coil Sensible Cooling Rate:
     variable_names: cooling_coil_sensible_cooling_rate
     keys: MAIN COOLING COIL 1
+  Performance Curve Input Variable 1 Value:
+    variable_names: cpu_loading_fraction
+    keys: Data Center Servers Power fLoadTemp
 
   # ---------------------------------- ENERGY ---------------------------------- #
   Cooling Coil Electricity Rate:
