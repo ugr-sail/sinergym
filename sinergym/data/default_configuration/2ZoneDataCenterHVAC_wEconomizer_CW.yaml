@@ -25,7 +25,8 @@ weather_specification:
 # ---------------------------------------------------------------------------- #
 #                         BUILDING EXTRA CONFIGURATION                         #
 # ---------------------------------------------------------------------------- #
-building_config: null
+building_config:
+  timesteps_per_hour: 6
 
 # ---------------------------------------------------------------------------- #
 #                        WEATHER VARIABILITY (OPTIONAL)                        #
