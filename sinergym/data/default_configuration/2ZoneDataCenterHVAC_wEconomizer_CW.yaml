@@ -233,7 +233,7 @@ action_space_discrete: gym.spaces.Discrete(10)
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: sinergym.utils.rewards:LinearReward
+reward: sinergym.utils.rewards:BalancedRewardV1
 
 reward_kwargs:
   temperature_variables:
