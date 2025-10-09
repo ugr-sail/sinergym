@@ -242,14 +242,20 @@ class LoggerEvalCallback(EventCallback):
 
         for _ in range(self.n_eval_episodes):
             obs, _ = self.eval_env.reset()
-            state, truncated, terminated = None, False, False
+            truncated, terminated = False, False
+            state = None
+            ep_done = False
 
             # ------------------- Running episode and accumulate values ------------------ #
-            while not (truncated or terminated):
+            while not ep_done:
                 action, state = self.model.predict(
-                    obs, state=state, deterministic=self.deterministic
+                    obs,
+                    state=state,
+                    episode_start=ep_done,
+                    deterministic=self.deterministic,
                 )
                 obs, _, terminated, truncated, _ = self.eval_env.step(action)
+                ep_done = terminated or truncated
 
             # ------------------- Storing last episode in results dict ------------------- #
             summary = self.eval_env.get_wrapper_attr('get_episode_summary')()
