@@ -538,13 +538,13 @@ class EplusEnv(gym.Env):
                     )
 
                 # Validate mu
-                if not isinstance(mu, (int, float)):
+                if not isinstance(mu, (int, float, tuple, list)):
                     raise ValueError(
                         f"Invalid mu for Ornstein-Uhlenbeck process: {mu}. It must be a number."
                     )
 
                 # Validate tau
-                if not isinstance(tau, (int, float)):
+                if not isinstance(tau, (int, float, tuple, list)):
                     raise ValueError(
                         f"Invalid tau for Ornstein-Uhlenbeck process: {tau}. It must be a number."
                     )
