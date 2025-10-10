@@ -510,31 +510,57 @@ class EplusEnv(gym.Env):
 
             def validate_params(params):
                 """Validate weather variability parameters."""
-                if not (isinstance(params, tuple)):
+                if not isinstance(params, tuple):
                     raise ValueError(
-                        f'Invalid parameter for Ornstein-Uhlenbeck process: {
-                            params}. '
-                        'It must be a tuple of 3 elements.'
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        "It must be a tuple of 3 or 4 elements."
                     )
-                if len(params) != 3:
+                if len(params) not in (3, 4):
                     raise ValueError(
-                        f'Invalid parameter for Ornstein-Uhlenbeck process: {
-                            params}.'
-                        'It must have exactly 3 values.'
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        "It must have exactly 3 or 4 values."
                     )
 
-                for param in params:
-                    if not (isinstance(param, (tuple, float, int))):
+                # Extract elements
+                sigma, mu, tau = params[:3]
+                var_range = params[3] if len(params) == 4 else None
+
+                # Validate sigma
+                if not isinstance(sigma, (int, float, tuple, list)):
+                    raise ValueError(
+                        f"Invalid sigma for Ornstein-Uhlenbeck process: {sigma}. "
+                        "It must be a number or a tuple/list of two numbers (range)."
+                    )
+                if isinstance(sigma, (tuple, list)) and len(sigma) != 2:
+                    raise ValueError(
+                        f"Invalid sigma tuple for Ornstein-Uhlenbeck process: {sigma}. "
+                        "It must have exactly two values (range)."
+                    )
+
+                # Validate mu
+                if not isinstance(mu, (int, float)):
+                    raise ValueError(
+                        f"Invalid mu for Ornstein-Uhlenbeck process: {mu}. It must be a number."
+                    )
+
+                # Validate tau
+                if not isinstance(tau, (int, float)):
+                    raise ValueError(
+                        f"Invalid tau for Ornstein-Uhlenbeck process: {tau}. It must be a number."
+                    )
+
+                # Validate var_range if provided
+                if var_range is not None:
+                    if not (
+                        isinstance(var_range, (tuple, list)) and len(var_range) == 2
+                    ):
                         raise ValueError(
-                            f'Invalid parameter for Ornstein-Uhlenbeck process: {
-                                param}. '
-                            'It must be a tuple of two values (range), or a number.'
+                            f"Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. "
+                            "It must be a tuple/list of two numbers (min_val, max_val)."
                         )
-                    if (isinstance(param, tuple)) and len(param) != 2:
+                    if not all(isinstance(v, (int, float)) for v in var_range):
                         raise ValueError(
-                            f'Invalid parameter for Ornstein-Uhlenbeck process: {
-                                param}. '
-                            'Tuples must have exactly two values (range).'
+                            f"Invalid values in var_range: {var_range}. Both must be numbers."
                         )
 
             try:
@@ -542,7 +568,7 @@ class EplusEnv(gym.Env):
                 for _, params in self.default_options['weather_variability'].items():
                     validate_params(params)
             except ValueError as err:
-                self.logger.critical(str(err))  # Convert the error to a string
+                self.logger.critical(str(err))
                 raise err
 
     # ---------------------------------------------------------------------------- #

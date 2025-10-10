@@ -373,13 +373,26 @@ class ModelJSON(object):
             ]
         ] = None,
     ) -> str:
-        """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
+        """
+        Modify weather data using Ornstein-Uhlenbeck process according to the variation specified
+        in the weather_variability dictionary.
 
         Args:
-            weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Dictionary with the variation for each column in the weather data. Defaults to None. The key is the column name and the value is a tuple with the sigma, mean and tau for OU process.
+            weather_variability (Optional[Dict[str, Tuple[
+                Union[float, Tuple[float, float]],   # sigma
+                Union[float, Tuple[float, float]],   # mu
+                Union[float, Tuple[float, float]],   # tau
+                Optional[Tuple[float, float]]        # var_range: optional min/max clipping
+            ]]]): Dictionary with the variation for each column in the weather data.
+                The key is the column name and the value is a tuple with:
+                - sigma: standard deviation or tuple for a range
+                - mu: mean value for OU process
+                - tau: time constant for OU process
+                - var_range (optional): tuple (min_val, max_val) to clip the variable
 
         Returns:
-            str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
+            str: New EPW file path generated in simulator working path for that episode,
+                or current EPW path if variation is not defined.
         """
 
         base_filename, ext = os.path.splitext(os.path.basename(self._weather_path))

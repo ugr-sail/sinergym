@@ -252,6 +252,7 @@ def test_ornstein_uhlenbeck_process(weather_data):
     # Specify variability configuration for each desired column
     variability_conf = {
         'Dry Bulb Temperature': (1.0, 0.0, 24.0),
+        'Relative Humidity': (2.0, 0.0, 24.0, (0, 100)),
         'Wind Speed': (3.0, 0.0, 48.0),
     }
     # Calculate dataframe with noise
@@ -261,7 +262,8 @@ def test_ornstein_uhlenbeck_process(weather_data):
 
     # Columns specified in variability_conf should be different
     assert (df['Dry Bulb Temperature'] != noise['Dry Bulb Temperature']).any()
+    assert (df['Relative Humidity'] != noise['Relative Humidity']).any()
     assert (df['Wind Speed'] != noise['Wind Speed']).any()
     # Columns not specified in variability_conf should be equal
-    assert (df['Relative Humidity'] == noise['Relative Humidity']).all()
+    assert (df['Direct Normal Radiation'] == noise['Direct Normal Radiation']).all()
     assert (df['Wind Direction'] == noise['Wind Direction']).all()
