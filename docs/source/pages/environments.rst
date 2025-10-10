@@ -96,6 +96,8 @@ Starting from *Sinergym* v3.6.2, the weather data column names (or variable name
   ``Snow Depth``, ``Days Since Last Snowfall``, ``Albedo``,
   ``Liquid Precipitation Depth``, ``Liquid Precipitation Quantity``
 
+.. note:: Note that a range defined by `var_range` can be optionally included to clip the values of variables to which noise is added. This avoids situations such as Relative Humidity above 100% or below 0%.
+
 .. note:: If you are using an older version of Sinergym, the weather data columns or variables names is
           generated with the *opyplus* ``WeatherData`` class, for more  information about the available variable
           names with *opyplus*, visit `opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
@@ -111,8 +113,6 @@ In climate systems, a large :math:`\tau` could model scenarios where extreme eve
 These hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A CSV file is saved with the chosen parameters in each episode sub-folder.
 
 .. note:: Starting from Sinergym v3.7.1, :math:`\tau` is represented in hours instead of as a percentage of the climate file, making its use more intuitive.
-
-.. note:: Note that a range defined by `var_range` can be optionally included to clip the values of variables to which noise is added. This avoids situations such as Relative Humidity above 100% or below 0%.
 
 .. image:: /_static/ornstein_noise_v2.png
   :scale: 80 %
