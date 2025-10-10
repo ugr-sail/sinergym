@@ -410,8 +410,13 @@ class ModelJSON(object):
                             processed_params.append(
                                 float(np.random.uniform(param[0], param[1]))
                             )
-                        else:
+                        elif isinstance(param, float):
                             processed_params.append(float(param))
+                        else:
+                            raise ValueError(
+                                f'Invalid parameter for Ornstein-Uhlenbeck process: {param}. '
+                                'It must be a tuple or a float.'
+                            )
                     # var_range stays as-is
                     else:
                         processed_params.append(param)
@@ -424,18 +429,18 @@ class ModelJSON(object):
             )  # type: ignore
 
             self.logger.info(
-                f"Weather noise applied to columns: {list(self.weather_variability_config.keys())}"
+                f'Weather noise applied to columns: {list(self.weather_variability_config.keys())}'
             )
 
             # Modify filename to reflect noise addition
-            base_filename += "_OU_Noise"
+            base_filename += '_OU_Noise'
 
         # Define output path
-        episode_weather_path = os.path.join(self.episode_path, f"{base_filename}{ext}")
+        episode_weather_path = os.path.join(self.episode_path, f'{base_filename}{ext}')
         # Write new weather file
         weather_data_mod.write(episode_weather_path)
 
-        self.logger.debug(f"Saved modified weather file: {episode_weather_path}")
+        self.logger.debug(f'Saved modified weather file: {episode_weather_path}')
 
         return episode_weather_path
 
