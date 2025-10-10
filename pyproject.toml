@@ -62,7 +62,6 @@ tqdm = ">=4.67.1"
 xlsxwriter = ">=3.2.5"
 epw = ">=1.2.dev2"
 pyyaml = ">=6.0.2"
-toml = ">=0.10.2"
 
 # Extra dependencies (optional)
 pytest = { version = ">=8.4.1", optional = true }

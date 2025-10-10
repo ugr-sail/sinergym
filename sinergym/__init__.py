@@ -3,6 +3,15 @@ try:
     import warnings
 
     warnings.filterwarnings("ignore", message=".*epw.data submodule is not installed.*")
+    # Silence known Pydantic v2 schema warnings from third-party libs
+    warnings.filterwarnings(
+        "ignore",
+        message=r"The 'repr' attribute with value .* was provided to the `Field\(\)` function",
+    )
+    warnings.filterwarnings(
+        "ignore",
+        message=r"The 'frozen' attribute with value .* was provided to the `Field\(\)` function",
+    )
 except ImportError:
     pass
 
@@ -13,7 +22,6 @@ from typing import Union
 
 import gymnasium as gym
 import numpy as np
-import toml
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
 
@@ -25,7 +33,19 @@ create_sinergym_yaml_serializers()
 
 # ------------------------- Set __version__ in module ------------------------ #
 
-__version__ = toml.load("pyproject.toml")["tool"]["poetry"]["version"]
+try:
+    from importlib.metadata import version as _get_version
+
+    __version__ = _get_version("sinergym")
+except Exception:
+    import os
+
+    import tomllib
+
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    pyproject_file = os.path.join(project_root, "pyproject.toml")
+    with open(pyproject_file, "rb") as f:
+        __version__ = tomllib.load(f)["tool"]["poetry"]["version"]
 
 # ---------------------------- 0) Demo environment --------------------------- #
 register(
