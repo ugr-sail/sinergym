@@ -13,6 +13,7 @@ from typing import Union
 
 import gymnasium as gym
 import numpy as np
+import toml
 import yaml
 from gymnasium.envs.registration import WrapperSpec, register
 
@@ -23,9 +24,8 @@ from sinergym.utils.serialization import create_sinergym_yaml_serializers
 create_sinergym_yaml_serializers()
 
 # ------------------------- Set __version__ in module ------------------------ #
-version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
-with open(version_file, 'r') as file_handler:
-    __version__ = file_handler.read().strip()
+
+__version__ = toml.load("pyproject.toml")["tool"]["poetry"]["version"]
 
 # ---------------------------- 0) Demo environment --------------------------- #
 register(
