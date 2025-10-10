@@ -31,6 +31,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                            ENVIRONMENT CONSTRUCTOR                           #
     # ---------------------------------------------------------------------------- #
+
     def __init__(
         self,
         building_file: str,
@@ -51,6 +52,7 @@ class EplusEnv(gym.Env):
                     Union[float, Tuple[float, float]],
                     Union[float, Tuple[float, float]],
                     Union[float, Tuple[float, float]],
+                    Optional[Tuple[float, float]],
                 ],
             ]
         ] = None,
@@ -65,20 +67,29 @@ class EplusEnv(gym.Env):
 
         Args:
             building_file (str): Name of the JSON file with the building definition.
-            weather_files (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
-            action_space (gym.spaces.Box, optional): Gym Action Space definition. Defaults to an empty action_space (no control).
-            time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list.
-            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
-            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
-            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
-            context (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Context. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. These values are processed as real-time building configuration instead of real-time control. Defaults to empty dict.
-            initial_context (Optional[List[float]]): Initial context values to be set in the building model. Defaults to None.
-            weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Ranges can be specified to and a value will be select randomly for each episode. Defaults to None.
-            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
-            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
-            max_ep_store (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
-            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
-            building_config (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for building. Defaults to None.
+            weather_files (Union[str,List[str]]): Name of the EPW file for weather conditions.
+                Can also be a list of weather files to sample randomly for each episode.
+            action_space (gym.spaces.Box, optional): Gym Action Space definition. Defaults to empty (no control).
+            time_variables (List[str]): EnergyPlus time variables to observe. Names must match E+ Data Transfer API method names. Defaults to empty list.
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. Key is custom name; value is tuple(original variable name, output key). Defaults to empty dict.
+            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. Key is custom; value is original meter name. Defaults to empty dict.
+            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. Key is custom; value is tuple(actuator type, value type, original name). Defaults to empty dict.
+            context (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Context. Key is custom; value is tuple(actuator type, value type, original name). Used for real-time building configuration. Defaults to empty dict.
+            initial_context (Optional[List[float]]): Initial context values to set in the building model. Defaults to None.
+            weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],
+                                                        Union[float,Tuple[float,float]],
+                                                        Union[float,Tuple[float,float]],
+                                                        Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.
+                - sigma: standard deviation or range to sample from
+                - mu: mean value or range to sample from
+                - tau: time constant or range to sample from
+                - var_range (optional): tuple(min_val, max_val) for clipping the variable
+                Defaults to None.
+            reward (Any, optional): Reward function instance. Defaults to LinearReward.
+            reward_kwargs (Dict[str, Any], optional): Parameters to pass to the reward function. Defaults to empty dict.
+            max_ep_store (int, optional): Number of last episode folders to store. Defaults to 10.
+            env_name (str, optional): Env name for working directory generation. Defaults to 'eplus-env-v1'.
+            building_config (Optional[Dict[str, Any]], optional): Extra configuration for building. Defaults to None.
             seed (Optional[int], optional): Seed for random number generator. Defaults to None.
         """
 
