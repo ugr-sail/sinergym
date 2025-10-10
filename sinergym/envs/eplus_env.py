@@ -523,55 +523,51 @@ class EplusEnv(gym.Env):
                 """Validate weather variability parameters."""
                 if not isinstance(params, tuple):
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
-                        "It must be a tuple of 3 or 4 elements."
+                        f'Invalid parameter for Ornstein-Uhlenbeck process: {params}. '
+                        'It must be a tuple of 3 or 4 elements.'
                     )
                 if len(params) not in (3, 4):
                     raise ValueError(
-                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
-                        "It must have exactly 3 or 4 values."
+                        f'Invalid parameter for Ornstein-Uhlenbeck process: {params}. '
+                        'It must have exactly 3 or 4 values.'
                     )
 
                 # Extract elements
-                sigma, mu, tau = params[:3]
+                ou_params_dict = {
+                    'sigma': params[0],
+                    'mu': params[1],
+                    'tau': params[2],
+                }
                 var_range = params[3] if len(params) == 4 else None
 
-                # Validate sigma
-                if not isinstance(sigma, (int, float, tuple, list)):
-                    raise ValueError(
-                        f"Invalid sigma for Ornstein-Uhlenbeck process: {sigma}. "
-                        "It must be a number or a tuple/list of two numbers (range)."
-                    )
-                if isinstance(sigma, (tuple, list)) and len(sigma) != 2:
-                    raise ValueError(
-                        f"Invalid sigma tuple for Ornstein-Uhlenbeck process: {sigma}. "
-                        "It must have exactly two values (range)."
-                    )
-
-                # Validate mu
-                if not isinstance(mu, (int, float, tuple, list)):
-                    raise ValueError(
-                        f"Invalid mu for Ornstein-Uhlenbeck process: {mu}. It must be a number."
-                    )
-
-                # Validate tau
-                if not isinstance(tau, (int, float, tuple, list)):
-                    raise ValueError(
-                        f"Invalid tau for Ornstein-Uhlenbeck process: {tau}. It must be a number."
-                    )
+                # Validate sigma, mu, tau
+                for ou_name, value in ou_params_dict.items():
+                    if not isinstance(value, (int, float, tuple, list)):
+                        raise ValueError(
+                            f'Invalid {ou_name} for Ornstein-Uhlenbeck process: {value}. '
+                            'It must be a number or a tuple/list of two numbers (range).'
+                        )
+                    if isinstance(value, (tuple, list)) and len(value) != 2:
+                        raise ValueError(
+                            f'Invalid {ou_name} tuple for Ornstein-Uhlenbeck process: {value}. '
+                            'It must have exactly two values (range).'
+                        )
 
                 # Validate var_range if provided
                 if var_range is not None:
-                    if not (
-                        isinstance(var_range, (tuple, list)) and len(var_range) == 2
-                    ):
+                    if not isinstance(var_range, (tuple, list)):
                         raise ValueError(
-                            f"Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. "
-                            "It must be a tuple/list of two numbers (min_val, max_val)."
+                            f'Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. '
+                            'It must be a tuple/list of two numbers (min_val, max_val).'
+                        )
+                    if len(var_range) != 2:
+                        raise ValueError(
+                            f'Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. '
+                            'It must be a tuple/list of two numbers (min_val, max_val).'
                         )
                     if not all(isinstance(v, (int, float)) for v in var_range):
                         raise ValueError(
-                            f"Invalid values in var_range: {var_range}. Both must be numbers."
+                            f'Invalid values in var_range: {var_range}. Both must be numbers.'
                         )
 
             try:
