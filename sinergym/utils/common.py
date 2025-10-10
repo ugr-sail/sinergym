@@ -370,36 +370,52 @@ def export_schedulers_to_excel(
 
 
 def ornstein_uhlenbeck_process(
-    data: pd.DataFrame, variability_config: Dict[str, Tuple[float, float, float]]
+    data: pd.DataFrame,
+    variability_config: Dict[
+        str,
+        Union[
+            Tuple[float, float, float],
+            Tuple[float, float, float, Optional[Tuple[float, float]]],
+        ],
+    ],
 ) -> pd.DataFrame:
-    """Add noise to the data using the Ornstein-Uhlenbeck process.
+    """
+    Add noise to the data using the Ornstein-Uhlenbeck process.
 
     Args:
         data (pd.DataFrame): Data to be modified.
-        variability_config (Dict[str, Tuple[float, float, float]]): Dictionary with the variability configuration for each variable (sigma, mu and tau constants).
+        variability_config (dict): Noise parameters. Can be:
+            - (sigma, mu, tau)
+            - (sigma, mu, tau, var_range)
 
     Returns:
-        pd.DataFrame: Data with noise added.
+        pd.DataFrame: Data with noise added. Clipping applied only if var_range is provided.
     """
 
-    # deepcopy for weather_data
     data_mod = deepcopy(data)
 
-    # Total time.
-    T = 1.0
-    # get first column of df
+    dt = 1.0
     n = data_mod.shape[0]
-    # dt = T / n  # tau defined as percentage of epw
-    dt = T / 1.0  # tau defined as epw rows (hours)
-    # t = np.linspace(0., T, n)  # Vector of times.
 
-    # Sigma = standard deviation.
-    # Mu = mean.
-    # Tau = time constant.
+    # T = 1.0
+    # dt = T / n # tau defined as percentage of EPW
+    # dt = T / 1.0  # tau defined as EPW rows (hours)
 
-    for variable, (sigma, mu, tau) in variability_config.items():
+    for variable, params in variability_config.items():
+
+        if len(params) == 3:
+            sigma, mu, tau = params
+            var_range = None
+        elif len(params) == 4:
+            sigma, mu, tau, var_range = params
+        else:
+            raise ValueError(
+                f"Invalid parameters for variable '{variable}': {params}. "
+                "Must be 3 or 4 elements (sigma, mu, tau, var_range)."
+            )
+
         sigma_bis = sigma * np.sqrt(2.0 / tau)
-        sqrtdt = np.sqrt(dt)
+        sqrt_dt = np.sqrt(dt)
 
         # Create noise
         noise = np.zeros(n)
@@ -407,11 +423,16 @@ def ornstein_uhlenbeck_process(
             noise[i + 1] = (
                 noise[i]
                 + dt * (-(noise[i] - mu) / tau)
-                + sigma_bis * sqrtdt * np.random.randn()
+                + sigma_bis * sqrt_dt * np.random.randn()
             )
 
         # Add noise
         data_mod[variable] += noise
+
+        # Apply clipping only if var_range is provided
+        if var_range is not None:
+            min_val, max_val = var_range
+            data_mod[variable] = data_mod[variable].clip(lower=min_val, upper=max_val)
 
     return data_mod
 
