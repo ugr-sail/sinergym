@@ -508,11 +508,18 @@ class WeatherForecastingWrapper(gym.Wrapper):
         forecast_variability: Optional[
             Dict[
                 str,
-                Tuple[
-                    Union[float, Tuple[float, float]],
-                    Union[float, Tuple[float, float]],
-                    Union[float, Tuple[float, float]],
-                    Optional[Tuple[float, float]],
+                Union[
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                    ],
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Tuple[float, float],
+                    ],
                 ],
             ]
         ] = None,
@@ -623,7 +630,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         if self.forecast_variability is not None:
             self.forecast_data = ornstein_uhlenbeck_process(
-                data=self.forecast_data, variability_config=self.forecast_variability
+                data=self.forecast_data, variability_config=self.forecast_variability  # type: ignore
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -837,7 +844,7 @@ class EnergyCostWrapper(gym.Wrapper):
         ):
             self.energy_cost_data = ornstein_uhlenbeck_process(
                 data=self.energy_cost_data,
-                variability_config=self.energy_cost_variability,
+                variability_config=self.energy_cost_variability,  # type: ignore
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:

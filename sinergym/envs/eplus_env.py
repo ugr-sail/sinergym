@@ -48,11 +48,18 @@ class EplusEnv(gym.Env):
         weather_variability: Optional[
             Dict[
                 str,
-                Tuple[
-                    Union[float, Tuple[float, float]],
-                    Union[float, Tuple[float, float]],
-                    Union[float, Tuple[float, float]],
-                    Optional[Tuple[float, float]],
+                Union[
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                    ],
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Tuple[float, float],
+                    ],
                 ],
             ]
         ] = None,
@@ -554,13 +561,10 @@ class EplusEnv(gym.Env):
                         )
 
                 # Validate var_range if provided
-                if var_range is not None:
-                    if not isinstance(var_range, (tuple, list)):
-                        raise ValueError(
-                            f'Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. '
-                            'It must be a tuple/list of two numbers (min_val, max_val).'
-                        )
-                    if len(var_range) != 2:
+                if var_range:
+                    if not (
+                        isinstance(var_range, (tuple, list)) and len(var_range) == 2
+                    ):
                         raise ValueError(
                             f'Invalid var_range for Ornstein-Uhlenbeck process: {var_range}. '
                             'It must be a tuple/list of two numbers (min_val, max_val).'

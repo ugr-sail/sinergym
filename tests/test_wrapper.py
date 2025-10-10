@@ -440,7 +440,7 @@ def test_energycost_wrapper_energycostdata(env_demo):
     env = EnergyCostWrapper(
         env_demo,
         energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
-        energy_cost_variability=(1.0, 0.0, 24.0),
+        energy_cost_variability=(1.0, 0.0, 24.0),  # type: ignore
     )
 
     # Get and preprocess manually original cost data

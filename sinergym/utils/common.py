@@ -375,7 +375,7 @@ def ornstein_uhlenbeck_process(
         str,
         Union[
             Tuple[float, float, float],
-            Tuple[float, float, float, Optional[Tuple[float, float]]],
+            Tuple[float, float, float, Tuple[float, float]],
         ],
     ],
 ) -> pd.DataFrame:
