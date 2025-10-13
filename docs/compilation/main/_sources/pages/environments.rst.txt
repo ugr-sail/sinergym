@@ -78,7 +78,7 @@ Weather variability
 
 This feature utilizes an `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__  to introduce **random noise** into the weather data on an episode-by-episode basis. This noise is specified as a Python dictionary, where each key is the name of an EPW column, and the corresponding value is a tuple of three variables (:math:`\sigma`, :math:`\mu`, and :math:`\tau`) that define the characteristics of the noise. This enables to apply different noise configurations to different variables of the weather data.
 
-Starting with *Sinergym* v3.6.2, the weather data column names (or variable names) are generated using the ``Weather`` class from the `epw module <https://pypi.org/project/epw/>`__. The list of available variable names is as follows:
+Starting from *Sinergym* v3.6.2, the weather data column names (or variable names) are generated using the ``Weather`` class from the `epw module <https://pypi.org/project/epw/>`__. The list of available variable names is as follows:
 
 - ``Year``, ``Month``, ``Day``, ``Hour``, ``Minute``,
   ``Data Source and Uncertainty Flags``, ``Dry Bulb Temperature``,
@@ -96,6 +96,8 @@ Starting with *Sinergym* v3.6.2, the weather data column names (or variable name
   ``Snow Depth``, ``Days Since Last Snowfall``, ``Albedo``,
   ``Liquid Precipitation Depth``, ``Liquid Precipitation Quantity``
 
+.. note:: Note that a range defined by `var_range` can be optionally included to clip the values of variables to which noise is added. This avoids situations such as Relative Humidity above 100% or below 0%.
+
 .. note:: If you are using an older version of Sinergym, the weather data columns or variables names is
           generated with the *opyplus* ``WeatherData`` class, for more  information about the available variable
           names with *opyplus*, visit `opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
@@ -108,7 +110,7 @@ Finally, :math:`\tau` is the time constant (in hours), controlling how quickly t
 
 In climate systems, a large :math:`\tau` could model scenarios where extreme events, such as heatwaves or cold spells, last longer before the system reverts to its average state. The next figure illustrates the effect of different hyperparameters on the Ornstein-Uhlenbeck process noise in a mixed weather.
 
-Starting from version 3.7.2 of Sinergym, these hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A CSV file is saved with the chosen parameters in each episode sub-folder.
+These hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A CSV file is saved with the chosen parameters in each episode sub-folder.
 
 .. note:: Starting from Sinergym v3.7.1, :math:`\tau` is represented in hours instead of as a percentage of the climate file, making its use more intuitive.
 
