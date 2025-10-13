@@ -312,43 +312,54 @@ def test_action_contradiction(env_demo):
         env_demo._check_eplus_env()
 
 
-def test_wrong_weather_variability_conf(env_5zone_stochastic):
-
+def test_weather_variability_with_var_range(env_5zone_stochastic):
+    # Correct configuration: sigma/mu/tau as float or tuple, var_range present
     env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
         'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
+        'Relative Humidity': (2.0, 0.0, 24.0, (0, 100)),
     }
-    # It should accept ranges
+    # Should not raise
     env_5zone_stochastic._check_eplus_env()
 
-    # It should raise an exception if is not a tuple or with wrong length (3)
+    # Invalid: not a tuple or wrong length
     env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
-        'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
-        'Wind Speed': (3.0, (30.0, 35.0)),
+        'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5)),
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
-    # It should raise an exception if is not a tuple or with wrong length (3)
+
+    # Invalid: single float instead of tuple
     env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': 25.0,
         'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
-    # It should raise an exception if the param is not a tuple or float
+
+    # Invalid: non-numeric parameter
     env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ('a', (-0.5, 0.5), 24.0),
         'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
-    # It should raise an exception if the range has not 2 values
+
+    # Invalid: tuple with wrong number of values
     env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
         'Dry Bulb Temperature': ((1.0, 2.0, 3.0), (-0.5, 0.5), 24.0),
         'Wind Speed': (3.0, 0.0, (30.0, 35.0)),
     }
     with pytest.raises(ValueError):
         env_5zone_stochastic._check_eplus_env()
+
+    # Valid: var_range is optional and can be omitted
+    env_5zone_stochastic.get_wrapper_attr('default_options')['weather_variability'] = {
+        'Relative Humidity': (2.0, 0.0, 24.0),
+    }
+    # Should not raise
+    env_5zone_stochastic._check_eplus_env()
 
 
 def test_is_discrete_property(env_5zone):
