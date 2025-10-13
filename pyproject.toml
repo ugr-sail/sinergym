@@ -6,7 +6,7 @@
 package-mode = true
 name = "sinergym"
 
-version = "3.9.6"
+version = "3.9.7"
 description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
 license = "MIT"
 
@@ -43,7 +43,7 @@ classifiers = [
 ]
 
 # Include (equivalent to MANIFEST.in)
-include = ["sinergym/version.txt", "sinergym/data/**"]
+include = ["sinergym/data/**"]
 # Part of proyect you want to exclude in packaging
 # exclude = []
 
@@ -78,6 +78,7 @@ google-cloud-storage = { version = ">=3.3.0", optional = true }
 # -------------------------------------------------------------------------- #
 #                        Group dependencies (develop)                        #
 # -------------------------------------------------------------------------- #
+
 [tool.poetry.group.format.dependencies]
 black = {version = ">=25.1.0", extras = ["jupyter"]}
 ruff = ">=0.12.9"

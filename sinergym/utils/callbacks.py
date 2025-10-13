@@ -251,7 +251,7 @@ class LoggerEvalCallback(EventCallback):
                 action, state = self.model.predict(
                     obs,
                     state=state,
-                    episode_start=ep_done,
+                    episode_start=ep_done,  # type: ignore
                     deterministic=self.deterministic,
                 )
                 obs, _, terminated, truncated, _ = self.eval_env.step(action)

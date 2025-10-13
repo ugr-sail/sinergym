@@ -3,6 +3,15 @@ try:
     import warnings
 
     warnings.filterwarnings("ignore", message=".*epw.data submodule is not installed.*")
+    # Silence known Pydantic v2 schema warnings from third-party libs
+    warnings.filterwarnings(
+        "ignore",
+        message=r"The 'repr' attribute with value .* was provided to the `Field\(\)` function",
+    )
+    warnings.filterwarnings(
+        "ignore",
+        message=r"The 'frozen' attribute with value .* was provided to the `Field\(\)` function",
+    )
 except ImportError:
     pass
 
@@ -23,9 +32,20 @@ from sinergym.utils.serialization import create_sinergym_yaml_serializers
 create_sinergym_yaml_serializers()
 
 # ------------------------- Set __version__ in module ------------------------ #
-version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
-with open(version_file, 'r') as file_handler:
-    __version__ = file_handler.read().strip()
+
+try:
+    from importlib.metadata import version as _get_version
+
+    __version__ = _get_version("sinergym")
+except Exception:
+    import os
+
+    import tomllib
+
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    pyproject_file = os.path.join(project_root, "pyproject.toml")
+    with open(pyproject_file, "rb") as f:
+        __version__ = tomllib.load(f)["tool"]["poetry"]["version"]
 
 # ---------------------------- 0) Demo environment --------------------------- #
 register(

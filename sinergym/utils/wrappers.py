@@ -505,17 +505,45 @@ class WeatherForecastingWrapper(gym.Wrapper):
             'Direct Normal Radiation',
             'Diffuse Horizontal Radiation',
         ],
-        forecast_variability: Optional[Dict[str, Tuple[float, float, float]]] = None,
+        forecast_variability: Optional[
+            Dict[
+                str,
+                Union[
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                    ],
+                    Tuple[
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Union[float, Tuple[float, float]],
+                        Tuple[float, float],
+                    ],
+                ],
+            ]
+        ] = None,
     ):
         """Adds weather forecast information to the current observation.
 
         Args:
             env (Env): Original Gym environment.
-            n (int, optional): Number of observations to be added. Default to 5.
+            n (int, optional): Number of observations to be added. Defaults to 5.
             delta (int, optional): Time interval between observations. Defaults to 1.
-            columns (List[str], optional): List of the names of the meteorological variables that will make up the weather forecast observation.
-            forecast_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
-            The key is the column name and the value is a tuple with the sigma, mean and tau for OU process. If not provided, it assumes no variability.
+            columns (List[str], optional): List of the names of the meteorological variables
+                that will make up the weather forecast observation.
+            forecast_variability (Optional[Dict[str, Tuple[Union[float, Tuple[float, float]],
+                                                        Union[float, Tuple[float, float]],
+                                                        Union[float, Tuple[float, float]],
+                                                        Optional[Tuple[float, float]]]]], optional):
+                Dictionary with the variation for each column in the weather data.
+                The key is the column name and the value is a tuple with:
+                    - sigma: standard deviation or range to sample from
+                    - mu: mean value or range to sample from
+                    - tau: time constant or range to sample from
+                    - var_range (optional): tuple (min_val, max_val) to clip the variable
+                If not provided, it assumes no variability.
+
         Raises:
             ValueError: If any key in `forecast_variability` is not present in the `columns` list.
         """
@@ -602,7 +630,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         if self.forecast_variability is not None:
             self.forecast_data = ornstein_uhlenbeck_process(
-                data=self.forecast_data, variability_config=self.forecast_variability
+                data=self.forecast_data, variability_config=self.forecast_variability  # type: ignore
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -678,7 +706,14 @@ class EnergyCostWrapper(gym.Wrapper):
             'lambda_temperature': 1.0,
             'lambda_energy_cost': 1.0,
         },
-        energy_cost_variability: Optional[Tuple[float, float, float]] = None,
+        energy_cost_variability: Optional[
+            Tuple[
+                Union[float, Tuple[float, float]],
+                Union[float, Tuple[float, float]],
+                Union[float, Tuple[float, float]],
+                Optional[Tuple[float, float]],
+            ]
+        ] = None,
     ):
         """
         Adds energy cost information to the current observation.
@@ -686,7 +721,10 @@ class EnergyCostWrapper(gym.Wrapper):
         Args:
             env (Env): Original Gym environment.
             energy_cost_data_path (str): Path to file from which the energy cost data is obtained.
-            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data for OU process (sigma, mu and tau).
+            energy_cost_variability (Optional[Tuple[Union[float, Tuple[float, float]],
+                                        Union[float, Tuple[float, float]],
+                                        Union[float, Tuple[float, float]],
+                                        Optional[Tuple[float, float]]]], optional): variation for energy cost data for OU process (sigma, mu, tau, var_range).
             reward_kwargs (Dict[str, Any]): Parameters for customizing the reward function.
 
         """
@@ -806,7 +844,7 @@ class EnergyCostWrapper(gym.Wrapper):
         ):
             self.energy_cost_data = ornstein_uhlenbeck_process(
                 data=self.energy_cost_data,
-                variability_config=self.energy_cost_variability,
+                variability_config=self.energy_cost_variability,  # type: ignore
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -1745,19 +1783,33 @@ class CSVLogger(gym.Wrapper):
         if modeling.weather_variability_config:
             with open(self.weather_variability_config_path, 'a+', newline='') as f:
                 writer = csv.writer(f)
+
                 if is_first_episode:
-                    header = ['episode_num'] + [
-                        f"{var}_{param}"
-                        for var in modeling.weather_variability_config
-                        for param in ['sigma', 'mu', 'tau']
-                    ]
+                    header = ['episode_num']
+                    for var in modeling.weather_variability_config:
+                        header.extend(
+                            [
+                                f"{var}_sigma",
+                                f"{var}_mu",
+                                f"{var}_tau",
+                                f"{var}_var_min",
+                                f"{var}_var_max",
+                            ]
+                        )
                     writer.writerow(header)
 
-                values = [self.get_wrapper_attr('episode')] + [
-                    val
-                    for params in modeling.weather_variability_config.values()
-                    for val in params
-                ]
+                values = [self.get_wrapper_attr('episode')]
+                for params in modeling.weather_variability_config.values():
+                    for i, val in enumerate(params):
+                        # sigma, mu, tau
+                        if i < 3:
+                            values.append(val)
+                        # var_range
+                        elif i == 3:
+                            if val is not None:
+                                values.extend(val)  # [min_val, max_val]
+                            else:
+                                values.extend([None, None])
                 writer.writerow(values)
 
     def _save_csv(self, filename, header, rows):
