@@ -64,8 +64,8 @@ building_config:
 weather_variability:
   Dry Bulb Temperature:
     - [1.0, 2.0]
-    - 0
-    - 24
+    - 0.0
+    - 24.0
   Relative Humidity:
     - [2.0, 5.0]
     - 0.0
