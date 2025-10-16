@@ -520,12 +520,12 @@ class ModelJSON(object):
                             processed_params.append(
                                 float(np.random.uniform(param[0], param[1]))
                             )
-                        elif isinstance(param, float):
+                        elif isinstance(param, (float, int)):
                             processed_params.append(float(param))
                         else:
                             raise ValueError(
                                 f'Invalid parameter for Ornstein-Uhlenbeck process: {param}. '
-                                'It must be a tuple or a float.'
+                                'It must be a tuple or a float/int.'
                             )
                     # var_range stays as-is
                     else:
