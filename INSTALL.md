@@ -94,7 +94,7 @@ $ pip install sinergym[extras]
 To directly install *Sinergym* from the cloned repository, run:
 
 ```sh
-$ poetry install --no-interaction --only main --extras <optional_extras>
+$ poetry install --no-interaction --extras <optional_extras>
 # or
 $ pip install .[<optional_extras>]
 ```
@@ -124,20 +124,23 @@ Whether you have chosen to use Docker or a manual installation, we offer facilit
 - If you have decided to use a container without Visual Studio Code, you can use the Dockerfile available in the `.devcontainer` folder instead of the one in the root of the repository. If you create your own Dockerfile, make sure to perform the following installation so that all development modules are available:
 
 ```dockerfile
-RUN poetry install --no-interaction
+RUN poetry install --no-interaction --with dev
 ```
 
-The default installation includes all development packages. To avoid this, you should specify `--only main` or `--without <develop_groups>`. The development groups can also be found 
+This command includes all development packages. To avoid this, you should specify without `--with dev`. The development groups can also be found 
 in `pyproject.toml`.
 
 If you have manually installed the project, you can install the development packages from **poetry** in the same way. Once the repository is cloned, run:
 
 ```sh
-$ poetry install --no-interaction
+$ poetry install --no-interaction --with dev
 ```
 
-The command is similar to the one shown in the manual installation section, but without specifying groups or extras, so that all development packages are installed. In this case,
-it is not possible to use *pip* because it does not include information about development dependencies (except those listed in *extras*).
+If you prefer to use pip, please note that not all development packages will be installed, since pip is intended primarily for package distribution rather than a full development environment.
+
+```sh
+$ pip install -e .[extras]
+```
 
 > :memo: For more information about how poetry dependencies work, visit its [official documentation](https://python-poetry.org/docs/dependency-specification/).
 
