@@ -260,7 +260,7 @@ refer to the <a class="reference external" href="https://code.visualstudio.com/d
 </pre></div>
 </div>
 <p>If you want to install the cloned repository directly, you can do so by running the following command located in its root directory:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--only<span class="w"> </span>main<span class="w"> </span>--extras<span class="w"> </span>&lt;optional_extras&gt;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--extras<span class="w"> </span>&lt;optional_extras&gt;
 <span class="c1"># or</span>
 $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>&lt;optional_extras&gt;<span class="o">]</span>
 </pre></div>
@@ -282,15 +282,19 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 <p>Whether you have chosen to use Docker or a manual installation, we offer facilities for developing and extending Sinergym.</p>
 <p>If you have chosen the Docker container installation, Visual Studio Code will set up a development environment with all the necessary packages automatically, including documentation, tests, DRL, etc integrated in the IDE.</p>
 <p>If you have opted to use a container without Visual Studio Code, you can use the Dockerfile available in the <code class="docutils literal notranslate"><span class="pre">.devcontainer</span></code> folder instead of the one in the root of the repository. If you are creating your own Dockerfile, make sure to perform the following installation so that all development modules are available:</p>
-<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--with<span class="w"> </span>dev
 </pre></div>
 </div>
-<p>The default installation includes all development packages. To avoid this, you should specify <code class="docutils literal notranslate"><span class="pre">--only</span> <span class="pre">main</span></code> or <code class="docutils literal notranslate"><span class="pre">--without</span> <span class="pre">&lt;develop_groups&gt;</span></code>. The development groups can also be found in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+<p>This command includes all development packages. To avoid this, you should specify without <code class="docutils literal notranslate"><span class="pre">--with</span> <span class="pre">dev</span></code>. The development groups can also be found
+in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
 <p>If you have manually installed the project, you can install the development packages from Poetry in the same way. Once the repository is cloned, run the same command we explained earlier, adding the following:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--with<span class="w"> </span>dev
 </pre></div>
 </div>
-<p>As can be observed, the command is the same as the one shown in the manual installation section, but without specifying groups or extras, so that all development packages are installed. In this case, it is not possible to use pip because it does not include information about development dependencies (except those listed in <code class="docutils literal notranslate"><span class="pre">extras</span></code>).</p>
+<p>If you prefer to use pip, please note that not all development packages will be installed, since pip is intended primarily for package distribution rather than a full development environment.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>extras<span class="o">]</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For additional information about how Poetry dependencies work, visit its
