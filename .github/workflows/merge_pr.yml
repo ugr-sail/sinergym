@@ -81,7 +81,7 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --only main,doc
+          poetry install --no-interaction --with doc
         
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'

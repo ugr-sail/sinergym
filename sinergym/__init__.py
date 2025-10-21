@@ -39,7 +39,6 @@ try:
     __version__ = _get_version("sinergym")
 except Exception:
     import os
-
     import tomllib
 
     project_root = os.path.dirname(os.path.dirname(__file__))

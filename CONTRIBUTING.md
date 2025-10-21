@@ -39,13 +39,13 @@ Your contributions can fall into two main categories:
     git clone https://github.com/ugr-sail/sinergym.git
     cd sinergym/
     ```
-2. **Install in "extra" mode** (for docs, tests, DRL algorithms, etc.):
+2. **Install Sinergym with developer kit** (for tests, docs, DRL algorithms, etc.):
     ```bash
-    pip install -e .[extra]
+    poetry install --no-interaction --with dev
     ```
-    or using poetry (install all developer dependencies directly):
+    Alternatively, you can use pip for installation, but please note that this approach is intended for package distribution rather than development—some development dependencies will not be installed.
     ```bash
-    poetry install --no-interaction 
+    pip install -e.[extras]
     ```
 
 3. **Install EnergyPlus and include EnergyPlus Python API in Python path** (see [INSTALL.md](https://github.com/ugr-sail/sinergym/blob/main/INSTALL.md)).

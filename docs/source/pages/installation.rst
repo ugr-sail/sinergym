@@ -108,7 +108,7 @@ If you want to install the cloned repository directly, you can do so by running 
 
 .. code:: sh
 
-    $ poetry install --no-interaction --only main --extras <optional_extras>
+    $ poetry install --no-interaction --extras <optional_extras>
     # or
     $ pip install .[<optional_extras>]
 
@@ -138,17 +138,22 @@ If you have opted to use a container without Visual Studio Code, you can use the
 
 .. code:: dockerfile
 
-    RUN poetry install --no-interaction
+    RUN poetry install --no-interaction --with dev
 
-The default installation includes all development packages. To avoid this, you should specify ``--only main`` or ``--without <develop_groups>``. The development groups can also be found in ``pyproject.toml``.
+This command includes all development packages. To avoid this, you should specify without ``--with dev``. The development groups can also be found 
+in ``pyproject.toml``.
 
 If you have manually installed the project, you can install the development packages from Poetry in the same way. Once the repository is cloned, run the same command we explained earlier, adding the following:
 
 .. code:: sh
 
-    $ poetry install --no-interaction
+    $ poetry install --no-interaction --with dev
 
-As can be observed, the command is the same as the one shown in the manual installation section, but without specifying groups or extras, so that all development packages are installed. In this case, it is not possible to use pip because it does not include information about development dependencies (except those listed in ``extras``).
+If you prefer to use pip, please note that not all development packages will be installed, since pip is intended primarily for package distribution rather than a full development environment.
+
+.. code:: sh
+
+    $ pip install -e .[extras]
 
 .. note:: For additional information about how Poetry dependencies work, visit its 
           `official documentation <https://python-poetry.org/docs/dependency-specification/>`__.
