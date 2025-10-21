@@ -1,98 +1,139 @@
 # -------------------------------------------------------------------------- #
 #                          Sinergym package metadata                         #
 # -------------------------------------------------------------------------- #
-[tool.poetry]
+[project]
 
-package-mode = true
 name = "sinergym"
-
-version = "3.9.7"
+version = "3.10.0"
 description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
-license = "MIT"
 
 authors = [
-    "Alejandro Campoy Nieves <alejandroac79@gmail.com>",
-    "Antonio Manjavacas",
-    "Javier Jiménez",
-    "Miguel Molina",
-    "Juan Gómez"
+    { name = "Alejandro Campoy Nieves", email = "alejandroac79@gmail.com" },
+    { name = "Antonio Manjavacas" },
+    { name = "Javier Jiménez" },
+    { name = "Miguel Molina" },
+    { name = "Juan Gómez" },
 ]
-# maintainers = [...
 
-# README file(s) are used as the package description
-readme = ["README.md", "INSTALL.md", "CODE_OF_CONDUCT.md", "LICENSE"]
+maintainers = [
+    { name = "Alejandro Campoy Nieves", email = "alejandroac79@gmail.com" },
+    { name = "Antonio Manjavacas"}
+]
 
-homepage = "https://github.com/ugr-sail/sinergym"
-repository = "https://github.com/ugr-sail/sinergym"
-documentation = "https://ugr-sail.github.io/sinergym"
+license = "MIT"
 
-# Keywords (translated to tags on the package index)
+license-files = ["LICENSE"]
+
+readme = "README.md"
+
 keywords = [
-    "reinforcement-learning",
+    "deep-reinforcement-learning",
     "buildings",
     "simulation",
     "control",
-    "reinforcement-learning-environments",
+    "energy-optimization",
 ]
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+# --------- PEP 621 compatible dependencies system (pip, build, flit ...) ----- #
+requires-python = ">=3.12"
+
+dependencies = [
+    "gymnasium>=1.2.0",
+    "numpy>=2.3.2",
+    "pandas>=2.3.1",
+    "eppy>=0.5.63",
+    "tqdm>=4.67.1",
+    "xlsxwriter>=3.2.5",
+    "epw>=1.2.dev2",
+    "pyyaml>=6.0.2",
+]
+
+
+# Optional dependencies (extras)
+[project.optional-dependencies]
+
+
+wandb = ["wandb>=0.21.1"]
+test = ["pytest>=8.4.1", "pytest-cov>=6.2.1", "pytest-xdist>=3.8.0", "coverage>=7.10.4", "wandb>=0.21.1"]
+drl = ["stable-baselines3>=2.7.0", "wandb>=0.21.1"]
+notebooks = ["IPython>=9.4.0"]
+gcloud = ["google-api-python-client>=2.179.0", "oauth2client>=4.1.3", "google-cloud-storage>=3.3.0"]
+extras = [
+    "wandb>=0.21.1",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-xdist>=3.8.0",
+    "coverage>=7.10.4",
+    "stable-baselines3>=2.7.0",
+    "IPython>=9.4.0",
+    "google-api-python-client>=2.179.0",
+    "oauth2client>=4.1.3",
+    "google-cloud-storage>=3.3.0",
+]
+
+# ---------------------------- Project URLs ---------------------------- #
+[project.urls]
+Homepage = "https://github.com/ugr-sail/sinergym"
+Repository = "https://github.com/ugr-sail/sinergym"
+Documentation = "https://ugr-sail.github.io/sinergym"
+
+# -------------------------------------------------------------------------- #
+#                        Poetry-specific configuration                       #
+# -------------------------------------------------------------------------- #
+[tool.poetry]
+package-mode = true
 
 # Include (equivalent to MANIFEST.in)
 include = ["sinergym/data/**"]
 # Part of proyect you want to exclude in packaging
 # exclude = []
 
-# -------------------------------------------------------------------------- #
-#                              Main dependencies                             #
-# -------------------------------------------------------------------------- #
-[tool.poetry.dependencies] # Main group
-
-# Compatible Python versions
-python = "^3.12"
-gymnasium = ">=1.2.0"
-numpy = ">=2.3.2"
-pandas = ">=2.3.1"
-eppy = ">=0.5.63"
-tqdm = ">=4.67.1"
-xlsxwriter = ">=3.2.5"
-epw = ">=1.2.dev2"
-pyyaml = ">=6.0.2"
-
-# Extra dependencies (optional)
-pytest = { version = ">=8.4.1", optional = true }
-pytest-cov = { version = ">=6.2.1", optional = true }
-pytest-xdist = { version = ">=3.8.0", optional = true }
-coverage = { version = ">=7.10.4", optional = true }
-stable-baselines3 = { version = ">=2.7.0", optional = true }
-wandb = { version = ">=0.21.1", optional = true }
-IPython = { version = ">=9.4.0", optional = true }
-google-api-python-client = { version = ">=2.179.0", optional = true }
-oauth2client = { version = ">=4.1.3", optional = true }
-google-cloud-storage = { version = ">=3.3.0", optional = true }
-
-# -------------------------------------------------------------------------- #
-#                        Group dependencies (develop)                        #
-# -------------------------------------------------------------------------- #
+# -------------------- Dependencies (Poetry management) -------------------- #
+[tool.poetry.group.format]
+optional = true
 
 [tool.poetry.group.format.dependencies]
 black = {version = ">=25.1.0", extras = ["jupyter"]}
 ruff = ">=0.12.9"
 pipdeptree = ">=2.28.0"
 
+[tool.poetry.group.typing]
+optional = true
+
 [tool.poetry.group.typing.dependencies]
 pyright = ">=1.1.403"
+
+[tool.poetry.group.platforms]
+optional = true
+
+[tool.poetry.group.platforms.dependencies]
+wandb = ">=0.21.1"
+
+[tool.poetry.group.notebooks]
+optional = true
+
+[tool.poetry.group.notebooks.dependencies]
+IPython = ">=9.4.0"
+
+[tool.poetry.group.test]
+optional = true
+include-groups = ["platforms"]
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=8.4.1"
 pytest-cov = ">=6.2.1"
 pytest-xdist = ">=3.8.0"
 coverage = ">=7.10.4"
-wandb = ">=0.21.1"
+
+[tool.poetry.group.doc]
+optional = true
+include-groups = ["notebooks"]
 
 [tool.poetry.group.doc.dependencies]
 sphinx = ">=8.2.3"
@@ -105,51 +146,43 @@ pyenchant = ">=3.2.2"
 nbsphinx = ">=0.9.6"
 nbsphinx_link = ">=1.3.1"
 mock = ">=5.2.0"
-IPython = ">=9.4.0"
 
-[tool.poetry.group.ipython.dependencies]
-IPython = ">=9.4.0"
+[tool.poetry.group.drl]
+optional = true
+include-groups = ["platforms"]
 
 [tool.poetry.group.drl.dependencies]
 stable-baselines3 = ">=2.4.0"
 
-[tool.poetry.group.platforms.dependencies]
-wandb = ">=0.21.1"
+[tool.poetry.group.gcloud]
+optional = true
 
 [tool.poetry.group.gcloud.dependencies]
 google-api-python-client = ">=2.179.0"
 oauth2client = ">=4.1.3"
 google-cloud-storage = ">=3.3.0"
 
+[tool.poetry.group.dev]
+optional = true
+include-groups = [
+    "format", 
+    "typing", 
+    "test", 
+    "doc", 
+    "notebooks", 
+    "drl", 
+    "gcloud"
+]
+
 # Entry points 
 # [tool.poetry.scripts]
 # sinergym = "sinergym.cli:main"
 
 # -------------------------------------------------------------------------- #
-#                        Define extras for pip install                       #
-# -------------------------------------------------------------------------- #
-
-[tool.poetry.extras]
-test = ["pytest", "pytest-cov", "pytest-xdist", "coverage", "wandb"]
-drl = ["stable-baselines3", "wandb"]
-notebooks = ["IPython"]
-gcloud = ["google-api-python-client", "oauth2client", "google-cloud-storage"]
-extras = [
-    "pytest",
-    "pytest-cov",
-    "pytest-xdist",
-    "coverage",
-    "stable-baselines3",
-    "wandb",
-    "IPython",
-    "google-api-python-client",
-    "oauth2client",
-    "google-cloud-storage",
-]
-
-# -------------------------------------------------------------------------- #
 #                           third parties settings                           #
 # -------------------------------------------------------------------------- #
+
+# ------------------------- Type checking (pyright) ------------------------ #
 [tool.pyright]
 include = ["sinergym", "scripts", "tests", "docs", "examples"]
 typeCheckingMode = "basic"
@@ -162,6 +195,7 @@ reportOptionalMemberAccess = false
 reportAttributeAccessIssue = false
 reportUnusedVariable = true
 
+# ------------------------- Code formatting (black) ------------------------ #
 [tool.black]
 line-length = 88
 target-version = ["py312"]
@@ -179,6 +213,7 @@ exclude = '''
 )/
 '''
 
+# ------------------------- Import sorting (ruff) ------------------------- #
 [tool.ruff]
 # Apply autofix where possible
 fix = false
@@ -203,6 +238,7 @@ select = [
 [tool.ruff.lint.isort]
 known-third-party = ["wandb", "stable_baselines3", "gymnasium"]
 known-first-party = ["sinergym"]
+
 # -------------------------------------------------------------------------- #
 #                         Poetry build configuration                         #
 # -------------------------------------------------------------------------- #
