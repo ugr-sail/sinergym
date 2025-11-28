@@ -98,13 +98,18 @@ variables:
 
   # ---------------------------------- SYSTEM ---------------------------------- #
   Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
+    variable_names: 
+      - office_heating_setpoint
+      - fine_storage_heating_setpoint
+      - bulk_storage_heating_setpoint
     keys:
       - Zone1 Office
       - Zone2 Fine Storage
       - Zone3 Bulk Storage
   Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
+    variable_names: 
+      - office_cooling_setpoint
+      - fine_storage_cooling_setpoint
     keys:
       - Zone1 Office
       - Zone2 Fine Storage
@@ -124,11 +129,11 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   Office Heating Schedule:
-    variable_name: Office_Heating_RL
+    variable_name: office_heating_setpoint
     element_type: Schedule:Year
     value_type: Schedule Value
   Office Cooling Schedule:
-    variable_name: Office_Cooling_RL
+    variable_name: office_cooling_setpoint
     element_type: Schedule:Year
     value_type: Schedule Value
 

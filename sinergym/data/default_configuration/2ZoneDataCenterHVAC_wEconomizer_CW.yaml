@@ -99,8 +99,9 @@ variables:
 
   # ---------------------------------- SYSTEM ---------------------------------- #
   Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
+    variable_names: cooling_setpoint
     keys: East Zone
+      # Since the cooling setpoint is the same for both zones, we can use only one of them
       # keys:
       #   - East Zone
       #   - West Zone
@@ -217,7 +218,7 @@ actuators:
     element_type: Schedule:Compact
     value_type: Schedule Value
   CW Loop Temp Schedule:
-    variable_name: chiller_water_temperature
+    variable_name: chws_supply_temperature
     element_type: Schedule:Compact
     value_type: Schedule Value
   

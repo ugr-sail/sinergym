@@ -95,7 +95,7 @@ variables:
 
   # ---------------------------------- SYSTEM ---------------------------------- #
   Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
+    variable_names: cooling_setpoint
     keys: Main Zone
   System Node Temperature:
     variable_names:
@@ -147,7 +147,7 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   COOLING RETURN AIR SETPOINT SCHEDULE:
-    variable_name: Cooling_Setpoint_RL
+    variable_name: cooling_setpoint
     element_type: Schedule:Compact
     value_type: Schedule Value
 

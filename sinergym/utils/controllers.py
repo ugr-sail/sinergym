@@ -136,7 +136,7 @@ class RBCIncrementalDatacenter(object):
             ]
         )
 
-        current_cool_setpoint = obs_dict['clg_setpoint']
+        current_cool_setpoint = obs_dict['cooling_setpoint']
 
         new_cool_setpoint = current_cool_setpoint
 

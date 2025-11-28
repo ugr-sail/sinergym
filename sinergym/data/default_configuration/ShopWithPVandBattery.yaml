@@ -106,10 +106,10 @@ variables:
 
   # ---------------------------------- SYSTEM ---------------------------------- #
   Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
+    variable_names: heating_setpoint
     keys: ZN_1_FLR_1_SEC_5
   Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
+    variable_names: cooling_setpoint
     keys: ZN_1_FLR_1_SEC_5
   Electric Storage Battery Charge State:
     variable_names: storage_battery_charge_state
@@ -148,11 +148,11 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   HTGSETP_SCH:
-    variable_name: Heating_Setpoint_RL
+    variable_name: heating_setpoint
     element_type: Schedule:Compact
     value_type: Schedule Value
   CLGSETP_SCH:
-    variable_name: Cooling_Setpoint_RL
+    variable_name: cooling_setpoint
     element_type: Schedule:Compact
     value_type: Schedule Value
 
