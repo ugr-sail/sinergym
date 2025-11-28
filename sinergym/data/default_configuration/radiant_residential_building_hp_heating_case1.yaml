@@ -71,14 +71,35 @@ building_config:
 # Alternative stochastic environments if it is defined
 weather_variability:
   Dry Bulb Temperature:
-    - [1.0, 2.0] # sigma
-    - 0.0 # mu
-    - 24.0 # tau
-  Relative Humidity:
-    - [2.0, 5.0]
+    - [0.0, 2.0]
     - 0.0
     - 24.0
-    - [0, 100] # var_range
+    - [-40.0, 40.0]
+  Relative Humidity:
+    - [0.0, 5.0]
+    - 0.0
+    - 24.0
+    - [0.0, 100.0]
+  Wind Speed:
+    - [0.0, 5.0]    
+    - 0.0
+    - 24.0
+    - [0.0, 20.0]
+  Wind Direction:
+    - [0.0, 45.0]
+    - 0.0
+    - 24.0
+    - [0.0, 360.0]
+  Direct Normal Radiation:
+    - [0.0, 80.0]
+    - 0.0
+    - 24.0
+    - [0.0, 1000.0]
+  Diffuse Horizontal Radiation:
+    - [0.0, 30.0]
+    - 0.0
+    - 24.0
+    - [0.0, 400.0]
 
 # ---------------------------------------------------------------------------- #
 #                          EPISODES FOLDER GENERATION                          #
