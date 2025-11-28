@@ -190,7 +190,7 @@ variables:
       - SecondFloor:Bedroom03_floor_0_0_0
   Zone Radiant HVAC Operation Mode:
     variable_names: 
-      - radiant_livroom_availavility
+      - radiant_living_availavility
       - radiant_kitchen_availavility
       - radiant_bed1_availavility
       - radiant_bed2_availavility
@@ -226,7 +226,7 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   LIVING RADIANT AVAILAVILITY:
-    variable_name: radiant_livroom_availavility
+    variable_name: radiant_living_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   KITCHEN RADIANT AVAILAVILITY:
