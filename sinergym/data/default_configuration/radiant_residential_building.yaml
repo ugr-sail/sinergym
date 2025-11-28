@@ -189,7 +189,12 @@ variables:
       - SecondFloor:Bedroom02_floor_0_0_0
       - SecondFloor:Bedroom03_floor_0_0_0
   Zone Radiant HVAC Operation Mode:
-    variable_names: radiant_availavility
+    variable_names: 
+      - radiant_living_availavility
+      - radiant_kitchen_availavility
+      - radiant_bed1_availavility
+      - radiant_bed2_availavility
+      - radiant_bed3_availavility
     keys:
       - FirstFloor:LivingRoom radiant surface
       - FirstFloor:Kitchen radiant surface
@@ -221,23 +226,23 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   LIVING RADIANT AVAILAVILITY:
-    variable_name: radiant_livroom
+    variable_name: radiant_living_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   KITCHEN RADIANT AVAILAVILITY:
-    variable_name: radiant_kitchen
+    variable_name: radiant_kitchen_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   BED1 RADIANT AVAILAVILITY:
-    variable_name: radiant_bed1
+    variable_name: radiant_bed1_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   BED2 RADIANT AVAILAVILITY:
-    variable_name: radiant_bed2
+    variable_name: radiant_bed2_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   BED3 RADIANT AVAILAVILITY:
-    variable_name: radiant_bed3
+    variable_name: radiant_bed3_availavility
     element_type: Schedule:Compact
     value_type: Schedule Value
   "HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00":

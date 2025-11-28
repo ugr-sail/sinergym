@@ -49,7 +49,7 @@ def test_previous_observation_wrapper(env_demo):
 
     env = PreviousObservationWrapper(
         env=env_demo,
-        previous_variables=['htg_setpoint', 'clg_setpoint', 'air_temperature'],
+        previous_variables=['heating_setpoint', 'cooling_setpoint', 'air_temperature'],
     )
     # Check that the original variable names with previous name added is
     # present
@@ -498,8 +498,8 @@ def test_incremental_wrapper(env_demo):
     env = IncrementalWrapper(
         env=env_demo,
         incremental_variables_definition={
-            'Heating_Setpoint_RL': (2.0, 0.5),
-            'Cooling_Setpoint_RL': (1.0, 0.25),
+            'heating_setpoint': (2.0, 0.5),
+            'cooling_setpoint': (1.0, 0.25),
         },
         initial_values=[21.0, 25.0],
     )
@@ -534,8 +534,8 @@ def test_incremental_exceptions(env_demo):
         IncrementalWrapper(
             env=env_discrete,
             incremental_variables_definition={
-                'Heating_Setpoint_RL': (2.0, 0.5),
-                'Cooling_Setpoint_RL': (1.0, 0.25),
+                'heating_setpoint': (2.0, 0.5),
+                'cooling_setpoint': (1.0, 0.25),
             },
             initial_values=[21.0, 25.0],
         )
@@ -545,8 +545,8 @@ def test_incremental_exceptions(env_demo):
         IncrementalWrapper(
             env=env_demo,
             incremental_variables_definition={
-                'Heating_Setpoint_RL': (2.0, 0.5),
-                'Cooling_Setpoint_RL': (1.0, 0.25),
+                'heating_setpoint': (2.0, 0.5),
+                'cooling_setpoint': (1.0, 0.25),
                 'Unknown_Variable': (1.0, 0.25),
             },
             initial_values=[21.0, 25.0, 3.0],
@@ -557,8 +557,8 @@ def test_incremental_exceptions(env_demo):
         IncrementalWrapper(
             env=env_demo,
             incremental_variables_definition={
-                'Heating_Setpoint_RL': (2.0, 0.5),
-                'Cooling_Setpoint_RL': (1.0, 0.25),
+                'heating_setpoint': (2.0, 0.5),
+                'cooling_setpoint': (1.0, 0.25),
             },
             initial_values=[21.0, 25.0, 3.0],
         )
@@ -666,7 +666,7 @@ def test_deltatemp_wrapper(env_datacenter):
             'west_zone_air_temperature',
             'east_zone_air_temperature',
         ],
-        setpoint_variables=['clg_setpoint'],
+        setpoint_variables=['cooling_setpoint'],
     )
 
     # Check attributes exist in wrapped env
@@ -690,11 +690,11 @@ def test_deltatemp_wrapper(env_datacenter):
     assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
     assert (
         obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['clg_setpoint']
+        == obs_dict['west_zone_air_temperature'] - obs_dict['cooling_setpoint']
     )
     assert (
         obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['clg_setpoint']
+        == obs_dict['east_zone_air_temperature'] - obs_dict['cooling_setpoint']
     )
 
     a = env.action_space.sample()
@@ -702,11 +702,11 @@ def test_deltatemp_wrapper(env_datacenter):
     obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
     assert (
         obs_dict['delta_west_zone_air_temperature']
-        == obs_dict['west_zone_air_temperature'] - obs_dict['clg_setpoint']
+        == obs_dict['west_zone_air_temperature'] - obs_dict['cooling_setpoint']
     )
     assert (
         obs_dict['delta_east_zone_air_temperature']
-        == obs_dict['east_zone_air_temperature'] - obs_dict['clg_setpoint']
+        == obs_dict['east_zone_air_temperature'] - obs_dict['cooling_setpoint']
     )
 
     env.close()

@@ -124,10 +124,10 @@ variables:
 
   # ---------------------------------- SYSTEM ---------------------------------- #
   Zone Thermostat Heating Setpoint Temperature:
-    variable_names: htg_setpoint
+    variable_names: heating_setpoint
     keys: Core_bottom
   Zone Thermostat Cooling Setpoint Temperature:
-    variable_names: clg_setpoint
+    variable_names: cooling_setpoint
     keys: Core_bottom
 
   # ---------------------------------- ENERGY ---------------------------------- #
@@ -145,11 +145,11 @@ meters: {}
 # --------------------------- ACTUATORS TO CONTROL --------------------------- #
 actuators:
   HTGSETP_SCH_YES_OPTIMUM:
-    variable_name: Office_Heating_RL
+    variable_name: heating_setpoint
     element_type: Schedule:Compact
     value_type: Schedule Value
   CLGSETP_SCH_YES_OPTIMUM:
-    variable_name: Office_Cooling_RL
+    variable_name: cooling_setpoint
     element_type: Schedule:Compact
     value_type: Schedule Value
 

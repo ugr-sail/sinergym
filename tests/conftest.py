@@ -92,8 +92,14 @@ def VARIABLES_5ZONE():
             'Site Direct Solar Radiation Rate per Area',
             'Environment',
         ),
-        'htg_setpoint': ('Zone Thermostat Heating Setpoint Temperature', 'SPACE5-1'),
-        'clg_setpoint': ('Zone Thermostat Cooling Setpoint Temperature', 'SPACE5-1'),
+        'heating_setpoint': (
+            'Zone Thermostat Heating Setpoint Temperature',
+            'SPACE5-1',
+        ),
+        'cooling_setpoint': (
+            'Zone Thermostat Cooling Setpoint Temperature',
+            'SPACE5-1',
+        ),
         'air_temperature': ('Zone Air Temperature', 'SPACE5-1'),
         'air_humidity': ('Zone Air Relative Humidity', 'SPACE5-1'),
         'people_occupant': ('Zone People Occupant Count', 'SPACE5-1'),
@@ -116,8 +122,8 @@ def METERS_5ZONE():
 @pytest.fixture(scope='function')
 def ACTUATORS_5ZONE():
     return {
-        'Heating_Setpoint_RL': ('Schedule:Compact', 'Schedule Value', 'HTG-SETP-SCH'),
-        'Cooling_Setpoint_RL': ('Schedule:Compact', 'Schedule Value', 'CLG-SETP-SCH'),
+        'heating_setpoint': ('Schedule:Compact', 'Schedule Value', 'HTG-SETP-SCH'),
+        'cooling_setpoint': ('Schedule:Compact', 'Schedule Value', 'CLG-SETP-SCH'),
     }
 
 
@@ -179,7 +185,7 @@ def VARIABLES_DATACENTER():
         ),
         'east_zone_air_humidity': ('Zone Air Relative Humidity', 'East Zone'),
         'west_zone_air_humidity': ('Zone Air Relative Humidity', 'West Zone'),
-        'clg_setpoint': (
+        'cooling_setpoint': (
             'Zone Thermostat Cooling Setpoint Temperature',
             'East Zone',
         ),
@@ -278,7 +284,7 @@ def METERS_DATACENTER():
 @pytest.fixture(scope='function')
 def ACTUATORS_DATACENTER():
     return {
-        'Cooling_Setpoint_RL': (
+        'cooling_setpoint': (
             'Schedule:Compact',
             'Schedule Value',
             'Cooling Setpoints',
@@ -657,7 +663,8 @@ def env_all_wrappers(env_demo):
         env=env_demo, reward_terms=['energy_term', 'comfort_term']
     )
     env = PreviousObservationWrapper(
-        env, previous_variables=['htg_setpoint', 'clg_setpoint', 'air_temperature']
+        env,
+        previous_variables=['heating_setpoint', 'cooling_setpoint', 'air_temperature'],
     )
     env = DatetimeWrapper(env)
     env = DiscreteIncrementalWrapper(
