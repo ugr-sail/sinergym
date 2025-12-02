@@ -51,10 +51,15 @@ def store_init_metadata(cls):
 
 @store_init_metadata
 class DatetimeWrapper(gym.ObservationWrapper):
-    """Wrapper to transform datetime variables into a more useful representation:
-    - 'day_of_month' is replaced with 'is_weekend' (1 if weekend, 0 otherwise).
-    - 'hour' is replaced with its sine and cosine encoding.
-    - 'month' is replaced with its sine and cosine encoding.
+    """Wrapper to transform datetime variables into a more useful representation for deep RL:
+    - 'day_of_month' is replaced with 'day_of_month_cos' and 'day_of_month_sin' (cyclic encoding).
+    - 'hour' is replaced with 'hour_cos' and 'hour_sin' (cyclic encoding).
+    - 'month' is replaced with 'month_cos' and 'month_sin' (cyclic encoding).
+
+    Cyclic encoding using sine and cosine is essential for deep RL because it preserves the
+    circular nature of temporal variables (e.g., hour 23:59 is close to 00:00). Both sine and
+    cosine are needed to uniquely represent each point in the cycle.
+
     The observation space is updated automatically.
     """
 
@@ -77,66 +82,78 @@ class DatetimeWrapper(gym.ObservationWrapper):
             raise ValueError
 
         # Update observation space
+        # We delete: -3 variables (month, day of month and hour)
+        # We add: +6 variables (cos and sin for month, day of month and hour)
+        # Total: +3
         obs_space = self.get_wrapper_attr('observation_space')
         self.observation_space = gym.spaces.Box(
             low=obs_space.low[0],
             high=obs_space.high[0],
-            # +2 because we added sines and cosines
-            shape=(obs_space.shape[0] + 2,),
+            shape=(obs_space.shape[0] + 3,),
             dtype=obs_space.dtype,
         )
 
-        # Update observation variables with new datetime variables
+        # Store original variable indexes and build mapping for efficient access
         new_obs_vars = deepcopy(obs_vars)
-        new_obs_vars[new_obs_vars.index('day_of_month')] = 'is_weekend'
-        hour_idx = new_obs_vars.index('hour')
-        new_obs_vars[hour_idx] = 'hour_cos'
-        new_obs_vars.insert(hour_idx + 1, 'hour_sin')
-        month_idx = new_obs_vars.index('month')
-        new_obs_vars[month_idx] = 'month_cos'
-        new_obs_vars.insert(month_idx + 1, 'month_sin')
+        self._month_idx = new_obs_vars.index('month')
+        self._day_idx = new_obs_vars.index('day_of_month')
+        self._hour_idx = new_obs_vars.index('hour')
+
+        # Replace variables in reverse order to preserve indexes
+        for idx, new_vars in sorted(
+            [
+                (self._month_idx, ['month_cos', 'month_sin']),
+                (self._day_idx, ['day_cos', 'day_sin']),
+                (self._hour_idx, ['hour_cos', 'hour_sin']),
+            ],
+            reverse=True,
+        ):
+            new_obs_vars[idx] = new_vars[0]
+            new_obs_vars.insert(idx + 1, new_vars[1])
 
         self.observation_variables = new_obs_vars
         self.logger.info('Wrapper initialized.')
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
-        """Transforms the observation to replace time variables with encoded representations.
+        """Transforms the observation to replace time variables with cyclic encoded representations.
 
         Args:
             obs (np.ndarray): Original observation.
 
         Returns:
-            np.ndarray: Transformed observation.
+            np.ndarray: Transformed observation with cyclic encoding for temporal variables.
         """
-        obs_dict = dict(zip(self.env.get_wrapper_attr('observation_variables'), obs))
+        # Extract datetime values and compute cyclic encodings
+        month = int(obs[self._month_idx])
+        day_of_month = int(obs[self._day_idx])
+        hour = obs[self._hour_idx]
 
-        # Obtain year if present
-        year = obs_dict.get('year', YEAR)
-
-        # Create datetime object
-        dt = datetime(
-            year,
-            int(obs_dict['month']),
-            int(obs_dict['day_of_month']),
-            int(obs_dict['hour']),
+        # Precompute all cyclic encodings
+        month_cos, month_sin = np.cos(2 * np.pi * (month - 1) / 12), np.sin(
+            2 * np.pi * (month - 1) / 12
+        )
+        day_cos, day_sin = np.cos(2 * np.pi * (day_of_month - 1) / 31), np.sin(
+            2 * np.pi * (day_of_month - 1) / 31
+        )
+        hour_cos, hour_sin = np.cos(2 * np.pi * hour / 24), np.sin(
+            2 * np.pi * hour / 24
         )
 
-        # Build new observation of transformed datetime variables
-        new_obs = {
-            key: obs_dict[key] if key in obs_dict else None
-            for key in self.get_wrapper_attr('observation_variables')
-        }
-        new_obs.update(
-            {
-                'is_weekend': 1.0 if dt.weekday() >= 5 else 0.0,
-                'hour_cos': np.cos(2 * np.pi * obs_dict['hour'] / 24),
-                'hour_sin': np.sin(2 * np.pi * obs_dict['hour'] / 24),
-                'month_cos': np.cos(2 * np.pi * (obs_dict['month'] - 1) / 12),
-                'month_sin': np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12),
-            }
-        )
+        # Build new observation array directly from original variables
+        orig_vars = self.env.get_wrapper_attr('observation_variables')
+        new_obs = []
 
-        return np.fromiter(new_obs.values(), dtype=np.float32)
+        for orig_idx, var_name in enumerate(orig_vars):
+            if var_name == 'month':
+                new_obs.extend([month_cos, month_sin])
+            elif var_name == 'day_of_month':
+                new_obs.extend([day_cos, day_sin])
+            elif var_name == 'hour':
+                new_obs.extend([hour_cos, hour_sin])
+            else:
+                new_obs.append(obs[orig_idx])
+
+        return np.array(new_obs, dtype=np.float32)
 
 
 # ---------------------------------------------------------------------------- #
