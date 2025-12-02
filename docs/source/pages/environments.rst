@@ -25,11 +25,10 @@ These identifiers provide a general summary of the environment's characteristics
                environment ID or set parameters directly in the environment constructor.
                For more information, see :ref:`Environments Configuration and Registration`.
 
-.. important:: **Since Sinergym version 3.10.2**, all environments automatically include 
-               the ``DatetimeWrapper`` applied by default. This provides optimal temporal 
-               encoding for deep reinforcement learning algorithms without requiring 
-               manual wrapper configuration. For detailed information about this wrapper, 
-               see :ref:`DatetimeWrapper`.
+.. important:: For optimal temporal encoding in deep reinforcement learning tasks,
+               it is **recommended to use the ``DatetimeWrapper``**. This wrapper
+               provides state-of-the-art temporal features without requiring
+               manual configuration. For more details, see :ref:`DatetimeWrapper`.
 
 .. note:: Additionally, Sinergym supports **full serialization of environments and wrappers**, 
           enabling easy saving, modification, and restoration of experiments. This ensures 

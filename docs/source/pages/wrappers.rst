@@ -31,10 +31,10 @@ This wrapper adds observations from the previous timestep to the current environ
 DatetimeWrapper
 ***************
 
-.. important:: **Since Sinergym version 3.10.2**, the ``DatetimeWrapper`` is automatically 
-               applied to all environments by default. This ensures optimal temporal 
-               encoding for deep reinforcement learning algorithms without requiring 
-               manual wrapper configuration.
+.. important:: It is **highly recommended to use the ``DatetimeWrapper``** for optimal 
+               temporal encoding in deep reinforcement learning algorithms. This wrapper 
+               must be applied manually in your environment's pipeline if you wish to 
+               benefit from state-of-the-art temporal features.
 
 This wrapper transforms datetime variables into a more useful representation for deep RL:
 - ``day_of_month`` is replaced with ``day_cos`` and ``day_sin`` (cyclic encoding).
