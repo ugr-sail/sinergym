@@ -45,6 +45,41 @@ def store_init_metadata(cls):
 
 
 # ---------------------------------------------------------------------------- #
+#                        Gym.Wrapper base modifications                        #
+# ---------------------------------------------------------------------------- #
+
+
+# Monkey patch gym.Wrapper to add get_observation_dict method
+# This makes the method available from any wrapper level
+def _wrapper_get_obs_dict(self, obs: np.ndarray) -> Dict[str, float]:
+    """Convert observation array to dictionary with variable names as keys.
+
+    This method automatically gets the observation variables from the
+    outermost wrapper level (this wrapper) using get_wrapper_attr.
+    Defining in gym.Wrapper base class to make the method available in
+    any wrapper level.
+
+    Args:
+        obs (np.ndarray): Observation array to convert.
+
+    Returns:
+        Dict[str, float]: Dictionary mapping observation variable names to their values.
+    """
+    # Get observation variables from this wrapper (outermost level)
+    obs_vars = self.get_wrapper_attr('observation_variables')
+
+    assert len(obs) == len(
+        obs_vars
+    ), "Observation array length does not match observation variables length"
+
+    return dict(zip(obs_vars, obs))
+
+
+# Add the method to gym.Wrapper base class
+gym.Wrapper.get_obs_dict = _wrapper_get_obs_dict
+
+
+# ---------------------------------------------------------------------------- #
 #                             Observation wrappers                             #
 # ---------------------------------------------------------------------------- #
 
