@@ -625,6 +625,24 @@ class EplusEnv(gym.Env):
             self.logger.warning('Action space is not continuous or discrete?')
             return False
 
+    # -------------------------------- Environment ------------------------------- #
+    def get_obs_dict(self, obs: np.ndarray) -> Dict[str, float]:
+        """Get the observation as a dictionary.
+
+        Args:
+            obs (np.ndarray): Observation array.
+
+        Returns:
+            Dict[str, float]: Dictionary mapping observation variable names to their values.
+        """
+        obs_vars = self.get_wrapper_attr('observation_variables')
+
+        assert len(obs) == len(
+            obs_vars
+        ), "Observation array length does not match observation variables length"
+
+        return dict(zip(obs_vars, obs))
+
     # --------------------------------- Simulator -------------------------------- #
 
     @property  # pragma: no cover
