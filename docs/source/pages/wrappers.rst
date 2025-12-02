@@ -31,7 +31,18 @@ This wrapper adds observations from the previous timestep to the current environ
 DatetimeWrapper
 ***************
 
-This wrapper replaces the ``day_of_month`` value with the ``is_weekend`` flag, and the ``hour`` and ``month`` values with *sin* and *cos* values. The observation space is automatically updated.
+.. important:: **Since Sinergym version 3.10.2**, the ``DatetimeWrapper`` is automatically 
+               applied to all environments by default. This ensures optimal temporal 
+               encoding for deep reinforcement learning algorithms without requiring 
+               manual wrapper configuration.
+
+This wrapper transforms datetime variables into a more useful representation for deep RL:
+- ``day_of_month`` is replaced with ``day_cos`` and ``day_sin`` (cyclic encoding).
+- ``hour`` is replaced with ``hour_cos`` and ``hour_sin`` (cyclic encoding).
+- ``month`` is replaced with ``month_cos`` and ``month_sin`` (cyclic encoding).
+
+Cyclic encoding using sine and cosine is essential for deep RL because it preserves the 
+circular nature of temporal variables (e.g., hour 23:59 is close to 00:00).
 
 ***************
 NormalizeAction
