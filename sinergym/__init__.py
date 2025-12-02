@@ -123,14 +123,23 @@ def register_envs_from_yaml(yaml_path: str):
     # configurations = Dict [key=environment_id, value=env_kwargs dict]
     configurations = convert_conf_to_env_parameters(conf)
 
+    # Datetime wrapper specification (always included in all Sinergym environments)
+    datetime_wrapper_spec = WrapperSpec(
+        name='DatetimeWrapper',
+        entry_point='sinergym.utils.wrappers:DatetimeWrapper',
+        kwargs={},
+    )
+
     for env_id, env_kwargs in configurations.items():
 
         if not conf.get('only_discrete', False):
 
+            additional_wrappers = (datetime_wrapper_spec,)
+
             register(
                 id=env_id,
                 entry_point='sinergym.envs:EplusEnv',
-                # additional_wrappers=additional_wrappers,
+                additional_wrappers=additional_wrappers,
                 # order_enforce=False,
                 # disable_env_checker=True,
                 kwargs=env_kwargs,
@@ -157,7 +166,10 @@ def register_envs_from_yaml(yaml_path: str):
                     'action_mapping': action_mapping,
                 },
             )
-            additional_wrappers = (discrete_wrapper_spec,)
+            additional_wrappers = (
+                datetime_wrapper_spec,
+                discrete_wrapper_spec,
+            )
 
             env_kwargs_discrete['env_name'] = env_kwargs_discrete['env_name'].replace(
                 'continuous', 'discrete'
