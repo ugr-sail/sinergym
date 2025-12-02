@@ -17,25 +17,28 @@ def test_datetime_wrapper(env_demo):
 
     observation_variables = env.observation_variables
     # Check if observation variables have been updated
-    assert 'day' not in observation_variables
+    assert 'day_of_month' not in observation_variables
     assert 'month' not in observation_variables
     assert 'hour' not in observation_variables
-    assert 'is_weekend' in observation_variables
+    # Check new cyclic encoded variables are present
     assert 'month_sin' in observation_variables
     assert 'month_cos' in observation_variables
     assert 'hour_sin' in observation_variables
     assert 'hour_cos' in observation_variables
+    assert 'day_sin' in observation_variables
+    assert 'day_cos' in observation_variables
     # Check new returned observation values are valid
     env.reset()
     action = env.action_space.sample()
     obs, _, _, _, _ = env.step(action)
     obs_dict = dict(zip(observation_variables, obs))
     assert (
-        obs_dict['is_weekend'] is not None
-        and obs_dict['month_sin'] is not None
+        obs_dict['month_sin'] is not None
         and obs_dict['month_cos'] is not None
         and obs_dict['hour_sin'] is not None
         and obs_dict['hour_cos'] is not None
+        and obs_dict['day_sin'] is not None
+        and obs_dict['day_cos'] is not None
     )
 
     # Check exceptions
