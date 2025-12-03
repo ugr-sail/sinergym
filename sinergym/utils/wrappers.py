@@ -5,7 +5,7 @@ import os
 from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timedelta
 from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, SupportsFloat, Tuple, Union
 
@@ -2400,11 +2400,21 @@ class VariabilityContextWrapper(gym.Wrapper):
     ) -> Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]:
         """Executes an action and updates the environment's context if needed.
 
+        This method decrements the step counter and, when it reaches zero, updates the context
+        variables with new randomly generated values. After updating, it generates the next update
+        schedule.
+
         Args:
             action (np.ndarray): Action selected by the agent.
 
         Returns:
-            Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+            Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Standard Gymnasium step
+                return containing:
+                - Observation for next timestep
+                - Reward obtained
+                - Whether the episode has ended (terminated)
+                - Whether episode has been truncated
+                - Dictionary with extra information
         """
 
         # Discount frequency
@@ -2430,10 +2440,16 @@ class VariabilityContextWrapper(gym.Wrapper):
     def _generate_context_values(self) -> Tuple[np.ndarray, int]:
         """Generates new context values and determines the next update step.
 
+        This method generates random delta values for each context variable, applies them to the
+        current context, clips the result to the context space bounds, and randomly selects the
+        number of steps until the next update.
+
         Returns:
-            Tuple[np.ndarray, int]:
-                - The new context values after applying random deltas.
-                - The number of steps until the next update.
+            Tuple[np.ndarray, int]: A tuple containing:
+                - The new context values (np.ndarray): After applying random deltas and clipping
+                  to context_space bounds.
+                - The number of steps until the next update (int): Randomly sampled from
+                  step_frequency_range.
         """
         # Generate random delta context values
         delta_context_values = np.random.uniform(
@@ -2454,6 +2470,251 @@ class VariabilityContextWrapper(gym.Wrapper):
         )
 
         return next_context_values, next_step_update
+
+
+@store_init_metadata
+class GeneralContextWrapper(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER GeneralContextWrapper', level=LOG_WRAPPERS_LEVEL
+    )
+
+    def __init__(self, env: Env, configuration: Dict[str, List[float]]):
+        """Wrapper to apply predefined context changes at specific dates and times.
+
+        This wrapper allows you to define a schedule of context variable updates that occur at
+        specific dates and times during the simulation. The context values are applied when the
+        simulation reaches the matching datetime.
+
+        The configuration dictionary maps datetime strings (in format 'MM-DD HH') to lists of
+        context values. When the simulation reaches a matching datetime, the corresponding context
+        values are applied to all context variables.
+
+        Args:
+            env (Env): Original environment. Must have context variables defined.
+            configuration (Dict[str, List[float]]): Dictionary mapping datetime strings to context
+                values. Keys must be in format '%m-%d %H' (e.g., '01-15 14' for January 15th at
+                2 PM). Values must be lists of floats with length equal to the number of context
+                variables. The values are applied in order to the context variables.
+
+        Raises:
+            ValueError: If configuration values don't match the number of context variables.
+
+        Example:
+            >>> from sinergym.utils.wrappers import GeneralContextWrapper
+            >>> env = make('Eplus-5zone-hot-continuous-v1')
+            >>> # Set occupancy to 0.8 on January 15th at 2 PM
+            >>> # and 0.5 on February 20th at 9 AM
+            >>> config = {
+            ...     '01-15 14': [0.8],  # Assuming 1 context variable
+            ...     '02-20 09': [0.5]
+            ... }
+            >>> env = GeneralContextWrapper(env=env, configuration=config)
+        """
+        super().__init__(env)
+        self.context_configuration = configuration
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(
+        self, action: np.ndarray
+    ) -> Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]:
+        """Executes an action and checks if context should be updated based on current datetime.
+
+        After executing the action, this method checks if the current simulation datetime matches
+        any key in the configuration dictionary. If a match is found, the corresponding context
+        values are applied.
+
+        Args:
+            action (np.ndarray): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Standard Gymnasium step
+                return containing:
+                - Observation for next timestep
+                - Reward obtained
+                - Whether the episode has ended (terminated)
+                - Whether episode has been truncated
+                - Dictionary with extra information (must contain 'month', 'day', 'hour' keys)
+        """
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        dt = datetime(YEAR, info['month'], info['day'], info['hour'])
+        str_date = dt.strftime('%m-%d %H')
+
+        if str_date in self.context_configuration:
+            self.get_wrapper_attr('update_context')(
+                self.context_configuration[str_date]
+            )
+
+        return obs, reward, terminated, truncated, info
+
+
+@store_init_metadata
+class RandomGeneralContextWrapper(gym.Wrapper):
+    """Wrapper that generates random context changes at random times for each episode.
+
+    This wrapper automatically generates a random schedule of context variable updates for each
+    episode. At the start of each episode (during reset), it randomly selects:
+    - A number of context changes (within the specified range)
+    - Random timestamps within the episode's run period
+    - Random context values (within the specified range) for each change
+
+    All context variables receive the same value at each change point. This is useful for
+    introducing variability in training while maintaining simplicity.
+
+    Unlike GeneralContextWrapper, which uses a fixed configuration, this wrapper generates a new
+    random schedule for each episode, providing more diverse training scenarios.
+    """
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER RandomGeneralContextWrapper', level=LOG_WRAPPERS_LEVEL
+    )
+
+    def __init__(
+        self,
+        env: Env,
+        num_changes_range: Tuple[int, int],
+        context_range: Tuple[float, float],
+    ):
+        """Initialize wrapper with parameters for random context change generation.
+
+        Args:
+            env (Env): Original environment. Must have context variables defined and a runperiod
+                configuration.
+            num_changes_range (Tuple[int, int]): Range (min, max) for the number of random context
+                changes to generate per episode. The actual number is randomly sampled from this
+                range (inclusive). Both values must be >= 0 and min <= max.
+            context_range (Tuple[float, float]): Range (min, max) for context values. All context
+                variables will be set to the same randomly sampled value within this range at each
+                change point. Must satisfy min <= max.
+
+        Raises:
+            ValueError: If num_changes_range or context_range are invalid.
+
+        Example:
+            >>> from sinergym.utils.wrappers import RandomGeneralContextWrapper
+            >>> env = make('Eplus-5zone-hot-continuous-v1')
+            >>> # Generate 3-5 random context changes per episode
+            >>> # with values between 0.3 and 0.9
+            >>> env = RandomGeneralContextWrapper(
+            ...     env=env,
+            ...     num_changes_range=(3, 5),
+            ...     context_range=(0.3, 0.9)
+            ... )
+        """
+        super().__init__(env)
+        self.num_changes_range = num_changes_range
+        self.context_range = context_range
+
+        # Initialize empty configuration that will be populated in reset()
+        self.context_configuration = {}
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self, **kwargs) -> Tuple[np.ndarray, Dict[str, Any]]:
+        """Resets the environment and generates a new random context change schedule.
+
+        This method resets the underlying environment and generates a new random configuration
+        for context changes based on:
+        - The episode's run period (from environment's runperiod configuration)
+        - The num_changes_range parameter
+        - The context_range parameter
+
+        The generated schedule is stored in context_configuration and will be applied during
+        the episode when the simulation reaches the matching datetimes.
+
+        Args:
+            **kwargs: Additional arguments passed to the underlying environment's reset method.
+
+        Returns:
+            Tuple[np.ndarray, Dict[str, Any]]: Standard Gymnasium reset return containing:
+                - Initial observation
+                - Info dictionary
+
+        Raises:
+            AttributeError: If environment doesn't have 'runperiod' attribute.
+        """
+        obs, info = self.env.reset(**kwargs)
+
+        # Generate new random configuration for this episode
+        self.context_configuration = {}
+
+        # Random number of changes for this episode
+        num_changes = np.random.randint(
+            self.num_changes_range[0], self.num_changes_range[1] + 1
+        )
+
+        # Get runperiod from environment
+        runperiod = self.get_wrapper_attr('runperiod')
+
+        # Extract runperiod init datetime and end datetime (using year)
+        begin_datetime = datetime(
+            runperiod['start_year'], runperiod['start_month'], runperiod['start_day'], 0
+        )
+        end_datetime = datetime(
+            runperiod['end_year'], runperiod['end_month'], runperiod['end_day'], 0
+        )
+
+        total_hours = int((end_datetime - begin_datetime).total_seconds() / 3600)
+
+        # Generate num_changes random hours
+        random_hours = np.random.randint(0, total_hours, size=num_changes)
+
+        # Create datetime objects and format strings
+        random_dates = [
+            begin_datetime + timedelta(hours=int(hours)) for hours in random_hours
+        ]
+        str_dates = [dt.strftime('%m-%d %H') for dt in random_dates]
+
+        # Generate random context values
+        context_values = np.random.uniform(
+            self.context_range[0], self.context_range[1], size=num_changes
+        )
+
+        # Get context variables length once
+        num_context_vars = len(self.get_wrapper_attr('context_variables'))
+
+        # Build configuration
+        self.context_configuration = {
+            str_date: [value] * num_context_vars
+            for str_date, value in zip(str_dates, context_values)
+        }
+
+        return obs, info
+
+    def step(
+        self, action: np.ndarray
+    ) -> Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]:
+        """Executes an action and checks if context should be updated based on current datetime.
+
+        After executing the action, this method checks if the current simulation datetime matches
+        any key in the randomly generated configuration dictionary. If a match is found, the
+        corresponding context values are applied.
+
+        Args:
+            action (np.ndarray): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Standard Gymnasium step
+                return containing:
+                - Observation for next timestep
+                - Reward obtained
+                - Whether the episode has ended (terminated)
+                - Whether episode has been truncated
+                - Dictionary with extra information (must contain 'month', 'day', 'hour' keys)
+        """
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        dt = datetime(YEAR, info['month'], info['day'], info['hour'])
+        str_date = dt.strftime('%m-%d %H')
+
+        if str_date in self.context_configuration:
+            self.get_wrapper_attr('update_context')(
+                self.context_configuration[str_date]
+            )
+
+        return obs, reward, terminated, truncated, info
 
 
 # ---------------------------------------------------------------------------- #
