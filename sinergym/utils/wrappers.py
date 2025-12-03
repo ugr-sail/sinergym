@@ -149,6 +149,21 @@ class DatetimeWrapper(gym.ObservationWrapper):
         self.observation_variables = new_obs_vars
         self.logger.info('Wrapper initialized.')
 
+    def _calculate_cyclic_encodings(
+        self, month: float, day_of_month: float, hour: float
+    ) -> Tuple[float, float, float, float, float, float]:
+        """Calculates the cyclic encodings for the month, day of month and hour."""
+        month_cos, month_sin = np.cos(2 * np.pi * (month - 1) / 12), np.sin(
+            2 * np.pi * (month - 1) / 12
+        )
+        day_cos, day_sin = np.cos(2 * np.pi * (day_of_month - 1) / 31), np.sin(
+            2 * np.pi * (day_of_month - 1) / 31
+        )
+        hour_cos, hour_sin = np.cos(2 * np.pi * hour / 24), np.sin(
+            2 * np.pi * hour / 24
+        )
+        return month_cos, month_sin, day_cos, day_sin, hour_cos, hour_sin
+
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Transforms the observation to replace time variables with cyclic encoded representations.
 
@@ -159,19 +174,13 @@ class DatetimeWrapper(gym.ObservationWrapper):
             np.ndarray: Transformed observation with cyclic encoding for temporal variables.
         """
         # Extract datetime values and compute cyclic encodings
-        month = int(obs[self._month_idx])
-        day_of_month = int(obs[self._day_idx])
-        hour = obs[self._hour_idx]
+        month = float(obs[self._month_idx])
+        day_of_month = float(obs[self._day_idx])
+        hour = float(obs[self._hour_idx])
 
         # Precompute all cyclic encodings
-        month_cos, month_sin = np.cos(2 * np.pi * (month - 1) / 12), np.sin(
-            2 * np.pi * (month - 1) / 12
-        )
-        day_cos, day_sin = np.cos(2 * np.pi * (day_of_month - 1) / 31), np.sin(
-            2 * np.pi * (day_of_month - 1) / 31
-        )
-        hour_cos, hour_sin = np.cos(2 * np.pi * hour / 24), np.sin(
-            2 * np.pi * hour / 24
+        month_cos, month_sin, day_cos, day_sin, hour_cos, hour_sin = (
+            self._calculate_cyclic_encodings(month, day_of_month, hour)
         )
 
         # Build new observation array directly from original variables
