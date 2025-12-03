@@ -7,7 +7,7 @@ Once *Sinergym* has been installed (either manually or via Docker), you can use 
 .. literalinclude:: ../../../scripts/try_env.py
     :language: python
 
-The script instantiates a sample environment (``Eplus-demo-v1``) using ``gym.make``. It then runs a simulation of an episode and displays the average monthly rewards obtained. Note how the actions performed are randomly sampled from the action space.
+The script instantiates a sample environment using ``gym.make``. It then runs a simulation. Note how the actions performed are randomly sampled from the action space.
 
 Once the execution is complete, the resources are freed using ``env.close()``.
 

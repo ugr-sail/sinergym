@@ -41,9 +41,6 @@ class RBC5Zone(object):
 
         self.env = env
 
-        self.observation_variables = env.get_wrapper_attr('observation_variables')
-        self.action_variables = env.get_wrapper_attr('action_variables')
-
         self.setpoints_summer = np.array((23.0, 26.0), dtype=np.float32)
         self.setpoints_winter = np.array((20.0, 23.5), dtype=np.float32)
 
@@ -56,7 +53,8 @@ class RBC5Zone(object):
         Returns:
             np.ndarray: Action chosen.
         """
-        obs_dict = dict(zip(self.observation_variables, observation))
+
+        obs_dict = self.env.get_obs_dict(observation)
         year = int(obs_dict['year']) if obs_dict.get('year', False) else YEAR
         month = int(obs_dict['month'])
         day = int(obs_dict['day_of_month'])
@@ -88,8 +86,6 @@ class RBCDatacenter(object):
         """
 
         self.env = env
-        self.observation_variables = env.get_wrapper_attr('observation_variables')
-        self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = np.array((18, 27), dtype=np.float32)
@@ -113,8 +109,6 @@ class RBCIncrementalDatacenter(object):
         """
 
         self.env = env
-        self.observation_variables = env.get_wrapper_attr('observation_variables')
-        self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = (18, 27)
@@ -126,7 +120,7 @@ class RBCIncrementalDatacenter(object):
         Returns:
             Sequence[Any]: Action chosen.
         """
-        obs_dict = dict(zip(self.observation_variables, observation))
+        obs_dict = self.env.get_obs_dict(observation)
 
         # Mean temp in datacenter zones
         mean_temp = np.mean(
