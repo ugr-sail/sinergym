@@ -44,6 +44,9 @@ This wrapper transforms datetime variables into a more useful representation for
 Cyclic encoding using sine and cosine is essential for deep RL because it preserves the 
 circular nature of temporal variables (e.g., hour 23:59 is close to 00:00).
 
+.. note:: This wrapper must be applied **before NormalizeObservation wrapper**, since 
+          it modifies the observation space.
+
 ***************
 NormalizeAction
 ***************
