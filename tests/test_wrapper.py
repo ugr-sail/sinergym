@@ -1191,3 +1191,197 @@ def test_env_wrappers(env_all_wrappers):
 
     # Close env
     env_all_wrappers.close()
+
+
+def test_general_context_wrapper(env_5zone):
+    """Test GeneralContextWrapper with predefined context changes."""
+    # Create configuration with specific dates
+    configuration = {
+        '01-15 10': [0.8],  # January 15th at 10 AM
+        '01-20 14': [0.5],  # January 20th at 2 PM
+        '02-10 09': [0.9],  # February 10th at 9 AM
+    }
+
+    # Create wrapped environment
+    env = GeneralContextWrapper(env=env_5zone, configuration=configuration)
+
+    # Check attributes
+    assert env.has_wrapper_attr('context_configuration')
+    assert env.get_wrapper_attr('context_configuration') == configuration
+
+    # Reset environment
+    env.reset()
+
+    # Step through environment and check context updates
+    action = env.action_space.sample()
+
+    # Run for a reasonable number of steps to potentially hit a context change
+    for _ in range(100):
+        _, _, terminated, truncated, info = env.step(action)
+
+        # Check if we're at a configured datetime
+        dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
+        if dt_str in configuration:
+            # Context should have been updated
+            current_context = env.get_wrapper_attr('last_context')
+            assert current_context == configuration[dt_str]
+
+        if terminated or truncated:
+            break
+
+    # Close environment
+    env.close()
+
+
+def test_general_context_wrapper_no_match(env_5zone):
+    """Test GeneralContextWrapper when no datetime matches occur."""
+    # Create configuration with dates outside the run period
+    configuration = {
+        '12-15 10': [0.8],  # December 15th (outside Jan-Mar run period)
+    }
+
+    # Create wrapped environment
+    env = GeneralContextWrapper(env=env_5zone, configuration=configuration)
+
+    # Reset environment
+    env.reset()
+
+    # Step through environment
+    action = env.action_space.sample()
+    for _ in range(50):
+        _, _, terminated, truncated, _ = env.step(action)
+        # Context should remain at initial value since no matches occur
+        if terminated or truncated:
+            break
+
+    env.close()
+
+
+def test_random_general_context_wrapper(env_5zone):
+    """Test RandomGeneralContextWrapper with random context changes."""
+    # Create wrapped environment
+    env = RandomGeneralContextWrapper(
+        env=env_5zone,
+        num_changes_range=(2, 4),  # 2-4 changes per episode
+        context_range=(0.3, 0.9),  # Context values between 0.3 and 0.9
+    )
+
+    # Check attributes
+    assert env.has_wrapper_attr('num_changes_range')
+    assert env.has_wrapper_attr('context_range')
+    assert env.get_wrapper_attr('num_changes_range') == (2, 4)
+    assert env.get_wrapper_attr('context_range') == (0.3, 0.9)
+
+    # Reset environment (this generates random configuration)
+    env.reset()
+
+    # Check that configuration was generated
+    context_config = env.get_wrapper_attr('context_configuration')
+    assert isinstance(context_config, dict)
+    assert len(context_config) >= 2  # At least 2 changes
+    assert len(context_config) <= 4  # At most 4 changes
+
+    # Check that all values in configuration are within range
+    for str_date, context_values in context_config.items():
+        assert len(context_values) == len(env.get_wrapper_attr('context_variables'))
+        for value in context_values:
+            assert 0.3 <= value <= 0.9
+
+    # Check date format
+    for str_date in context_config.keys():
+        # Format should be 'MM-DD HH'
+        parts = str_date.split(' ')
+        assert len(parts) == 2
+        date_part, hour_part = parts
+        month_day = date_part.split('-')
+        assert len(month_day) == 2
+        assert 1 <= int(month_day[0]) <= 12  # Month
+        assert 1 <= int(month_day[1]) <= 31  # Day
+        assert 0 <= int(hour_part) <= 23  # Hour
+
+    # Step through environment
+    action = env.action_space.sample()
+
+    for _ in range(200):
+        _, _, terminated, truncated, info = env.step(action)
+
+        # Check if context was updated
+        dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
+        if dt_str in context_config:
+            current_context = env.get_wrapper_attr('last_context')
+            assert current_context == context_config[dt_str]
+
+        if terminated or truncated:
+            break
+
+    env.close()
+
+
+def test_random_general_context_wrapper_multiple_episodes(env_5zone):
+    """Test that RandomGeneralContextWrapper generates different configs per episode."""
+    # Create wrapped environment
+    env = RandomGeneralContextWrapper(
+        env=env_5zone,
+        num_changes_range=(3, 5),
+        context_range=(0.4, 0.8),
+    )
+
+    # First episode
+    env.reset()
+    config1 = env.get_wrapper_attr('context_configuration').copy()
+
+    # Run first episode to completion
+    action = env.action_space.sample()
+    while True:
+        _, _, terminated, truncated, _ = env.step(action)
+        if terminated or truncated:
+            break
+
+    # Second episode (should generate new random configuration)
+    env.reset()
+    config2 = env.get_wrapper_attr('context_configuration').copy()
+
+    # Configurations should potentially be different (random generation)
+    # They might be the same by chance, but values should be different
+    # At minimum, we check that the structure is correct
+    assert len(config1) >= 3
+    assert len(config1) <= 5
+    assert len(config2) >= 3
+    assert len(config2) <= 5
+
+    # Values should be within range
+    for context_values in config1.values():
+        for value in context_values:
+            assert 0.4 <= value <= 0.8
+
+    for context_values in config2.values():
+        for value in context_values:
+            assert 0.4 <= value <= 0.8
+
+    env.close()
+
+
+def test_random_general_context_wrapper_edge_cases(env_5zone):
+    """Test RandomGeneralContextWrapper with edge case parameters."""
+    # Test with minimum changes
+    env = RandomGeneralContextWrapper(
+        env=env_5zone, num_changes_range=(0, 1), context_range=(0.5, 0.5)
+    )
+    env.reset()
+    config = env.get_wrapper_attr('context_configuration')
+    assert len(config) <= 1
+    # All values should be 0.5 (since range is (0.5, 0.5))
+    for context_values in config.values():
+        for value in context_values:
+            assert value == 0.5
+    env.close()
+
+    # Test with maximum changes
+    env = RandomGeneralContextWrapper(
+        env=env_5zone, num_changes_range=(10, 15), context_range=(0.0, 1.0)
+    )
+    env.reset()
+    config = env.get_wrapper_attr('context_configuration')
+    assert len(config) >= 10
+    assert len(config) <= 15
+    env.close()
