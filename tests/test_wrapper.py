@@ -31,7 +31,7 @@ def test_datetime_wrapper(env_demo):
     env.reset()
     action = env.action_space.sample()
     obs, _, _, _, _ = env.step(action)
-    obs_dict = dict(zip(observation_variables, obs))
+    obs_dict = env.get_obs_dict(obs)
     assert (
         obs_dict['month_sin'] is not None
         and obs_dict['month_cos'] is not None
@@ -689,7 +689,7 @@ def test_deltatemp_wrapper(env_datacenter):
 
     # Check observation values
     obs, _ = env.reset()
-    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = env.get_obs_dict(obs)
     assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
     assert (
         obs_dict['delta_west_zone_air_temperature']
@@ -702,7 +702,7 @@ def test_deltatemp_wrapper(env_datacenter):
 
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
-    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = env.get_obs_dict(obs)
     assert (
         obs_dict['delta_west_zone_air_temperature']
         == obs_dict['west_zone_air_temperature'] - obs_dict['cooling_setpoint']

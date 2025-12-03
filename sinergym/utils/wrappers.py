@@ -1017,7 +1017,7 @@ class DeltaTempWrapper(gym.ObservationWrapper):
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Add delta temperature information to the current observation."""
         # Get obs dictionary
-        obs_dict = dict(zip(self.env.get_wrapper_attr('observation_variables'), obs))
+        obs_dict = self.env.get_obs_dict(obs)
 
         # Get temperature values and setpoint(s) values
         temperatures = [obs_dict[variable] for variable in self.delta_temperatures]

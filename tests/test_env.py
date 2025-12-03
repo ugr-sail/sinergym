@@ -113,7 +113,7 @@ def test_update_context(env_5zone):
     a = env_5zone.action_space.sample()
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the occupancy value of initial context
-    obs_dict = dict(zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = env_5zone.get_obs_dict(obs)
     # Context occupancy is a percentage of 20 people
     assert (
         obs_dict['people_occupant']
@@ -123,7 +123,7 @@ def test_update_context(env_5zone):
     env_5zone.update_context([0.5])
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the new occupancy value
-    obs_dict = dict(zip(env_5zone.get_wrapper_attr('observation_variables'), obs))
+    obs_dict = env_5zone.get_obs_dict(obs)
     assert obs_dict['people_occupant'] == 10
     assert env_5zone.get_wrapper_attr('last_context')[-1] == 0.5
 
