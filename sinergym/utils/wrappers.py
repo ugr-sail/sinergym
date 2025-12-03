@@ -877,12 +877,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         # Recalculation of reward with new info
         new_reward, new_terms = self.reward_fn(obs_dict)
-        info = {
-            key: info[key]
-            for key in list(info.keys())[: list(info.keys()).index('reward') + 1]
-        }
 
-        info.update({'reward': new_reward})
         info.update(new_terms)
 
         return new_obs, new_reward, terminated, truncated, info
