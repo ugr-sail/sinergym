@@ -7,6 +7,7 @@ import sinergym
 from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (
     CSVLogger,
+    DatetimeWrapper,
     LoggerWrapper,
     NormalizeAction,
     NormalizeObservation,
@@ -18,6 +19,7 @@ logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Create environment and apply wrappers for normalization and logging
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
+env = DatetimeWrapper(env)
 env = NormalizeAction(env)
 env = NormalizeObservation(env)
 env = LoggerWrapper(env)
@@ -29,10 +31,7 @@ for i in range(episodes):
 
     # Reset the environment to start a new episode
     obs, info = env.reset()
-
-    rewards = []
     truncated = terminated = False
-    current_month = 0
 
     while not (terminated or truncated):
 
@@ -42,17 +41,11 @@ for i in range(episodes):
         # Perform action and receive env information
         obs, reward, terminated, truncated, info = env.step(a)
 
-        rewards.append(reward)
+    logger.info(f'Episode {env.get_wrapper_attr("episode")} finished.')
 
-        # Display results every simulated month
-        if info['month'] != current_month:
-            current_month = info['month']
-            logger.info('Reward: {}'.format(sum(rewards)))
-            logger.info('Info: {}'.format(info))
+logger.info(
+    'You can get a dictionary of the observation if you want to check something, independently of the changes made to the observation by the wrappers:'
+)
+logger.info(env.get_obs_dict(obs))
 
-    logger.info(
-        'Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(
-            i, np.mean(rewards), sum(rewards)
-        )
-    )
 env.close()

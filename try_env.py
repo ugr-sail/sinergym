@@ -7,6 +7,7 @@ import sinergym
 from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (
     CSVLogger,
+    DatetimeWrapper,
     ExtremeFlowControlWrapper,
     HeatPumpEnergyWrapper,
     LoggerWrapper,
@@ -23,8 +24,9 @@ logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 env = gym.make('Eplus-radiant_case2_heating-stockholm-continuous-stochastic-v1')
 # env = RoundActionWrapper(env)
 # env = HeatPumpEnergyWrapper(env)
+env = DatetimeWrapper(env)
 env = NormalizeObservation(env)
-# env = ExtremeFlowControlWrapper(env)
+env = ExtremeFlowControlWrapper(env)
 env = NormalizeAction(env)
 env = LoggerWrapper(env)
 env = CSVLogger(env)
@@ -58,9 +60,7 @@ for i in range(3):
     # Reset the environment to start a new episode
     obs, info = env.reset()
 
-    rewards = []
     truncated = terminated = False
-    current_month = 0
 
     while not (terminated or truncated):
 
@@ -70,17 +70,6 @@ for i in range(3):
         # Perform action and receive env information
         obs, reward, terminated, truncated, info = env.step(a)
 
-        rewards.append(reward)
+    logger.info(f'Episode {env.get_wrapper_attr("episode")} finished.')
 
-        # Display results every simulated month
-        if info['month'] != current_month:
-            current_month = info['month']
-            logger.info('Reward: {}'.format(sum(rewards)))
-            logger.info('Info: {}'.format(info))
-
-    logger.info(
-        'Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(
-            i, np.mean(rewards), sum(rewards)
-        )
-    )
 env.close()
