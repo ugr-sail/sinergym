@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Reinforcement Learning integration &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Google Cloud integration" href="gcloudAPI.html" />
+    <link rel="prev" title="Extra configuration in Sinergym simulations" href="extra-configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deep Reinforcement Learning integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#loggerevalcallback">LoggerEvalCallback</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#weights-and-biases-logging">Weights And Biases logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-training">Model training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-training-with-sweeps">Model training with sweeps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-loading">Model loading</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deep Reinforcement Learning integration</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/deep-reinforcement-learning.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deep-reinforcement-learning-integration">
+<h1>Deep Reinforcement Learning integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Link to this heading"></a></h1>
+<p><em>Sinergym</em> is compatible with any controller that operates under the Gymnasium interface, and can be used with most existing <strong>Deep Reinforcement Learning</strong> (DRL) libraries.</p>
+<p>It has a close integration with <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>, especially regarding the use of <strong>callbacks</strong>.  Callbacks are functions called at specific stages of DRL agents execution. They allow access to the internal state of the DRL model during training, enabling monitoring, auto-saving, model manipulation, progress visualization, and more.</p>
+<p>Pre-implemented callbacks provided by <em>Sinergym</em> inherit from Stable Baselines 3 and can be found in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py">sinergym/sinergym/utils/callbacks.py</a>.</p>
+<section id="loggerevalcallback">
+<h2>LoggerEvalCallback<a class="headerlink" href="#loggerevalcallback" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> is used to evaluate the different model versions obtained during the training process of the agent. It saves the best model obtained, not necessarily the final one from the training process. This callback inherits from the <code class="docutils literal notranslate"><span class="pre">EventCallback</span></code> of Stable Baselines 3.</p>
+<p>This callback is similar to the <code class="docutils literal notranslate"><span class="pre">EvalCallback</span></code> of Stable Baselines 3 but includes numerous enhancements and specific adaptations for <em>Sinergym</em>, in particular for logging relevant simulation data during the training process.</p>
+<p>The evaluation environment must be first wrapped by a child class of <code class="docutils literal notranslate"><span class="pre">BaseLoggerWrapper</span></code>. This is essential for the callback to access the logger’s methods and attributes, and to log the information correctly.</p>
+<p>In addition, this callback stores the best model and evaluation summaries (in CSV format) in a folder named <code class="docutils literal notranslate"><span class="pre">evaluation</span></code> within the training environment output.</p>
+<section id="weights-and-biases-logging">
+<h3>Weights And Biases logging<a class="headerlink" href="#weights-and-biases-logging" title="Link to this heading"></a></h3>
+<p>To log all this data to the <a class="reference external" href="https://wandb.ai/">Weights and Biases</a> platform, the training environment must be first wrapped with the <code class="docutils literal notranslate"><span class="pre">WandbLoggerWrapper</span></code> class (see <a class="reference internal" href="wrappers.html#logger-wrappers"><span class="std std-ref">Logger Wrappers</span></a>). Encapsulation of the evaluation environment is not necessary unless detailed monitoring of these episodes is desired.</p>
+<p>The data logged to the platform (in the <em>Evaluations</em> section) depends on the specific logger wrapper used and its episode summary. Therefore, to get new metrics, the logger wrapper must be modified, not the callback. In addition, this callback will overwrite certain metrics for the best model obtained during the training process, in order to preserve the metrics of the best model.</p>
+<p>The number of episodes run in each evaluation and their frequency can be configured, and metrics from the underlying logger can be excluded if desired. Moreover, if the observation space is normalized, the callback <strong>automatically copies the calibration parameters</strong> from the training environment to the evaluation environment.</p>
+<p>More episodes lead to more accurate averages of the reward-based indicators, providing a more realistic assessment of the current model’s performance. However, this will increase the time required. For a detailed usage example, see <a class="reference internal" href="notebooks/drl.html#Training-a-model"><span class="std std-ref">Training a model</span></a>.</p>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<section id="model-training">
+<h3>Model training<a class="headerlink" href="#model-training" title="Link to this heading"></a></h3>
+<p>If you want to train a DRL agent using <em>Sinergym</em>, you can use the script <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/train_agent_local_conf.py">sinergym/scripts/train/local_confs/train_agent_local_conf.py</a>, which is easily adaptable for custom experiments.</p>
+<p>Here are a few key points to consider:</p>
+<ul class="simple">
+<li><p>Models are instantiated using an algorithm constructor, each with its own <strong>specific parameters</strong>. Defaults are used if none are provided.</p></li>
+<li><p>If you apply a normalization wrapper to the environment, models will <strong>train</strong> using these <strong>normalized</strong> spaces.</p></li>
+<li><p>Callbacks are <strong>combined</strong> using a <code class="docutils literal notranslate"><span class="pre">CallbackList</span></code> from Stable Baselines3.</p></li>
+<li><p>Training starts when the <code class="docutils literal notranslate"><span class="pre">model.learn()</span></code> method is called. Important parameters such as <code class="docutils literal notranslate"><span class="pre">total_timesteps</span></code>, <code class="docutils literal notranslate"><span class="pre">callback</span></code>, and <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> are passed here.</p></li>
+<li><p><strong>Sequential / curriculum learning</strong> is supported by providing a path to a previously trained model using the <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter. This allows resuming or fine-tuning a model.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">train_agent_local_conf.py</span></code> script requires a single argument (<code class="docutils literal notranslate"><span class="pre">-conf</span></code>), which should point to a YAML configuration file. An example configuration file with detailed comments can be found here: <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examples/train_agent_PPO.yaml">train_agent_PPO.yaml</a>.</p>
+<p>We distinguish between <em>mandatory</em> and <em>optional</em> configuration parameters:</p>
+<ul class="simple">
+<li><p><strong>Mandatory</strong>: environment, number of training episodes, and algorithm (including non-default hyperparameters if needed).</p></li>
+<li><p><strong>Optional</strong>: environment parameters (override defaults), random seed, pre-trained model path, experiment ID, wrappers (in order), evaluation settings, and cloud integration options.</p></li>
+</ul>
+<p>Once executed, the script performs the following steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Generate the experiment name</strong> using the format <code class="docutils literal notranslate"><span class="pre">&lt;experiment_name&gt;_&lt;date&gt;</span></code> if <code class="docutils literal notranslate"><span class="pre">experiment_name</span></code> is specified, or <code class="docutils literal notranslate"><span class="pre">&lt;algorithm_name&gt;_&lt;date&gt;</span></code> otherwise.</p></li>
+<li><p><strong>Load a pre-trained model</strong>, if defined in the configuration:</p>
+<ul class="simple">
+<li><p>From a local file path.</p></li>
+<li><p>From a Weights &amp; Biases (WandB) artifact.</p></li>
+<li><p>From a Google Cloud Storage bucket.</p></li>
+</ul>
+</li>
+<li><p><strong>Load and configure environment parameters</strong>:</p>
+<ul class="simple">
+<li><p>If an environment YAML configuration is provided, load all parameters from it (<a class="reference internal" href="serialization.html#environment-configuration-serialization"><span class="std std-ref">Environment Configuration Serialization</span></a>).</p></li>
+<li><p>Optionally override or extend specific parameters using <code class="docutils literal notranslate"><span class="pre">env_params</span></code> in the configuration.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">env_name</span></code> to match the experiment name for better traceability.</p></li>
+</ul>
+</li>
+<li><p><strong>Apply wrappers to the environment</strong>, if specified:</p>
+<ul class="simple">
+<li><p>Load wrapper settings from a YAML file (<a class="reference internal" href="serialization.html#wrapper-serialization-and-restoration"><span class="std std-ref">Wrapper Serialization and Restoration</span></a>).</p></li>
+<li><p>Optionally override or add wrappers defined directly in the configuration.</p></li>
+<li><p>Supports custom objects or callables using the <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;:&lt;object&gt;</span></code> format.</p></li>
+</ul>
+</li>
+<li><p><strong>Create the simulation environment</strong>, applying all parameters configuration and wrappers.</p>
+<ul class="simple">
+<li><p>The environment ID has a default configuration. These environment parameters will be deeply updated with the ones defined in the configuration file. This deep update can be disabled; in that case, the specified environment parameters will overwrite the default ones.</p></li>
+</ul>
+</li>
+<li><p><strong>Log experiment metadata to Weights &amp; Biases</strong>, if <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is active:</p>
+<ul class="simple">
+<li><p>Track Sinergym, Python, and Stable-Baselines3 versions.</p></li>
+<li><p>Store the full configuration and the processed environment parameters.</p></li>
+</ul>
+</li>
+<li><p><strong>Initialize the RL algorithm</strong> using the specified hyperparameters:</p>
+<ul class="simple">
+<li><p>If no model is loaded, training starts from scratch. Using the algorithm hyperparameters defined in the configuration.</p></li>
+<li><p>If a pre-trained model is available, it resumes training from the saved state.</p></li>
+</ul>
+</li>
+<li><p><strong>Set up custom logging</strong>, combining console and WandB logging when <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is enabled.</p></li>
+<li><p><strong>Prepare evaluation</strong>, if enabled:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>Create a separate evaluation environment (excluding <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code>).</p></li>
+<li><p>Set up a <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> to run periodic evaluations during training.</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="10">
+<li><p><strong>Calculate total training timesteps</strong> based on the number of episodes and episode length.</p></li>
+<li><p><strong>Train the model</strong> using the environment and configured callbacks.</p></li>
+<li><p><strong>Save the final model</strong> in the environment’s <code class="docutils literal notranslate"><span class="pre">workspace_path</span></code> after training completes.</p></li>
+<li><p><strong>Handle errors and interruptions gracefully</strong>:</p>
+<ul class="simple">
+<li><p>Save the model state.</p></li>
+<li><p>Close the environment properly.</p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The YAML configuration structure and values are designed to be <strong>intuitive and easy to use</strong>, especially when
+paired with this documentation. To get started, simply explore one of the provided example configuration files.
+These examples clearly illustrate how to define your environment, wrappers, algorithm, and other training
+options—making it straightforward to set up your own experiments. Visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/local_confs/conf_examples">sinergym/scripts/train/local_confs/conf_examples</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are loading a pre-trained model that was trained with <strong>observation normalization</strong>,
+it is <strong>critical</strong> to also load the <strong>normalization statistics</strong> (i.e., the running mean and variance)
+used during its original training (see <a class="reference internal" href="wrappers.html#normalizeobservation"><span class="std std-ref">NormalizeObservation</span></a>). Otherwise, the model may perform poorly or behave unpredictably due
+to mismatched input distributions. These statistics are typically saved along with the model and should
+be restored explicitly before continuing training or evaluation, setting up the NormalizeObservation wrapper.</p>
+</div>
+</section>
+<section id="model-training-with-sweeps">
+<h3>Model training with sweeps<a class="headerlink" href="#model-training-with-sweeps" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://docs.wandb.ai/guides/sweeps/">Weights and Biases sweeps</a> is a powerful feature that enables hyperparameter exploration in artificial intelligence algorithms.</p>
+<p>To help users take advantage of this functionality, we have created a script that allows agents to run in parallel or sequentially. These agents pick predefined configurations from previously created sweeps to carry out the optimization process. The process is similar to the one described in the previous section.</p>
+<p>The script for launching agents, the training script they execute (either in parallel or sequentially), and example sweep configurations can all be found in the <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train/sweep_confs">sinergym/scripts/train/sweep_confs</a> directory.</p>
+<p>We recommend reviewing the contents of this directory alongside the Weights and Biases documentation if you are interested in using this feature.</p>
+</section>
+<section id="model-loading">
+<h3>Model loading<a class="headerlink" href="#model-loading" title="Link to this heading"></a></h3>
+<p>To load and evaluate a previously trained model, you can use the script <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py">scripts/eval/load_agent.py</a>. This script is flexible and supports multiple model sources and environment configurations.</p>
+<p>The script requires a single parameter, <code class="docutils literal notranslate"><span class="pre">-conf</span></code>, pointing to a YAML file with the evaluation setup. A reference configuration can be found in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.yaml">scripts/eval/load_agent_example.yaml</a>.</p>
+<p>We distinguish between <em>mandatory</em> and <em>optional</em> parameters:</p>
+<ul class="simple">
+<li><p><strong>Mandatory</strong>: environment name, number of episodes, algorithm (only name is required), and model path. Supported model sources include:</p>
+<ul>
+<li><p>Local file path</p></li>
+<li><p>Google Cloud Storage bucket (<code class="docutils literal notranslate"><span class="pre">gs://...</span></code> format)</p></li>
+<li><p>Weights &amp; Biases (WandB) artifact</p></li>
+</ul>
+</li>
+<li><p><strong>Optional</strong>: environment parameters (overrides defaults if provided), experiment name, wrapper definitions, and cloud storage options.</p></li>
+</ul>
+<p>During execution, the script performs the following steps:</p>
+<ol class="arabic simple">
+<li><p>Generates a unique evaluation name (e.g., <code class="docutils literal notranslate"><span class="pre">PPO_2025-05-29_10:12_evaluation</span></code>).</p></li>
+<li><p>Downloads and loads the specified model from the defined source.</p></li>
+<li><p>Loads environment and wrapper configurations (from YAML environment and wrappers serialization or directly from the config).</p></li>
+<li><p>Initializes the evaluation environment with all parameters and wrappers, following the same deep update logic as described in training usage.</p></li>
+<li><p>Runs the agent for the defined number of episodes.</p></li>
+<li><p>Stores results locally or in the cloud, depending on configuration.</p></li>
+<li><p>Gracefully handles errors and interruptions, ensuring environment closure.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If your model was trained with <strong>observation normalization</strong>, make sure to restore the corresponding
+<strong>normalization statistics</strong>. These are usually saved with the model and must be loaded to ensure
+the agent receives inputs with the expected distribution. See <a class="reference internal" href="wrappers.html#normalizeobservation"><span class="std std-ref">NormalizeObservation</span></a> for more details on how to handle this.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="extra-configuration.html" class="btn btn-neutral float-left" title="Extra configuration in Sinergym simulations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="Google Cloud integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.10.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/deep-reinforcement-learning.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/deep-reinforcement-learning.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/deep-reinforcement-learning.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/pages/deep-reinforcement-learning.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/deep-reinforcement-learning.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/deep-reinforcement-learning.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/deep-reinforcement-learning.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/deep-reinforcement-learning.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/deep-reinforcement-learning.html">v3.1.0</a></dd>
+            <dd><a href="deep-reinforcement-learning.html">v3.10.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/deep-reinforcement-learning.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.3.0/pages/deep-reinforcement-learning.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.4.0/pages/deep-reinforcement-learning.html">v3.4.0</a></dd>
+            <dd><a href="../../v3.5.0/pages/deep-reinforcement-learning.html">v3.5.0</a></dd>
+            <dd><a href="../../v3.6.0/pages/deep-reinforcement-learning.html">v3.6.0</a></dd>
+            <dd><a href="../../v3.7.0/pages/deep-reinforcement-learning.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.8.0/pages/deep-reinforcement-learning.html">v3.8.0</a></dd>
+            <dd><a href="../../v3.9.0/pages/deep-reinforcement-learning.html">v3.9.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/deep-reinforcement-learning.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

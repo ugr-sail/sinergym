@@ -133,24 +133,24 @@
              
   <section id="serialization-and-configuration-management">
 <h1>Serialization and Configuration Management<a class="headerlink" href="#serialization-and-configuration-management" title="Link to this heading"></a></h1>
-<p>In addition to initializing environments using predefined identifiers, Sinergym supports saving and restoring complete environment configurations through the <cite>to_dict</cite> and <cite>from_dict</cite> methods. This functionality allows users to export, modify, and reload environment setups with ease, thereby promoting reproducibility and simplifying the sharing of experimental configurations.</p>
+<p>In addition to initializing environments using predefined identifiers, Sinergym supports saving and restoring complete environment configurations through the <code class="docutils literal notranslate"><span class="pre">to_dict</span></code> and <code class="docutils literal notranslate"><span class="pre">from_dict</span></code> methods. This functionality allows users to export, modify, and reload environment setups with ease, thereby promoting reproducibility and simplifying the sharing of experimental configurations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 <span class="c1"># Save as YAML or reuse directly</span>
 <span class="n">new_env</span> <span class="o">=</span> <span class="n">EplusEnv</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Although this method allows configuration persistence, serializing a Sinergym environment is not a trivial task. The environment may contain nested components, such as custom wrappers or references to complex objects, which are not easily expressed using basic data types.</p>
-<p>To address this, Sinergym includes a dedicated serialization module (<cite>sinergym.utils.serialization</cite>) that leverages <strong>PyYAML</strong> to enable robust serialization and deserialization of both the environment and its associated wrappers. This module automates the transformation of complex Python objects into a YAML-compatible format, facilitating the saving and restoration of complete environment states.</p>
+<p>To address this, Sinergym includes a dedicated serialization module (<code class="docutils literal notranslate"><span class="pre">sinergym.utils.serialization</span></code>) that leverages <strong>PyYAML</strong> to enable robust serialization and deserialization of both the environment and its associated wrappers. This module automates the transformation of complex Python objects into a YAML-compatible format, facilitating the saving and restoration of complete environment states.</p>
 <section id="environment-configuration-serialization">
 <h2>Environment Configuration Serialization<a class="headerlink" href="#environment-configuration-serialization" title="Link to this heading"></a></h2>
-<p>When a Sinergym environment is instantiated, its configuration is automatically serialized and saved as a YAML file (<cite>env_config.pyyaml</cite>) within the environment’s designated output folder. This behavior ensures that every experiment includes a traceable and reproducible environment setup by default, even when the environment has been modified using user-specific configurations.</p>
+<p>When a Sinergym environment is instantiated, its configuration is automatically serialized and saved as a YAML file (<code class="docutils literal notranslate"><span class="pre">env_config.pyyaml</span></code>) within the environment’s designated output folder. This behavior ensures that every experiment includes a traceable and reproducible environment setup by default, even when the environment has been modified using user-specific configurations.</p>
 </section>
 <section id="wrapper-serialization-and-restoration">
 <h2>Wrapper Serialization and Restoration<a class="headerlink" href="#wrapper-serialization-and-restoration" title="Link to this heading"></a></h2>
 <p>Wrappers applied to an environment are not included in the default environment serialization and must be handled separately. Sinergym provides two utility functions for this purpose:</p>
 <ul class="simple">
-<li><p><cite>get_wrappers_info</cite>: Extracts metadata from all applied wrappers and serializes it.</p></li>
-<li><p><cite>apply_wrappers_info</cite>: Reconstructs and reapplies wrappers based on previously saved metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_wrappers_info</span></code>: Extracts metadata from all applied wrappers and serializes it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply_wrappers_info</span></code>: Reconstructs and reapplies wrappers based on previously saved metadata.</p></li>
 </ul>
 </section>
 <section id="example-serialization-and-restoration">
@@ -169,10 +169,10 @@
 
 <span class="c1"># Serialize wrapper information</span>
 <span class="c1"># By default, this will be saved in the environment&#39;s output directory</span>
-<span class="n">wrappers_info</span> <span class="o">=</span> <span class="n">get_wrappers_info</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># Apply wrappers to the environment</span>
+<span class="n">wrappers_info</span> <span class="o">=</span> <span class="n">get_wrappers_info</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>By default, if no save path is specified, the wrapper configuration will be stored as <cite>wrappers_config.pyyaml</cite> in the environment’s output folder (accessible via <cite>env.get_wrapper_attr(‘workspace_path’)`</cite>).</p>
+<p>By default, if no save path is specified, the wrapper configuration will be stored as <code class="docutils literal notranslate"><span class="pre">wrappers_config.pyyaml</span></code> in the environment’s output folder (accessible via <code class="docutils literal notranslate"><span class="pre">env.get_wrapper_attr('workspace_path')</span></code>).</p>
 <p>To reload a complete environment, including its wrappers:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load environment parameters</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;&lt;env_output_folder&gt;/env_config.pyyaml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -194,8 +194,8 @@
 <section id="key-features">
 <h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><strong>Automatic environment serialization</strong> on initialization (saved as <cite>env_config.pyyaml`</cite>).</p></li>
-<li><p><strong>Wrapper metadata extraction and persistence</strong> via <cite>get_wrappers_info</cite>.</p></li>
+<li><p><strong>Automatic environment serialization</strong> on initialization (saved as <code class="docutils literal notranslate"><span class="pre">env_config.pyyaml</span></code>).</p></li>
+<li><p><strong>Wrapper metadata extraction and persistence</strong> via <code class="docutils literal notranslate"><span class="pre">get_wrappers_info</span></code>.</p></li>
 <li><p><strong>Flexible restoration</strong>: Wrapper configurations can be reapplied using either a YAML file path or a Python dictionary.</p></li>
 <li><p><strong>Default paths</strong>: If no path is provided, serialization files are stored in the environment’s output folder.</p></li>
 <li><p><strong>Experiment reproducibility</strong>: Facilitates the sharing and exact reproduction of complex experimental setups.</p></li>
@@ -246,6 +246,7 @@
             <dd><a href="../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.10.0/pages/serialization.html">v3.10.0</a></dd>
             <dd><a href="../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../v3.4.0/index.html">v3.4.0</a></dd>

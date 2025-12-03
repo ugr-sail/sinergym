@@ -31,7 +31,21 @@ This wrapper adds observations from the previous timestep to the current environ
 DatetimeWrapper
 ***************
 
-This wrapper replaces the ``day_of_month`` value with the ``is_weekend`` flag, and the ``hour`` and ``month`` values with *sin* and *cos* values. The observation space is automatically updated.
+.. important:: It is **highly recommended to use the ``DatetimeWrapper``** for optimal 
+               temporal encoding in deep reinforcement learning algorithms. This wrapper 
+               must be applied manually in your environment's pipeline if you wish to 
+               benefit from state-of-the-art temporal features.
+
+This wrapper transforms datetime variables into a more useful representation for deep RL:
+- ``day_of_month`` is replaced with ``day_cos`` and ``day_sin`` (cyclic encoding).
+- ``hour`` is replaced with ``hour_cos`` and ``hour_sin`` (cyclic encoding).
+- ``month`` is replaced with ``month_cos`` and ``month_sin`` (cyclic encoding).
+
+Cyclic encoding using sine and cosine is essential for deep RL because it preserves the 
+circular nature of temporal variables (e.g., hour 23:59 is close to 00:00).
+
+.. note:: This wrapper must be applied **before NormalizeObservation wrapper**, since 
+          it modifies the observation space.
 
 ***************
 NormalizeAction

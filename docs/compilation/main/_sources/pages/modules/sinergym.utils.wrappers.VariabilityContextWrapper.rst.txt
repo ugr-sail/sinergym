@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.VariabilityContextWrapper
+﻿sinergym.utils.wrappers.VariabilityContextWrapper
 =================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -18,6 +18,7 @@ sinergym.utils.wrappers.VariabilityContextWrapper
       ~VariabilityContextWrapper.__init__
       ~VariabilityContextWrapper.class_name
       ~VariabilityContextWrapper.close
+      ~VariabilityContextWrapper.get_obs_dict
       ~VariabilityContextWrapper.get_wrapper_attr
       ~VariabilityContextWrapper.has_wrapper_attr
       ~VariabilityContextWrapper.render

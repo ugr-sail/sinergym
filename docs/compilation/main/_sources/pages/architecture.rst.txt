@@ -72,4 +72,4 @@ In addition to the observations returned by the ``step`` and ``reset`` methods, 
   }
 
 - *step* info. This dictionary shares the same keys as the *reset* info, but also includes 
-  the action dispatched (to the simulation, not the environment), the reward, and the reward terms, which depend on the reward function employed. For more details, refer to :ref:`Reward terms`.
+  the action dispatched (to the simulation, not the environment), and the reward terms, which depend on the reward function employed. For more details, refer to :ref:`Reward terms`.

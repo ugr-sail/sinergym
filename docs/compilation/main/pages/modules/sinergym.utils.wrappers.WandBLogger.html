@@ -196,37 +196,40 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.close" title="sinergym.utils.wrappers.WandBLogger.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p>Recording last episode summary and close env.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obs_dict</span></code>(obs)</p></td>
+<td><p>Convert observation array to dictionary with variable names as keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
 <td><p>Checks if the given attribute is within the wrapper or its environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.reset" title="sinergym.utils.wrappers.WandBLogger.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.reset" title="sinergym.utils.wrappers.WandBLogger.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
 <td><p>Reset the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.save_artifact" title="sinergym.utils.wrappers.WandBLogger.save_artifact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_artifact</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.save_artifact" title="sinergym.utils.wrappers.WandBLogger.save_artifact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_artifact</span></code></a>()</p></td>
 <td><p>Save sinergym output as artifact in WandB platform.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.set_wandb_finish" title="sinergym.utils.wrappers.WandBLogger.set_wandb_finish"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wandb_finish</span></code></a>(wandb_finish)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.set_wandb_finish" title="sinergym.utils.wrappers.WandBLogger.set_wandb_finish"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wandb_finish</span></code></a>(wandb_finish)</p></td>
 <td><p>Set if WandB run must be finished when environment is closed.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
 <td><p>Sets an attribute on this wrapper or lower environment if <cite>name</cite> is already defined.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.step" title="sinergym.utils.wrappers.WandBLogger.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.step" title="sinergym.utils.wrappers.WandBLogger.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Sends action to the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.wandb_log" title="sinergym.utils.wrappers.WandBLogger.wandb_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wandb_log</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.wandb_log" title="sinergym.utils.wrappers.WandBLogger.wandb_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wandb_log</span></code></a>()</p></td>
 <td><p>Log last step information in WandB platform.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.wandb_log_summary" title="sinergym.utils.wrappers.WandBLogger.wandb_log_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wandb_log_summary</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WandBLogger.wandb_log_summary" title="sinergym.utils.wrappers.WandBLogger.wandb_log_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wandb_log_summary</span></code></a>()</p></td>
 <td><p>Log episode summary in WandB platform.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -392,6 +395,7 @@
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.10.0/pages/modules/sinergym.utils.wrappers.WandBLogger.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>

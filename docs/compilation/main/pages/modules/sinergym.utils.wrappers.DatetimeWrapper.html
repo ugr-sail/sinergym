@@ -173,11 +173,14 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DatetimeWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper" title="Link to this definition"></a></dt>
-<dd><p>Wrapper to transform datetime variables into a more useful representation:
-- ‘day_of_month’ is replaced with ‘is_weekend’ (1 if weekend, 0 otherwise).
-- ‘hour’ is replaced with its sine and cosine encoding.
-- ‘month’ is replaced with its sine and cosine encoding.
-The observation space is updated automatically.</p>
+<dd><p>Wrapper to transform datetime variables into a more useful representation for deep RL:
+- ‘day_of_month’ is replaced with ‘day_of_month_cos’ and ‘day_of_month_sin’ (cyclic encoding).
+- ‘hour’ is replaced with ‘hour_cos’ and ‘hour_sin’ (cyclic encoding).
+- ‘month’ is replaced with ‘month_cos’ and ‘month_sin’ (cyclic encoding).</p>
+<p>Cyclic encoding using sine and cosine is essential for deep RL because it preserves the
+circular nature of temporal variables (e.g., hour 23:59 is close to 00:00). Both sine and
+cosine are needed to uniquely represent each point in the cycle.</p>
+<p>The observation space is updated automatically.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper.__init__" title="Link to this definition"></a></dt>
@@ -201,28 +204,31 @@ The observation space is updated automatically.</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
 <td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obs_dict</span></code>(obs)</p></td>
+<td><p>Convert observation array to dictionary with variable names as keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
 <td><p>Checks if the given attribute is within the wrapper or its environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DatetimeWrapper.observation" title="sinergym.utils.wrappers.DatetimeWrapper.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs)</p></td>
-<td><p>Transforms the observation to replace time variables with encoded representations.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DatetimeWrapper.observation" title="sinergym.utils.wrappers.DatetimeWrapper.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs)</p></td>
+<td><p>Transforms the observation to replace time variables with cyclic encoded representations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
 <td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code>, returning a modified observation using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
 <td><p>Sets an attribute on this wrapper or lower environment if <cite>name</cite> is already defined.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
 <td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code> on the returned observations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -267,13 +273,13 @@ The observation space is updated automatically.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.DatetimeWrapper.observation">
 <span class="sig-name descname"><span class="pre">observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.DatetimeWrapper.observation" title="Link to this definition"></a></dt>
-<dd><p>Transforms the observation to replace time variables with encoded representations.</p>
+<dd><p>Transforms the observation to replace time variables with cyclic encoded representations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obs</strong> (<em>np.ndarray</em>) – Original observation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed observation.</p>
+<dd class="field-even"><p>Transformed observation with cyclic encoding for temporal variables.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
@@ -328,6 +334,7 @@ The observation space is updated automatically.</p>
             <dd><a href="../../../v2.3.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.10.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/pages/modules/sinergym.utils.wrappers.DatetimeWrapper.html">v3.4.0</a></dd>

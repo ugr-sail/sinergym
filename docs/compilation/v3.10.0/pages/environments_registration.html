@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environments configuration and registration &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Serialization and Configuration Management" href="serialization.html" />
+    <link rel="prev" title="Environments" href="environments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environments configuration and registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#variables-specification">Variables specification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Environments configuration and registration</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/environments_registration.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="environments-configuration-and-registration">
+<h1>Environments configuration and registration<a class="headerlink" href="#environments-configuration-and-registration" title="Link to this heading"></a></h1>
+<p>New <em>Sinergym</em> environments can be created using the constructor of the <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/envs/eplus_env.py">EplusEnv</a> class and the parameters listed in section <a class="reference internal" href="environments.html#available-parameters"><span class="std std-ref">Available parameters</span></a>.</p>
+<p>Since multiple environments can be generated from the same building, <em>Sinergym</em> provides an automated way for creating and registering them. Using a YAML file located in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">sinergym/data/default_configuration</a>, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.</p>
+<p>You can add new YAML files in addition to the default ones provided by Sinergym in the specified folder. Once your custom configuration is ready, simply execute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+
+<span class="n">sinergym</span><span class="o">.</span><span class="n">register_envs_from_yaml</span><span class="p">(</span>
+    <span class="n">yaml_path</span><span class="o">=</span><span class="s2">&quot;path/to/your/configuration.yaml&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This section outlines the structure of these YAML configuration files. Moreover, this structure allows for the definition of observation variables (<code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">meters</span></code>) and action variables (<code class="docutils literal notranslate"><span class="pre">actuators</span></code>). Instead of manually specifying these in the EnergyPlus Python API format as part of the environment constructor, Sinergym will read this simplified structure and automatically convert it into the appropriate EnergyPlus Python API format.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Key</strong></p></th>
+<th class="head"><p><strong>Optional</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id_base</p></td>
+<td><p>No</p></td>
+<td><p>Building base name / ID model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>building_file</p></td>
+<td><p>No</p></td>
+<td><p>Building model file located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/buildings/</span></code>. An external path can also be specified.</p></td>
+</tr>
+<tr class="row-even"><td><p>weather_specification</p></td>
+<td><p>No</p></td>
+<td><p>Set of weather files used to generate different environments. Located in <code class="docutils literal notranslate"><span class="pre">sinergym/data/weather/</span></code>. An external path can also be specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p>building_config</p></td>
+<td><p>Yes</p></td>
+<td><p>Extra building configuration, modifying the building model automatically (optional).</p></td>
+</tr>
+<tr class="row-even"><td><p>weather_variability</p></td>
+<td><p>Yes</p></td>
+<td><p>Indicates if additional versions of all environments adding episodic weather noise will be created.</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_ep_store</p></td>
+<td><p>Yes</p></td>
+<td><p>Maximum number of episodes for which data will be stored. Default: 10.</p></td>
+</tr>
+<tr class="row-even"><td><p>time_variables</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">time_variables</span></code> list definition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>variables</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">variables</span></code> dict definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>meters</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">meters</span></code> dict definition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>actuators</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">actuators</span></code> dict definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>context</p></td>
+<td><p>No</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">context</span></code> dict definition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>initial_context</p></td>
+<td><p>Yes</p></td>
+<td><p>Initial values for specified <code class="docutils literal notranslate"><span class="pre">context</span></code> dict. If not specified, it is initialized with the default values provided by the building’s definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>action_space</p></td>
+<td><p>No</p></td>
+<td><p>Gymnasium action space definition.</p></td>
+</tr>
+<tr class="row-odd"><td><p>action_space_discrete</p></td>
+<td><p>Yes</p></td>
+<td><p>Allows the creation of discrete action-space versions of the environments.</p></td>
+</tr>
+<tr class="row-even"><td><p>only_discrete</p></td>
+<td><p>Yes</p></td>
+<td><p>Used in composite action space problems where continuous values
+must be discretized. If an action space and a discrete space based on it
+have been defined (required; see <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>), you can only
+register the discrete version using this flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p>reward</p></td>
+<td><p>No</p></td>
+<td><p>Reward class name. This should be specified in the format <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;:&lt;class&gt;</span></code>. This is particularly useful when defining a reward function located outside the Sinergym package.</p></td>
+</tr>
+<tr class="row-even"><td><p>reward_kwargs</p></td>
+<td><p>No</p></td>
+<td><p>Reward kwargs for the Reward class constructor.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Sinergym uses continuous action spaces by default, rather than discrete ones.
+If needed, environments are discretized afterwards using a wrapper.
+For additional details, refer to <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>.</p>
+</div>
+<p>Having presented the available parameters, the following is a YAML example of how to use them:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Documentation: https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                        ID BASE FROM ENVIRONMNET NAMES                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">id_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5zone</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                         BUILDING AND WEATHER SETTINGS                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">building_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5ZoneAutoDXVAV.epJSON</span>
+
+<span class="c1"># A environment alternative for each weather key</span>
+<span class="nt">weather_specification</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">weather_files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</span>
+<span class="w">  </span><span class="nt">keys</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hot</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mixed</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cool</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                         BUILDING EXTRA CONFIGURATION                         #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">building_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                        WEATHER VARIABILITY (OPTIONAL)                        #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1"># Alternative stochastic environments if it is defined</span>
+<span class="nt">weather_variability</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Dry Bulb Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># sigma</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># mu</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24.0</span><span class="w"> </span><span class="c1"># tau</span>
+<span class="w">  </span><span class="nt">Relative Humidity</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5.0</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">100</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># var_range</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                          EPISODES FOLDER GENERATION                          #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">max_ep_store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                             OBSERVATION VARIABLES                            #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+
+<span class="c1"># --------------- TIME VARIABLES (same name as EnergyPlus API) --------------- #</span>
+<span class="nt">time_variables</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">day_of_month</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hour</span>
+<span class="c1"># More variables in Data Transfer API: https://energyplus.readthedocs.io/en/latest/datatransfer.html</span>
+
+<span class="c1"># ----------------------------- OUTPUT:VARIABLES ----------------------------- #</span>
+<span class="nt">variables</span><span class="p">:</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- OUTDOOR --------------------------------- #</span>
+<span class="w">  </span><span class="nt">Site Outdoor Air DryBulb Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outdoor_temperature</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Outdoor Air Relative Humidity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">outdoor_humidity</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Wind Speed</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wind_speed</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Wind Direction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wind_direction</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Diffuse Solar Radiation Rate per Area</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diffuse_solar_radiation</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+<span class="w">  </span><span class="nt">Site Direct Solar Radiation Rate per Area</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">direct_solar_radiation</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment</span>
+
+<span class="w">  </span><span class="c1"># -------------------------------- ZONE INDOOR ------------------------------- #</span>
+<span class="w">  </span><span class="nt">Zone Air Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_temperature</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Air Relative Humidity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_humidity</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone People Occupant Count</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">people_occupant</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- SYSTEM ---------------------------------- #</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Heating Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">htg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+<span class="w">  </span><span class="nt">Zone Thermostat Cooling Setpoint Temperature</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clg_setpoint</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SPACE5-1</span>
+
+<span class="w">  </span><span class="c1"># ---------------------------------- ENERGY ---------------------------------- #</span>
+<span class="w">  </span><span class="nt">Environmental Impact Total CO2 Emissions Carbon Equivalent Mass</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">co2_emission</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">site</span>
+<span class="w">  </span><span class="nt">Facility Total HVAC Electricity Demand Rate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HVAC_electricity_demand_rate</span>
+<span class="w">    </span><span class="nt">keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Whole Building</span>
+
+<span class="c1"># ------------------------------- OUTPUT:METERS ------------------------------ #</span>
+<span class="nt">meters</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Electricity:HVAC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_electricity_HVAC</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                               ACTION VARIABLES                               #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+
+<span class="c1"># --------------------------- ACTUATORS TO CONTROL --------------------------- #</span>
+<span class="nt">actuators</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">HTG-SETP-SCH</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Heating_Setpoint_RL</span>
+<span class="w">    </span><span class="nt">element_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule:Compact</span>
+<span class="w">    </span><span class="nt">value_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule Value</span>
+<span class="w">  </span><span class="nt">CLG-SETP-SCH</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">variable_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cooling_Setpoint_RL</span>
+<span class="w">    </span><span class="nt">element_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule:Compact</span>
+<span class="w">    </span><span class="nt">value_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Schedule Value</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                                 ACTIONS SPACE                                #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">action_space</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gym.spaces.Box(low=np.array([12.0, 23.25], dtype=np.float32), high=np.array([23.25, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)</span>
+
+<span class="nt">action_space_discrete</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gym.spaces.Discrete(10)</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                                REWARD FUNCTION                               #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sinergym.utils.rewards:LinearReward</span>
+
+<span class="nt">reward_kwargs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">temperature_variables</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">air_temperature</span>
+<span class="w">  </span><span class="nt">energy_variables</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HVAC_electricity_demand_rate</span>
+<span class="w">  </span><span class="nt">range_comfort_winter</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.5</span>
+<span class="w">  </span><span class="nt">range_comfort_summer</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span>
+<span class="w">  </span><span class="nt">summer_start</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">summer_final</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">  </span><span class="nt">energy_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">  </span><span class="nt">lambda_energy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0e-4</span>
+<span class="w">  </span><span class="nt">lambda_temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</pre></div>
+</div>
+<p>Based on this YAML configuration for the building <code class="docutils literal notranslate"><span class="pre">5ZoneAutoDXVAV.epJSON</span></code>, the following
+environments will be automatically created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+ <span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-hot-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-hot-discrete-stochastic-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-mixed-continuous-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-mixed-discrete-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-mixed-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-mixed-discrete-stochastic-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-cool-continuous-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-cool-discrete-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Eplus-5zone-cool-discrete-stochastic-v1&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Note how the weather specification enables the creation of multiple environments based on different weather files. These files must be located in the appropriate folder, and their keys are used to construct the environment IDs.</p>
+<p>For example, if the discrete space or weather variability are not defined, the discrete and stochastic versions of the environment will not be created.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For discrete environments, an action mapping must be defined in
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">constants.py</a>
+named as <code class="docutils literal notranslate"><span class="pre">DEFAULT_&lt;upper</span> <span class="pre">case</span> <span class="pre">id_base&gt;_DISCRETE_FUNCTION</span></code>.</p>
+</div>
+<section id="variables-specification">
+<h2>Variables specification<a class="headerlink" href="#variables-specification" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">variables</span></code> field follows a specific format to efficiently define all observed variables in the environment. Variable names and keys can be provided as either individual strings or lists of strings. The functionality is illustrated in the following graph:</p>
+<a class="reference internal image-reference" href="../_images/yaml_variables_conf.png"><img alt="*variables* field format in the YAML configuration of *Sinergym* environments" class="align-center" src="../_images/yaml_variables_conf.png" style="width: 1111.0px; height: 618.0px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>During registration, <em>Sinergym</em> parses the information introduced in the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter to the environment constructor, previously adapting it to the format used by the EnergyPlus Python API. A similar process is followed with the <code class="docutils literal notranslate"><span class="pre">meters</span></code>, <code class="docutils literal notranslate"><span class="pre">actuators</span></code> and <code class="docutils literal notranslate"><span class="pre">context</span></code> fields.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environments.html" class="btn btn-neutral float-left" title="Environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="serialization.html" class="btn btn-neutral float-right" title="Serialization and Configuration Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.10.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/environments_registration.html">v3.1.0</a></dd>
+            <dd><a href="environments_registration.html">v3.10.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/environments_registration.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.3.0/pages/environments_registration.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.4.0/pages/environments_registration.html">v3.4.0</a></dd>
+            <dd><a href="../../v3.5.0/pages/environments_registration.html">v3.5.0</a></dd>
+            <dd><a href="../../v3.6.0/pages/environments_registration.html">v3.6.0</a></dd>
+            <dd><a href="../../v3.7.0/pages/environments_registration.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.8.0/pages/environments_registration.html">v3.8.0</a></dd>
+            <dd><a href="../../v3.9.0/pages/environments_registration.html">v3.9.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/environments_registration.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -21,6 +21,8 @@
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -282,12 +284,12 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 </div>
 <p>You can see how the observation values have been updated:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">obs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span> <span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_obs_dict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW OBSERVATION: &#39;</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">)</span>
@@ -357,12 +359,12 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 </div>
 <p>This wrapper removes the observation variables <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">day</span></code>, and <code class="docutils literal notranslate"><span class="pre">hour</span></code>, and replace them by <code class="docutils literal notranslate"><span class="pre">month_sin</span></code>, <code class="docutils literal notranslate"><span class="pre">month_cos</span></code>, <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code>, <code class="docutils literal notranslate"><span class="pre">hour_sin</span></code>, and <code class="docutils literal notranslate"><span class="pre">hour_cos</span></code>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">obs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span> <span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_obs_dict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW OBSERVATION: &#39;</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">)</span>
 
@@ -717,13 +719,13 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
 </div>
 <p>You can check how the specified variables have been correctly normalized:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 <span class="n">obs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span> <span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_obs_dict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;OBSERVATION WITH NORMALIZATION: &#39;</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">)</span>
@@ -1374,6 +1376,7 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.10.0/index.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>

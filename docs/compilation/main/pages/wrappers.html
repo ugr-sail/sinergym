@@ -172,7 +172,24 @@
 </section>
 <section id="datetimewrapper">
 <h2>DatetimeWrapper<a class="headerlink" href="#datetimewrapper" title="Link to this heading"></a></h2>
-<p>This wrapper replaces the <code class="docutils literal notranslate"><span class="pre">day_of_month</span></code> value with the <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and the <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> values with <em>sin</em> and <em>cos</em> values. The observation space is automatically updated.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is <strong>highly recommended to use the ``DatetimeWrapper``</strong> for optimal
+temporal encoding in deep reinforcement learning algorithms. This wrapper
+must be applied manually in your environment’s pipeline if you wish to
+benefit from state-of-the-art temporal features.</p>
+</div>
+<p>This wrapper transforms datetime variables into a more useful representation for deep RL:
+- <code class="docutils literal notranslate"><span class="pre">day_of_month</span></code> is replaced with <code class="docutils literal notranslate"><span class="pre">day_cos</span></code> and <code class="docutils literal notranslate"><span class="pre">day_sin</span></code> (cyclic encoding).
+- <code class="docutils literal notranslate"><span class="pre">hour</span></code> is replaced with <code class="docutils literal notranslate"><span class="pre">hour_cos</span></code> and <code class="docutils literal notranslate"><span class="pre">hour_sin</span></code> (cyclic encoding).
+- <code class="docutils literal notranslate"><span class="pre">month</span></code> is replaced with <code class="docutils literal notranslate"><span class="pre">month_cos</span></code> and <code class="docutils literal notranslate"><span class="pre">month_sin</span></code> (cyclic encoding).</p>
+<p>Cyclic encoding using sine and cosine is essential for deep RL because it preserves the
+circular nature of temporal variables (e.g., hour 23:59 is close to 00:00).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This wrapper must be applied <strong>before NormalizeObservation wrapper</strong>, since
+it modifies the observation space.</p>
+</div>
 </section>
 <section id="normalizeaction">
 <h2>NormalizeAction<a class="headerlink" href="#normalizeaction" title="Link to this heading"></a></h2>
@@ -379,6 +396,7 @@ for login.</p>
             <dd><a href="../../v2.3.0/pages/wrappers.html">v2.3.0</a></dd>
             <dd><a href="../../v2.5.0/pages/wrappers.html">v2.5.0</a></dd>
             <dd><a href="../../v3.1.0/pages/wrappers.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.10.0/pages/wrappers.html">v3.10.0</a></dd>
             <dd><a href="../../v3.2.0/pages/wrappers.html">v3.2.0</a></dd>
             <dd><a href="../../v3.3.0/pages/wrappers.html">v3.3.0</a></dd>
             <dd><a href="../../v3.4.0/pages/wrappers.html">v3.4.0</a></dd>

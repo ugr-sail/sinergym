@@ -196,31 +196,34 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
 <td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obs_dict</span></code>(obs)</p></td>
+<td><p>Convert observation array to dictionary with variable names as keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
 <td><p>Checks if the given attribute is within the wrapper or its environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.observation" title="sinergym.utils.wrappers.WeatherForecastingWrapper.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs, info)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.observation" title="sinergym.utils.wrappers.WeatherForecastingWrapper.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs, info)</p></td>
 <td><p>Build the state observation by adding weather forecast information.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.reset" title="sinergym.utils.wrappers.WeatherForecastingWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.reset" title="sinergym.utils.wrappers.WeatherForecastingWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
 <td><p>Resets the environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.set_forecast_data" title="sinergym.utils.wrappers.WeatherForecastingWrapper.set_forecast_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_forecast_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.set_forecast_data" title="sinergym.utils.wrappers.WeatherForecastingWrapper.set_forecast_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_forecast_data</span></code></a>()</p></td>
 <td><p>Set the weather data used to build de state observation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
 <td><p>Sets an attribute on this wrapper or lower environment if <cite>name</cite> is already defined.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.step" title="sinergym.utils.wrappers.WeatherForecastingWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.WeatherForecastingWrapper.step" title="sinergym.utils.wrappers.WeatherForecastingWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Performs the action in the new environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -368,6 +371,7 @@ episode and dict with Information about the environment.</p>
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.10.0/pages/modules/sinergym.utils.wrappers.WeatherForecastingWrapper.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>

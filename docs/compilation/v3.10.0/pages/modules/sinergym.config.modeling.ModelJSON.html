@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sinergym.config.modeling.ModelJSON &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/github_style.css?v=0a3c596a" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="sinergym.config.modeling" href="sinergym.config.modeling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.simulators.html">sinergym.simulators</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="sinergym.config.html">sinergym.config</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.config.modeling.html">sinergym.config.modeling</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.config.modeling.ModelJSON</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.config.html">sinergym.config</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.config.modeling.html">sinergym.config.modeling</a></li>
+      <li class="breadcrumb-item active">sinergym.config.modeling.ModelJSON</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/modules/sinergym.config.modeling.ModelJSON.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sinergym-config-modeling-modeljson">
+<h1>sinergym.config.modeling.ModelJSON<a class="headerlink" href="#sinergym-config-modeling-modeljson" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.config.modeling.</span></span><span class="sig-name descname"><span class="pre">ModelJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON" title="Link to this definition"></a></dt>
+<dd><p>Class to manage backend models (building, weathers…) and folders in Sinergym (JSON version).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_json_path</strong> – JSON path origin to create the building model.</p></li>
+<li><p><strong>weather_files</strong> – Available weather files for each episode.</p></li>
+<li><p><strong>_weather_path</strong> – EPW path origin for apply weather to simulation in current episode.</p></li>
+<li><p><strong>_ddy_path</strong> – DDY path origin for get DesignDays and weather Location.</p></li>
+<li><p><strong>_idd</strong> – IDD eppy object to set up Epm.</p></li>
+<li><p><strong>_variables</strong> – Output:Variable(s) information about building model.</p></li>
+<li><p><strong>_meters</strong> – Output:Meter(s) information about building model.</p></li>
+<li><p><strong>workspace_path</strong> – Path for Sinergym workspace output.</p></li>
+<li><p><strong>episode_path</strong> – Path for Sinergym specific episode (before first simulator reset this param is None).</p></li>
+<li><p><strong>max_ep_store</strong> – Number of episodes directories will be stored in workspace_path.</p></li>
+<li><p><strong>building_config</strong> – Dict with extra configuration which is required to modify building model (may be None).</p></li>
+<li><p><strong>building</strong> – Building model (Dictionary extracted from JSON).</p></li>
+<li><p><strong>ddy_model</strong> – eppy object with DDY model.</p></li>
+<li><p><strong>weather_data</strong> – epw module Weather class instance with EPW data.</p></li>
+<li><p><strong>zone_names</strong> – List of the zone names available in the building.</p></li>
+<li><p><strong>schedulers</strong> – Information in Dict format about all building schedulers.</p></li>
+<li><p><strong>runperiod</strong> – Information in Dict format about runperiod that determine an episode.</p></li>
+<li><p><strong>episode_length</strong> – Time in seconds that an episode has.</p></li>
+<li><p><strong>step_size</strong> – Time in seconds that an step has.</p></li>
+<li><p><strong>timestep_per_episode</strong> – Timestep in a runperiod (simulation episode).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor. Variables and meters are required to update building model scheme.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env_name</strong> (<em>str</em>) – Name of the environment, required for Sinergym output management.</p></li>
+<li><p><strong>json_file</strong> (<em>str</em>) – Json file name, path is calculated by the constructor.</p></li>
+<li><p><strong>weather_files</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – List of the weather file names, one of them will be select randomly, path will be calculated by the constructor. Use a single str or List[str] with only one element to use the same weather file for all episodes.</p></li>
+<li><p><strong>variables</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.</p></li>
+<li><p><strong>meters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.</p></li>
+<li><p><strong>max_ep_store</strong> (<em>int</em>) – Number of episodes directories will be stored in workspace_path.</p></li>
+<li><p><strong>building_config</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Dict config with extra configuration which is required to modify building model. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.__init__" title="sinergym.config.modeling.ModelJSON.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env_name, json_file, weather_files, ...)</p></td>
+<td><p>Constructor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_config" title="sinergym.config.modeling.ModelJSON.adapt_building_to_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_building_to_config</span></code></a>()</p></td>
+<td><p>Set extra configuration in building model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_epw" title="sinergym.config.modeling.ModelJSON.adapt_building_to_epw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_building_to_epw</span></code></a>([summerday, winterday])</p></td>
+<td><p>Given a summer day name and winter day name from DDY file, this method modify Location and DesignDay's in order to adapt building model to EPW.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_meters" title="sinergym.config.modeling.ModelJSON.adapt_building_to_meters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_building_to_meters</span></code></a>()</p></td>
+<td><p>Reads all meters and updates the building model with Output:Meter fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_variables" title="sinergym.config.modeling.ModelJSON.adapt_building_to_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_building_to_variables</span></code></a>()</p></td>
+<td><p>Replaces the default Output:Variable entries in the building model with custom variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.apply_weather_variability" title="sinergym.config.modeling.ModelJSON.apply_weather_variability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_weather_variability</span></code></a>([weather_variability])</p></td>
+<td><p>Modify weather data using Ornstein-Uhlenbeck process according to the specified variability.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.get_eplus_runperiod" title="sinergym.config.modeling.ModelJSON.get_eplus_runperiod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_eplus_runperiod</span></code></a>()</p></td>
+<td><p>This method reads building runperiod information and returns it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.get_runperiod_len" title="sinergym.config.modeling.ModelJSON.get_runperiod_len"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_runperiod_len</span></code></a>()</p></td>
+<td><p>Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.get_schedulers" title="sinergym.config.modeling.ModelJSON.get_schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_schedulers</span></code></a>()</p></td>
+<td><p>Extract all schedulers available in the building model to be controlled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.save_building_model" title="sinergym.config.modeling.ModelJSON.save_building_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_building_model</span></code></a>()</p></td>
+<td><p>Take current building model and save as epJSON in current episode path folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.set_episode_working_dir" title="sinergym.config.modeling.ModelJSON.set_episode_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_episode_working_dir</span></code></a>()</p></td>
+<td><p>Set episode working dir path like config attribute for current simulation execution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.update_weather_path" title="sinergym.config.modeling.ModelJSON.update_weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_weather_path</span></code></a>()</p></td>
+<td><p>When this method is called, weather file is changed randomly and building model is adapted to new one.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.building_path" title="sinergym.config.modeling.ModelJSON.building_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">building_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.ddy_path" title="sinergym.config.modeling.ModelJSON.ddy_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddy_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.idd_path" title="sinergym.config.modeling.ModelJSON.idd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idd_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.logger" title="sinergym.config.modeling.ModelJSON.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.config.modeling.ModelJSON.weather_path" title="sinergym.config.modeling.ModelJSON.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.adapt_building_to_config">
+<span class="sig-name descname"><span class="pre">adapt_building_to_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_config" title="Link to this definition"></a></dt>
+<dd><p>Set extra configuration in building model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.adapt_building_to_epw">
+<span class="sig-name descname"><span class="pre">adapt_building_to_epw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summerday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Clg</span> <span class="pre">.4%</span> <span class="pre">Condns</span> <span class="pre">DB=&gt;MWB'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winterday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Htg</span> <span class="pre">99.6%</span> <span class="pre">Condns</span> <span class="pre">DB'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_epw" title="Link to this definition"></a></dt>
+<dd><p>Given a summer day name and winter day name from DDY file, this method modify Location and DesignDay’s in order to adapt building model to EPW.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>summerday</strong> (<em>str</em>) – Design day for summer day specifically (DDY has several of them).</p></li>
+<li><p><strong>winterday</strong> (<em>str</em>) – Design day for winter day specifically (DDY has several of them).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.adapt_building_to_meters">
+<span class="sig-name descname"><span class="pre">adapt_building_to_meters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_meters" title="Link to this definition"></a></dt>
+<dd><p>Reads all meters and updates the building model with Output:Meter fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.adapt_building_to_variables">
+<span class="sig-name descname"><span class="pre">adapt_building_to_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.adapt_building_to_variables" title="Link to this definition"></a></dt>
+<dd><p>Replaces the default Output:Variable entries in the building model with custom variables.</p>
+<p>This method removes all default Output:Variable entries and adds new ones based on
+the variables stored in <cite>self._variables</cite>. Each variable is assigned a key, a name,
+and a reporting frequency of ‘Timestep’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.apply_weather_variability">
+<span class="sig-name descname"><span class="pre">apply_weather_variability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.apply_weather_variability" title="Link to this definition"></a></dt>
+<dd><p>Modify weather data using Ornstein-Uhlenbeck process according to the specified variability.</p>
+<dl class="simple">
+<dt>Each column in <cite>weather_variability</cite> can have:</dt><dd><ul class="simple">
+<li><p>sigma (float or tuple[float, float]): Standard deviation or range to sample from.</p></li>
+<li><p>mu (float or tuple[float, float]): Mean value or range to sample from.</p></li>
+<li><p>tau (float or tuple[float, float]): Time constant or range to sample from.</p></li>
+<li><p>var_range (optional, tuple[float, float]): Min/max clipping for the variable.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>]</em><em>]</em>) – Dictionary mapping column names to
+OU parameters as described above. Defaults to None.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Path to the new EPW file generated in the simulator working path for this episode,</dt><dd><p>or the current EPW path if <cite>weather_variability</cite> is not defined.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.building_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">building_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.building_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.ddy_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ddy_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.ddy_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.get_eplus_runperiod">
+<span class="sig-name descname"><span class="pre">get_eplus_runperiod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.get_eplus_runperiod" title="Link to this definition"></a></dt>
+<dd><p>This method reads building runperiod information and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Dict with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str,int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.get_runperiod_len">
+<span class="sig-name descname"><span class="pre">get_runperiod_len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.get_runperiod_len" title="Link to this definition"></a></dt>
+<dd><p>Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The simulation time in which the simulation ends (seconds).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.get_schedulers">
+<span class="sig-name descname"><span class="pre">get_schedulers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.get_schedulers" title="Link to this definition"></a></dt>
+<dd><p>Extract all schedulers available in the building model to be controlled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.idd_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">idd_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.idd_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">MODEL</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.save_building_model">
+<span class="sig-name descname"><span class="pre">save_building_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.save_building_model" title="Link to this definition"></a></dt>
+<dd><p>Take current building model and save as epJSON in current episode path folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path of epJSON file stored (episode folder).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.set_episode_working_dir">
+<span class="sig-name descname"><span class="pre">set_episode_working_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.set_episode_working_dir" title="Link to this definition"></a></dt>
+<dd><p>Set episode working dir path like config attribute for current simulation execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If workspace path (parent folder) has not be created previously.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Episode path for directory created.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.update_weather_path">
+<span class="sig-name descname"><span class="pre">update_weather_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.update_weather_path" title="Link to this definition"></a></dt>
+<dd><p>When this method is called, weather file is changed randomly and building model is adapted to new one.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.config.modeling.ModelJSON.weather_path">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weather_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.config.modeling.ModelJSON.weather_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sinergym.config.modeling.html" class="btn btn-neutral float-left" title="sinergym.config.modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.10.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.1.0</a></dd>
+            <dd><a href="sinergym.config.modeling.ModelJSON.html">v3.10.0</a></dd>
+            <dd><a href="../../../v3.2.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.6.0</a></dd>
+            <dd><a href="../../../v3.7.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.8.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.8.0</a></dd>
+            <dd><a href="../../../v3.9.0/pages/modules/sinergym.config.modeling.ModelJSON.html">v3.9.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/pages/modules/sinergym.config.modeling.ModelJSON.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -18,6 +18,7 @@
       ~EplusEnv.__init__
       ~EplusEnv.close
       ~EplusEnv.from_dict
+      ~EplusEnv.get_obs_dict
       ~EplusEnv.get_wrapper_attr
       ~EplusEnv.has_wrapper_attr
       ~EplusEnv.render

@@ -21,6 +21,8 @@
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -178,7 +180,7 @@
 <p>You should check out the available list of pre-defined RBCs.</p>
 <p>In this example, we extend the pre-defined controller by defining a custom <code class="docutils literal notranslate"><span class="pre">act</span></code> method:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.controllers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBC5Zone</span>
@@ -195,10 +197,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Sequence[Any]: Action chosen.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span>
-            <span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span> <span class="n">observation</span><span class="p">))</span>
-
-        <span class="n">out_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;outdoor_temperature&#39;</span><span class="p">]</span>
+        <span class="n">obs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_obs_dict</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
 
         <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day_of_month&#39;</span><span class="p">])</span>
         <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
@@ -384,6 +383,7 @@ Simulation Progress [Episode 2]: 100%|██████████| 100/100 [0
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.10.0/index.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
