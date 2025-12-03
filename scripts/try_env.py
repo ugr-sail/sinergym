@@ -43,4 +43,9 @@ for i in range(episodes):
 
     logger.info(f'Episode {env.get_wrapper_attr("episode")} finished.')
 
+logger.info(
+    'You can get a dictionary of the observation if you want to check something, independently of the changes made to the observation by the wrappers:'
+)
+logger.info(env.get_obs_dict(obs))
+
 env.close()
