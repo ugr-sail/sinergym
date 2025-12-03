@@ -2311,13 +2311,32 @@ class VariabilityContextWrapper(gym.Wrapper):
         delta_value: float = 1.0,
         step_frequency_range: Tuple[int, int] = (96, 96 * 7),
     ):
-        """Wrapper that modifies the environment's context variables at random intervals.
+        """Wrapper that dynamically modifies the environment's context variables at random intervals.
+
+        The wrapper works by:
+        1. Starting with an initial context values
+        2. Generating random delta values within the specified range
+        3. Applying these deltas to the current context values (clipped to context_space bounds)
+        4. Updating the context at random intervals within the specified step frequency range
 
         Args:
-            env (gym.Env): The environment to wrap.
+            env (gym.Env): The environment to wrap. Must have context variables defined.
             context_space (gym.spaces.Box): The space defining valid context variable values.
-            delta_value (float): Maximum absolute change applied to context variables at each update.
-            step_frequency_range (Tuple[int, int]): Range for the number of steps before each update.
+                Must match the number of context variables in the environment. The shape[0] must
+                equal the length of `context_variables`.
+            delta_value (float): Maximum absolute change applied to each context variable at each
+                update. The actual delta for each variable is randomly sampled from
+                [-delta_value, delta_value]. Must be > 0.
+            step_frequency_range (Tuple[int, int]): Range (min, max) for the number of steps
+                between context updates. The actual number of steps is randomly sampled from this
+                range (inclusive). Defaults to (96, 96*7) representing 1-7 days for hourly
+                timesteps. Both values must be > 0 and min < max.
+
+        Raises:
+            TypeError: If context_space is not an instance of gym.spaces.Box.
+            ValueError: If context_space shape doesn't match the number of context variables.
+            ValueError: If delta_value <= 0.
+            ValueError: If step_frequency_range is invalid (not a tuple, min <= 0, or min >= max).
         """
         super().__init__(env)
 
