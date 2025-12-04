@@ -7,7 +7,17 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime, timedelta
 from inspect import signature
-from typing import Any, Callable, Dict, List, Optional, SupportsFloat, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    SupportsFloat,
+    Tuple,
+    Union,
+    cast,
+)
 
 import gymnasium as gym
 import numpy as np
@@ -2298,188 +2308,13 @@ class ReduceObservationWrapper(gym.Wrapper):
 
 
 @store_init_metadata
-class VariabilityContextWrapper(gym.Wrapper):
+class ScheduledContextWrapper(gym.Wrapper):
 
     logger = TerminalLogger().getLogger(
-        name='WRAPPER VariabilityContextWrapper', level=LOG_WRAPPERS_LEVEL
+        name='WRAPPER ScheduledContextWrapper', level=LOG_WRAPPERS_LEVEL
     )
 
-    def __init__(
-        self,
-        env: Env,
-        context_space: gym.spaces.Box,
-        delta_value: float = 1.0,
-        step_frequency_range: Tuple[int, int] = (96, 96 * 7),
-    ):
-        """Wrapper that dynamically modifies the environment's context variables at random intervals.
-
-        The wrapper works by:
-        1. Starting with an initial context values
-        2. Generating random delta values within the specified range
-        3. Applying these deltas to the current context values (clipped to context_space bounds)
-        4. Updating the context at random intervals within the specified step frequency range
-
-        Args:
-            env (gym.Env): The environment to wrap. Must have context variables defined.
-            context_space (gym.spaces.Box): The space defining valid context variable values.
-                Must match the number of context variables in the environment. The shape[0] must
-                equal the length of `context_variables`.
-            delta_value (float): Maximum absolute change applied to each context variable at each
-                update. The actual delta for each variable is randomly sampled from
-                [-delta_value, delta_value]. Must be > 0.
-            step_frequency_range (Tuple[int, int]): Range (min, max) for the number of steps
-                between context updates. The actual number of steps is randomly sampled from this
-                range (inclusive). Defaults to (96, 96*7) representing 1-7 days for hourly
-                timesteps. Both values must be > 0 and min < max.
-
-        Raises:
-            TypeError: If context_space is not an instance of gym.spaces.Box.
-            ValueError: If context_space shape doesn't match the number of context variables.
-            ValueError: If delta_value <= 0.
-            ValueError: If step_frequency_range is invalid (not a tuple, min <= 0, or min >= max).
-        """
-        super().__init__(env)
-
-        # Validations
-        if not isinstance(context_space, gym.spaces.Box):
-            self.logger.error('context_space must be an instance of gym.spaces.Box.')
-            raise TypeError
-
-        context_variables = self.get_wrapper_attr('context_variables')
-        if context_space.shape[0] != len(context_variables):
-            self.logger.error(
-                f'Context space shape ({context_space.shape[0]}) is not coherent with '
-                f'environment context variables ({len(context_variables)}).'
-            )
-            raise ValueError
-
-        if delta_value <= 0:
-            self.logger.error(f'Delta value must be > 0, but received {delta_value}.')
-            raise ValueError
-
-        if not (
-            isinstance(step_frequency_range, tuple) and len(step_frequency_range) == 2
-        ):
-            self.logger.error(
-                f'Invalid step_frequency_range: {step_frequency_range}. Must be a tuple (min, max).'
-            )
-            raise ValueError
-
-        if (
-            step_frequency_range[0] <= 0
-            or step_frequency_range[0] >= step_frequency_range[1]
-        ):
-            self.logger.error(f'Invalid step_frequency_range: {step_frequency_range}.')
-            raise ValueError
-
-        # Initialization
-        self.context_space = context_space
-        self.delta_context = (-delta_value, delta_value)
-        self.step_frequency_range = step_frequency_range
-
-        initial_context = self.get_wrapper_attr('default_options').get(
-            'initial_context'
-        )
-        if initial_context:
-            self.current_context = np.array(initial_context, np.float32)
-        else:
-            self.current_context = np.random.uniform(
-                self.context_space.low,
-                self.context_space.high,
-                size=self.context_space.shape[0],
-            ).astype(np.float32)
-
-        self.next_context_values, self.next_step_update = (
-            self._generate_context_values()
-        )
-
-        self.logger.info('Wrapper initialized.')
-
-    def step(
-        self, action: np.ndarray
-    ) -> Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]:
-        """Executes an action and updates the environment's context if needed.
-
-        This method decrements the step counter and, when it reaches zero, updates the context
-        variables with new randomly generated values. After updating, it generates the next update
-        schedule.
-
-        Args:
-            action (np.ndarray): Action selected by the agent.
-
-        Returns:
-            Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Standard Gymnasium step
-                return containing:
-                - Observation for next timestep
-                - Reward obtained
-                - Whether the episode has ended (terminated)
-                - Whether episode has been truncated
-                - Dictionary with extra information
-        """
-
-        # Discount frequency
-        self.next_step_update -= 1
-
-        if self.next_step_update == 0:
-            # Update context
-            self.get_wrapper_attr('update_context')(self.next_context_values)
-            self.current_context = self.next_context_values
-            self.logger.info(
-                f'Context updated with values: {
-                    self.next_context_values}'
-            )
-            # Calculate next update
-            self.next_context_values, self.next_step_update = (
-                self._generate_context_values()
-            )
-
-        obs, reward, terminated, truncated, info = self.env.step(action)
-
-        return obs, reward, terminated, truncated, info
-
-    def _generate_context_values(self) -> Tuple[np.ndarray, int]:
-        """Generates new context values and determines the next update step.
-
-        This method generates random delta values for each context variable, applies them to the
-        current context, clips the result to the context space bounds, and randomly selects the
-        number of steps until the next update.
-
-        Returns:
-            Tuple[np.ndarray, int]: A tuple containing:
-                - The new context values (np.ndarray): After applying random deltas and clipping
-                  to context_space bounds.
-                - The number of steps until the next update (int): Randomly sampled from
-                  step_frequency_range.
-        """
-        # Generate random delta context values
-        delta_context_values = np.random.uniform(
-            self.delta_context[0],
-            self.delta_context[1],
-            size=self.current_context.shape[0],
-        ).astype(np.float32)
-        # Apply delta values and clip with context space
-        next_context_values = np.clip(
-            self.current_context + delta_context_values,
-            self.context_space.low,
-            self.context_space.high,
-        ).astype(np.float32)
-
-        # Generate random step frequency
-        next_step_update = np.random.randint(
-            self.step_frequency_range[0], self.step_frequency_range[1]
-        )
-
-        return next_context_values, next_step_update
-
-
-@store_init_metadata
-class GeneralContextWrapper(gym.Wrapper):
-
-    logger = TerminalLogger().getLogger(
-        name='WRAPPER GeneralContextWrapper', level=LOG_WRAPPERS_LEVEL
-    )
-
-    def __init__(self, env: Env, configuration: Dict[str, List[float]]):
+    def __init__(self, env: Env, scheduled_context: Dict[str, List[float]]):
         """Wrapper to apply predefined context changes at specific dates and times.
 
         This wrapper allows you to define a schedule of context variable updates that occur at
@@ -2501,18 +2336,18 @@ class GeneralContextWrapper(gym.Wrapper):
             ValueError: If configuration values don't match the number of context variables.
 
         Example:
-            >>> from sinergym.utils.wrappers import GeneralContextWrapper
+            >>> from sinergym.utils.wrappers import ScheduledContextWrapper
             >>> env = make('Eplus-5zone-hot-continuous-v1')
             >>> # Set occupancy to 0.8 on January 15th at 2 PM
             >>> # and 0.5 on February 20th at 9 AM
-            >>> config = {
+            >>> scheduled_context = {
             ...     '01-15 14': [0.8],  # Assuming 1 context variable
             ...     '02-20 09': [0.5]
             ... }
-            >>> env = GeneralContextWrapper(env=env, configuration=config)
+            >>> env = ScheduledContextWrapper(env=env, scheduled_context=scheduled_context)
         """
         super().__init__(env)
-        self.context_configuration = configuration
+        self.scheduled_context = scheduled_context
 
         self.logger.info('Wrapper initialized.')
 
@@ -2542,87 +2377,130 @@ class GeneralContextWrapper(gym.Wrapper):
         dt = datetime(YEAR, info['month'], info['day'], info['hour'])
         str_date = dt.strftime('%m-%d %H')
 
-        if str_date in self.context_configuration:
-            self.get_wrapper_attr('update_context')(
-                self.context_configuration[str_date]
-            )
+        if str_date in self.scheduled_context:
+            self.get_wrapper_attr('update_context')(self.scheduled_context[str_date])
 
         return obs, reward, terminated, truncated, info
 
 
 @store_init_metadata
-class RandomGeneralContextWrapper(gym.Wrapper):
-    """Wrapper that generates random context changes at random times for each episode.
+class ProbabilisticContextWrapper(gym.Wrapper):
+    """Wrapper that probabilistically updates context variables at each step.
 
-    This wrapper automatically generates a random schedule of context variable updates for each
-    episode. At the start of each episode (during reset), it randomly selects:
-    - A number of context changes (within the specified range)
-    - Random timestamps within the episode's run period
-    - Random context values (within the specified range) for each change
-
-    All context variables receive the same value at each change point. This is useful for
-    introducing variability in training while maintaining simplicity.
-
-    Unlike GeneralContextWrapper, which uses a fixed configuration, this wrapper generates a new
-    random schedule for each episode, providing more diverse training scenarios.
+    This wrapper provides a unified approach to context updates with multiple modes:
+    - Probabilistic updates: Each step has a probability of triggering a context update
+    - Multiple update modes: Same value for all variables, independent values, or
+      probabilistic per-variable updates
+    - Support for both absolute values and delta-based increments to current context values
     """
 
     logger = TerminalLogger().getLogger(
-        name='WRAPPER RandomGeneralContextWrapper', level=LOG_WRAPPERS_LEVEL
+        name='WRAPPER ProbabilisticContextWrapper', level=LOG_WRAPPERS_LEVEL
     )
 
     def __init__(
         self,
         env: Env,
-        num_changes_range: Tuple[int, int],
-        context_range: Tuple[float, float],
+        context_space: gym.spaces.Box,
+        update_probability: Union[float, List[float]] = 0.1,
+        global_value: bool = False,
+        delta_update: bool = False,
+        delta_value: Optional[float] = None,
     ):
-        """Initialize wrapper with parameters for random context change generation.
+        """Initialize wrapper with probabilistic context update configuration.
 
         Args:
-            env (Env): Original environment. Must have context variables defined and a runperiod
-                configuration.
-            num_changes_range (Tuple[int, int]): Range (min, max) for the number of random context
-                changes to generate per episode. The actual number is randomly sampled from this
-                range (inclusive). Both values must be >= 0 and min <= max.
-            context_range (Tuple[float, float]): Range (min, max) for context values. All context
-                variables will be set to the same randomly sampled value within this range at each
-                change point. Must satisfy min <= max.
+            env (Env): Original environment. Must have context variables defined.
+            context_space (gym.spaces.Box): The space defining valid context variable values.
+                Must match the number of context variables in the environment. The shape[0] must
+                equal the length of context_variables. Each dimension defines the valid range for
+                the corresponding context variable. If global_value is True, all dimensions must
+                have the same range (uses first context variable dimension).
+            update_probability (Union[float, List[float]]): Probability of context updates.
+                - If float: Probability (0.0 to 1.0) that a context update event occurs at each step.
+                  When an update event occurs, all variables are updated together. Defaults to 0.1 (10%).
+                - If list: List of probabilities (one per context variable, each in [0.0, 1.0]).
+                  In each step, each variable is independently evaluated according to its probability.
+                  Length must match the number of context variables.
+            global_value (bool): If True, all context variables get the same random value (from
+                first dimension of context_space). All dimensions of context_space must have the
+                same range. If False, each context variable gets an independent random value from
+                its corresponding dimension in context_space. Defaults to False.
+            delta_update (bool): If True, apply incremental changes (add/subtract) to current context values.
+                Requires delta_value parameter. Values are clipped to context_space bounds.
+                Defaults to False.
+            delta_value (float, optional): Maximum absolute change when delta_update=True. The
+                actual delta for each variable is randomly sampled from [-delta_value, delta_value].
+                Required when delta_update=True. Must be > 0.
 
         Raises:
-            ValueError: If num_changes_range or context_range are invalid.
+            TypeError: If context_space is not an instance of gym.spaces.Box.
+            ValueError: If context_space shape doesn't match the number of context variables, or
+                if parameters are invalid for the selected mode.
 
         Example:
-            >>> from sinergym.utils.wrappers import RandomGeneralContextWrapper
+            >>> from sinergym.utils.wrappers import ProbabilisticContextWrapper
+            >>> import gymnasium as gym
             >>> env = make('Eplus-5zone-hot-continuous-v1')
-            >>> # Generate 3-5 random context changes per episode
-            >>> # with values between 0.3 and 0.9
-            >>> env = RandomGeneralContextWrapper(
+            >>> # Independent values with 2% probability per step
+            >>> context_space = gym.spaces.Box(
+            ...     low=np.array([0.3], dtype=np.float32),
+            ...     high=np.array([0.9], dtype=np.float32),
+            ...     shape=(1,),
+            ...     dtype=np.float32,
+            ... )
+            >>> env = ProbabilisticContextWrapper(
             ...     env=env,
-            ...     num_changes_range=(3, 5),
-            ...     context_range=(0.3, 0.9)
+            ...     context_space=context_space,
+            ...     update_probability=0.02,
+            ...     global_value=False,
+            ...     delta_update=False
+            ... )
+            >>> # Same value for all with delta updates
+            >>> env = ProbabilisticContextWrapper(
+            ...     env=env,
+            ...     context_space=context_space,
+            ...     update_probability=0.01,
+            ...     global_value=True,
+            ...     delta_update=True,
+            ...     delta_value=0.1
+            ... )
+            >>> # Probabilistic per-variable updates (each variable evaluated independently each step)
+            >>> env = ProbabilisticContextWrapper(
+            ...     env=env,
+            ...     context_space=context_space,
+            ...     update_probability=[0.05, 0.03, 0.08],  # 5%, 3%, 8% per step per variable
+            ...     global_value=False
             ... )
         """
         super().__init__(env)
-        self.num_changes_range = num_changes_range
-        self.context_range = context_range
 
-        # Initialize empty configuration that will be populated in reset()
-        self.context_configuration = {}
+        # Store configuration
+        self.context_space = context_space
+        self.global_value = global_value
+        self.delta_update = delta_update
+        self.delta_value = delta_value
+
+        # Process update_probability based on type
+        # Determine if probabilistic mode based on type of update_probability
+        self.prob_per_variable = isinstance(update_probability, list)
+
+        # Store as single attribute: float for non-probabilistic, array for probabilistic
+        if self.prob_per_variable:
+            self.update_probability = np.array(update_probability, dtype=np.float32)
+        else:
+            assert isinstance(
+                update_probability, (int, float)
+            ), 'update_probability must be float in non-probabilistic mode'
+            self.update_probability = float(update_probability)
+
+        # Validate configuration
+        self._check_configuration()
 
         self.logger.info('Wrapper initialized.')
 
     def reset(self, **kwargs) -> Tuple[np.ndarray, Dict[str, Any]]:
-        """Resets the environment and generates a new random context change schedule.
-
-        This method resets the underlying environment and generates a new random configuration
-        for context changes based on:
-        - The episode's run period (from environment's runperiod configuration)
-        - The num_changes_range parameter
-        - The context_range parameter
-
-        The generated schedule is stored in context_configuration and will be applied during
-        the episode when the simulation reaches the matching datetimes.
+        """Resets the environment and reinitializes current context.
 
         Args:
             **kwargs: Additional arguments passed to the underlying environment's reset method.
@@ -2631,66 +2509,36 @@ class RandomGeneralContextWrapper(gym.Wrapper):
             Tuple[np.ndarray, Dict[str, Any]]: Standard Gymnasium reset return containing:
                 - Initial observation
                 - Info dictionary
-
-        Raises:
-            AttributeError: If environment doesn't have 'runperiod' attribute.
         """
         obs, info = self.env.reset(**kwargs)
 
-        # Generate new random configuration for this episode
-        self.context_configuration = {}
-
-        # Random number of changes for this episode
-        num_changes = np.random.randint(
-            self.num_changes_range[0], self.num_changes_range[1] + 1
+        # Reinitialize current context after reset
+        initial_context = self.get_wrapper_attr('default_options').get(
+            'initial_context'
         )
-
-        # Get runperiod from environment
-        runperiod = self.get_wrapper_attr('runperiod')
-
-        # Extract runperiod init datetime and end datetime (using year)
-        begin_datetime = datetime(
-            runperiod['start_year'], runperiod['start_month'], runperiod['start_day'], 0
-        )
-        end_datetime = datetime(
-            runperiod['end_year'], runperiod['end_month'], runperiod['end_day'], 0
-        )
-
-        total_hours = int((end_datetime - begin_datetime).total_seconds() / 3600)
-
-        # Generate num_changes random hours
-        random_hours = np.random.randint(0, total_hours, size=num_changes)
-
-        # Create datetime objects and format strings
-        random_dates = [
-            begin_datetime + timedelta(hours=int(hours)) for hours in random_hours
-        ]
-        str_dates = [dt.strftime('%m-%d %H') for dt in random_dates]
-
-        # Generate random context values
-        context_values = np.random.uniform(
-            self.context_range[0], self.context_range[1], size=num_changes
-        )
-
-        # Get context variables length once
-        num_context_vars = len(self.get_wrapper_attr('context_variables'))
-
-        # Build configuration
-        self.context_configuration = {
-            str_date: [value] * num_context_vars
-            for str_date, value in zip(str_dates, context_values)
-        }
+        if initial_context:
+            self.current_context = np.array(initial_context, dtype=np.float32)
+        else:
+            self.current_context = np.random.uniform(
+                self.context_space.low,
+                self.context_space.high,
+                size=self.context_space.shape[0],
+            ).astype(np.float32)
 
         return obs, info
 
     def step(
         self, action: np.ndarray
     ) -> Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]:
-        """Executes an action and checks if context should be updated based on current datetime.
+        """Executes an action and probabilistically updates context if triggered.
 
-        After executing the action, this method checks if the current simulation datetime matches
-        any key in the randomly generated configuration dictionary. If a match is found, the
-        corresponding context values are applied.
+        The update behavior depends on the type of update_probability:
+        - If update_probability is a float: At each step, there's a probability that a context
+          update event occurs. When it does, all context variables are updated together according
+          to the configured mode and type.
+        - If update_probability is a list: In each step, each context variable is independently
+          evaluated according to its probability. Variables that pass their probability check
+          are updated according to the configured mode and type.
 
         Args:
             action (np.ndarray): Action selected by the agent.
@@ -2702,19 +2550,211 @@ class RandomGeneralContextWrapper(gym.Wrapper):
                 - Reward obtained
                 - Whether the episode has ended (terminated)
                 - Whether episode has been truncated
-                - Dictionary with extra information (must contain 'month', 'day', 'hour' keys)
+                - Dictionary with extra information
         """
         obs, reward, terminated, truncated, info = self.env.step(action)
 
-        dt = datetime(YEAR, info['month'], info['day'], info['hour'])
-        str_date = dt.strftime('%m-%d %H')
-
-        if str_date in self.context_configuration:
-            self.get_wrapper_attr('update_context')(
-                self.context_configuration[str_date]
-            )
+        # Handle context updates based on probabilistic mode
+        if self.prob_per_variable:
+            # For probabilistic modes: evaluate each variable independently in each step
+            new_context_values = self._apply_probabilistic_mask()
+            if new_context_values is not None:
+                self.get_wrapper_attr('update_context')(new_context_values)
+                # Update current context for next iteration
+                self.current_context = np.array(new_context_values, dtype=np.float32)
+                self.logger.debug(f'Context updated with values: {new_context_values}')
+        else:
+            # For non-probabilistic modes: use update_probability to trigger updates
+            # Type narrowing: we know it's a float in non-probabilistic mode
+            if np.random.random() < self.update_probability:
+                new_context_values = self._generate_context_values()
+                if new_context_values is not None:
+                    self.get_wrapper_attr('update_context')(new_context_values)
+                    # Update current context for next iteration
+                    self.current_context = np.array(
+                        new_context_values, dtype=np.float32
+                    )
+                    self.logger.debug(
+                        f'Context updated with values: {new_context_values}'
+                    )
 
         return obs, reward, terminated, truncated, info
+
+    def _generate_context_values(self) -> List[float]:
+        """Generates new context values based on the configured mode and type.
+
+        Returns:
+            List[float]: New context values to apply.
+        """
+        num_context_vars = self.context_space.shape[0]
+
+        # Apply delta_update transformation
+        if self.delta_update:
+            # Apply delta to current context
+            # delta_value is validated in _check_configuration, so it's safe to cast
+            delta_val = cast(float, self.delta_value)
+
+            if self.global_value:
+                # Same delta for all variables
+                delta_value = np.random.uniform(-delta_val, delta_val, size=1)[0]
+                delta_values = np.full(num_context_vars, delta_value, dtype=np.float32)
+            else:  # 'independent'
+                # Independent delta for each variable
+                delta_values = np.random.uniform(
+                    -delta_val,
+                    delta_val,
+                    size=num_context_vars,
+                ).astype(np.float32)
+
+            new_values = np.clip(
+                self.current_context + delta_values,
+                self.context_space.low,
+                self.context_space.high,
+            ).astype(np.float32)
+        else:  # 'absolute'
+            # Generate base values according to global_value
+            if self.global_value:
+                # Same value for all variables (from first dimension)
+                base_value = np.random.uniform(
+                    self.context_space.low[0],
+                    self.context_space.high[0],
+                    size=1,
+                )[0]
+                new_values = np.full(num_context_vars, base_value, dtype=np.float32)
+            else:  # 'independent'
+                # Independent value for each variable
+                new_values = np.random.uniform(
+                    self.context_space.low,
+                    self.context_space.high,
+                    size=num_context_vars,
+                ).astype(np.float32)
+
+        return new_values.tolist()
+
+    def _apply_probabilistic_mask(self) -> Optional[List[float]]:
+        """Applies probabilistic mask to context variables.
+
+        Returns:
+            Optional[List[float]]: New context values to apply.
+        """
+
+        num_context_vars = self.context_space.shape[0]
+        # For probabilistic mode: check which variables should be updated first
+        # to avoid unnecessary calculations if no variables need updating
+
+        update_mask = np.random.random(size=num_context_vars) < self.update_probability
+
+        if not np.any(update_mask):
+            # No variables were selected for update, return early
+            return None
+
+        # Preserve current context values for variables that won't be updated
+        current_values = self.current_context.copy()
+        # Only update variables that passed the probability check
+        new_values = np.where(
+            update_mask, self._generate_context_values(), current_values
+        )
+
+        return new_values.tolist()
+
+    def _raise_validation_error(self, exception_type: type, message: str) -> None:
+        """Helper method to log and raise validation errors.
+
+        Args:
+            exception_type: Type of exception to raise (TypeError, ValueError, etc.).
+            message: Exception and log message.
+        """
+        self.logger.error(message)
+        raise exception_type(message)
+
+    def _check_configuration(self) -> None:
+        """Validates all configuration parameters for the wrapper.
+
+        Raises:
+            TypeError: If context_space is not an instance of gym.spaces.Box.
+            ValueError: If any parameter is invalid for the selected configuration.
+        """
+        context_variables = self.get_wrapper_attr('context_variables')
+        num_context_vars = len(context_variables)
+
+        # Validate context_space type and shape
+        if not isinstance(self.context_space, gym.spaces.Box):
+            self._raise_validation_error(
+                TypeError, 'context_space must be an instance of gym.spaces.Box.'
+            )
+
+        if self.context_space.shape[0] != num_context_vars:
+            self._raise_validation_error(
+                ValueError,
+                f'Context space shape ({self.context_space.shape[0]}) must match the number of '
+                f'context variables ({num_context_vars}).',
+            )
+
+        # Validate update_probability based on mode
+        if self.prob_per_variable:
+            # Probabilistic per-variable mode: must be array with correct length and valid probabilities
+            if not isinstance(self.update_probability, np.ndarray):
+                self._raise_validation_error(
+                    TypeError,
+                    f'update_probability must be a list when provided as list, '
+                    f'got {type(self.update_probability).__name__}.',
+                )
+            # Type narrowing: we know it's np.ndarray after the check above
+            update_prob_array = cast(np.ndarray, self.update_probability)
+            if len(update_prob_array) != num_context_vars:
+                self._raise_validation_error(
+                    ValueError,
+                    f'update_probability list length ({len(update_prob_array)}) '
+                    f'must match number of context variables ({num_context_vars}).',
+                )
+            if not all(0.0 <= p <= 1.0 for p in update_prob_array):
+                self._raise_validation_error(
+                    ValueError,
+                    'All values in update_probability list must be in [0.0, 1.0].',
+                )
+        else:
+            # Non-probabilistic mode: must be float in valid range
+            if not isinstance(self.update_probability, (int, float)):
+                self._raise_validation_error(
+                    TypeError,
+                    f'update_probability must be a float when provided as float, '
+                    f'got {type(self.update_probability).__name__}.',
+                )
+            # Type narrowing: we know it's int or float after the check above
+            update_prob_float = float(self.update_probability)
+            if not (0.0 <= update_prob_float <= 1.0):
+                self._raise_validation_error(
+                    ValueError,
+                    f'update_probability must be in [0.0, 1.0], got {update_prob_float}.',
+                )
+
+        # Validate delta_value if delta_update is enabled
+        if self.delta_update:
+            if self.delta_value is None:
+                self._raise_validation_error(
+                    ValueError, 'delta_value is required when delta_update=True.'
+                )
+            # Type narrowing: we know it's not None after the check above
+            delta_val = cast(float, self.delta_value)
+            if delta_val <= 0:
+                self._raise_validation_error(
+                    ValueError,
+                    f'delta_value must be > 0, got {delta_val}.',
+                )
+
+        # Validate context_space for global_value mode: all dimensions must have same range
+        if self.global_value:
+            first_low = self.context_space.low[0]
+            first_high = self.context_space.high[0]
+            if not (
+                np.allclose(self.context_space.low, first_low)
+                and np.allclose(self.context_space.high, first_high)
+            ):
+                self._raise_validation_error(
+                    ValueError,
+                    'When global_value is True, all dimensions of context_space must have '
+                    'the same range.',
+                )
 
 
 # ---------------------------------------------------------------------------- #
