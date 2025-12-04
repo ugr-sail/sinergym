@@ -1031,119 +1031,6 @@ def test_reduced_observation_exceptions(env_demo):
         )
 
 
-def test_variability_context_wrapper(env_5zone):
-    # Create wrapped environment
-    env_5zone = VariabilityContextWrapper(
-        env=env_5zone,
-        context_space=gym.spaces.Box(
-            low=np.array([0.0], dtype=np.float32),
-            high=np.array([2.0], dtype=np.float32),
-            shape=(1,),
-            dtype=np.float32,
-        ),
-        delta_value=0.5,
-        step_frequency_range=(96, 96 * 7),
-    )
-
-    # Check attributes exist in wrapped env
-    assert env_5zone.has_wrapper_attr('context_space')
-    assert env_5zone.has_wrapper_attr('delta_context')
-    assert env_5zone.get_wrapper_attr('delta_context') == (-0.5, 0.5)
-    assert env_5zone.has_wrapper_attr('step_frequency_range')
-    assert env_5zone.has_wrapper_attr('current_context')
-    assert env_5zone.has_wrapper_attr('next_context_values')
-    assert env_5zone.has_wrapper_attr('next_step_update')
-
-    # Check next context update initialization
-    first_context_values = env_5zone.get_wrapper_attr('next_context_values')
-    assert env_5zone.get_wrapper_attr('context_space').contains(first_context_values)
-    assert (
-        env_5zone.get_wrapper_attr('next_step_update')
-        >= env_5zone.get_wrapper_attr('step_frequency_range')[0]
-        and env_5zone.get_wrapper_attr('next_step_update')
-        <= env_5zone.get_wrapper_attr('step_frequency_range')[1]
-    )
-
-    # Go to the previous update step
-    env_5zone.reset()
-    while env_5zone.get_wrapper_attr('next_step_update') > 1:
-        env_5zone.step(env_5zone.action_space.sample())
-
-    # Check state at this point
-    assert env_5zone.get_wrapper_attr('next_step_update') == 1
-    prev_context = env_5zone.get_wrapper_attr('current_context').copy()
-
-    # One more step
-    env_5zone.step(env_5zone.action_space.sample())
-
-    # Check if update has been done
-    updated_context = env_5zone.get_wrapper_attr('current_context')
-
-    # Ensure context was updated correctly
-    if np.allclose(updated_context, prev_context, atol=1e-6):
-        # If it is the same, it should be because it was clipped or delta
-        # values are 0
-        assert (
-            prev_context == env_5zone.get_wrapper_attr('context_space').low
-        ).any() or (
-            prev_context == env_5zone.get_wrapper_attr('context_space').high
-        ).any()
-    # Ensure updated context is within the context space
-    assert env_5zone.get_wrapper_attr('context_space').contains(updated_context)
-    # Ensure next context is different from the current one
-    assert not np.allclose(
-        env_5zone.get_wrapper_attr('next_context_values'), updated_context, atol=1e-6
-    )
-    assert (
-        env_5zone.get_wrapper_attr('next_step_update')
-        >= env_5zone.get_wrapper_attr('step_frequency_range')[0]
-        and env_5zone.get_wrapper_attr('next_step_update')
-        <= env_5zone.get_wrapper_attr('step_frequency_range')[1]
-    )
-
-
-def test_variability_context_wrapper_exceptions(env_5zone):
-    # Create wrapped environment
-    with pytest.raises(ValueError):
-        env_5zone = VariabilityContextWrapper(
-            env=env_5zone,
-            context_space=gym.spaces.Box(
-                low=np.array([0.0], dtype=np.float32),
-                high=np.array([1.0], dtype=np.float32),
-                shape=(1,),
-                dtype=np.float32,
-            ),
-            delta_value=-0.2,
-            step_frequency_range=(96, 96 * 7),
-        )
-
-    with pytest.raises(ValueError):
-        env_5zone = VariabilityContextWrapper(
-            env=env_5zone,
-            context_space=gym.spaces.Box(
-                low=np.array([0.0], dtype=np.float32),
-                high=np.array([1.0], dtype=np.float32),
-                shape=(1,),
-                dtype=np.float32,
-            ),
-            delta_value=0.5,
-            step_frequency_range=(-2, 96 * 7),
-        )
-
-    with pytest.raises(ValueError):
-        env_5zone = VariabilityContextWrapper(
-            env=env_5zone,
-            context_space=gym.spaces.Box(
-                low=np.array([0.0, 2.0], dtype=np.float32),
-                high=np.array([1.0, 3.5], dtype=np.float32),
-                shape=(2,),
-                dtype=np.float32,
-            ),
-            delta_value=-0.2,
-            step_frequency_range=(96, 96 * 7),
-        )
-
-
 def test_env_wrappers(env_all_wrappers):
     # CHECK ATTRIBUTES
     # MultiObjective
@@ -1193,195 +1080,342 @@ def test_env_wrappers(env_all_wrappers):
     env_all_wrappers.close()
 
 
-def test_general_context_wrapper(env_5zone):
-    """Test GeneralContextWrapper with predefined context changes."""
-    # Create configuration with specific dates
-    configuration = {
-        '01-15 10': [0.8],  # January 15th at 10 AM
-        '01-20 14': [0.5],  # January 20th at 2 PM
-        '02-10 09': [0.9],  # February 10th at 9 AM
+def test_scheduled_context_wrapper(env_5zone):
+    """Test ScheduledContextWrapper: initialization, updates, and edge cases."""
+    scheduled_context = {
+        '01-15 10': [0.8, 0.6],
+        '01-20 14': [0.5, 0.7],
+        '02-10 09': [0.9, 0.4],
     }
 
-    # Create wrapped environment
-    env = GeneralContextWrapper(env=env_5zone, configuration=configuration)
+    # Test initialization
+    env = ScheduledContextWrapper(env=env_5zone, scheduled_context=scheduled_context)
+    assert env.get_wrapper_attr('scheduled_context') == scheduled_context
 
-    # Check attributes
-    assert env.has_wrapper_attr('context_configuration')
-    assert env.get_wrapper_attr('context_configuration') == configuration
-
-    # Reset environment
+    # Test context updates at scheduled times
     env.reset()
-
-    # Step through environment and check context updates
     action = env.action_space.sample()
-
-    # Run for a reasonable number of steps to potentially hit a context change
-    for _ in range(100):
+    terminated = truncated = False
+    while not (terminated or truncated):
         _, _, terminated, truncated, info = env.step(action)
-
-        # Check if we're at a configured datetime
         dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
-        if dt_str in configuration:
-            # Context should have been updated
-            current_context = env.get_wrapper_attr('last_context')
-            assert current_context == configuration[dt_str]
+        if dt_str in scheduled_context:
+            assert env.get_wrapper_attr('last_context') == scheduled_context[dt_str]
+            assert len(env.get_wrapper_attr('last_context')) == 2
 
-        if terminated or truncated:
-            break
-
-    # Close environment
     env.close()
 
+    # Test no matches (dates outside run period)
+    env2 = ScheduledContextWrapper(
+        env=env_5zone, scheduled_context={'12-15 10': [0.8, 0.6]}
+    )
+    env2.reset()
+    initial_context = env2.get_wrapper_attr('last_context')
+    action = env2.action_space.sample()
+    for _ in range(50):
+        _, _, terminated, truncated, _ = env2.step(action)
+        assert env2.get_wrapper_attr('last_context') == initial_context
+        if terminated or truncated:
+            break
+    env2.close()
 
-def test_general_context_wrapper_no_match(env_5zone):
-    """Test GeneralContextWrapper when no datetime matches occur."""
-    # Create configuration with dates outside the run period
-    configuration = {
-        '12-15 10': [0.8],  # December 15th (outside Jan-Mar run period)
-    }
 
-    # Create wrapped environment
-    env = GeneralContextWrapper(env=env_5zone, configuration=configuration)
+# ============================================================================
+# Tests for ProbabilisticContextWrapper
+# ============================================================================
 
-    # Reset environment
+
+def test_probabilistic_context_wrapper_basic(env_5zone):
+    """Test ProbabilisticContextWrapper: initialization, float/list modes, reset, clipping."""
+    context_space = gym.spaces.Box(
+        low=np.array([0.3, 0.3], dtype=np.float32),
+        high=np.array([0.9, 0.9], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
+    )
+
+    # Test initialization with float probability
+    env = ProbabilisticContextWrapper(
+        env=env_5zone,
+        context_space=context_space,
+        update_probability=0.1,
+        global_value=False,
+        delta_update=False,
+    )
+    assert env.get_wrapper_attr('update_probability') == 0.1
+    assert env.get_wrapper_attr('prob_per_variable') is False
+
+    # Test initialization with list probability
+    env2 = ProbabilisticContextWrapper(
+        env=env_5zone,
+        context_space=context_space,
+        update_probability=[0.2, 0.3],
+        global_value=False,
+        delta_update=False,
+    )
+    assert env2.get_wrapper_attr('prob_per_variable') is True
+    assert len(env2.get_wrapper_attr('update_probability')) == 2
+
+    # Test initial context clipping (initial_context=[1.0, 0.5] should clip to [0.9, 0.5])
     env.reset()
+    assert context_space.contains(env.current_context)
+    assert env.current_context[0] == 0.9  # Clipped from 1.0
+    assert env.current_context[1] == 0.5  # Within range
 
-    # Step through environment
+    # Test reset reinitializes context
+    context1 = env.current_context.copy()
+    for _ in range(5):
+        env.step(env.action_space.sample())
+    env.reset()
+    context2 = env.current_context.copy()
+    assert context_space.contains(context1)
+    assert context_space.contains(context2)
+
+    # Test valid context values during steps
     action = env.action_space.sample()
     for _ in range(50):
         _, _, terminated, truncated, _ = env.step(action)
-        # Context should remain at initial value since no matches occur
+        assert context_space.contains(env.current_context)
         if terminated or truncated:
             break
 
     env.close()
+    env2.close()
 
 
-def test_random_general_context_wrapper(env_5zone):
-    """Test RandomGeneralContextWrapper with random context changes."""
-    # Create wrapped environment
-    env = RandomGeneralContextWrapper(
-        env=env_5zone,
-        num_changes_range=(2, 4),  # 2-4 changes per episode
-        context_range=(0.3, 0.9),  # Context values between 0.3 and 0.9
+def test_probabilistic_context_wrapper_update_modes(env_5zone):
+    """Test ProbabilisticContextWrapper: global_value, delta_update, and combinations."""
+    context_space = gym.spaces.Box(
+        low=np.array([0.5, 0.5], dtype=np.float32),
+        high=np.array([0.8, 0.8], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
     )
 
-    # Check attributes
-    assert env.has_wrapper_attr('num_changes_range')
-    assert env.has_wrapper_attr('context_range')
-    assert env.get_wrapper_attr('num_changes_range') == (2, 4)
-    assert env.get_wrapper_attr('context_range') == (0.3, 0.9)
-
-    # Reset environment (this generates random configuration)
-    env.reset()
-
-    # Check that configuration was generated
-    context_config = env.get_wrapper_attr('context_configuration')
-    assert isinstance(context_config, dict)
-    assert len(context_config) >= 2  # At least 2 changes
-    assert len(context_config) <= 4  # At most 4 changes
-
-    # Check that all values in configuration are within range
-    for str_date, context_values in context_config.items():
-        assert len(context_values) == len(env.get_wrapper_attr('context_variables'))
-        for value in context_values:
-            assert 0.3 <= value <= 0.9
-
-    # Check date format
-    for str_date in context_config.keys():
-        # Format should be 'MM-DD HH'
-        parts = str_date.split(' ')
-        assert len(parts) == 2
-        date_part, hour_part = parts
-        month_day = date_part.split('-')
-        assert len(month_day) == 2
-        assert 1 <= int(month_day[0]) <= 12  # Month
-        assert 1 <= int(month_day[1]) <= 31  # Day
-        assert 0 <= int(hour_part) <= 23  # Hour
-
-    # Step through environment
-    action = env.action_space.sample()
-
-    for _ in range(200):
-        _, _, terminated, truncated, info = env.step(action)
-
-        # Check if context was updated
-        dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
-        if dt_str in context_config:
-            current_context = env.get_wrapper_attr('last_context')
-            assert current_context == context_config[dt_str]
-
-        if terminated or truncated:
-            break
-
-    env.close()
-
-
-def test_random_general_context_wrapper_multiple_episodes(env_5zone):
-    """Test that RandomGeneralContextWrapper generates different configs per episode."""
-    # Create wrapped environment
-    env = RandomGeneralContextWrapper(
+    # Test global_value=True (same value for all variables)
+    env = ProbabilisticContextWrapper(
         env=env_5zone,
-        num_changes_range=(3, 5),
-        context_range=(0.4, 0.8),
+        context_space=context_space,
+        update_probability=1.0,
+        global_value=True,
+        delta_update=False,
     )
-
-    # First episode
     env.reset()
-    config1 = env.get_wrapper_attr('context_configuration').copy()
-
-    # Run first episode to completion
     action = env.action_space.sample()
-    while True:
+    for _ in range(10):
         _, _, terminated, truncated, _ = env.step(action)
+        assert context_space.contains(env.current_context)
+        assert env.current_context[0] == env.current_context[1]  # Same value
         if terminated or truncated:
             break
-
-    # Second episode (should generate new random configuration)
-    env.reset()
-    config2 = env.get_wrapper_attr('context_configuration').copy()
-
-    # Configurations should potentially be different (random generation)
-    # They might be the same by chance, but values should be different
-    # At minimum, we check that the structure is correct
-    assert len(config1) >= 3
-    assert len(config1) <= 5
-    assert len(config2) >= 3
-    assert len(config2) <= 5
-
-    # Values should be within range
-    for context_values in config1.values():
-        for value in context_values:
-            assert 0.4 <= value <= 0.8
-
-    for context_values in config2.values():
-        for value in context_values:
-            assert 0.4 <= value <= 0.8
-
     env.close()
 
-
-def test_random_general_context_wrapper_edge_cases(env_5zone):
-    """Test RandomGeneralContextWrapper with edge case parameters."""
-    # Test with minimum changes
-    env = RandomGeneralContextWrapper(
-        env=env_5zone, num_changes_range=(0, 1), context_range=(0.5, 0.5)
+    # Test delta_update=True
+    context_space2 = gym.spaces.Box(
+        low=np.array([0.4, 0.4], dtype=np.float32),
+        high=np.array([0.8, 0.8], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
     )
-    env.reset()
-    config = env.get_wrapper_attr('context_configuration')
-    assert len(config) <= 1
-    # All values should be 0.5 (since range is (0.5, 0.5))
-    for context_values in config.values():
-        for value in context_values:
-            assert value == 0.5
-    env.close()
-
-    # Test with maximum changes
-    env = RandomGeneralContextWrapper(
-        env=env_5zone, num_changes_range=(10, 15), context_range=(0.0, 1.0)
+    env2 = ProbabilisticContextWrapper(
+        env=env_5zone,
+        context_space=context_space2,
+        update_probability=1.0,
+        global_value=False,
+        delta_update=True,
+        delta_value=0.1,
     )
-    env.reset()
-    config = env.get_wrapper_attr('context_configuration')
-    assert len(config) >= 10
-    assert len(config) <= 15
-    env.close()
+    env2.reset()
+    action = env2.action_space.sample()
+    for _ in range(20):
+        _, _, terminated, truncated, _ = env2.step(action)
+        assert context_space2.contains(env2.current_context)
+        if terminated or truncated:
+            break
+    env2.close()
+
+    # Test global_value=True + delta_update=True (same delta for all variables)
+    context_space3 = gym.spaces.Box(
+        low=np.array([0.4, 0.4], dtype=np.float32),
+        high=np.array([0.8, 0.8], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
+    )
+    env3 = ProbabilisticContextWrapper(
+        env=env_5zone,
+        context_space=context_space3,
+        update_probability=1.0,
+        global_value=True,
+        delta_update=True,
+        delta_value=0.05,
+    )
+    env3.reset()
+    previous_context = env3.current_context.copy()
+    action = env3.action_space.sample()
+    for _ in range(10):
+        _, _, terminated, truncated, _ = env3.step(action)
+        assert context_space3.contains(env3.current_context)
+        current_context = env3.current_context
+        delta_applied = current_context - previous_context
+        # With global_value=True and delta_update=True, the same delta is applied to all variables
+        # However, after clipping, deltas may differ if variables hit bounds
+        # So we only verify same delta when both variables can move freely
+        if not np.allclose(delta_applied, 0.0):
+            # Check if both variables are within bounds (not at limits) and can move
+            at_low = np.isclose(current_context, context_space3.low, atol=0.01)
+            at_high = np.isclose(current_context, context_space3.high, atol=0.01)
+            at_bound = at_low | at_high
+            # If neither variable is at a bound, deltas should be same
+            if not at_bound.any():
+                # Both variables can move freely, so deltas should be same
+                assert np.allclose(delta_applied, delta_applied[0], atol=1e-4)
+        previous_context = current_context.copy()
+        if terminated or truncated:
+            break
+    env3.close()
+
+    # Test update_probability as list (probabilistic per-variable mode)
+    context_space4 = gym.spaces.Box(
+        low=np.array([0.3, 0.3], dtype=np.float32),
+        high=np.array([0.9, 0.9], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
+    )
+    env4 = ProbabilisticContextWrapper(
+        env=env_5zone,
+        context_space=context_space4,
+        update_probability=[0.3, 0.5],  # 30% and 50% probability per step per variable
+        global_value=False,
+        delta_update=False,
+    )
+    assert env4.get_wrapper_attr('prob_per_variable') is True
+    assert isinstance(env4.get_wrapper_attr('update_probability'), np.ndarray)
+    env4.reset()
+    action = env4.action_space.sample()
+    for _ in range(100):
+        _, _, terminated, truncated, _ = env4.step(action)
+        assert context_space4.contains(env4.current_context)
+        if terminated or truncated:
+            break
+    env4.close()
+
+
+def test_probabilistic_context_wrapper_exceptions(env_5zone):
+    """Test ProbabilisticContextWrapper: all validation exceptions."""
+    context_space_base = gym.spaces.Box(
+        low=np.array([0.3, 0.3], dtype=np.float32),
+        high=np.array([0.9, 0.9], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
+    )
+
+    # Invalid context_space type
+    with pytest.raises(
+        TypeError, match='context_space must be an instance of gym.spaces.Box'
+    ):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space='invalid',  # type: ignore
+            update_probability=0.1,
+        )
+
+    # Shape mismatch
+    with pytest.raises(ValueError, match='Context space shape.*must match'):
+        context_space_wrong = gym.spaces.Box(
+            low=np.array([0.3, 0.3, 0.3], dtype=np.float32),
+            high=np.array([0.9, 0.9, 0.9], dtype=np.float32),
+            shape=(3,),
+            dtype=np.float32,
+        )
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_wrong,
+            update_probability=0.1,
+        )
+
+    # update_probability out of range
+    with pytest.raises(ValueError, match='update_probability must be in'):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=-0.1,
+        )
+    with pytest.raises(ValueError, match='update_probability must be in'):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=1.5,
+        )
+
+    # List length mismatch
+    with pytest.raises(ValueError, match='update_probability list length.*must match'):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=[0.1, 0.1, 0.1],
+        )
+
+    # List values out of range
+    with pytest.raises(
+        ValueError, match='All values in update_probability list must be in'
+    ):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=[-0.1, 0.2],
+        )
+    with pytest.raises(
+        ValueError, match='All values in update_probability list must be in'
+    ):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=[0.5, 1.5],
+        )
+
+    # delta_value missing
+    with pytest.raises(
+        ValueError, match='delta_value is required when delta_update=True'
+    ):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=0.1,
+            delta_update=True,
+            delta_value=None,
+        )
+
+    # delta_value <= 0
+    with pytest.raises(ValueError, match='delta_value must be > 0'):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=0.1,
+            delta_update=True,
+            delta_value=0.0,
+        )
+    with pytest.raises(ValueError, match='delta_value must be > 0'):
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_base,
+            update_probability=0.1,
+            delta_update=True,
+            delta_value=-0.1,
+        )
+
+    # global_value=True with different ranges
+    with pytest.raises(
+        ValueError, match='all dimensions of context_space must have the same range'
+    ):
+        context_space_diff = gym.spaces.Box(
+            low=np.array([0.3, 0.5], dtype=np.float32),
+            high=np.array([0.9, 0.7], dtype=np.float32),
+            shape=(2,),
+            dtype=np.float32,
+        )
+        ProbabilisticContextWrapper(
+            env=env_5zone,
+            context_space=context_space_diff,
+            update_probability=0.1,
+            global_value=True,
+        )
