@@ -2517,7 +2517,13 @@ class ProbabilisticContextWrapper(gym.Wrapper):
             'initial_context'
         )
         if initial_context:
-            self.current_context = np.array(initial_context, dtype=np.float32)
+            # Clip initial_context to context_space bounds to ensure values are valid
+            initial_array = np.array(initial_context, dtype=np.float32)
+            self.current_context = np.clip(
+                initial_array,
+                self.context_space.low,
+                self.context_space.high,
+            ).astype(np.float32)
         else:
             self.current_context = np.random.uniform(
                 self.context_space.low,
