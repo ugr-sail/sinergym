@@ -521,6 +521,16 @@ class EplusEnv(gym.Env):
             )
             raise ValueError
 
+        # CONTEXT
+        if self.default_options.get('initial_context'):
+            if len(self.context_variables) != len(
+                self.default_options['initial_context']
+            ):
+                raise ValueError(
+                    f'Initial context values must have the same length than context variables specified, and values must be in the same order. The context variables are {
+                        self.context_variables}, but values {self.default_options['initial_context']} were specified.'
+                )
+
         # WEATHER VARIABILITY
         if 'weather_variability' in self.default_options:
 
