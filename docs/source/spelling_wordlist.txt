@@ -26,6 +26,9 @@ callables
 cancelled
 cartpole
 cfg
+chws
+CHWS
+Circ
 clg
 Cloudpickle
 cls
@@ -35,6 +38,7 @@ Cº
 coef
 colab
 combinable
+Cond
 Conda
 conda
 conf
@@ -63,6 +67,8 @@ Datetime
 datetime
 DatetimeWrapper
 ddy
+dec
+DEC
 DeltaTempWrapper
 Deprecations
 deserialization
@@ -86,6 +92,8 @@ drybulb
 dualsetpoint
 Dualsetpoint
 DualSetpoint
+dx
+DX
 ei
 EnergyCostLinearReward
 EnergyCostWrapper
@@ -112,6 +120,7 @@ Fanger
 feedforward
 ffmpeg
 Firestore
+fLoadTemp
 fmt
 fn
 forkserver
@@ -139,6 +148,8 @@ hyperparameter
 hyperparameters
 idd
 idf
+iec
+IEC
 IncrementalWrapper
 infos
 init
@@ -229,6 +240,8 @@ preprocessing
 pretrain
 pretrained
 PreviousObservationWrapper
+probabilistically
+ProbabilisticContextWrapper
 Ptolomy
 py
 Pyro
@@ -242,6 +255,7 @@ RBCDatacenter
 RBCIncrementalDatacenter
 recordable
 ReduceObservationWrapper
+reinitializes
 repo
 representer
 reproducibility
@@ -254,6 +268,7 @@ RuleBasedController
 runperiod
 Runperiod
 scalable
+ScheduledContextWrapper
 serializable
 serializers
 setpoint
