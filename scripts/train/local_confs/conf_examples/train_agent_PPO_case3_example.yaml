@@ -77,7 +77,6 @@ env_deep_update: true
 # In order to overwrite some parameters of the environment, you can use the following
 env_params:
   seed: null
-  reward: sinergym.utils.rewards:LinearReward
 # ... other environment parameters
 
 
@@ -88,6 +87,10 @@ env_params:
 wrappers_yaml_config: null
 # This overwrite wrappers in wrappers_yaml_config if defined
 wrappers:
+  - sinergym.utils.wrappers:DatetimeWrapper: {}
+  - sinergym.utils.wrappers:ProbabilisticContextWrapper:
+      context_space: gym.spaces.Box(low=19.0, high=21.0, shape=(5,), dtype=np.float32)
+      update_probability: [0.1, 0.1, 0.1, 0.1, 0.1]
   - sinergym.utils.wrappers:NormalizeAction: {}
   - sinergym.utils.wrappers:NormalizeObservation: {}
   - sinergym.utils.wrappers:LoggerWrapper:

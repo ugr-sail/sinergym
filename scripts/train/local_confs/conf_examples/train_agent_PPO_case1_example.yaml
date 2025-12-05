@@ -88,6 +88,7 @@ env_params:
 wrappers_yaml_config: null
 # This overwrite wrappers in wrappers_yaml_config if defined
 wrappers:
+  - sinergym.utils.wrappers:DatetimeWrapper: {}
   - sinergym.utils.wrappers:NormalizeAction: {}
   - sinergym.utils.wrappers:NormalizeObservation: {}
   - sinergym.utils.wrappers:LoggerWrapper:
