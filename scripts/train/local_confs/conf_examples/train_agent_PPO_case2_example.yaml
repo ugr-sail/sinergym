@@ -107,6 +107,7 @@ wrappers:
         - radiant_hvac_outlet_temperature_bed1
         - radiant_hvac_outlet_temperature_bed2
         - radiant_hvac_outlet_temperature_bed3
+        - water_temperature
         - flow_rate_living
         - flow_rate_kitchen
         - flow_rate_bed1

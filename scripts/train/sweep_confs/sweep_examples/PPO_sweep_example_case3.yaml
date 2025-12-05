@@ -128,13 +128,6 @@ parameters:
     parameters:
       seed:
         value: null
-      weather_variability:
-        values:
-        - {
-          Dry Bulb Temperature: [1.0,0.0,24.0]
-        }
-      reward:
-        value: sinergym.utils.rewards:LinearReward
       # ... other environment parameters
 
 # ---------------------------------------------------------------------------- #
@@ -146,6 +139,10 @@ parameters:
   # This overwrite wrappers in wrappers_yaml_config if defined
   wrappers:
     value: 
+      - sinergym.utils.wrappers:DatetimeWrapper: {}
+      - sinergym.utils.wrappers:ProbabilisticContextWrapper:
+          context_space: gym.spaces.Box(low=19.0, high=21.0, shape=(5,), dtype=np.float32)
+          update_probability: [0.1, 0.1, 0.1, 0.1, 0.1]
       - sinergym.utils.wrappers:NormalizeAction: {}
       - sinergym.utils.wrappers:ExtremeFlowControlWrapper: {}
       - sinergym.utils.wrappers:NormalizeObservation: {}
@@ -177,6 +174,7 @@ parameters:
             - radiant_hvac_outlet_temperature_bed1
             - radiant_hvac_outlet_temperature_bed2
             - radiant_hvac_outlet_temperature_bed3
+            - water_temperature
             - flow_rate_living
             - flow_rate_kitchen
             - flow_rate_bed1
