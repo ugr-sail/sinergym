@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.WandBLogger
+sinergym.utils.wrappers.WandBLogger
 ===================================
 
 .. currentmodule:: sinergym.utils.wrappers

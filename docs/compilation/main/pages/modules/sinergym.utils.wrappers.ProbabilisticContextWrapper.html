@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sinergym.utils.wrappers.VariabilityContextWrapper &mdash; Sinergym  documentation</title>
+  <title>sinergym.utils.wrappers.ProbabilisticContextWrapper &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
@@ -23,8 +23,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.wrappers.WandBLogger" href="sinergym.utils.wrappers.WandBLogger.html" />
-    <link rel="prev" title="sinergym.utils.wrappers.ReduceObservationWrapper" href="sinergym.utils.wrappers.ReduceObservationWrapper.html" /> 
+    <link rel="next" title="sinergym.utils.wrappers.ReduceObservationWrapper" href="sinergym.utils.wrappers.ReduceObservationWrapper.html" />
+    <link rel="prev" title="sinergym.utils.wrappers.PreviousObservationWrapper" href="sinergym.utils.wrappers.PreviousObservationWrapper.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -115,8 +115,9 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.NormalizeObservation.html">sinergym.utils.wrappers.NormalizeObservation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.PreviousObservationWrapper.html">sinergym.utils.wrappers.PreviousObservationWrapper</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.ProbabilisticContextWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.ReduceObservationWrapper.html">sinergym.utils.wrappers.ReduceObservationWrapper</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.VariabilityContextWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.ScheduledContextWrapper.html">sinergym.utils.wrappers.ScheduledContextWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.WandBLogger.html">sinergym.utils.wrappers.WandBLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.WeatherForecastingWrapper.html">sinergym.utils.wrappers.WeatherForecastingWrapper</a></li>
 </ul>
@@ -158,9 +159,9 @@
           <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
           <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
           <li class="breadcrumb-item"><a href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
-      <li class="breadcrumb-item active">sinergym.utils.wrappers.VariabilityContextWrapper</li>
+      <li class="breadcrumb-item active">sinergym.utils.wrappers.ProbabilisticContextWrapper</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/modules/sinergym.utils.wrappers.VariabilityContextWrapper.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/modules/sinergym.utils.wrappers.ProbabilisticContextWrapper.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -168,15 +169,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sinergym-utils-wrappers-variabilitycontextwrapper">
-<h1>sinergym.utils.wrappers.VariabilityContextWrapper<a class="headerlink" href="#sinergym-utils-wrappers-variabilitycontextwrapper" title="Link to this heading"></a></h1>
+  <section id="sinergym-utils-wrappers-probabilisticcontextwrapper">
+<h1>sinergym.utils.wrappers.ProbabilisticContextWrapper<a class="headerlink" href="#sinergym-utils-wrappers-probabilisticcontextwrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.VariabilityContextWrapper">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">VariabilityContextWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.VariabilityContextWrapper" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.VariabilityContextWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.VariabilityContextWrapper.__init__" title="Link to this definition"></a></dt>
-<dd><p>Wraps an environment to allow a modular transformation of the <a class="reference internal" href="#sinergym.utils.wrappers.VariabilityContextWrapper.step" title="sinergym.utils.wrappers.VariabilityContextWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> methods.</p>
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.ProbabilisticContextWrapper">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">ProbabilisticContextWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper" title="Link to this definition"></a></dt>
+<dd><p>Wrapper that probabilistically updates context variables at each step.</p>
+<p>This wrapper provides a unified approach to context updates with multiple modes:</p>
+<ul class="simple">
+<li><p>Probabilistic updates: Each step has a probability of triggering a context update</p></li>
+<li><p>Multiple update modes: Same value for all variables, independent values, or
+probabilistic per-variable updates</p></li>
+<li><p>Support for both absolute values and delta-based increments to current context values</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.ProbabilisticContextWrapper.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.__init__" title="Link to this definition"></a></dt>
+<dd><p>Wraps an environment to allow a modular transformation of the <a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.step" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> and <a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.reset" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>env</strong> – The environment to wrap</p>
@@ -187,8 +196,8 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.VariabilityContextWrapper.__init__" title="sinergym.utils.wrappers.VariabilityContextWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Wraps an environment to allow a modular transformation of the <a class="reference internal" href="#sinergym.utils.wrappers.VariabilityContextWrapper.step" title="sinergym.utils.wrappers.VariabilityContextWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> methods.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.__init__" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Wraps an environment to allow a modular transformation of the <a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.step" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> and <a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.reset" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> methods.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
 <td><p>Returns the class name of the wrapper.</p></td>
@@ -208,14 +217,14 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
-<td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.reset" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(**kwargs)</p></td>
+<td><p>Resets the environment and reinitializes current context.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wrapper_attr</span></code>(name, value, *[, force])</p></td>
 <td><p>Sets an attribute on this wrapper or lower environment if <cite>name</cite> is already defined.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.VariabilityContextWrapper.step" title="sinergym.utils.wrappers.VariabilityContextWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
-<td><p>Executes an action and updates the environment's context if needed.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.step" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<td><p>Executes an action and probabilistically updates context if triggered.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
@@ -228,7 +237,7 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></p></td>
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> is used.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.VariabilityContextWrapper.logger" title="sinergym.utils.wrappers.VariabilityContextWrapper.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.logger" title="sinergym.utils.wrappers.ProbabilisticContextWrapper.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
@@ -255,20 +264,64 @@
 </tbody>
 </table>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.VariabilityContextWrapper.logger">
-<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">WRAPPER</span> <span class="pre">VariabilityContextWrapper</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.utils.wrappers.VariabilityContextWrapper.logger" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.ProbabilisticContextWrapper.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">WRAPPER</span> <span class="pre">ProbabilisticContextWrapper</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.logger" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.VariabilityContextWrapper.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.VariabilityContextWrapper.step" title="Link to this definition"></a></dt>
-<dd><p>Executes an action and updates the environment’s context if needed.</p>
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.ProbabilisticContextWrapper.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.reset" title="Link to this definition"></a></dt>
+<dd><p>Resets the environment and reinitializes current context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Additional arguments passed to the underlying environment’s reset method.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Standard Gymnasium reset return containing:</dt><dd><ul class="simple">
+<li><p>Initial observation</p></li>
+<li><p>Info dictionary</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[np.ndarray, Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.ProbabilisticContextWrapper.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.ProbabilisticContextWrapper.step" title="Link to this definition"></a></dt>
+<dd><p>Executes an action and probabilistically updates context if triggered.</p>
+<p>The update behavior depends on the type of update_probability:</p>
+<ul class="simple">
+<li><p>If update_probability is a float: At each step, there’s a probability that a context
+update event occurs. When it does, all context variables are updated together according
+to the configured mode and type.</p></li>
+<li><p>If update_probability is a list: In each step, each context variable is independently
+evaluated according to its probability. Variables that pass their probability check
+are updated according to the configured mode and type.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>action</strong> (<em>np.ndarray</em>) – Action selected by the agent.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>Standard Gymnasium step</dt><dd><p>return containing:</p>
+<ul class="simple">
+<li><p>Observation for next timestep</p></li>
+<li><p>Reward obtained</p></li>
+<li><p>Whether the episode has ended (terminated)</p></li>
+<li><p>Whether episode has been truncated</p></li>
+<li><p>Dictionary with extra information</p></li>
+</ul>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]</p>
@@ -284,8 +337,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.wrappers.ReduceObservationWrapper.html" class="btn btn-neutral float-left" title="sinergym.utils.wrappers.ReduceObservationWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.wrappers.WandBLogger.html" class="btn btn-neutral float-right" title="sinergym.utils.wrappers.WandBLogger" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.wrappers.PreviousObservationWrapper.html" class="btn btn-neutral float-left" title="sinergym.utils.wrappers.PreviousObservationWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.wrappers.ReduceObservationWrapper.html" class="btn btn-neutral float-right" title="sinergym.utils.wrappers.ReduceObservationWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -323,19 +376,19 @@
             <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
-            <dd><a href="../../../v3.10.0/pages/modules/sinergym.utils.wrappers.VariabilityContextWrapper.html">v3.10.0</a></dd>
+            <dd><a href="../../../v3.10.0/index.html">v3.10.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
             <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
             <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
             <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
             <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
-            <dd><a href="../../../v3.8.0/pages/modules/sinergym.utils.wrappers.VariabilityContextWrapper.html">v3.8.0</a></dd>
-            <dd><a href="../../../v3.9.0/pages/modules/sinergym.utils.wrappers.VariabilityContextWrapper.html">v3.9.0</a></dd>
+            <dd><a href="../../../v3.8.0/index.html">v3.8.0</a></dd>
+            <dd><a href="../../../v3.9.0/index.html">v3.9.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="sinergym.utils.wrappers.VariabilityContextWrapper.html">main</a></dd>
+            <dd><a href="sinergym.utils.wrappers.ProbabilisticContextWrapper.html">main</a></dd>
         </dl>
     </div>
 </div><script>

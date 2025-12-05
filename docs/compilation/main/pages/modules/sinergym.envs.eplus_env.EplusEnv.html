@@ -162,78 +162,45 @@ Can also be a list of weather files to sample randomly for each episode.</p></li
 <li><p><strong>actuators</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Input Actuators. Key is custom; value is tuple(actuator type, value type, original name). Defaults to empty dict.</p></li>
 <li><p><strong>context</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Context. Key is custom; value is tuple(actuator type, value type, original name). Used for real-time building configuration. Defaults to empty dict.</p></li>
 <li><p><strong>initial_context</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Initial context values to set in the building model. Defaults to None.</p></li>
-<li><p><strong>(</strong><strong>Optional</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>weather_variability</em>) – <dl class="simple">
-<dt>Union[float,Tuple[float,float]],</dt><dd><p>Union[float,Tuple[float,float]],
-Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.</p>
-</dd>
-</dl>
-<ul>
-<li><p>sigma: standard deviation or range to sample from</p></li>
-<li><p>mu: mean value or range to sample from</p></li>
-<li><p>tau: time constant or range to sample from</p></li>
-<li><p>var_range (optional): tuple(min_val, max_val) for clipping the variable</p></li>
-</ul>
-<p>Defaults to None.</p>
-</p></li>
-<li><p><strong>Tuple</strong><strong>[</strong><strong>Union</strong><strong>[</strong><strong>float</strong> – <dl class="simple">
-<dt>Union[float,Tuple[float,float]],</dt><dd><p>Union[float,Tuple[float,float]],
-Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.</p>
-</dd>
-</dl>
-<ul>
-<li><p>sigma: standard deviation or range to sample from</p></li>
-<li><p>mu: mean value or range to sample from</p></li>
-<li><p>tau: time constant or range to sample from</p></li>
-<li><p>var_range (optional): tuple(min_val, max_val) for clipping the variable</p></li>
-</ul>
-<p>Defaults to None.</p>
-</p></li>
-<li><p><strong>Tuple</strong><strong>[</strong><strong>float</strong> – <dl class="simple">
-<dt>Union[float,Tuple[float,float]],</dt><dd><p>Union[float,Tuple[float,float]],
-Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.</p>
-</dd>
-</dl>
-<ul>
-<li><p>sigma: standard deviation or range to sample from</p></li>
-<li><p>mu: mean value or range to sample from</p></li>
-<li><p>tau: time constant or range to sample from</p></li>
-<li><p>var_range (optional): tuple(min_val, max_val) for clipping the variable</p></li>
-</ul>
-<p>Defaults to None.</p>
-</p></li>
-<li><p><strong>float</strong><strong>]</strong><strong>]</strong> – <dl class="simple">
-<dt>Union[float,Tuple[float,float]],</dt><dd><p>Union[float,Tuple[float,float]],
-Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.</p>
-</dd>
-</dl>
-<ul>
-<li><p>sigma: standard deviation or range to sample from</p></li>
-<li><p>mu: mean value or range to sample from</p></li>
-<li><p>tau: time constant or range to sample from</p></li>
-<li><p>var_range (optional): tuple(min_val, max_val) for clipping the variable</p></li>
-</ul>
-<p>Defaults to None.</p>
-</p></li>
-</ul>
-</dd>
-</dl>
-<dl>
-<dt>:param<span class="classifier">Union[float,Tuple[float,float]],</span></dt><dd><blockquote>
-<div><p>Union[float,Tuple[float,float]],
-Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.</p>
-</div></blockquote>
-<ul class="simple">
-<li><p>sigma: standard deviation or range to sample from</p></li>
-<li><p>mu: mean value or range to sample from</p></li>
-<li><p>tau: time constant or range to sample from</p></li>
-<li><p>var_range (optional): tuple(min_val, max_val) for clipping the variable</p></li>
-</ul>
-<p>Defaults to None.</p>
-</dd>
-</dl>
+<li><p><strong>(</strong><strong>Optional</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>weather_variability</em>) – Union[float, Tuple[float, float]],
+Union[float, Tuple[float, float]],
+Union[float, Tuple[float, float]],
+Optional[Tuple[float, float]]</p></li>
+<li><p><strong>Tuple</strong><strong>[</strong> – Union[float, Tuple[float, float]],
+Union[float, Tuple[float, float]],
+Union[float, Tuple[float, float]],
+Optional[Tuple[float, float]]</p></li>
+<li><p><strong>]</strong><strong>]</strong><strong>]</strong><strong>)</strong> – <p>Variation for weather data for Ornstein-Uhlenbeck process.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">param sigma<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Standard deviation or range to sample from.</p>
+</dd>
+<dt class="field-even">type sigma<span class="colon">:</span></dt>
+<dd class="field-even"><p>float or Tuple[float, float]</p>
+</dd>
+<dt class="field-odd">param mu<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mean value or range to sample from.</p>
+</dd>
+<dt class="field-even">type mu<span class="colon">:</span></dt>
+<dd class="field-even"><p>float or Tuple[float, float]</p>
+</dd>
+<dt class="field-odd">param tau<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Time constant or range to sample from.</p>
+</dd>
+<dt class="field-even">type tau<span class="colon">:</span></dt>
+<dd class="field-even"><p>float or Tuple[float, float]</p>
+</dd>
+<dt class="field-odd">param var_range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(optional) Tuple (min_val, max_val) for clipping the variable.</p>
+</dd>
+<dt class="field-even">type var_range<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[float, float], optional</p>
+</dd>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
 <li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance. Defaults to LinearReward.</p></li>
 <li><p><strong>reward_kwargs</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – Parameters to pass to the reward function. Defaults to empty dict.</p></li>
 <li><p><strong>max_ep_store</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of last episode folders to store. Defaults to 10.</p></li>

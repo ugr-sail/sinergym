@@ -74,18 +74,22 @@
 <li class="toctree-l2"><a class="reference internal" href="#incrementalwrapper">IncrementalWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">DiscreteIncrementalWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">NormalizeObservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reduceobservationwrapper">ReduceObservationWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">MultiObsWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#weatherforecastingwrapper">WeatherForecastingWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#energycostwrapper">EnergyCostWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deltatempwrapper">DeltaTempWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#logger-wrappers">Logger Wrappers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loggerwrapper">LoggerWrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvlogger">CSVLogger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#wandblogger">WandBLogger</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#reduceobservationwrapper">ReduceObservationWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">MultiObsWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#weatherforecastingwrapper">WeatherForecastingWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#energycostwrapper">EnergyCostWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deltatempwrapper">DeltaTempWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#variabilitycontextwrapper">VariabilityContextWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#context-wrappers">Context Wrappers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scheduledcontextwrapper">ScheduledContextWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#probabilisticcontextwrapper">ProbabilisticContextWrapper</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
@@ -267,6 +271,39 @@ issues found in the original wrapper.</p>
 best model obtained if <a class="reference internal" href="deep-reinforcement-learning.html#loggerevalcallback"><span class="std std-ref">LoggerEvalCallback</span></a> is active during training.</p>
 <p>These features are crucial when evaluating models trained using this wrapper. For more details, see <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/407">#407</a>.</p>
 </section>
+<section id="reduceobservationwrapper">
+<h2>ReduceObservationWrapper<a class="headerlink" href="#reduceobservationwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper reduces the original observation space by subtracting the variables specified in the string list parameter. These removed variables are returned in the info dictionary under the key <code class="docutils literal notranslate"><span class="pre">removed_variables</span></code>, and are ignored by the agent.</p>
+<p>If combined with the <a class="reference internal" href="#loggerwrapper"><span class="std std-ref">LoggerWrapper</span></a> in subsequent layers, the removed variables will be saved in the output files, even if they are not used. This makes it perfect for monitoring simulation values that are not part of the problem to be solved.</p>
+<p>Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, which can be observed in the info dictionary.</p>
+</section>
+<section id="multiobswrapper">
+<h2>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
+<p>This wrapper stacks observations received in a history queue.</p>
+<p>The size of the queue can be customized.</p>
+</section>
+<section id="weatherforecastingwrapper">
+<h2>WeatherForecastingWrapper<a class="headerlink" href="#weatherforecastingwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper adds weather forecast information to the current observation.</p>
+</section>
+<section id="energycostwrapper">
+<h2>EnergyCostWrapper<a class="headerlink" href="#energycostwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper adds energy cost information to the current observation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It internally uses the <code class="docutils literal notranslate"><span class="pre">EnergyCostLinearReward</span></code> reward function, independently of the reward function set when creating the environment.</p>
+</div>
+</section>
+<section id="deltatempwrapper">
+<h2>DeltaTempWrapper<a class="headerlink" href="#deltatempwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper adds to the observation space the delta values with respect to the specified zone temperatures, that its, the difference between the zone air temperature and the fixed setpoint value.</p>
+<p>It requires that the air temperature and setpoints variables are defined in the wrapper constructor.</p>
+<p>If the environment has a unique setpoint variable for all zones, you can specify a single setpoint variable. Otherwise, you can specify a list of variables, one for each zone.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.</p>
+</div>
+</section>
 <section id="logger-wrappers">
 <h2>Logger Wrappers<a class="headerlink" href="#logger-wrappers" title="Link to this heading"></a></h2>
 <p>These wrappers use the <em>Sinergym</em> <code class="docutils literal notranslate"><span class="pre">LoggerStorage</span></code> class functionalities to save information during environment interactions. For more details, see <a class="reference internal" href="logging.html#logging-system-overview"><span class="std std-ref">Logging system overview</span></a>.</p>
@@ -307,49 +344,91 @@ for login.</p>
 </div>
 </section>
 </section>
-<section id="reduceobservationwrapper">
-<h2>ReduceObservationWrapper<a class="headerlink" href="#reduceobservationwrapper" title="Link to this heading"></a></h2>
-<p>This wrapper reduces the original observation space by subtracting the variables specified in the string list parameter. These removed variables are returned in the info dictionary under the key <code class="docutils literal notranslate"><span class="pre">removed_variables</span></code>, and are ignored by the agent.</p>
-<p>If combined with the <a class="reference internal" href="#loggerwrapper"><span class="std std-ref">LoggerWrapper</span></a> in subsequent layers, the removed variables will be saved in the output files, even if they are not used. This makes it perfect for monitoring simulation values that are not part of the problem to be solved.</p>
-<p>Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, which can be observed in the info dictionary.</p>
-</section>
-<section id="multiobswrapper">
-<h2>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
-<p>This wrapper stacks observations received in a history queue.</p>
-<p>The size of the queue can be customized.</p>
-</section>
-<section id="weatherforecastingwrapper">
-<h2>WeatherForecastingWrapper<a class="headerlink" href="#weatherforecastingwrapper" title="Link to this heading"></a></h2>
-<p>This wrapper adds weather forecast information to the current observation.</p>
-</section>
-<section id="energycostwrapper">
-<h2>EnergyCostWrapper<a class="headerlink" href="#energycostwrapper" title="Link to this heading"></a></h2>
-<p>This wrapper adds energy cost information to the current observation.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>It internally uses the <code class="docutils literal notranslate"><span class="pre">EnergyCostLinearReward</span></code> reward function, independently of the reward function set when creating the environment.</p>
+<section id="context-wrappers">
+<h2>Context Wrappers<a class="headerlink" href="#context-wrappers" title="Link to this heading"></a></h2>
+<p><em>Sinergym</em> provides wrappers to manage context variables dynamically and automatically during simulation (see <a class="reference internal" href="environments.html#context"><span class="std std-ref">Context</span></a>), instead of having to call the context update method of Sinergym environments constantly.
+This facilitates a convenient management of control profiles for this context that we want to provide in experiments while the control agents improve with respect to these changes.</p>
+<section id="scheduledcontextwrapper">
+<h3>ScheduledContextWrapper<a class="headerlink" href="#scheduledcontextwrapper" title="Link to this heading"></a></h3>
+<p>This wrapper applies predefined context changes at specific dates and times during the simulation.</p>
+<p>The wrapper uses a configuration dictionary that maps datetime strings (in format <code class="docutils literal notranslate"><span class="pre">'MM-DD</span> <span class="pre">HH'</span></code>) to lists of context values. When the simulation reaches a matching datetime, the corresponding context values are applied to the context variables.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><strong>scheduled_context</strong> (Dict[str, List[float]]): Dictionary mapping datetime strings to context values. Keys must be in format <code class="docutils literal notranslate"><span class="pre">'MM-DD</span> <span class="pre">HH'</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">'01-15</span> <span class="pre">14'</span></code> for January 15th at 2 PM). Values must be lists of floats with length equal to the number of context variables. The values are applied in order to the context variables.</p></li>
+</ul>
+<p>Unlike the other context wrappers, this wrapper uses a fixed configuration that remains the same across all episodes, making it suitable for scenarios where you want to test specific context change schedules.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScheduledContextWrapper</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define context changes at specific dates and times</span>
+<span class="n">scheduled_context</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;01-15 10&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">],</span>  <span class="c1"># January 15th at 10 AM</span>
+    <span class="s1">&#39;01-20 14&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span>  <span class="c1"># January 20th at 2 PM</span>
+    <span class="s1">&#39;02-10 09&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">],</span>  <span class="c1"># February 10th at 9 AM</span>
+<span class="p">}</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">ScheduledContextWrapper</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+    <span class="n">scheduled_context</span><span class="o">=</span><span class="n">scheduled_context</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </section>
-<section id="deltatempwrapper">
-<h2>DeltaTempWrapper<a class="headerlink" href="#deltatempwrapper" title="Link to this heading"></a></h2>
-<p>This wrapper adds to the observation space the delta values with respect to the specified zone temperatures, that its, the difference between the zone air temperature and the fixed setpoint value.</p>
-<p>It requires that the air temperature and setpoints variables are defined in the wrapper constructor.</p>
-<p>If the environment has a unique setpoint variable for all zones, you can specify a single setpoint variable. Otherwise, you can specify a list of variables, one for each zone.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.</p>
+<section id="probabilisticcontextwrapper">
+<h3>ProbabilisticContextWrapper<a class="headerlink" href="#probabilisticcontextwrapper" title="Link to this heading"></a></h3>
+<p>This wrapper automatically updates context variables probabilistically at each simulation step. It provides flexible control over when and how context changes occur, making it ideal for simulating stochastic disturbances such as varying occupancy patterns, equipment failures, or weather-related uncertainties.</p>
+<p><strong>Update Modes:</strong></p>
+<p>The wrapper supports two probability modes:</p>
+<ul class="simple">
+<li><p><strong>Float mode</strong> (<code class="docutils literal notranslate"><span class="pre">update_probability</span></code> as float): At each step, there’s a probability that triggers a context update event. When triggered, all context variables are updated at the same time. Defaults to 0.1 (10% per step).</p></li>
+<li><p><strong>List mode</strong> (<code class="docutils literal notranslate"><span class="pre">update_probability</span></code> as list): Each context variable is independently evaluated at each step according to its own probability. This allows different variables to update at different times.</p></li>
+</ul>
+<p><strong>Update Types:</strong></p>
+<ul class="simple">
+<li><p><strong>Absolute updates</strong>: New random values are sampled from the context space bounds.</p></li>
+<li><p><strong>Delta updates</strong> (<code class="docutils literal notranslate"><span class="pre">delta_update=True</span></code>): Incremental changes are applied to current values, simulating gradual transitions. Values are automatically clipped to stay within bounds.</p></li>
+</ul>
+<p><strong>Value Synchronization:</strong></p>
+<ul class="simple">
+<li><p><strong>Independent values</strong> (<code class="docutils literal notranslate"><span class="pre">global_value=False</span></code>): Each context variable gets its own random value.</p></li>
+<li><p><strong>Synchronized values</strong> (<code class="docutils literal notranslate"><span class="pre">global_value=True</span></code>): All context variables receive the same value, useful for correlated changes. In this case, the context space should have the same range for all variables.</p></li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><strong>context_space</strong> (gym.spaces.Box): Defines the valid value range for each context variable. The shape must match the number of context variables. Each dimension defines the valid range for the corresponding variable.</p></li>
+<li><p><strong>update_probability</strong> (Union[float, List[float]]): Probability of context updates. If float (0.0 to 1.0), all variables update together when triggered. If list, each variable is evaluated independently. Length must match the number of context variables. Defaults to 0.1.</p></li>
+<li><p><strong>global_value</strong> (bool): If <code class="docutils literal notranslate"><span class="pre">True</span></code>, all variables receive the same random value. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, each variable gets an independent value. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>delta_update</strong> (bool): If <code class="docutils literal notranslate"><span class="pre">True</span></code>, applies incremental changes to current values instead of absolute values. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>delta_value</strong> (float, optional): Maximum absolute change when <code class="docutils literal notranslate"><span class="pre">delta_update=True</span></code>. The actual delta is randomly sampled from [-delta_value, delta_value]. Required when <code class="docutils literal notranslate"><span class="pre">delta_update=True</span></code>.</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProbabilisticContextWrapper</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define context space for 1 context variable (e.g., occupancy)</span>
+<span class="n">context_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+    <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.9</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Update context with 5% probability per step using incremental changes</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">ProbabilisticContextWrapper</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+    <span class="n">context_space</span><span class="o">=</span><span class="n">context_space</span><span class="p">,</span>
+    <span class="n">update_probability</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">delta_update</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">delta_value</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </section>
-<section id="variabilitycontextwrapper">
-<h2>VariabilityContextWrapper<a class="headerlink" href="#variabilitycontextwrapper" title="Link to this heading"></a></h2>
-<p>This wrapper introduces context changes (see <a class="reference internal" href="environments.html#context"><span class="std std-ref">Context</span></a>) at specific steps based on a uniform distribution.</p>
-<p>When the event is triggered, delta values for the context variables and a time (in steps) for the change to occur are randomly determined based on the specified arguments.</p>
-<p>The configurable arguments include the space of the context variables, the range of possible delta values, and the range of steps in which the event can take place.</p>
-<p>If applying the deltas results in values outside the defined space, they will be clipped to remain within bounds before being applied.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>If initial context values were not provided in environment initialization, initial context values will be selected randomly for this wrapper.</p>
-</div>
 </section>
 </section>
 

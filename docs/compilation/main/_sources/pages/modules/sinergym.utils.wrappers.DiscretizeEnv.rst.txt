@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.DiscretizeEnv
+sinergym.utils.wrappers.DiscretizeEnv
 =====================================
 
 .. currentmodule:: sinergym.utils.wrappers

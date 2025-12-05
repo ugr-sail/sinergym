@@ -1,4 +1,4 @@
-sinergym.utils.wrappers
+﻿sinergym.utils.wrappers
 =======================
 
 .. automodule:: sinergym.utils.wrappers
@@ -41,8 +41,9 @@ sinergym.utils.wrappers
       NormalizeObservation
       OfficeGridStorageSmoothingActionConstraintsWrapper
       PreviousObservationWrapper
+      ProbabilisticContextWrapper
       ReduceObservationWrapper
-      VariabilityContextWrapper
+      ScheduledContextWrapper
       WandBLogger
       WeatherForecastingWrapper
    

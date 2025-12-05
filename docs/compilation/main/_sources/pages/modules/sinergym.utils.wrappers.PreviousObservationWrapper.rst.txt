@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.PreviousObservationWrapper
+sinergym.utils.wrappers.PreviousObservationWrapper
 ==================================================
 
 .. currentmodule:: sinergym.utils.wrappers

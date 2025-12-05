@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.DeltaTempWrapper
+sinergym.utils.wrappers.DeltaTempWrapper
 ========================================
 
 .. currentmodule:: sinergym.utils.wrappers

@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.EnergyCostWrapper
+sinergym.utils.wrappers.EnergyCostWrapper
 =========================================
 
 .. currentmodule:: sinergym.utils.wrappers

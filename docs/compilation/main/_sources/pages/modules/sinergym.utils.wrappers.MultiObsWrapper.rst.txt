@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.MultiObsWrapper
+sinergym.utils.wrappers.MultiObsWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers

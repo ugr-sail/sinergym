@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.WeatherForecastingWrapper
+sinergym.utils.wrappers.WeatherForecastingWrapper
 =================================================
 
 .. currentmodule:: sinergym.utils.wrappers
