@@ -68,7 +68,7 @@ weather_specification:
 #                         BUILDING EXTRA CONFIGURATION                         #
 # ---------------------------------------------------------------------------- #
 building_config:
-  timesteps_per_hour: 12
+  timesteps_per_hour: 2
   north_axis: 270
 
 # ---------------------------------------------------------------------------- #
@@ -121,7 +121,6 @@ time_variables:
   - month
   - day_of_month
   - hour
-  - minutes
   # More variables in Data Transfer API: https://energyplus.readthedocs.io/en/latest/datatransfer.html
 
 # ----------------------------- OUTPUT:VARIABLES ----------------------------- #
