@@ -152,6 +152,50 @@ best model obtained if :ref:`LoggerEvalCallback` is active during training.
 
 These features are crucial when evaluating models trained using this wrapper. For more details, see `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
 
+************************
+ReduceObservationWrapper
+************************
+
+This wrapper reduces the original observation space by subtracting the variables specified in the string list parameter. These removed variables are returned in the info dictionary under the key ``removed_variables``, and are ignored by the agent.
+
+If combined with the :ref:`LoggerWrapper` in subsequent layers, the removed variables will be saved in the output files, even if they are not used. This makes it perfect for monitoring simulation values that are not part of the problem to be solved.
+
+Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, which can be observed in the info dictionary.
+
+***************
+MultiObsWrapper
+***************
+
+This wrapper stacks observations received in a history queue.
+
+The size of the queue can be customized.
+
+*************************
+WeatherForecastingWrapper
+*************************
+
+This wrapper adds weather forecast information to the current observation.
+
+*****************
+EnergyCostWrapper
+*****************
+
+This wrapper adds energy cost information to the current observation.
+
+.. warning:: It internally uses the ``EnergyCostLinearReward`` reward function, independently of the reward function set when creating the environment.
+
+****************
+DeltaTempWrapper
+****************
+
+This wrapper adds to the observation space the delta values with respect to the specified zone temperatures, that its, the difference between the zone air temperature and the fixed setpoint value.
+
+It requires that the air temperature and setpoints variables are defined in the wrapper constructor.
+
+If the environment has a unique setpoint variable for all zones, you can specify a single setpoint variable. Otherwise, you can specify a list of variables, one for each zone.
+
+.. important:: The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.
+
 ***************
 Logger Wrappers
 ***************
@@ -207,61 +251,107 @@ This wrapper will only save data on episode summaries once they have reached a m
 .. important:: A Weights and Biases account is required to use this wrapper, with an environment variable containing the API key
                for login.
 
-************************
-ReduceObservationWrapper
-************************
-
-This wrapper reduces the original observation space by subtracting the variables specified in the string list parameter. These removed variables are returned in the info dictionary under the key ``removed_variables``, and are ignored by the agent.
-
-If combined with the :ref:`LoggerWrapper` in subsequent layers, the removed variables will be saved in the output files, even if they are not used. This makes it perfect for monitoring simulation values that are not part of the problem to be solved.
-
-Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, which can be observed in the info dictionary.
-
-***************
-MultiObsWrapper
-***************
-
-This wrapper stacks observations received in a history queue.
-
-The size of the queue can be customized.
-
-*************************
-WeatherForecastingWrapper
-*************************
-
-This wrapper adds weather forecast information to the current observation.
-
-*****************
-EnergyCostWrapper
-*****************
-
-This wrapper adds energy cost information to the current observation.
-
-.. warning:: It internally uses the ``EnergyCostLinearReward`` reward function, independently of the reward function set when creating the environment.
-
-****************
-DeltaTempWrapper
-****************
-
-This wrapper adds to the observation space the delta values with respect to the specified zone temperatures, that its, the difference between the zone air temperature and the fixed setpoint value.
-
-It requires that the air temperature and setpoints variables are defined in the wrapper constructor.
-
-If the environment has a unique setpoint variable for all zones, you can specify a single setpoint variable. Otherwise, you can specify a list of variables, one for each zone.
-
-.. important:: The air temperature variables and setpoints variables should be specified in the same order. The length of these lists should be the same, in case you are not using the same setpoint for all zones.
-
 **************************
-VariabilityContextWrapper
+Context Wrappers
 **************************
 
-This wrapper introduces context changes (see :ref:`Context`) at specific steps based on a uniform distribution.
+*Sinergym* provides wrappers to manage context variables dynamically and automatically during simulation (see :ref:`Context`), instead of having to call the context update method of Sinergym environments constantly.
+This facilitates a convenient management of control profiles for this context that we want to provide in experiments while the control agents improve with respect to these changes.
 
-When the event is triggered, delta values for the context variables and a time (in steps) for the change to occur are randomly determined based on the specified arguments.
 
-The configurable arguments include the space of the context variables, the range of possible delta values, and the range of steps in which the event can take place.
+ScheduledContextWrapper
+-------------------------
 
-If applying the deltas results in values outside the defined space, they will be clipped to remain within bounds before being applied.
+This wrapper applies predefined context changes at specific dates and times during the simulation.
 
-.. important:: If initial context values were not provided in environment initialization, initial context values will be selected randomly for this wrapper.
+The wrapper uses a configuration dictionary that maps datetime strings (in format ``'MM-DD HH'``) to lists of context values. When the simulation reaches a matching datetime, the corresponding context values are applied to the context variables.
+
+**Parameters:**
+
+- **scheduled_context** (Dict[str, List[float]]): Dictionary mapping datetime strings to context values. Keys must be in format ``'MM-DD HH'`` (e.g., ``'01-15 14'`` for January 15th at 2 PM). Values must be lists of floats with length equal to the number of context variables. The values are applied in order to the context variables.
+
+Unlike the other context wrappers, this wrapper uses a fixed configuration that remains the same across all episodes, making it suitable for scenarios where you want to test specific context change schedules.
+
+**Example:**
+
+.. code-block:: python
+
+    from sinergym.utils.wrappers import ScheduledContextWrapper
+    
+    env = make('Eplus-5zone-hot-continuous-v1')
+    
+    # Define context changes at specific dates and times
+    scheduled_context = {
+        '01-15 10': [0.8],  # January 15th at 10 AM
+        '01-20 14': [0.5],  # January 20th at 2 PM
+        '02-10 09': [0.9],  # February 10th at 9 AM
+    }
+    
+    env = ScheduledContextWrapper(
+        env=env,
+        scheduled_context=scheduled_context
+    )
+
+
+ProbabilisticContextWrapper
+-------------------------
+
+This wrapper automatically updates context variables probabilistically at each simulation step. It provides flexible control over when and how context changes occur, making it ideal for simulating stochastic disturbances such as varying occupancy patterns, equipment failures, or weather-related uncertainties.
+
+**Update Modes:**
+
+The wrapper supports two probability modes:
+
+- **Float mode** (``update_probability`` as float): At each step, there's a probability that triggers a context update event. When triggered, all context variables are updated at the same time. Defaults to 0.1 (10% per step).
+
+- **List mode** (``update_probability`` as list): Each context variable is independently evaluated at each step according to its own probability. This allows different variables to update at different times.
+
+**Update Types:**
+
+- **Absolute updates**: New random values are sampled from the context space bounds.
+- **Delta updates** (``delta_update=True``): Incremental changes are applied to current values, simulating gradual transitions. Values are automatically clipped to stay within bounds.
+
+**Value Synchronization:**
+
+- **Independent values** (``global_value=False``): Each context variable gets its own random value.
+- **Synchronized values** (``global_value=True``): All context variables receive the same value, useful for correlated changes. In this case, the context space should have the same range for all variables.
+
+**Parameters:**
+
+- **context_space** (gym.spaces.Box): Defines the valid value range for each context variable. The shape must match the number of context variables. Each dimension defines the valid range for the corresponding variable.
+
+- **update_probability** (Union[float, List[float]]): Probability of context updates. If float (0.0 to 1.0), all variables update together when triggered. If list, each variable is evaluated independently. Length must match the number of context variables. Defaults to 0.1.
+
+- **global_value** (bool): If ``True``, all variables receive the same random value. If ``False``, each variable gets an independent value. Defaults to ``False``.
+
+- **delta_update** (bool): If ``True``, applies incremental changes to current values instead of absolute values. Defaults to ``False``.
+
+- **delta_value** (float, optional): Maximum absolute change when ``delta_update=True``. The actual delta is randomly sampled from [-delta_value, delta_value]. Required when ``delta_update=True``.
+
+**Example:**
+
+.. code-block:: python
+
+    from sinergym.utils.wrappers import ProbabilisticContextWrapper
+    import gymnasium as gym
+    import numpy as np
+    
+    env = make('Eplus-5zone-hot-continuous-v1')
+    
+    # Define context space for 1 context variable (e.g., occupancy)
+    context_space = gym.spaces.Box(
+        low=np.array([0.3], dtype=np.float32),
+        high=np.array([0.9], dtype=np.float32),
+        shape=(1,),
+        dtype=np.float32,
+    )
+    
+    # Update context with 5% probability per step using incremental changes
+    env = ProbabilisticContextWrapper(
+        env=env,
+        context_space=context_space,
+        update_probability=0.05,
+        delta_update=True,
+        delta_value=0.1
+    )
 
