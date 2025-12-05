@@ -234,6 +234,8 @@ def apply_wrappers_info(
     for wrapper_class_name, wrapper_params in wrappers_info_dict.items():
         # Dynamically import the wrapper class
         wrapper_cls = import_from_path(wrapper_class_name)
+        # Process parameters to handle complex types
+        wrapper_params = process_wrapper_parameters(wrapper_params)
         env = wrapper_cls(env, **wrapper_params)
 
     return env
@@ -647,6 +649,14 @@ def process_algorithm_parameters(alg_params: dict):  # pragma: no cover
     # Add more keys if needed...
 
     return alg_params
+
+
+def process_wrapper_parameters(params: Dict[str, Any]) -> Dict[str, Any]:
+    """Process wrapper parameters to handle complex types. This method will be used to convert parameters from YAML to Python objects."""
+    for param_name, param_value in params.items():
+        if isinstance(param_value, str) and param_value.startswith('gym.spaces.'):
+            params[param_name] = eval(param_value)
+    return params
 
 
 # --------------------- Functions that are no longer used -------------------- #

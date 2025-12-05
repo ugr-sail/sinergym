@@ -19,6 +19,7 @@ sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.action
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.class_name
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.close
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.get_obs_dict
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.get_wrapper_attr
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.has_wrapper_attr
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.render

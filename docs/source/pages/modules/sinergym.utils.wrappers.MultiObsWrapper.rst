@@ -18,6 +18,7 @@ sinergym.utils.wrappers.MultiObsWrapper
       ~MultiObsWrapper.__init__
       ~MultiObsWrapper.class_name
       ~MultiObsWrapper.close
+      ~MultiObsWrapper.get_obs_dict
       ~MultiObsWrapper.get_wrapper_attr
       ~MultiObsWrapper.has_wrapper_attr
       ~MultiObsWrapper.render

@@ -18,6 +18,7 @@ sinergym.utils.wrappers.WandBLogger
       ~WandBLogger.__init__
       ~WandBLogger.class_name
       ~WandBLogger.close
+      ~WandBLogger.get_obs_dict
       ~WandBLogger.get_wrapper_attr
       ~WandBLogger.has_wrapper_attr
       ~WandBLogger.render

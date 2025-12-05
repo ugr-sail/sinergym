@@ -18,6 +18,7 @@ sinergym.utils.wrappers.PreviousObservationWrapper
       ~PreviousObservationWrapper.__init__
       ~PreviousObservationWrapper.class_name
       ~PreviousObservationWrapper.close
+      ~PreviousObservationWrapper.get_obs_dict
       ~PreviousObservationWrapper.get_wrapper_attr
       ~PreviousObservationWrapper.has_wrapper_attr
       ~PreviousObservationWrapper.observation

@@ -18,6 +18,7 @@ sinergym.utils.wrappers.WeatherForecastingWrapper
       ~WeatherForecastingWrapper.__init__
       ~WeatherForecastingWrapper.class_name
       ~WeatherForecastingWrapper.close
+      ~WeatherForecastingWrapper.get_obs_dict
       ~WeatherForecastingWrapper.get_wrapper_attr
       ~WeatherForecastingWrapper.has_wrapper_attr
       ~WeatherForecastingWrapper.observation

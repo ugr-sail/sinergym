@@ -20,6 +20,7 @@ sinergym.utils.wrappers.LoggerWrapper
       ~LoggerWrapper.class_name
       ~LoggerWrapper.close
       ~LoggerWrapper.get_episode_summary
+      ~LoggerWrapper.get_obs_dict
       ~LoggerWrapper.get_wrapper_attr
       ~LoggerWrapper.has_wrapper_attr
       ~LoggerWrapper.render
