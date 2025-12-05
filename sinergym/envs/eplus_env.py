@@ -83,15 +83,23 @@ class EplusEnv(gym.Env):
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. Key is custom; value is tuple(actuator type, value type, original name). Defaults to empty dict.
             context (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Context. Key is custom; value is tuple(actuator type, value type, original name). Used for real-time building configuration. Defaults to empty dict.
             initial_context (Optional[List[float]]): Initial context values to set in the building model. Defaults to None.
-            weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],
-                                                        Union[float,Tuple[float,float]],
-                                                        Union[float,Tuple[float,float]],
-                                                        Optional[Tuple[float,float]]]]]): Variation for weather data for Ornstein-Uhlenbeck process.
-                - sigma: standard deviation or range to sample from
-                - mu: mean value or range to sample from
-                - tau: time constant or range to sample from
-                - var_range (optional): tuple(min_val, max_val) for clipping the variable
-                Defaults to None.
+            weather_variability (Optional[Dict[str, Tuple[
+                Union[float, Tuple[float, float]],
+                Union[float, Tuple[float, float]],
+                Union[float, Tuple[float, float]],
+                Optional[Tuple[float, float]]
+            ]]]):
+                Variation for weather data for Ornstein-Uhlenbeck process.
+
+                :param sigma: Standard deviation or range to sample from.
+                :type sigma: float or Tuple[float, float]
+                :param mu: Mean value or range to sample from.
+                :type mu: float or Tuple[float, float]
+                :param tau: Time constant or range to sample from.
+                :type tau: float or Tuple[float, float]
+                :param var_range: (optional) Tuple (min_val, max_val) for clipping the variable.
+                :type var_range: Tuple[float, float], optional
+                :default: None
             reward (Any, optional): Reward function instance. Defaults to LinearReward.
             reward_kwargs (Dict[str, Any], optional): Parameters to pass to the reward function. Defaults to empty dict.
             max_ep_store (int, optional): Number of last episode folders to store. Defaults to 10.

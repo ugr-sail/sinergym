@@ -294,7 +294,7 @@ Unlike the other context wrappers, this wrapper uses a fixed configuration that 
 
 
 ProbabilisticContextWrapper
--------------------------
+----------------------------
 
 This wrapper automatically updates context variables probabilistically at each simulation step. It provides flexible control over when and how context changes occur, making it ideal for simulating stochastic disturbances such as varying occupancy patterns, equipment failures, or weather-related uncertainties.
 

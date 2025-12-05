@@ -2388,10 +2388,12 @@ class ProbabilisticContextWrapper(gym.Wrapper):
     """Wrapper that probabilistically updates context variables at each step.
 
     This wrapper provides a unified approach to context updates with multiple modes:
+
     - Probabilistic updates: Each step has a probability of triggering a context update
     - Multiple update modes: Same value for all variables, independent values, or
       probabilistic per-variable updates
     - Support for both absolute values and delta-based increments to current context values
+
     """
 
     logger = TerminalLogger().getLogger(
@@ -2539,6 +2541,7 @@ class ProbabilisticContextWrapper(gym.Wrapper):
         """Executes an action and probabilistically updates context if triggered.
 
         The update behavior depends on the type of update_probability:
+
         - If update_probability is a float: At each step, there's a probability that a context
           update event occurs. When it does, all context variables are updated together according
           to the configured mode and type.
@@ -2552,11 +2555,13 @@ class ProbabilisticContextWrapper(gym.Wrapper):
         Returns:
             Tuple[np.ndarray, SupportsFloat, bool, bool, Dict[str, Any]]: Standard Gymnasium step
                 return containing:
+
                 - Observation for next timestep
                 - Reward obtained
                 - Whether the episode has ended (terminated)
                 - Whether episode has been truncated
                 - Dictionary with extra information
+
         """
         obs, reward, terminated, truncated, info = self.env.step(action)
 
