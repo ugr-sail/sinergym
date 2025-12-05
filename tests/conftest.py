@@ -129,12 +129,15 @@ def ACTUATORS_5ZONE():
 
 @pytest.fixture(scope='function')
 def CONTEXT_5ZONE():
-    return {'Occupancy': ('Schedule:Compact', 'Schedule Value', 'OCCUPY-1')}
+    return {
+        'Occupancy': ('Schedule:Compact', 'Schedule Value', 'OCCUPY-1'),
+        'Clothing': ('Schedule:Compact', 'Schedule Value', 'ClothingSch'),
+    }
 
 
 @pytest.fixture(scope='function')
 def INITIAL_CONTEXT():
-    return [1.0]
+    return [1.0, 0.5]
 
 
 @pytest.fixture(scope='function')

@@ -18,6 +18,7 @@ sinergym.utils.wrappers.ReduceObservationWrapper
       ~ReduceObservationWrapper.__init__
       ~ReduceObservationWrapper.class_name
       ~ReduceObservationWrapper.close
+      ~ReduceObservationWrapper.get_obs_dict
       ~ReduceObservationWrapper.get_wrapper_attr
       ~ReduceObservationWrapper.has_wrapper_attr
       ~ReduceObservationWrapper.render

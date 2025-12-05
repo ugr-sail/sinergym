@@ -1,4 +1,4 @@
-sinergym.utils.common
+﻿sinergym.utils.common
 =====================
 
 .. automodule:: sinergym.utils.common
@@ -30,6 +30,7 @@ sinergym.utils.common
       parse_variables_settings
       process_algorithm_parameters
       process_environment_parameters
+      process_wrapper_parameters
       unwrap_wrapper
    
    

@@ -18,6 +18,7 @@ sinergym.utils.wrappers.MultiObjectiveReward
       ~MultiObjectiveReward.__init__
       ~MultiObjectiveReward.class_name
       ~MultiObjectiveReward.close
+      ~MultiObjectiveReward.get_obs_dict
       ~MultiObjectiveReward.get_wrapper_attr
       ~MultiObjectiveReward.has_wrapper_attr
       ~MultiObjectiveReward.render

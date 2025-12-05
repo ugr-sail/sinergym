@@ -19,6 +19,7 @@ sinergym.utils.wrappers.DiscretizeEnv
       ~DiscretizeEnv.action
       ~DiscretizeEnv.class_name
       ~DiscretizeEnv.close
+      ~DiscretizeEnv.get_obs_dict
       ~DiscretizeEnv.get_wrapper_attr
       ~DiscretizeEnv.has_wrapper_attr
       ~DiscretizeEnv.render

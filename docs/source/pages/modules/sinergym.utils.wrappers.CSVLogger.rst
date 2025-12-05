@@ -19,6 +19,7 @@ sinergym.utils.wrappers.CSVLogger
       ~CSVLogger.class_name
       ~CSVLogger.close
       ~CSVLogger.dump_log_files
+      ~CSVLogger.get_obs_dict
       ~CSVLogger.get_wrapper_attr
       ~CSVLogger.has_wrapper_attr
       ~CSVLogger.render

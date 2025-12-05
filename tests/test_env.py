@@ -117,15 +117,15 @@ def test_update_context(env_5zone):
     # Context occupancy is a percentage of 20 people
     assert (
         obs_dict['people_occupant']
-        == env_5zone.get_wrapper_attr('last_context')[-1] * 20
+        == env_5zone.get_wrapper_attr('last_context')[0] * 20
     )
     # Try to update context with a new value
-    env_5zone.update_context([0.5])
+    env_5zone.update_context([0.5, 0.5])
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the new occupancy value
     obs_dict = env_5zone.get_obs_dict(obs)
     assert obs_dict['people_occupant'] == 10
-    assert env_5zone.get_wrapper_attr('last_context')[-1] == 0.5
+    assert env_5zone.get_wrapper_attr('last_context')[0] == 0.5
 
 
 def test_reset_reproducibility():
