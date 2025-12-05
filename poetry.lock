@@ -2984,14 +2984,14 @@ test = ["covdefaults (>=2.3)", "diff-cover (>=9.7.1)", "pytest (>=8.4.2)", "pyte
 
 [[package]]
 name = "platformdirs"
-version = "4.5.0"
+version = "4.5.1"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "dev", "doc", "drl", "format", "platforms", "test"]
 files = [
-    {file = "platformdirs-4.5.0-py3-none-any.whl", hash = "sha256:e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"},
-    {file = "platformdirs-4.5.0.tar.gz", hash = "sha256:70ddccdd7c99fc5942e9fc25636a8b34d04c24b335100223152c2803e4063312"},
+    {file = "platformdirs-4.5.1-py3-none-any.whl", hash = "sha256:d03afa3963c806a9bed9d5125c8f4cb2fdaf74a55ab60e5d59b3fde758104d31"},
+    {file = "platformdirs-4.5.1.tar.gz", hash = "sha256:61d5cdcc6065745cdd94f0f878977f8de9437be93de97c1c12f853c9c0cdcbda"},
 ]
 
 [package.extras]
@@ -3906,6 +3906,21 @@ files = [
 ]
 
 [[package]]
+name = "sb3-contrib"
+version = "2.7.1"
+description = "Contrib package of Stable Baselines3, experimental code."
+optional = false
+python-versions = ">=3.9"
+groups = ["main", "dev", "drl"]
+files = [
+    {file = "sb3_contrib-2.7.1-py3-none-any.whl", hash = "sha256:27dd9db11e4f0b5e172bc73eef32c6342e7de8d6b4b833a8a28933e1679e907f"},
+    {file = "sb3_contrib-2.7.1.tar.gz", hash = "sha256:491070fb14c6a59757cbcc1aea5c62c894c2312f3f8a1ccf8f363a48eb3126ad"},
+]
+
+[package.dependencies]
+stable_baselines3 = ">=2.7.0,<3.0"
+
+[[package]]
 name = "sentry-sdk"
 version = "2.47.0"
 description = "Python client for Sentry (https://sentry.io)"
@@ -4266,14 +4281,14 @@ test = ["coverage (>=4.0,!=4.4)", "pytest", "pytest-cov"]
 
 [[package]]
 name = "stable-baselines3"
-version = "2.7.0"
+version = "2.7.1"
 description = "Pytorch version of Stable Baselines, implementations of reinforcement learning algorithms."
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "dev", "drl"]
 files = [
-    {file = "stable_baselines3-2.7.0-py3-none-any.whl", hash = "sha256:3de94fab840b3eb379a352c8d9b390998686d2fcb41de36298066935eef94bea"},
-    {file = "stable_baselines3-2.7.0.tar.gz", hash = "sha256:5258561e5becd15234274262cf09fcb9a082a73c2c67a85322f5652a05195ec4"},
+    {file = "stable_baselines3-2.7.1-py3-none-any.whl", hash = "sha256:b017e76dfe5ca0ce6eabb29e79c42e8c7e125d5862bfcd43ce04ec19732348d0"},
+    {file = "stable_baselines3-2.7.1.tar.gz", hash = "sha256:cd90d12d9ee0d9584053f12215c1682b313be4e3a8d8007739319799c3d2c071"},
 ]
 
 [package.dependencies]
@@ -4768,8 +4783,8 @@ files = [
 ]
 
 [extras]
-drl = ["stable-baselines3", "wandb"]
-extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "stable-baselines3", "wandb"]
+drl = ["sb3-contrib", "stable-baselines3", "wandb"]
+extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "sb3-contrib", "stable-baselines3", "wandb"]
 gcloud = ["google-api-python-client", "google-cloud-storage", "oauth2client"]
 notebooks = ["IPython"]
 test = ["coverage", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
@@ -4778,4 +4793,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "8736f53e41d98adb1fba6aff924b59812104af3d91d2f1277224617027454552"
+content-hash = "3a09c12a5e502614313f5e7185bd899b98d101d6038ec125170b6da27954172d"
