@@ -20,6 +20,7 @@ sinergym.utils.wrappers.BaseLoggerWrapper
       ~BaseLoggerWrapper.class_name
       ~BaseLoggerWrapper.close
       ~BaseLoggerWrapper.get_episode_summary
+      ~BaseLoggerWrapper.get_obs_dict
       ~BaseLoggerWrapper.get_wrapper_attr
       ~BaseLoggerWrapper.has_wrapper_attr
       ~BaseLoggerWrapper.render

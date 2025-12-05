@@ -18,6 +18,7 @@ sinergym.utils.wrappers.DatetimeWrapper
       ~DatetimeWrapper.__init__
       ~DatetimeWrapper.class_name
       ~DatetimeWrapper.close
+      ~DatetimeWrapper.get_obs_dict
       ~DatetimeWrapper.get_wrapper_attr
       ~DatetimeWrapper.has_wrapper_attr
       ~DatetimeWrapper.observation

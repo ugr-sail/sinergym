@@ -18,6 +18,7 @@ sinergym.utils.wrappers.DeltaTempWrapper
       ~DeltaTempWrapper.__init__
       ~DeltaTempWrapper.class_name
       ~DeltaTempWrapper.close
+      ~DeltaTempWrapper.get_obs_dict
       ~DeltaTempWrapper.get_wrapper_attr
       ~DeltaTempWrapper.has_wrapper_attr
       ~DeltaTempWrapper.observation

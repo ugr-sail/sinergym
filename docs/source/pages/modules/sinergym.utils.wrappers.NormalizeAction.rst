@@ -19,6 +19,7 @@ sinergym.utils.wrappers.NormalizeAction
       ~NormalizeAction.action
       ~NormalizeAction.class_name
       ~NormalizeAction.close
+      ~NormalizeAction.get_obs_dict
       ~NormalizeAction.get_wrapper_attr
       ~NormalizeAction.has_wrapper_attr
       ~NormalizeAction.render

@@ -20,6 +20,7 @@ sinergym.utils.wrappers.DiscreteIncrementalWrapper
       ~DiscreteIncrementalWrapper.action_mapping
       ~DiscreteIncrementalWrapper.class_name
       ~DiscreteIncrementalWrapper.close
+      ~DiscreteIncrementalWrapper.get_obs_dict
       ~DiscreteIncrementalWrapper.get_wrapper_attr
       ~DiscreteIncrementalWrapper.has_wrapper_attr
       ~DiscreteIncrementalWrapper.render
