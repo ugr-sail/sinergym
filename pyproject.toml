@@ -4,7 +4,7 @@
 [project]
 
 name = "sinergym"
-version = "3.10.4"
+version = "3.10.5"
 description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
 
 authors = [
