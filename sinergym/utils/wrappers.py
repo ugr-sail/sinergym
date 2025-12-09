@@ -1749,26 +1749,31 @@ class RadiantLoggerWrapper(BaseLoggerWrapper):
         except ZeroDivisionError:
             comfort_violation_time = 0
 
-        # Compressor cycling statistics (per calendar day) using timesteps_per_hour
+        # Compressor cycling statistics (per calendar day) using calendar info keys
         if 'crf' in self.get_wrapper_attr('observation_variables'):
             crf_values = [
                 self.get_obs_dict(obs).get('crf')
                 for obs in self.data_logger.observations[1:]
             ]
-            compressor_cycles_per_day = []
-            timesteps_per_hour = self.get_wrapper_attr('runperiod')['n_steps_per_hour']
-            steps_per_day = 24 * timesteps_per_hour
+            info_rows = self.data_logger.infos[1:]
 
-            for start in range(0, len(crf_values), steps_per_day):
-                day_values = crf_values[start : start + steps_per_day]
+            crf_df = pd.DataFrame(
+                {
+                    'month': [info.get('month') for info in info_rows],
+                    'day': [info.get('day') for info in info_rows],
+                    'crf': crf_values,
+                }
+            )
 
-                cycles = sum(
-                    1 for prev, curr in zip(day_values, day_values[1:]) if prev != curr
-                )
-                compressor_cycles_per_day.append(cycles)
+            compressor_cycles_per_day = (
+                crf_df.groupby(['month', 'day'])['crf']
+                .apply(lambda s: max(int(s.ne(s.shift()).sum() - 1), 0))
+                .tolist()
+            )
 
             mean_compressor_cycling_per_day = float(np.mean(compressor_cycles_per_day))
             std_compressor_cycling_per_day = float(np.std(compressor_cycles_per_day))
+
         else:
             self.logger.warning(
                 'CRF not found in observation variables. Compressor cycling statistics will not be calculated, set all values to 0.'
