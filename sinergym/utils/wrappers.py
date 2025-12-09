@@ -1820,12 +1820,8 @@ class CSVLogger(gym.Wrapper):
         env: Env,
         monitor: bool = True,
         info_excluded_keys: List[str] = [
-            'reward',
             'action',
             'timestep',
-            'month',
-            'day',
-            'hour',
             'time_elapsed(hours)',
             'reward_weight',
             'is_raining',
@@ -2053,7 +2049,6 @@ try:
             artifact_save: bool = True,
             artifact_type: str = 'output',
             excluded_info_keys: List[str] = [
-                'reward',
                 'action',
                 'timestep',
                 'month',
