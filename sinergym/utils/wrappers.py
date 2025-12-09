@@ -1770,9 +1770,23 @@ class RadiantLoggerWrapper(BaseLoggerWrapper):
                 .apply(lambda s: max(int(s.ne(s.shift()).sum() - 1), 0))
                 .tolist()
             )
+            compressor_starts_per_day = (
+                crf_df.groupby(['month', 'day'])['crf']
+                .apply(lambda s: int(((s == 1) & (s.shift(1) == 0)).sum()))
+                .tolist()
+            )
+            crf_state_duration_per_day = (
+                crf_df.groupby(['month', 'day'])['crf']
+                .apply(lambda s: s.groupby(s.ne(s.shift()).cumsum()).size().mean())
+                .tolist()
+            )
 
             mean_compressor_cycling_per_day = float(np.mean(compressor_cycles_per_day))
             std_compressor_cycling_per_day = float(np.std(compressor_cycles_per_day))
+            mean_compressor_starts_per_day = float(np.mean(compressor_starts_per_day))
+            std_compressor_starts_per_day = float(np.std(compressor_starts_per_day))
+            mean_crf_state_duration_per_day = float(np.mean(crf_state_duration_per_day))
+            std_crf_state_duration_per_day = float(np.std(crf_state_duration_per_day))
 
         else:
             self.logger.warning(
@@ -1780,6 +1794,10 @@ class RadiantLoggerWrapper(BaseLoggerWrapper):
             )
             mean_compressor_cycling_per_day = 0
             std_compressor_cycling_per_day = 0
+            mean_compressor_starts_per_day = 0
+            std_compressor_starts_per_day = 0
+            mean_crf_state_duration_per_day = 0
+            std_crf_state_duration_per_day = 0
 
         # Data summary
         data_summary = {
@@ -1802,6 +1820,10 @@ class RadiantLoggerWrapper(BaseLoggerWrapper):
             'comfort_violation_time(%)': comfort_violation_time,
             'mean_compressor_cycling_per_day': mean_compressor_cycling_per_day,
             'std_compressor_cycling_per_day': std_compressor_cycling_per_day,
+            'mean_compressor_starts_per_day': mean_compressor_starts_per_day,
+            'std_compressor_starts_per_day': std_compressor_starts_per_day,
+            'mean_crf_state_duration_per_day': mean_crf_state_duration_per_day,
+            'std_crf_state_duration_per_day': std_crf_state_duration_per_day,
             'length(timesteps)': self.get_wrapper_attr('timestep'),
             'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)'],
             'terminated': self.data_logger.terminateds[-1],
