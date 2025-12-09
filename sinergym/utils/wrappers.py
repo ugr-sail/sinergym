@@ -1796,11 +1796,14 @@ class CSVLogger(gym.Wrapper):
                     for k in episode_data.infos[-1].keys()
                     if k not in self.info_excluded_keys
                 ]
-                # Including reset info step
+                # Align reset info to match step info keys, filling with None for any missing keys
+                reset_info = episode_data.infos[0]
+                reset_info_values = [reset_info.get(k, None) for k in info_header]
+                filtered_infos.insert(0, reset_info_values)
                 self._save_csv(
                     'infos.csv',
                     info_header,
-                    [[None] * len(info_header)] + filtered_infos,
+                    filtered_infos,
                 )
 
             # Agent Actions
