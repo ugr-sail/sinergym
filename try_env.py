@@ -10,9 +10,9 @@ from sinergym.utils.wrappers import (
     DatetimeWrapper,
     ExtremeFlowControlWrapper,
     HeatPumpEnergyWrapper,
-    LoggerWrapper,
     NormalizeAction,
     NormalizeObservation,
+    RadiantLoggerWrapper,
     ReduceObservationWrapper,
 )
 
@@ -28,7 +28,7 @@ env = DatetimeWrapper(env)
 env = NormalizeObservation(env)
 env = ExtremeFlowControlWrapper(env)
 env = NormalizeAction(env)
-env = LoggerWrapper(env)
+env = RadiantLoggerWrapper(env)
 env = CSVLogger(env)
 env = ReduceObservationWrapper(
     env,

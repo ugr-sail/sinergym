@@ -146,7 +146,7 @@ parameters:
       - sinergym.utils.wrappers:NormalizeAction: {}
       - sinergym.utils.wrappers:ExtremeFlowControlWrapper: {}
       - sinergym.utils.wrappers:NormalizeObservation: {}
-      - sinergym.utils.wrappers:LoggerWrapper:
+      - sinergym.utils.wrappers:RadiantLoggerWrapper:
           storage_class: sinergym.utils.logger:LoggerStorage
       - sinergym.utils.wrappers:CSVLogger: {}
       - sinergym.utils.wrappers:WandBLogger: 
