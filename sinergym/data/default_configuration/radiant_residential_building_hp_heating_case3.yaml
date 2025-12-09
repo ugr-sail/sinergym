@@ -1,6 +1,6 @@
 # Documentation: https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html
 # ---------------------------------------------------------------------------- #
-#                        ID BASE FROM ENVIRONMNET NAMES                        #
+#                        ID BASE FROM ENVIRONMENT NAMES                        #
 # ---------------------------------------------------------------------------- #
 id_base: radiant_case3_heating
 

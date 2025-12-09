@@ -1669,6 +1669,142 @@ class LoggerWrapper(BaseLoggerWrapper):
         return data_summary
 
 
+@store_init_metadata
+class RadiantLoggerWrapper(BaseLoggerWrapper):
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER RadiantLoggerWrapper', level=LOG_WRAPPERS_LEVEL
+    )
+
+    def __init__(self, env: Env, storage_class: Callable = LoggerStorage):
+        """Wrapper to log data from environment interaction.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
+        """
+        super().__init__(env, storage_class)
+        # Overwrite in case you want more metrics
+        self.custom_variables = []
+        # Overwrite in case you have other summary metrics (same as
+        # self.get_episode_summary return)
+        self.summary_metrics = [
+            'episode_num',
+            'mean_reward',
+            'std_reward',
+            'mean_reward_comfort_term',
+            'std_reward_comfort_term',
+            'mean_reward_energy_term',
+            'std_reward_energy_term',
+            'mean_comfort_penalty',
+            'std_comfort_penalty',
+            'mean_energy_penalty',
+            'std_energy_penalty',
+            'mean_temperature_violation',
+            'std_temperature_violation',
+            'mean_power_demand',
+            'std_power_demand',
+            'cumulative_power_demand',
+            'comfort_violation_time(%)',
+            'length(timesteps)',
+            'time_elapsed(hours)',
+            'terminated',
+            'truncated',
+        ]
+        self.logger.info('Wrapper initialized.')
+
+    def calculate_custom_metrics(
+        self,
+        obs: np.ndarray,
+        action: np.ndarray,
+        reward: SupportsFloat,
+        info: Dict[str, Any],
+        terminated: bool,
+        truncated: bool,
+    ):
+        return []
+
+    def get_episode_summary(self) -> Dict[str, float]:
+        # Get information from logger
+        comfort_terms = [info['comfort_term'] for info in self.data_logger.infos[1:]]
+        energy_terms = [info['energy_term'] for info in self.data_logger.infos[1:]]
+        comfort_penalties = [
+            info['comfort_penalty'] for info in self.data_logger.infos[1:]
+        ]
+        energy_penalties = [
+            info['energy_penalty'] for info in self.data_logger.infos[1:]
+        ]
+        temperature_violations = [
+            info['total_temperature_violation'] for info in self.data_logger.infos[1:]
+        ]
+        power_demands = [
+            info['total_power_demand'] for info in self.data_logger.infos[1:]
+        ]
+        try:
+            comfort_violation_time = (
+                len([value for value in temperature_violations if value > 0])
+                / self.get_wrapper_attr('timestep')
+                * 100
+            )
+        except ZeroDivisionError:
+            comfort_violation_time = 0
+
+        # Compressor cycling statistics (per calendar day) using timesteps_per_hour
+        if 'crf' in self.get_wrapper_attr('observation_variables'):
+            crf_values = [
+                self.get_obs_dict(obs).get('crf')
+                for obs in self.data_logger.observations[1:]
+            ]
+            compressor_cycles_per_day = []
+            timesteps_per_hour = self.get_wrapper_attr('runperiod')['n_steps_per_hour']
+            steps_per_day = 24 * timesteps_per_hour
+
+            for start in range(0, len(crf_values), steps_per_day):
+                day_values = crf_values[start : start + steps_per_day]
+
+                cycles = sum(
+                    1 for prev, curr in zip(day_values, day_values[1:]) if prev != curr
+                )
+                compressor_cycles_per_day.append(cycles)
+
+            mean_compressor_cycling_per_day = float(np.mean(compressor_cycles_per_day))
+            std_compressor_cycling_per_day = float(np.std(compressor_cycles_per_day))
+        else:
+            self.logger.warning(
+                'CRF not found in observation variables. Compressor cycling statistics will not be calculated, set all values to 0.'
+            )
+            mean_compressor_cycling_per_day = 0
+            std_compressor_cycling_per_day = 0
+
+        # Data summary
+        data_summary = {
+            'episode_num': self.get_wrapper_attr('episode'),
+            'mean_reward': np.mean(self.data_logger.rewards),
+            'std_reward': np.std(self.data_logger.rewards),
+            'mean_reward_comfort_term': np.mean(comfort_terms),
+            'std_reward_comfort_term': np.std(comfort_terms),
+            'mean_reward_energy_term': np.mean(energy_terms),
+            'std_reward_energy_term': np.std(energy_terms),
+            'mean_comfort_penalty': np.mean(comfort_penalties),
+            'std_comfort_penalty': np.std(comfort_penalties),
+            'mean_energy_penalty': np.mean(energy_penalties),
+            'std_energy_penalty': np.std(energy_penalties),
+            'mean_temperature_violation': np.mean(temperature_violations),
+            'std_temperature_violation': np.std(temperature_violations),
+            'mean_power_demand': np.mean(power_demands),
+            'std_power_demand': np.std(power_demands),
+            'cumulative_power_demand': np.sum(power_demands),
+            'comfort_violation_time(%)': comfort_violation_time,
+            'mean_compressor_cycling_per_day': mean_compressor_cycling_per_day,
+            'std_compressor_cycling_per_day': std_compressor_cycling_per_day,
+            'length(timesteps)': self.get_wrapper_attr('timestep'),
+            'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)'],
+            'terminated': self.data_logger.terminateds[-1],
+            'truncated': self.data_logger.truncateds[-1],
+        }
+        return data_summary
+
+
 # ---------------------------------------------------------------------------- #
 
 
@@ -1684,8 +1820,12 @@ class CSVLogger(gym.Wrapper):
         env: Env,
         monitor: bool = True,
         info_excluded_keys: List[str] = [
+            'reward',
             'action',
             'timestep',
+            'month',
+            'day',
+            'hour',
             'time_elapsed(hours)',
             'reward_weight',
             'is_raining',
@@ -1913,6 +2053,7 @@ try:
             artifact_save: bool = True,
             artifact_type: str = 'output',
             excluded_info_keys: List[str] = [
+                'reward',
                 'action',
                 'timestep',
                 'month',
