@@ -328,7 +328,7 @@ only_discrete: false
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: sinergym.utils.rewards:MultiZoneRewardV1
+reward: sinergym.utils.rewards:MultiZoneRewardV2
 
 reward_kwargs:
   comfort_threshold: 1
