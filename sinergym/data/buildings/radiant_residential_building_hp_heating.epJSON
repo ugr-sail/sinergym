@@ -7488,7 +7488,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 45
+                    "field": 35
                 }
             ],
             "schedule_type_limits_name": "Any Number"
