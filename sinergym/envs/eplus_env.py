@@ -123,6 +123,8 @@ class EplusEnv(gym.Env):
         # Set the entropy, if seed is None, a random seed will be chosen
         self.seed = seed
         np.random.seed(self.seed)
+        if self.seed is not None:
+            super().reset(seed=self.seed)
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -277,8 +279,9 @@ class EplusEnv(gym.Env):
         """
 
         # If global seed was configured, reset seed will not be applied.
-        if not self.seed:
-            np.random.seed(seed)
+        if self.seed is not None:
+            super().reset(seed=seed)
+            np.random.seed(self.np_random_seed)
 
         # Apply options if exists, else default options
         reset_options = options if options else self.default_options
