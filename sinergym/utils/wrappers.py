@@ -3080,7 +3080,7 @@ class ExtremeFlowControlWrapper(gym.ActionWrapper):
 
     def action(self, action):
         action_ = np.array(deepcopy(action))
-        if len(action_) == 5:  # only for case 1
+        if len(action_) > 1:  # excluding case 1
             for i, action_value_ in enumerate(action_):
                 if i < 5:
                     minimum = self.env.action_space.low[i]
