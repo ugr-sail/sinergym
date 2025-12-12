@@ -3066,6 +3066,9 @@
         },
         "single_pane_clear_eu": {
             "outside_layer": "single_pane_clear_eu"
+        },
+        "double_pane_low_E_air_eu_DEGRADED": {
+            "outside_layer": "double_pane_low_E_air_eu_DEGRADED"
         }
     },
     "ConstructionProperty:InternalHeatSource": {
@@ -10615,6 +10618,11 @@
             "solar_heat_gain_coefficient": 0.85,
             "u_factor": 5.8,
             "visible_transmittance": 0.9
+        },
+        "double_pane_low_E_air_eu_DEGRADED": {
+            "solar_heat_gain_coefficient": 0.3,
+            "u_factor": 2.5,
+            "visible_transmittance": 0.65
         }
     },
     "WindowShadingControl": {

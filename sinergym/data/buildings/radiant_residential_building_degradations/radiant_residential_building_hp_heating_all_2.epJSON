@@ -2894,16 +2894,16 @@
     },
     "Construction": {
         "Combined semi-exposed roof - Energy code standard - Heavyweight": {
-            "layer_2": "MW_Glass_Wool_Roof_Insulation",
-            "layer_3": "Cast Concrete (Lightweight)_.1",
-            "layer_4": "Plasterboard_.013",
-            "outside_layer": "Plywood (Heavyweight)_.01"
+            "layer_2": "MW_Glass_Wool_Roof_Insulation_DEGRADED",
+            "layer_3": "Cast Concrete (Lightweight)_.1_DEGRADED",
+            "layer_4": "Plasterboard_.013_DEGRADED",
+            "outside_layer": "Plywood (Heavyweight)_.01_DEGRADED"
         },
         "Combined semi-exposed roof - Energy code standard - Heavyweight_Rev": {
-            "layer_2": "Cast Concrete (Lightweight)_.1",
-            "layer_3": "MW_Glass_Wool_Roof_Insulation",
-            "layer_4": "Plywood (Heavyweight)_.01",
-            "outside_layer": "Plasterboard_.013"
+            "layer_2": "Cast Concrete (Lightweight)_.1_DEGRADED",
+            "layer_3": "MW_Glass_Wool_Roof_Insulation_DEGRADED",
+            "layer_4": "Plywood (Heavyweight)_.01_DEGRADED",
+            "outside_layer": "Plasterboard_.013_DEGRADED"
         },
         "Dbl Clr 3mm/13mm Arg": {
             "layer_2": "ARGON 13MM",
@@ -2941,32 +2941,32 @@
             "outside_layer": "42"
         },
         "Heated Floor with floor covering - Ground": {
-            "layer_2": "Cast Concrete_.1",
-            "layer_3": "EPS Expanded Polystyrene (Standard)_.08",
-            "layer_4": "Limestone soft_.045",
-            "layer_5": "Ceramic/porcelain_.0095",
-            "outside_layer": "Urea Formaldehyde Foam_.08"
+            "layer_2": "Cast Concrete_.1_DEGRADED",
+            "layer_3": "EPS Expanded Polystyrene (Standard)_.08_DEGRADED",
+            "layer_4": "Limestone soft_.045_DEGRADED",
+            "layer_5": "Ceramic/porcelain_.0095_DEGRADED",
+            "outside_layer": "Urea Formaldehyde Foam_.08_DEGRADED"
         },
         "Heated Floor with floor covering - Ground_Rev": {
-            "layer_2": "Limestone soft_.045",
-            "layer_3": "EPS Expanded Polystyrene (Standard)_.08",
-            "layer_4": "Cast Concrete_.1",
-            "layer_5": "Urea Formaldehyde Foam_.08",
-            "outside_layer": "Ceramic/porcelain_.0095"
+            "layer_2": "Limestone soft_.045_DEGRADED",
+            "layer_3": "EPS Expanded Polystyrene (Standard)_.08_DEGRADED",
+            "layer_4": "Cast Concrete_.1_DEGRADED",
+            "layer_5": "Urea Formaldehyde Foam_.08_DEGRADED",
+            "outside_layer": "Ceramic/porcelain_.0095_DEGRADED"
         },
         "Heated Floor with floor covering - Internal": {
-            "layer_2": "Cast Concrete (Dense)_.1",
-            "layer_3": "EPS Expanded Polystyrene (Standard)_.08",
-            "layer_4": "Limestone soft_.045",
-            "layer_5": "Ceramic/porcelain_.0095",
-            "outside_layer": "0.625 in. gypsum board_.008"
+            "layer_2": "Cast Concrete (Dense)_.1_DEGRADED",
+            "layer_3": "EPS Expanded Polystyrene (Standard)_.08_DEGRADED",
+            "layer_4": "Limestone soft_.045_DEGRADED",
+            "layer_5": "Ceramic/porcelain_.0095_DEGRADED",
+            "outside_layer": "0.625 in. gypsum board_.008_DEGRADED"
         },
         "Heated Floor with floor covering - Internal_Rev": {
-            "layer_2": "Limestone soft_.045",
-            "layer_3": "EPS Expanded Polystyrene (Standard)_.08",
-            "layer_4": "Cast Concrete (Dense)_.1",
-            "layer_5": "0.625 in. gypsum board_.008",
-            "outside_layer": "Ceramic/porcelain_.0095"
+            "layer_2": "Limestone soft_.045_DEGRADED",
+            "layer_3": "EPS Expanded Polystyrene (Standard)_.08_DEGRADED",
+            "layer_4": "Cast Concrete (Dense)_.1_DEGRADED",
+            "layer_5": "0.625 in. gypsum board_.008_DEGRADED",
+            "outside_layer": "Ceramic/porcelain_.0095_DEGRADED"
         },
         "IRTSurface": {
             "outside_layer": "IRTMaterial"
@@ -2976,13 +2976,13 @@
         },
         "Partition - 2 x 1 in. (2x25mm) gypsum plasterboard with 4 in. (100mm) cavity": {
             "layer_2": "6_RVAL_2",
-            "layer_3": "Gypsum Plasterboard_.025",
-            "outside_layer": "Gypsum Plasterboard_.025"
+            "layer_3": "Gypsum Plasterboard_.025_DEGRADED",
+            "outside_layer": "Gypsum Plasterboard_.025_DEGRADED"
         },
         "Partition - 2 x 1 in. (2x25mm) gypsum plasterboard with 4 in. (100mm) cavity_Rev": {
             "layer_2": "6_RVAL_2",
-            "layer_3": "Gypsum Plasterboard_.025",
-            "outside_layer": "Gypsum Plasterboard_.025"
+            "layer_3": "Gypsum Plasterboard_.025_DEGRADED",
+            "outside_layer": "Gypsum Plasterboard_.025_DEGRADED"
         },
         "Puerta interior del proyecto": {
             "outside_layer": "Painted Oak_.035"
@@ -3044,16 +3044,16 @@
             "outside_layer": "CLEAR 3MM"
         },
         "Wall - Energy code standard - Heavyweight": {
-            "layer_2": "XPS_Extruded_Polystyrene_Wall_Insulation",
-            "layer_3": "Concrete Block (Medium)_.1",
-            "layer_4": "Gypsum Plastering_.013",
-            "outside_layer": "Brickwork Outer_.1"
+            "layer_2": "XPS_Extruded_Polystyrene_Wall_Insulation_DEGRADED",
+            "layer_3": "Concrete Block (Medium)_.1_DEGRADED",
+            "layer_4": "Gypsum Plastering_.013_DEGRADED",
+            "outside_layer": "Brickwork Outer_.1_DEGRADED"
         },
         "Wall - Energy code standard - Heavyweight_Rev": {
-            "layer_2": "Concrete Block (Medium)_.1",
-            "layer_3": "XPS_Extruded_Polystyrene_Wall_Insulation",
-            "layer_4": "Brickwork Outer_.1",
-            "outside_layer": "Gypsum Plastering_.013"
+            "layer_2": "Concrete Block (Medium)_.1_DEGRADED",
+            "layer_3": "XPS_Extruded_Polystyrene_Wall_Insulation_DEGRADED",
+            "layer_4": "Brickwork Outer_.1_DEGRADED",
+            "outside_layer": "Gypsum Plastering_.013_DEGRADED"
         },
         "clear_double_pane_air_eu": {
             "outside_layer": "clear_double_pane_air_eu"
@@ -3066,6 +3066,9 @@
         },
         "single_pane_clear_eu": {
             "outside_layer": "single_pane_clear_eu"
+        },
+        "double_pane_low_E_air_eu_DEGRADED": {
+            "outside_layer": "double_pane_low_E_air_eu_DEGRADED"
         }
     },
     "ConstructionProperty:InternalHeatSource": {
@@ -3824,6 +3827,16 @@
             "thickness": 0.008,
             "visible_absorptance": 0.7
         },
+        "0.625 in. gypsum board_.008_DEGRADED": {
+            "conductivity": 0.18,
+            "density": 640,
+            "roughness": "Rough",
+            "solar_absorptance": 0.6,
+            "specific_heat": 1150,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.012,
+            "visible_absorptance": 0.6
+        },
         "Brickwork Outer_.1": {
             "conductivity": 0.84,
             "density": 1700,
@@ -3833,6 +3846,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.1,
             "visible_absorptance": 0.7
+        },
+        "Brickwork Outer_.1_DEGRADED": {
+            "conductivity": 0.9,
+            "density": 1700,
+            "roughness": "Rough",
+            "solar_absorptance": 0.6,
+            "specific_heat": 800,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.08,
+            "visible_absorptance": 0.6
         },
         "Cast Concrete (Dense)_.1": {
             "conductivity": 1.4,
@@ -3844,6 +3867,16 @@
             "thickness": 0.1,
             "visible_absorptance": 0.6
         },
+        "Cast Concrete (Dense)_.1_DEGRADED": {
+            "conductivity": 1.55,
+            "density": 2100,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 840,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.08,
+            "visible_absorptance": 0.55
+        },
         "Cast Concrete (Lightweight)_.1": {
             "conductivity": 0.38,
             "density": 1200,
@@ -3853,6 +3886,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.1,
             "visible_absorptance": 0.6
+        },
+        "Cast Concrete (Lightweight)_.1_DEGRADED": {
+            "conductivity": 0.4,
+            "density": 1200,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.08,
+            "visible_absorptance": 0.55
         },
         "Cast Concrete_.1": {
             "conductivity": 1.13,
@@ -3864,6 +3907,16 @@
             "thickness": 0.1,
             "visible_absorptance": 0.6
         },
+        "Cast Concrete_.1_DEGRADED": {
+            "conductivity": 1.15,
+            "density": 2000,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.08,
+            "visible_absorptance": 0.55
+        },
         "Ceramic/porcelain_.0095": {
             "conductivity": 1.3,
             "density": 2300,
@@ -3873,6 +3926,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.0095,
             "visible_absorptance": 0.4
+        },
+        "Ceramic/porcelain_.0095_DEGRADED": {
+            "conductivity": 1.5,
+            "density": 2300,
+            "roughness": "Rough",
+            "solar_absorptance": 0.35,
+            "specific_heat": 840,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.0075,
+            "visible_absorptance": 0.35
         },
         "Concrete Block (Medium)_.1": {
             "conductivity": 0.51,
@@ -3884,6 +3947,16 @@
             "thickness": 0.1,
             "visible_absorptance": 0.6
         },
+        "Concrete Block (Medium)_.1_DEGRADED": {
+            "conductivity": 0.53,
+            "density": 1400,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.08,
+            "visible_absorptance": 0.55
+        },
         "EPS Expanded Polystyrene (Standard)_.08": {
             "conductivity": 0.04,
             "density": 15,
@@ -3893,6 +3966,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.08,
             "visible_absorptance": 0.6
+        },
+        "EPS Expanded Polystyrene (Standard)_.08_DEGRADED": {
+            "conductivity": 0.05,
+            "density": 15,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1400,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.07,
+            "visible_absorptance": 0.55
         },
         "Gypsum Plasterboard_.025": {
             "conductivity": 0.25,
@@ -3904,6 +3987,16 @@
             "thickness": 0.025,
             "visible_absorptance": 0.5
         },
+        "Gypsum Plasterboard_.025_DEGRADED": {
+            "conductivity": 0.27,
+            "density": 900,
+            "roughness": "Rough",
+            "solar_absorptance": 0.45,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.02,
+            "visible_absorptance": 0.45
+        },
         "Gypsum Plastering_.013": {
             "conductivity": 0.4,
             "density": 1000,
@@ -3913,6 +4006,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.013,
             "visible_absorptance": 0.5
+        },
+        "Gypsum Plastering_.013_DEGRADED": {
+            "conductivity": 0.42,
+            "density": 1000,
+            "roughness": "Rough",
+            "solar_absorptance": 0.45,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.011,
+            "visible_absorptance": 0.45
         },
         "Limestone soft_.045": {
             "conductivity": 1.1,
@@ -3924,6 +4027,16 @@
             "thickness": 0.045,
             "visible_absorptance": 0.6
         },
+        "Limestone soft_.045_DEGRADED": {
+            "conductivity": 1.2,
+            "density": 2200,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1000,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.04,
+            "visible_absorptance": 0.55
+        },
         "MW_Glass_Wool_Roof_Insulation": {
             "conductivity": 0.04,
             "density": 12,
@@ -3933,6 +4046,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.05,
             "visible_absorptance": 0.6
+        },
+        "MW_Glass_Wool_Roof_Insulation_DEGRADED": {
+            "conductivity": 0.05,
+            "density": 12,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 840,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.04,
+            "visible_absorptance": 0.55
         },
         "PU": {
             "conductivity": 400,
@@ -3964,6 +4087,16 @@
             "thickness": 0.013,
             "visible_absorptance": 0.5
         },
+        "Plasterboard_.013_DEGRADED": {
+            "conductivity": 0.27,
+            "density": 2800,
+            "roughness": "Rough",
+            "solar_absorptance": 0.45,
+            "specific_heat": 896,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.011,
+            "visible_absorptance": 0.45
+        },
         "Plywood (Heavyweight)_.01": {
             "conductivity": 0.15,
             "density": 700,
@@ -3973,6 +4106,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.01,
             "visible_absorptance": 0.78
+        },
+        "Plywood (Heavyweight)_.01_DEGRADED": {
+            "conductivity": 0.17,
+            "density": 700,
+            "roughness": "Rough",
+            "solar_absorptance": 0.6,
+            "specific_heat": 1420,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.008,
+            "visible_absorptance": 0.6
         },
         "Urea Formaldehyde Foam_.08": {
             "conductivity": 0.04,
@@ -3984,6 +4127,16 @@
             "thickness": 0.08,
             "visible_absorptance": 0.6
         },
+        "Urea Formaldehyde Foam_.08_DEGRADED": {
+            "conductivity": 0.05,
+            "density": 10,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1400,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.06,
+            "visible_absorptance": 0.55
+        },
         "XPS_Extruded_Polystyrene_Wall_Insulation": {
             "conductivity": 0.034,
             "density": 35,
@@ -3993,6 +4146,16 @@
             "thermal_absorptance": 0.9,
             "thickness": 0.05,
             "visible_absorptance": 0.6
+        },
+        "XPS_Extruded_Polystyrene_Wall_Insulation_DEGRADED": {
+            "conductivity": 0.039,
+            "density": 35,
+            "roughness": "Rough",
+            "solar_absorptance": 0.55,
+            "specific_heat": 1400,
+            "thermal_absorptance": 0.85,
+            "thickness": 0.04,
+            "visible_absorptance": 0.55
         }
     },
     "Material:InfraredTransparent": {
@@ -10597,9 +10760,9 @@
     },
     "WindowMaterial:SimpleGlazingSystem": {
         "clear_double_pane_air_eu": {
-            "solar_heat_gain_coefficient": 0.7,
-            "u_factor": 2.8,
-            "visible_transmittance": 0.78
+            "solar_heat_gain_coefficient": 0.82,
+            "u_factor": 5.5,
+            "visible_transmittance": 0.85
         },
         "double_pane_low_E_air_eu": {
             "solar_heat_gain_coefficient": 0.4,
@@ -10615,6 +10778,11 @@
             "solar_heat_gain_coefficient": 0.85,
             "u_factor": 5.8,
             "visible_transmittance": 0.9
+        },
+        "double_pane_low_E_air_eu_DEGRADED": {
+            "solar_heat_gain_coefficient": 0.3,
+            "u_factor": 1.8,
+            "visible_transmittance": 0.65
         }
     },
     "WindowShadingControl": {
@@ -11338,91 +11506,91 @@
     },
     "ZoneInfiltration:DesignFlowRate": {
         "FirstFloor:Kitchen Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:Kitchen"
         },
         "FirstFloor:LivingRoom Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:LivingRoom"
         },
         "Roof1:Zone1 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "Roof1:Zone1"
         },
         "SecondFloor:Bath Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bath"
         },
         "SecondFloor:BathXBed02 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed02"
         },
         "SecondFloor:BathXBed03 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed03"
         },
         "SecondFloor:Bedroom01 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom01"
         },
         "SecondFloor:Bedroom02 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom02"
         },
         "SecondFloor:Bedroom03 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.2,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom03"

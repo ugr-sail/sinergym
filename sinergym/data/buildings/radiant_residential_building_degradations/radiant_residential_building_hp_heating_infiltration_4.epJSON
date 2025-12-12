@@ -11342,7 +11342,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:Kitchen"
@@ -11352,7 +11352,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:LivingRoom"
@@ -11362,7 +11362,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "Roof1:Zone1"
@@ -11372,7 +11372,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bath"
@@ -11382,7 +11382,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed02"
@@ -11392,7 +11392,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed03"
@@ -11402,7 +11402,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.05,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom01"
@@ -11412,7 +11412,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom02"
@@ -11422,7 +11422,7 @@
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
-            "temperature_term_coefficient": 0,
+            "temperature_term_coefficient": 0.01,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom03"

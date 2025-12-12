@@ -11338,7 +11338,7 @@
     },
     "ZoneInfiltration:DesignFlowRate": {
         "FirstFloor:Kitchen Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11348,7 +11348,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:Kitchen"
         },
         "FirstFloor:LivingRoom Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11358,7 +11358,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:LivingRoom"
         },
         "Roof1:Zone1 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11368,7 +11368,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "Roof1:Zone1"
         },
         "SecondFloor:Bath Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11378,7 +11378,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bath"
         },
         "SecondFloor:BathXBed02 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11388,7 +11388,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed02"
         },
         "SecondFloor:BathXBed03 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11398,7 +11398,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed03"
         },
         "SecondFloor:Bedroom01 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11408,7 +11408,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom01"
         },
         "SecondFloor:Bedroom02 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
@@ -11418,7 +11418,7 @@
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom02"
         },
         "SecondFloor:Bedroom03 Infiltration": {
-            "air_changes_per_hour": 0.1,
+            "air_changes_per_hour": 0.3,
             "constant_term_coefficient": 1,
             "design_flow_rate_calculation_method": "AirChanges/Hour",
             "schedule_name": "On 24/7",
