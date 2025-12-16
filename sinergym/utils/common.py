@@ -380,7 +380,7 @@ def ornstein_uhlenbeck_process(
             Tuple[float, float, float, Tuple[float, float]],
         ],
     ],
-    generator: Optional[np.random.Generator] = None
+    generator: Optional[np.random.Generator] = None,
 ) -> pd.DataFrame:
     """
     Add noise to the data using the Ornstein-Uhlenbeck process.

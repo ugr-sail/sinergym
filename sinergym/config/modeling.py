@@ -416,7 +416,11 @@ class ModelJSON(object):
                     # Sample sigma, mu, tau if param is a tuple
                     if i < 3:
                         if isinstance(param, tuple):
-                            uniform_fn = np.random.uniform if self.env is None else self.env.np_random.uniform
+                            uniform_fn = (
+                                np.random.uniform
+                                if self.env is None
+                                else self.env.np_random.uniform
+                            )
                             processed_params.append(
                                 float(uniform_fn(param[0], param[1]))
                             )
@@ -436,7 +440,7 @@ class ModelJSON(object):
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
                 variability_config=self.weather_variability_config,
-                generator=None if self.env is None else self.env.np_random
+                generator=None if self.env is None else self.env.np_random,
             )  # type: ignore
 
             self.logger.info(

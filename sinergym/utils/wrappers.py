@@ -703,7 +703,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             self.forecast_data = ornstein_uhlenbeck_process(
                 data=self.forecast_data,
                 variability_config=self.forecast_variability,  # type: ignore
-                generator=self.np_random
+                generator=self.np_random,
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -913,7 +913,7 @@ class EnergyCostWrapper(gym.Wrapper):
             self.energy_cost_data = ornstein_uhlenbeck_process(
                 data=self.energy_cost_data,
                 variability_config=self.energy_cost_variability,  # type: ignore
-                generator=self.np_random
+                generator=self.np_random,
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -2653,7 +2653,9 @@ class ProbabilisticContextWrapper(gym.Wrapper):
         num_context_vars = self.context_space.shape[0]
         # For probabilistic mode: check which variables should be updated first
         # to avoid unnecessary calculations if no variables need updating
-        update_mask = self.np_random.random(size=num_context_vars) < self.update_probability
+        update_mask = (
+            self.np_random.random(size=num_context_vars) < self.update_probability
+        )
 
         if not np.any(update_mask):
             # No variables were selected for update, return early

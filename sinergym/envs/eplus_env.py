@@ -167,7 +167,7 @@ class EplusEnv(gym.Env):
             meters=self.meters,
             max_ep_store=self.max_ep_store,
             building_config=self.building_config,
-            env=self
+            env=self,
         )
 
         # ---------------------------------------------------------------------------- #
