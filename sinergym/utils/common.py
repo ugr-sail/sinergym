@@ -380,6 +380,7 @@ def ornstein_uhlenbeck_process(
             Tuple[float, float, float, Tuple[float, float]],
         ],
     ],
+    generator: Optional[np.random.Generator] = None
 ) -> pd.DataFrame:
     """
     Add noise to the data using the Ornstein-Uhlenbeck process.
@@ -389,6 +390,7 @@ def ornstein_uhlenbeck_process(
         variability_config (dict): Noise parameters. Can be:
             - (sigma, mu, tau)
             - (sigma, mu, tau, var_range)
+        generator (Optional[np.random.Generator]): rng to use for gaussian noise. Defaults to None.
 
     Returns:
         pd.DataFrame: Data with noise added. Clipping applied only if var_range is provided.
@@ -421,11 +423,12 @@ def ornstein_uhlenbeck_process(
 
         # Create noise
         noise = np.zeros(n)
+        randn_fn = np.random.randn if generator is None else generator.standard_normal
         for i in range(n - 1):
             noise[i + 1] = (
                 noise[i]
                 + dt * (-(noise[i] - mu) / tau)
-                + sigma_bis * sqrt_dt * np.random.randn()
+                + sigma_bis * sqrt_dt * randn_fn()
             )
 
         # Add noise

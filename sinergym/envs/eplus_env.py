@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 import numpy as np
 import yaml
+from gymnasium.utils import seeding
 
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
@@ -122,9 +123,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         # Set the entropy, if seed is None, a random seed will be chosen
         self.seed = seed
-        np.random.seed(self.seed)
-        if self.seed is not None:
-            super().reset(seed=self.seed)
+        self.set_seed(seed=self.seed)
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -168,6 +167,7 @@ class EplusEnv(gym.Env):
             meters=self.meters,
             max_ep_store=self.max_ep_store,
             building_config=self.building_config,
+            env=self
         )
 
         # ---------------------------------------------------------------------------- #
@@ -280,8 +280,8 @@ class EplusEnv(gym.Env):
 
         # If global seed was configured, reset seed will not be applied.
         if self.seed is not None:
-            super().reset(seed=seed)
-            np.random.seed(self.np_random_seed)
+            np.random.seed(seed)
+            self._np_random, self._np_random_seed = seeding.np_random(seed)
 
         # Apply options if exists, else default options
         reset_options = options if options else self.default_options
@@ -471,6 +471,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def close(self) -> None:
         """End simulation."""
+        self.model.env = None
         self.energyplus_simulator.stop()
         self.logger.info(f'Environment closed. [{self.name}]')
 
@@ -613,6 +614,7 @@ class EplusEnv(gym.Env):
         """
         self.seed = seed
         np.random.seed(self.seed)
+        self._np_random, self._np_random_seed = seeding.np_random(self.seed)
 
     # ---------------------------------- Spaces ---------------------------------- #
 

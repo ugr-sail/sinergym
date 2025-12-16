@@ -8,6 +8,7 @@ from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+import gymnasium as gym
 import numpy as np
 from eppy.modeleditor import IDF
 from epw.weather import Weather
@@ -50,6 +51,7 @@ class ModelJSON(object):
     :param episode_length: Time in seconds that an episode has.
     :param step_size: Time in seconds that an step has.
     :param timestep_per_episode: Timestep in a runperiod (simulation episode).
+    :param env: Gymnasium environment tied to current instance.
     """
 
     logger = TerminalLogger().getLogger(name='MODEL', level=LOG_MODEL_LEVEL)
@@ -63,6 +65,7 @@ class ModelJSON(object):
         meters: Dict[str, str],
         max_ep_store: int,
         building_config: Optional[Dict[str, Any]] = None,
+        env: Optional[gym.Env] = None,
     ):
         """Constructor. Variables and meters are required to update building model scheme.
 
@@ -74,6 +77,7 @@ class ModelJSON(object):
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             max_ep_store (int): Number of episodes directories will be stored in workspace_path.
             building_config (Optional[Dict[str, Any]]): Dict config with extra configuration which is required to modify building model. Defaults to None.
+            env (Optional[gym.Env]): Gymnasium environment tied to current instance. Defaults to None.
         """
 
         self.pkg_data_path = PKG_DATA_PATH
@@ -95,8 +99,12 @@ class ModelJSON(object):
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
+        # Random generator
+        self.env = env
+
         # Select one weather randomly (if there are more than one)
-        choice = np.random.choice(self.weather_files)
+        choice_fn = np.random.choice if self.env is None else self.env.np_random.choice
+        choice = choice_fn(self.weather_files)
         self._weather_path = (
             choice
             if os.path.isfile(choice)
@@ -342,8 +350,9 @@ class ModelJSON(object):
             raise ValueError
 
         # Select a new weather file randomly
+        choice_fn = np.random.choice if self.env is None else self.env.np_random.choice
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', np.random.choice(self.weather_files)
+            self.pkg_data_path, 'weather', choice_fn(self.weather_files)
         )
 
         # Verify file exists
@@ -407,8 +416,9 @@ class ModelJSON(object):
                     # Sample sigma, mu, tau if param is a tuple
                     if i < 3:
                         if isinstance(param, tuple):
+                            uniform_fn = np.random.uniform if self.env is None else self.env.np_random.uniform
                             processed_params.append(
-                                float(np.random.uniform(param[0], param[1]))
+                                float(uniform_fn(param[0], param[1]))
                             )
                         elif isinstance(param, (float, int)):
                             processed_params.append(float(param))
@@ -426,6 +436,7 @@ class ModelJSON(object):
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
                 variability_config=self.weather_variability_config,
+                generator=None if self.env is None else self.env.np_random
             )  # type: ignore
 
             self.logger.info(
