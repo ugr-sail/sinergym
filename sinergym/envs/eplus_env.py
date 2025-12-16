@@ -279,7 +279,7 @@ class EplusEnv(gym.Env):
         """
 
         # If global seed was configured, reset seed will not be applied.
-        if self.seed is not None:
+        if self.seed is None:
             np.random.seed(seed)
             self._np_random, self._np_random_seed = seeding.np_random(seed)
 
