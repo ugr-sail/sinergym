@@ -99,7 +99,7 @@ class ModelJSON(object):
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
-        # Random generator
+        # Store reference of current enviroment to use its RNG
         self.env = env
 
         # Select one weather randomly (if there are more than one)
