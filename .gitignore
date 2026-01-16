@@ -51,8 +51,10 @@ cov.xml
 
 #wandb
 wandb/
-
 artifacts/
+
+#plots
+plots/
 
 #fcntl
 .lock
