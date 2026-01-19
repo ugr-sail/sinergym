@@ -122,7 +122,9 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         # Set the entropy, if seed is None, a random seed will be chosen
         self.seed = seed
-        np.random.seed(self.seed)
+        # Use modern numpy Generator API instead of global state
+        # If seed is None, Generator will use a random seed from OS
+        self.np_random = np.random.Generator(np.random.PCG64(self.seed))
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -166,6 +168,7 @@ class EplusEnv(gym.Env):
             meters=self.meters,
             max_ep_store=self.max_ep_store,
             building_config=self.building_config,
+            np_random=self.np_random,
         )
 
         # ---------------------------------------------------------------------------- #
@@ -277,8 +280,15 @@ class EplusEnv(gym.Env):
         """
 
         # If global seed was configured, reset seed will not be applied.
+        # Otherwise, create a new generator for this episode with the provided seed
         if not self.seed:
-            np.random.seed(seed)
+            if seed is not None:
+                self.np_random = np.random.Generator(np.random.PCG64(seed))
+            else:
+                # If no seed provided, create a new generator with random seed
+                self.np_random = np.random.Generator(np.random.PCG64())
+            # Update the model's generator reference
+            self.model.np_random = self.np_random
 
         # Apply options if exists, else default options
         reset_options = options if options else self.default_options
@@ -609,7 +619,9 @@ class EplusEnv(gym.Env):
             seed (Optional[int]): Seed for random number generator.
         """
         self.seed = seed
-        np.random.seed(self.seed)
+        self.np_random = np.random.Generator(np.random.PCG64(self.seed))
+        # Update the model's generator reference
+        self.model.np_random = self.np_random
 
     # ---------------------------------- Spaces ---------------------------------- #
 

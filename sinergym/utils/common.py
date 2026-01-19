@@ -380,6 +380,7 @@ def ornstein_uhlenbeck_process(
             Tuple[float, float, float, Tuple[float, float]],
         ],
     ],
+    np_random: Optional[np.random.Generator] = None,
 ) -> pd.DataFrame:
     """
     Add noise to the data using the Ornstein-Uhlenbeck process.
@@ -389,6 +390,8 @@ def ornstein_uhlenbeck_process(
         variability_config (dict): Noise parameters. Can be:
             - (sigma, mu, tau)
             - (sigma, mu, tau, var_range)
+        np_random (Optional[np.random.Generator]): Random number generator for reproducible randomness.
+            If None, uses np.random (legacy mode). Defaults to None.
 
     Returns:
         pd.DataFrame: Data with noise added. Clipping applied only if var_range is provided.
@@ -398,6 +401,9 @@ def ornstein_uhlenbeck_process(
 
     dt = 1.0
     n = data_mod.shape[0]
+
+    # Use provided generator or fall back to legacy np.random
+    rng = np_random if np_random is not None else np.random
 
     # T = 1.0
     # dt = T / n # tau defined as percentage of EPW
@@ -422,11 +428,19 @@ def ornstein_uhlenbeck_process(
         # Create noise
         noise = np.zeros(n)
         for i in range(n - 1):
-            noise[i + 1] = (
-                noise[i]
-                + dt * (-(noise[i] - mu) / tau)
-                + sigma_bis * sqrt_dt * np.random.randn()
-            )
+            # Use standard_normal() for Generator, randn() for legacy
+            if np_random is not None:
+                noise[i + 1] = (
+                    noise[i]
+                    + dt * (-(noise[i] - mu) / tau)
+                    + sigma_bis * sqrt_dt * rng.standard_normal()
+                )
+            else:
+                noise[i + 1] = (
+                    noise[i]
+                    + dt * (-(noise[i] - mu) / tau)
+                    + sigma_bis * sqrt_dt * rng.randn()
+                )
 
         # Add noise
         data_mod[variable] += noise

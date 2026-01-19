@@ -63,6 +63,7 @@ class ModelJSON(object):
         meters: Dict[str, str],
         max_ep_store: int,
         building_config: Optional[Dict[str, Any]] = None,
+        np_random: Optional[np.random.Generator] = None,
     ):
         """Constructor. Variables and meters are required to update building model scheme.
 
@@ -74,6 +75,7 @@ class ModelJSON(object):
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             max_ep_store (int): Number of episodes directories will be stored in workspace_path.
             building_config (Optional[Dict[str, Any]]): Dict config with extra configuration which is required to modify building model. Defaults to None.
+            np_random (Optional[np.random.Generator]): Random number generator for reproducible randomness. If None, a default generator will be created. Defaults to None.
         """
 
         self.pkg_data_path = PKG_DATA_PATH
@@ -95,8 +97,11 @@ class ModelJSON(object):
         # IDD
         self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
 
+        # Random number generator (use provided or create default)
+        self.np_random = np_random if np_random is not None else np.random.default_rng()
+
         # Select one weather randomly (if there are more than one)
-        choice = np.random.choice(self.weather_files)
+        choice = self.np_random.choice(self.weather_files)
         self._weather_path = (
             choice
             if os.path.isfile(choice)
@@ -343,7 +348,7 @@ class ModelJSON(object):
 
         # Select a new weather file randomly
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', np.random.choice(self.weather_files)
+            self.pkg_data_path, 'weather', self.np_random.choice(self.weather_files)
         )
 
         # Verify file exists
@@ -408,7 +413,7 @@ class ModelJSON(object):
                     if i < 3:
                         if isinstance(param, tuple):
                             processed_params.append(
-                                float(np.random.uniform(param[0], param[1]))
+                                float(self.np_random.uniform(param[0], param[1]))
                             )
                         elif isinstance(param, (float, int)):
                             processed_params.append(float(param))
@@ -426,6 +431,7 @@ class ModelJSON(object):
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
                 variability_config=self.weather_variability_config,
+                np_random=self.np_random,
             )  # type: ignore
 
             self.logger.info(
