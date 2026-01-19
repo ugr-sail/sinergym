@@ -59,6 +59,16 @@ def store_init_metadata(cls):
 # ---------------------------------------------------------------------------- #
 
 
+def _get_np_random(wrapper) -> np.random.Generator:
+    """Get random number generator from base environment.
+
+    Returns the np_random generator from the base environment.
+    In Sinergym, all environments (EplusEnv) always have np_random initialized,
+    even when seed is None (uses random seed from OS).
+    """
+    return wrapper.get_wrapper_attr('np_random')
+
+
 # Monkey patch gym.Wrapper to add get_observation_dict method
 # This makes the method available from any wrapper level
 def _wrapper_get_obs_dict(self, obs: np.ndarray) -> Dict[str, float]:
@@ -701,7 +711,9 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         if self.forecast_variability is not None:
             self.forecast_data = ornstein_uhlenbeck_process(
-                data=self.forecast_data, variability_config=self.forecast_variability  # type: ignore
+                data=self.forecast_data,
+                variability_config=self.forecast_variability,  # type: ignore
+                np_random=_get_np_random(self),
             )
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
@@ -2525,7 +2537,8 @@ class ProbabilisticContextWrapper(gym.Wrapper):
                 self.context_space.high,
             ).astype(np.float32)
         else:
-            self.current_context = np.random.uniform(
+            rng = _get_np_random(self)
+            self.current_context = rng.uniform(
                 self.context_space.low,
                 self.context_space.high,
                 size=self.context_space.shape[0],
@@ -2575,7 +2588,8 @@ class ProbabilisticContextWrapper(gym.Wrapper):
         else:
             # For non-probabilistic modes: use update_probability to trigger updates
             # Type narrowing: we know it's a float in non-probabilistic mode
-            if np.random.random() < self.update_probability:
+            rng = _get_np_random(self)
+            if rng.random() < self.update_probability:
                 new_context_values = self._generate_context_values()
                 if new_context_values is not None:
                     self.get_wrapper_attr('update_context')(new_context_values)
@@ -2605,11 +2619,13 @@ class ProbabilisticContextWrapper(gym.Wrapper):
 
             if self.global_value:
                 # Same delta for all variables
-                delta_value = np.random.uniform(-delta_val, delta_val, size=1)[0]
+                rng = _get_np_random(self)
+                delta_value = rng.uniform(-delta_val, delta_val, size=1)[0]
                 delta_values = np.full(num_context_vars, delta_value, dtype=np.float32)
             else:  # 'independent'
                 # Independent delta for each variable
-                delta_values = np.random.uniform(
+                rng = _get_np_random(self)
+                delta_values = rng.uniform(
                     -delta_val,
                     delta_val,
                     size=num_context_vars,
@@ -2624,7 +2640,8 @@ class ProbabilisticContextWrapper(gym.Wrapper):
             # Generate base values according to global_value
             if self.global_value:
                 # Same value for all variables (from first dimension)
-                base_value = np.random.uniform(
+                rng = _get_np_random(self)
+                base_value = rng.uniform(
                     self.context_space.low[0],
                     self.context_space.high[0],
                     size=1,
@@ -2632,7 +2649,8 @@ class ProbabilisticContextWrapper(gym.Wrapper):
                 new_values = np.full(num_context_vars, base_value, dtype=np.float32)
             else:  # 'independent'
                 # Independent value for each variable
-                new_values = np.random.uniform(
+                rng = _get_np_random(self)
+                new_values = rng.uniform(
                     self.context_space.low,
                     self.context_space.high,
                     size=num_context_vars,
@@ -2651,7 +2669,8 @@ class ProbabilisticContextWrapper(gym.Wrapper):
         # For probabilistic mode: check which variables should be updated first
         # to avoid unnecessary calculations if no variables need updating
 
-        update_mask = np.random.random(size=num_context_vars) < self.update_probability
+        rng = _get_np_random(self)
+        update_mask = rng.random(size=num_context_vars) < self.update_probability
 
         if not np.any(update_mask):
             # No variables were selected for update, return early
@@ -2801,6 +2820,7 @@ class OfficeGridStorageSmoothingActionConstraintsWrapper(
             # -1.0 is 0.0 when action space transformation to simulator action space.
             null_value = -1.0
         if act[2] > null_value and act[3] > null_value:
-            random_rate_index = np.random.randint(2, 4)
+            rng = _get_np_random(self)
+            random_rate_index = rng.integers(2, 4)
             act[random_rate_index] = null_value
         return act

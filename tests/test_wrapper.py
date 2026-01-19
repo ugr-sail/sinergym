@@ -1183,6 +1183,143 @@ def test_probabilistic_context_wrapper_basic(env_5zone):
     env2.close()
 
 
+def test_probabilistic_context_wrapper_reproducibility(
+    ACTION_SPACE_5ZONE,
+    TIME_VARIABLES,
+    VARIABLES_5ZONE,
+    METERS_5ZONE,
+    ACTUATORS_5ZONE,
+    CONTEXT_5ZONE,
+):
+    """Test ProbabilisticContextWrapper: reproducibility with seeds."""
+    from sinergym.envs.eplus_env import EplusEnv
+    from sinergym.utils.rewards import LinearReward
+
+    context_space = gym.spaces.Box(
+        low=np.array([0.3, 0.3], dtype=np.float32),
+        high=np.array([0.9, 0.9], dtype=np.float32),
+        shape=(2,),
+        dtype=np.float32,
+    )
+
+    # Create base environment WITHOUT initial_context to test seed reproducibility
+    base_env = EplusEnv(
+        building_file='5ZoneAutoDXVAV.epJSON',
+        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        action_space=ACTION_SPACE_5ZONE,
+        time_variables=TIME_VARIABLES,
+        variables=VARIABLES_5ZONE,
+        meters=METERS_5ZONE,
+        actuators=ACTUATORS_5ZONE,
+        context=CONTEXT_5ZONE,
+        # No initial_context - let it be generated randomly based on seed
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
+        env_name='PYTESTGYM',
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
+    )
+
+    # Test reproducibility with same seed
+    env1 = ProbabilisticContextWrapper(
+        env=base_env,
+        context_space=context_space,
+        update_probability=1.0,  # Always update to test determinism
+        global_value=False,
+        delta_update=False,
+    )
+    env1.reset(seed=42)
+    action = env1.action_space.sample()
+    context1_after_reset = env1.current_context.copy()
+    _, _, _, _, _ = env1.step(action)
+    context1_after_step = env1.current_context.copy()
+    env1.close()
+
+    # Same seed should produce same results - create new base env to ensure clean state
+    base_env2 = EplusEnv(
+        building_file='5ZoneAutoDXVAV.epJSON',
+        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        action_space=ACTION_SPACE_5ZONE,
+        time_variables=TIME_VARIABLES,
+        variables=VARIABLES_5ZONE,
+        meters=METERS_5ZONE,
+        actuators=ACTUATORS_5ZONE,
+        context=CONTEXT_5ZONE,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
+        env_name='PYTESTGYM',
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
+    )
+    env2 = ProbabilisticContextWrapper(
+        env=base_env2,
+        context_space=context_space,
+        update_probability=1.0,
+        global_value=False,
+        delta_update=False,
+    )
+    env2.reset(seed=42)
+    context2_after_reset = env2.current_context.copy()
+    _, _, _, _, _ = env2.step(action)
+    context2_after_step = env2.current_context.copy()
+    env2.close()
+    base_env2.close()
+
+    # Verify reproducibility
+    assert np.allclose(
+        context1_after_reset, context2_after_reset, atol=1e-6
+    ), "Same seed should produce same initial context"
+    assert np.allclose(
+        context1_after_step, context2_after_step, atol=1e-6
+    ), "Same seed should produce same context after step"
+
+    # Different seed should produce different results
+    base_env3 = EplusEnv(
+        building_file='5ZoneAutoDXVAV.epJSON',
+        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        action_space=ACTION_SPACE_5ZONE,
+        time_variables=TIME_VARIABLES,
+        variables=VARIABLES_5ZONE,
+        meters=METERS_5ZONE,
+        actuators=ACTUATORS_5ZONE,
+        context=CONTEXT_5ZONE,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0),
+        },
+        env_name='PYTESTGYM',
+        building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
+    )
+    env3 = ProbabilisticContextWrapper(
+        env=base_env3,
+        context_space=context_space,
+        update_probability=1.0,
+        global_value=False,
+        delta_update=False,
+    )
+    env3.reset(seed=123)
+    context3_after_reset = env3.current_context.copy()
+    env3.close()
+    base_env3.close()
+
+    assert not np.allclose(
+        context1_after_reset, context3_after_reset, atol=1e-6
+    ), "Different seeds should produce different initial context"
+
+    base_env.close()
+
+
 def test_probabilistic_context_wrapper_update_modes(env_5zone):
     """Test ProbabilisticContextWrapper: global_value, delta_update, and combinations."""
     context_space = gym.spaces.Box(
