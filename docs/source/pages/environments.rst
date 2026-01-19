@@ -261,9 +261,63 @@ Parameters related to the building model and simulation, such as ``people occupa
 Seed
 ====
 
-The ``seed`` parameter is used to set the random seed for the global environment. This ensures reproducibility in the simulation results, including weather noise and/or dynamic normalization. If not specified, the seed is randomly generated.
+*Sinergym* supports two levels of seed configuration for reproducibility:
 
-.. warning:: If you define this global seed, the seed feature for reset will be disabled.
+**Global Seed (Environment-level)**
+-----------------------------------
+
+The ``seed`` parameter in the environment constructor sets a **global random seed** for the entire environment lifecycle. This ensures complete reproducibility across all episodes, including:
+
+- Weather file selection (when multiple weather files are provided)
+- Weather variability noise (Ornstein-Uhlenbeck process)
+- Dynamic normalization statistics
+- Any other random processes in the environment
+
+When a global seed is set, the same seed will produce identical results across different environment instances and executions.
+
+**Example:**
+
+.. code-block:: python
+
+    import gymnasium as gym
+    
+    # Create environment with global seed
+    env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1', seed=1234)
+    
+    # All episodes will use the same random sequence
+    obs1, _ = env.reset()
+    obs2, _ = env.reset()  # Different episode, but deterministic sequence
+
+**Episode-level Seed (Reset seed)**
+-----------------------------------
+
+When no global seed is specified (``seed=None``), you can control randomness **per episode** using the ``seed`` parameter in the ``reset()`` method. This allows for controlled variability between episodes while maintaining reproducibility within each episode.
+
+**Example:**
+
+.. code-block:: python
+
+    import gymnasium as gym
+    
+    # Create environment without global seed
+    env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1', seed=None)
+    
+    # Each episode can have its own seed
+    obs1, _ = env.reset(seed=0)   # Episode 1 with seed 0
+    obs2, _ = env.reset(seed=0)   # Episode 2 with seed 0 (same as episode 1)
+    obs3, _ = env.reset(seed=1)   # Episode 3 with seed 1 (different from episodes 1-2)
+
+**Important Notes:**
+
+- If a **global seed** is set, the ``seed`` parameter in ``reset()`` is **ignored**. The global seed takes priority and controls all randomness throughout the environment's lifecycle.
+
+- If no seed is specified at all (neither global nor in reset), the environment will use random seeds, making results non-reproducible.
+
+- Use **global seed** when you need complete reproducibility across all episodes (e.g., for debugging, paper experiments, or comparing algorithms).
+
+- Use **episode-level seed** when you want controlled variability between episodes while maintaining reproducibility within each episode (e.g., for reinforcement learning training with diverse episodes).
+
+.. warning:: If you define a global seed, the seed parameter in ``reset()`` will be ignored. The global seed takes priority.
 
 *******************
 Adding new weathers
