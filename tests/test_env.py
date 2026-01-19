@@ -129,90 +129,162 @@ def test_update_context(env_5zone):
 
 
 def test_reset_reproducibility():
-
     # Disable environment global seed
     env = gym.make(
         'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=None
     )
 
-    # Check that the environment is reproducible
+    # Check that the environment is reproducible with same reset seed
     action1 = env.action_space.sample()
     action2 = env.action_space.sample()
-    # Case 1 (seed 0)
+
+    # Case 1: First episode with seed=0
     obs_0_reset, _ = env.reset(seed=0)
     obs_0_step1, _, _, _, _ = env.step(action1)
     obs_0_step2, _, _, _, _ = env.step(action2)
-    # Case 2 (seed 0)
+
+    # Case 2: Second episode with same seed=0 (should be identical)
     obs_1_reset, _ = env.reset(seed=0)
     obs_1_step1, _, _, _, _ = env.step(action1)
     obs_1_step2, _, _, _, _ = env.step(action2)
 
-    assert np.allclose(obs_0_reset, obs_1_reset, atol=1e-6)
-    assert np.allclose(obs_0_step1, obs_1_step1, atol=1e-6)
-    assert np.allclose(obs_0_step2, obs_1_step2, atol=1e-6)
+    # Verify reproducibility: same seed produces same results
+    assert np.allclose(
+        obs_0_reset, obs_1_reset, atol=1e-6
+    ), "Same reset seed should produce same initial observation"
+    assert np.allclose(
+        obs_0_step1, obs_1_step1, atol=1e-6
+    ), "Same reset seed should produce same step 1 observation"
+    assert np.allclose(
+        obs_0_step2, obs_1_step2, atol=1e-6
+    ), "Same reset seed should produce same step 2 observation"
 
-    # Case 3 (seed 1)
+    # Case 3: Different seed (seed=1) should produce different results
     obs_2_reset, _ = env.reset(seed=1)
     obs_2_step1, _, _, _, _ = env.step(action1)
     obs_2_step2, _, _, _, _ = env.step(action2)
 
-    assert not np.allclose(obs_0_reset, obs_2_reset, atol=1e-6)
-    assert not np.allclose(obs_0_step1, obs_2_step1, atol=1e-6)
-    assert not np.allclose(obs_0_step2, obs_2_step2, atol=1e-6)
+    # Verify different seeds produce different results
+    assert not np.allclose(
+        obs_0_reset, obs_2_reset, atol=1e-6
+    ), "Different reset seeds should produce different initial observations"
+    assert not np.allclose(
+        obs_0_step1, obs_2_step1, atol=1e-6
+    ), "Different reset seeds should produce different step 1 observations"
+    assert not np.allclose(
+        obs_0_step2, obs_2_step2, atol=1e-6
+    ), "Different reset seeds should produce different step 2 observations"
 
 
 def test_global_reproducibility():
+    global_seed = 1234
+    different_global_seed = 9999
 
-    def _check_reset_reproducibility_with_seed(
-        env: gym.Env,
-    ) -> Union[List[float], bool]:
-        # Check seed is available
-        if env.get_wrapper_attr('seed') is not None:
-            # Store environment interaction info
-            action1 = env.action_space.sample()
-            action2 = env.action_space.sample()
-
-            # Set the same seed in reset to check that global seed disable
-            # reset seed
-            obs_0_reset_0, _ = env.reset(seed=0)
-            obs_0_step1_0, _, _, _, _ = env.step(action1)
-            obs_0_step2_0, _, _, _, _ = env.step(action2)
-
-            obs_1_reset_0, _ = env.reset(seed=0)
-            obs_1_step1_0, _, _, _, _ = env.step(action1)
-            obs_1_step2_0, _, _, _, _ = env.step(action2)
-
-            assert not np.allclose(obs_0_reset_0, obs_1_reset_0, atol=1e-6)
-            assert not np.allclose(obs_0_step1_0, obs_1_step1_0, atol=1e-6)
-            assert not np.allclose(obs_0_step2_0, obs_1_step2_0, atol=1e-6)
-
-            return [
-                obs_0_reset_0,
-                obs_0_step1_0,
-                obs_0_step2_0,
-                obs_1_reset_0,
-                obs_1_step1_0,
-                obs_1_step2_0,
-            ]
-        else:
-            return False
-
-    # With seed 1234
+    # Create two environments with the same global seed
     env1 = gym.make(
-        'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='PYTESTGYM',
+        seed=global_seed,
     )
     env1 = NormalizeObservation(env1)
-    _check_reset_reproducibility_with_seed(env1)
+
     env2 = gym.make(
-        'Eplus-5zone-hot-continuous-stochastic-v1', env_name='PYTESTGYM', seed=1234
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='PYTESTGYM',
+        seed=global_seed,
     )
     env2 = NormalizeObservation(env2)
-    _check_reset_reproducibility_with_seed(env2)
 
-    # Check first and second execution have the same results
-    # if isinstance(values1, list) and isinstance(values2, list):
-    #     for i in range(6):
-    #         assert np.allclose(values1[i], values2[i], atol=1e-4)
+    # Use same actions for both environments
+    action1 = env1.action_space.sample()
+    action2 = env1.action_space.sample()
+
+    # Run both environments with same sequence
+    obs1_reset, _ = env1.reset(seed=0)  # seed=0 should be ignored due to global seed
+    obs1_step1, _, _, _, _ = env1.step(action1)
+    obs1_step2, _, _, _, _ = env1.step(action2)
+
+    obs2_reset, _ = env2.reset(seed=0)  # seed=0 should be ignored due to global seed
+    obs2_step1, _, _, _, _ = env2.step(action1)
+    obs2_step2, _, _, _, _ = env2.step(action2)
+
+    # Verify: Same global seed produces same results
+    assert np.allclose(
+        obs1_reset, obs2_reset, atol=1e-6
+    ), "Same global seed should produce same initial observation across environments"
+    assert np.allclose(
+        obs1_step1, obs2_step1, atol=1e-6
+    ), "Same global seed should produce same step 1 observation across environments"
+    assert np.allclose(
+        obs1_step2, obs2_step2, atol=1e-6
+    ), "Same global seed should produce same step 2 observation across environments"
+
+    # Verify: Different global seeds produce different results
+    env3 = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='PYTESTGYM_DIFF',
+        seed=different_global_seed,
+    )
+    env3 = NormalizeObservation(env3)
+
+    obs3_reset, _ = env3.reset(seed=0)
+    obs3_step1, _, _, _, _ = env3.step(action1)
+    obs3_step2, _, _, _, _ = env3.step(action2)
+
+    assert not np.allclose(
+        obs1_reset, obs3_reset, atol=1e-6
+    ), "Different global seeds should produce different initial observations"
+    assert not np.allclose(
+        obs1_step1, obs3_step1, atol=1e-6
+    ), "Different global seeds should produce different step 1 observations"
+    assert not np.allclose(
+        obs1_step2, obs3_step2, atol=1e-6
+    ), "Different global seeds should produce different step 2 observations"
+
+
+def test_global_seed_ignores_reset_seed():
+    global_seed = 5678
+
+    # Create two separate environments with same global seed
+    env1 = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='PYTESTGYM_SEED1',
+        seed=global_seed,
+    )
+    env1 = NormalizeObservation(env1)
+
+    env2 = gym.make(
+        'Eplus-5zone-hot-continuous-stochastic-v1',
+        env_name='PYTESTGYM_SEED2',
+        seed=global_seed,
+    )
+    env2 = NormalizeObservation(env2)
+
+    # Use same actions for both environments
+    action1 = env1.action_space.sample()
+    action2 = env1.action_space.sample()
+
+    # Same global seed, but DIFFERENT reset seeds
+    # If reset seed worked, these would produce different results
+    # But since global seed takes priority, they should produce SAME results
+    obs1, _ = env1.reset(seed=0)
+    obs1_s1, _, _, _, _ = env1.step(action1)
+    obs1_s2, _, _, _, _ = env1.step(action2)
+
+    obs2, _ = env2.reset(seed=999)  # Different reset seed, but should be ignored
+    obs2_s1, _, _, _, _ = env2.step(action1)
+    obs2_s2, _, _, _, _ = env2.step(action2)
+
+    # Verify: Same results despite different reset seeds (proves reset seed is ignored)
+    assert np.allclose(
+        obs1, obs2, atol=1e-6
+    ), "Reset seed should be ignored when global seed is set - same initial obs expected"
+    assert np.allclose(
+        obs1_s1, obs2_s1, atol=1e-6
+    ), "Reset seed should be ignored when global seed is set - same step 1 obs expected"
+    assert np.allclose(
+        obs1_s2, obs2_s2, atol=1e-6
+    ), "Reset seed should be ignored when global seed is set - same step 2 obs expected"
 
 
 def test_all_environments():
