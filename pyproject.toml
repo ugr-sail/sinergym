@@ -140,7 +140,7 @@ optional = true
 include-groups = ["notebooks"]
 
 [tool.poetry.group.doc.dependencies]
-sphinx = ">=8.2.3"
+sphinx = ">=8.2.3,<9.0"
 sphinx-rtd-theme = ">=3.0.2"
 sphinxcontrib-spelling = ">=8.0.1"
 sphinxcontrib-jquery = ">=4.1"
