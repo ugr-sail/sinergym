@@ -269,7 +269,7 @@ def test_get_schedulers(model_5zone):
     for scheduler_name, definition in model_5zone.schedulers.items():
         assert isinstance(scheduler_name, str)
         assert isinstance(definition, dict)
-        assert isinstance(definition['Type'], str)
+        assert isinstance(definition['Type'], (str, type(None)))
         for key, value in definition.items():
             if key != 'Type':
                 assert isinstance(value, dict)

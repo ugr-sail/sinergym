@@ -463,10 +463,15 @@ class ModelJSON(object):
             schedules.update(self.building['Schedule:Year'])
 
         for sch_name, sch_info in schedules.items():
-            # Write sch_name and data type in output
-            result[sch_name] = {
-                'Type': sch_info['schedule_type_limits_name'],
-            }
+            # Write sch_name and data type in output if it exists
+            if sch_info.get('schedule_type_limits_name'):
+                result[sch_name] = {
+                    'Type': sch_info['schedule_type_limits_name'],
+                }
+            else:
+                result[sch_name] = {
+                    'Type': None,
+                }
             # We are going to search where that scheduler appears in whole
             # building model
             for table, elements in self.building.items():
