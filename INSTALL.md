@@ -16,6 +16,7 @@ The table below provides a summary of the dependencies versions supported by *Si
 | **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                  |
 | **3.3.6**            | **24.04 LTS**      | **3.12.3**         | 23.1.0                 | epJSON                  |
 | **3.5.8**            | 24.04 LTS          | 3.12.3             | **24.1.0**             | epJSON                  |
+| **3.11.0**           | 24.04 LTS          | 3.12.3             | **25.1.0**             | epJSON                  |
 
 
 We recommend to always use the latest version of *Sinergym* that is supported by the container. This will help you to avoid the complexities of manual installation.
