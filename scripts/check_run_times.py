@@ -15,7 +15,8 @@ envs_id = [
 ]
 envs_id = [
     'Eplus-5zone-mixed-continuous-stochastic-v1',
-    'Eplus-datacenter-mixed-continuous-stochastic-v1',
+    'Eplus-datacenter_dx-mixed-continuous-stochastic-v1',
+    'Eplus-datacenter_cw-mixed-continuous-stochastic-v1',
     'Eplus-office-mixed-continuous-stochastic-v1',
     'Eplus-warehouse-mixed-continuous-stochastic-v1',
     'Eplus-officegrid-mixed-continuous-stochastic-v1',
