@@ -186,9 +186,7 @@ class EplusEnv(gym.Env):
         self.last_obs: Dict[str, float] = {}
         self.last_info: Dict[str, Any] = {}
         self.last_action: np.ndarray = np.array([], dtype=np.float32)
-        self.last_context: Union[List[float], np.ndarray] = np.array(
-            [], dtype=np.float32
-        )
+        self.last_context: np.ndarray = np.array([], dtype=np.float32)
 
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
@@ -498,7 +496,11 @@ class EplusEnv(gym.Env):
 
         try:
             self.context_queue.put(context_values, block=False)
-            self.last_context = context_values
+            self.last_context = (
+                context_values
+                if isinstance(context_values, np.ndarray)
+                else np.asarray(context_values, dtype=np.float32)
+            )
         except Full:
             self.logger.warning(
                 f'Context queue is full, context update with values {context_values} will be skipped.'
