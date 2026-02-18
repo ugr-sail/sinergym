@@ -482,11 +482,43 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                       REAL-TIME BUILDING CONTEXT UPDATE                      #
     # ---------------------------------------------------------------------------- #
-    def update_context(self, context_values: Union[np.ndarray, List[float]]) -> None:
+    def update_context(
+        self, context_values: Union[np.ndarray, List[float], Dict[str, float]]
+    ) -> None:
         """Update real-time building context (actuators which are not controlled by the agent).
-        Args:
-            context_values (Union[np.ndarray, List[float]]): List of values to be updated in the building model.
+
+        This method supports two input formats:
+        - Full vector update (backwards-compatible): ``List[float]`` or ``np.ndarray`` with the same
+          length and order than ``self.context_variables``.
+        - Partial update by name: ``Dict[str, float]`` where keys are context variable names. Values
+          not provided are kept from the last applied context (``self.last_context``) or initialized
+          to zeros.
         """
+        # Allow partial context updates by variable name
+        if isinstance(context_values, dict):
+            # base vector: last_context
+            if self.last_context.size == 0:
+                self.logger.error(
+                    'Initial context is empty, please provide a valid initial context (initial_context argument) before doing a partial context update, or use the full vector update.'
+                )
+                raise ValueError(
+                    'Initial context is empty, please provide a valid initial context (initial_context argument) before doing a partial context update, or use the full vector update.'
+                )
+            else:
+                base = self.last_context.astype(np.float32, copy=True)
+
+            # apply updates
+            for var_name, value in context_values.items():
+                if var_name not in self.context:
+                    self.logger.warning(
+                        f'Unknown context variable "{var_name}". Known variables are: {self.context_variables}'
+                    )
+                    continue
+                idx = self.context_variables.index(var_name)
+                base[idx] = float(value)
+
+            context_values = base
+
         # Check context_values consistency with context variables
         if len(context_values) != len(self.context):
             self.logger.warning(
@@ -502,9 +534,19 @@ class EplusEnv(gym.Env):
                 else np.asarray(context_values, dtype=np.float32)
             )
         except Full:
-            self.logger.warning(
-                f'Context queue is full, context update with values {context_values} will be skipped.'
-            )
+            # Queue has maxsize=1; replace pending context deterministically (avoid "random" skips
+            # when users update context right after reset, before callbacks consume the previous one).
+            try:
+                _ = self.context_queue.get(block=False)
+            except Empty:
+                pass
+            try:
+                self.context_queue.put(context_values, block=False)
+                self.last_context = context_values
+            except Full:
+                self.logger.warning(
+                    f'Context queue is full, context update with values {context_values} will be skipped.'
+                )
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
