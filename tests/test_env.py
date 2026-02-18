@@ -3,6 +3,7 @@ from queue import Queue
 from random import sample
 
 import gymnasium as gym
+import numpy as np
 import pytest
 from gymnasium.spaces import Dict, Discrete
 
@@ -119,13 +120,54 @@ def test_update_context(env_5zone):
         obs_dict['people_occupant']
         == env_5zone.get_wrapper_attr('last_context')[0] * 20
     )
-    # Try to update context with a new value
+    # Try to update context with a new value (full vector)
     env_5zone.update_context([0.5, 0.5])
     obs, _, _, _, _ = env_5zone.step(a)
     # Check if obs has the new occupancy value
     obs_dict = env_5zone.get_obs_dict(obs)
     assert obs_dict['people_occupant'] == 10
     assert env_5zone.get_wrapper_attr('last_context')[0] == 0.5
+
+
+def test_update_context_partial_dict(env_5zone):
+    """Partial context update by variable name (dict): only update Occupancy."""
+    env_5zone.reset()
+    a = env_5zone.action_space.sample()
+    obs, _, _, _, _ = env_5zone.step(a)
+    # Initial context is [1.0, 0.5] (Occupancy, Clothing)
+    last = env_5zone.get_wrapper_attr('last_context')
+    assert last[0] == 1.0 and last[1] == 0.5
+    # Partial update: only Occupancy to 0.5; Clothing stays 0.5
+    env_5zone.update_context({'Occupancy': 0.5})
+    obs, _, _, _, _ = env_5zone.step(a)
+    obs_dict = env_5zone.get_obs_dict(obs)
+    assert obs_dict['people_occupant'] == 10  # 0.5 * 20
+    last = env_5zone.get_wrapper_attr('last_context')
+    assert last[0] == 0.5 and last[1] == 0.5
+    # Update only Clothing; Occupancy (index 0) should remain 0.5
+    env_5zone.update_context({'Clothing': 0.8})
+    env_5zone.step(a)
+    last = env_5zone.get_wrapper_attr('last_context')
+    assert last[0] == 0.5 and last[1] == 0.8
+
+
+def test_update_context_partial_dict_raises_when_empty(env_5zone):
+    """Partial update with dict raises ValueError when last_context is empty."""
+    env_5zone.reset()
+    # Simulate empty context (e.g. no initial_context was ever applied)
+    env_5zone.unwrapped.last_context = np.array([], dtype=np.float32)
+    with pytest.raises(ValueError, match='Initial context is empty'):
+        env_5zone.update_context({'Occupancy': 0.5})
+
+
+def test_update_context_partial_dict_unknown_variable_ignored(env_5zone):
+    """Partial update with unknown variable name ignores it and applies known keys."""
+    env_5zone.reset()
+    env_5zone.step(env_5zone.action_space.sample())
+    env_5zone.update_context({'Occupancy': 0.25, 'UnknownVar': 99.0})
+    last = env_5zone.get_wrapper_attr('last_context')
+    assert last[0] == 0.25  # Occupancy updated
+    assert last[1] == 0.5  # Clothing unchanged (initial); UnknownVar ignored
 
 
 def test_reset_reproducibility():
