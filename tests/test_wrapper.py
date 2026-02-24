@@ -1100,7 +1100,10 @@ def test_scheduled_context_wrapper(env_5zone):
         _, _, terminated, truncated, info = env.step(action)
         dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
         if dt_str in scheduled_context:
-            assert env.get_wrapper_attr('last_context') == scheduled_context[dt_str]
+            assert (
+                env.get_wrapper_attr('last_context').tolist()
+                == scheduled_context[dt_str]
+            )
             assert len(env.get_wrapper_attr('last_context')) == 2
 
     env.close()
