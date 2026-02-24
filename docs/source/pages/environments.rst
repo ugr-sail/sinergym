@@ -263,8 +263,8 @@ Seed
 
 *Sinergym* supports two levels of seed configuration for reproducibility:
 
-**Global Seed (Environment-level)**
------------------------------------
+Global Seed (environment-level)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``seed`` parameter in the environment constructor sets a **global random seed** for the entire environment lifecycle. This ensures complete reproducibility across all episodes, including:
 
@@ -288,8 +288,8 @@ When a global seed is set, the same seed will produce identical results across d
     obs1, _ = env.reset()
     obs2, _ = env.reset()  # Different episode, but deterministic sequence
 
-**Episode-level Seed (Reset seed)**
------------------------------------
+Episode-level seed (reset seed)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When no global seed is specified (``seed=None``), you can control randomness **per episode** using the ``seed`` parameter in the ``reset()`` method. This allows for controlled variability between episodes while maintaining reproducibility within each episode.
 
