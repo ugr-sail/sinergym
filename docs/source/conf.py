@@ -135,7 +135,15 @@ templates_path = ['_templates']
 
 # VERSIONING configuration
 # Whitelist pattern for tags (set to None to ignore all tags)
-smv_tag_whitelist = r'^v\d+\.\d+\.0$'
+#
+# Keep:
+# - latest v1 release (currently v1.7.0)
+# - latest v2 release (currently v2.5.0)
+# - all v3.x.0 releases
+#
+# This helps keep the published GitHub Pages site below the 1 GB limit while
+# still exposing the full v3 series.
+smv_tag_whitelist = r'^v(?:1\.7|2\.5|3\.\d+)\.0$'
 # smv_tag_whitelist = None
 
 # Whitelist pattern for branches (set to None to ignore all branches)
