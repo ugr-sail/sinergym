@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Docs: make clean && make html",
+      "type": "shell",
+      "command": "make clean && make html",
+      "options": {
+        "cwd": "${workspaceFolder}/docs"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Docs: sphinx-multiversion (clean + build)",
+      "type": "shell",
+      "command": "make clean && sphinx-multiversion ./source ./build",
+      "options": {
+        "cwd": "${workspaceFolder}/docs"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Docs: build html + spelling (clean + check)",
+      "type": "shell",
+      "command": "make clean && sphinx-build -M html ./source ./build && sphinx-build -M spelling ./source ./build",
+      "options": {
+        "cwd": "${workspaceFolder}/docs"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}
+

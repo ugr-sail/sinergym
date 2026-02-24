@@ -140,6 +140,7 @@ optional = true
 include-groups = ["notebooks"]
 
 [tool.poetry.group.doc.dependencies]
+# sphinx-multiversion is incompatible with Sphinx 9.x (Config.read() API change). Keep <9 until fixed.
 sphinx = ">=8.2.3,<9.0"
 sphinx-rtd-theme = ">=3.0.2"
 sphinxcontrib-spelling = ">=8.0.1"

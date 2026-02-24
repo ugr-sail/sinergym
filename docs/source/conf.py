@@ -14,8 +14,72 @@ import os
 import sys
 
 import mock
+from packaging.version import InvalidVersion, Version
 
 sys.path.insert(0, os.path.abspath('./../..'))
+
+# -- sphinx-multiversion compatibility ---------------------------------------
+#
+# When building older tags with sphinx-multiversion, the codebase and its runtime
+# dependencies may not be compatible with the Python version used by the docs
+# job (e.g. legacy tags depending on `gym` and `pkg_resources`).
+#
+# In those cases, importing the package for autosummary/autodoc can fail and
+# break the whole multiversion build. We therefore disable API stub generation
+# and exclude API reference pages for non-main versions.
+
+
+def _get_smv_current_version_from_argv() -> str | None:
+    # sphinx-multiversion runs sphinx with overrides like:
+    #   -D smv_current_version=v1.4.0
+    # so we can detect the current ref from sys.argv.
+    for i, arg in enumerate(sys.argv):
+        if arg == '-D' and i + 1 < len(sys.argv):
+            maybe_kv = sys.argv[i + 1]
+            if maybe_kv.startswith('smv_current_version='):
+                return maybe_kv.split('=', 1)[1]
+    return None
+
+
+smv_current_version = _get_smv_current_version_from_argv() or "main"
+
+
+def semver_sort(items, reverse: bool = True):
+    """Sort sphinx-multiversion Version objects using semantic version order.
+
+    This prevents lexicographic ordering issues like v3.10.0 appearing between
+    v3.1.0 and v3.2.0.
+    """
+
+    def _key(item):
+        name = getattr(item, "name", str(item))
+        normalized = name[1:] if name.startswith("v") else name
+        try:
+            return Version(normalized)
+        except InvalidVersion:
+            # Put non-semver refs (e.g. 'main') at the end.
+            return Version("0")
+
+    return sorted(list(items), key=_key, reverse=reverse)
+
+
+def _add_jinja_filters(app) -> None:  # pragma: no cover
+    # Not all builders expose a Jinja templates environment (e.g. SpellingBuilder).
+    templates = getattr(app.builder, "templates", None)
+    env = getattr(templates, "environment", None) if templates is not None else None
+    if env is None:
+        return
+    env.filters["semver_sort"] = semver_sort
+
+
+def setup(app):  # pragma: no cover
+    app.connect("builder-inited", _add_jinja_filters)
+    return {
+        "version": "1.0",
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+    }
+
 
 # -- Project information -----------------------------------------------------
 
@@ -60,7 +124,11 @@ for module in ['gymnasium.wrappers.normalize']:
 
 nbsphinx_custom_formats = {}
 
-autosummary_generate = True
+# If we're building a non-main version via sphinx-multiversion, avoid importing
+# the package to generate autosummary stubs (it may fail for legacy tags).
+autosummary_generate = (
+    False if (smv_current_version and smv_current_version != 'main') else True
+)
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -91,6 +159,15 @@ smv_prefer_remote_refs = False
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+if smv_current_version and smv_current_version != 'main':
+    # Keep narrative docs for legacy versions, but skip API pages that rely on
+    # importing the Python package (often incompatible across major versions).
+    exclude_patterns.extend(
+        [
+            "pages/API-reference.rst",
+            "pages/modules/**",
+        ]
+    )
 
 # Spelling word list white list.
 spelling_word_list_filename = 'spelling_wordlist.txt'

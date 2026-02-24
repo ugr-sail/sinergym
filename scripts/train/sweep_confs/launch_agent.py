@@ -1,18 +1,57 @@
 import argparse
-import importlib
 import importlib.util
 import multiprocessing
 import os
 import sys
 import types
 
-import wandb
 import yaml
 
-import sinergym
-import sinergym.utils.gcloud as gcloud
+from sinergym.utils import gcloud
+
+
+def _load_train_module(train_script_path: str) -> types.ModuleType:
+    """Dynamically import the training script as a module."""
+    spec = importlib.util.spec_from_file_location('train', train_script_path)
+    if spec and spec.loader:
+        train = types.ModuleType(spec.name)
+        sys.modules[spec.name] = train
+        spec.loader.exec_module(train)
+        return train
+    raise ImportError(f"The script could not be imported from {train_script_path}")
+
+
+def _run_wandb_agent(
+    *,
+    sweep_id: str,
+    entity: str,
+    project: str,
+    count: int,
+    train_script_path: str,
+) -> None:
+    """Run a wandb agent inside an isolated process.
+
+    Important: `wandb` is imported inside the child process to avoid inheriting
+    any W&B service/client state from the parent (a common source of issues when
+    using `fork`).
+    """
+    import wandb  # local import on purpose
+
+    train = _load_train_module(train_script_path)
+    wandb.agent(
+        sweep_id=sweep_id,
+        entity=entity,
+        project=project,
+        count=count,
+        function=train.train,
+    )
+
 
 if __name__ == '__main__':
+
+    # Use spawn to avoid subtle W&B issues with forking.
+    # (Also required because we run a top-level function as Process target.)
+    multiprocessing.set_start_method('spawn', force=True)
 
     # ---------------------------------------------------------------------------- #
     #                             Parameters definition                            #
@@ -57,17 +96,6 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
     train_script_path = conf['train_script_path']
 
-    spec = importlib.util.spec_from_file_location('train', train_script_path)
-    if spec and spec.loader:
-        # Empty module creation
-        train = types.ModuleType(spec.name)
-        # Register module in sys.modules
-        sys.modules[spec.name] = train
-        # Execute the module in the new namespace
-        spec.loader.exec_module(train)
-    else:
-        raise ImportError(f"The script could not be imported from {train_script_path}")
-
     # ---------------------------------------------------------------------------- #
     #                                Launch agent(s)                               #
     # ---------------------------------------------------------------------------- #
@@ -79,13 +107,14 @@ if __name__ == '__main__':
 
     while parallel_agents > 0:
         process = multiprocessing.Process(
-            target=lambda: wandb.agent(
-                sweep_id=sweep_id,
-                entity=entity,
-                project=project,
-                count=sequential_experiments,
-                function=train.train,
-            )
+            target=_run_wandb_agent,
+            kwargs={
+                "sweep_id": sweep_id,
+                "entity": entity,
+                "project": project,
+                "count": sequential_experiments,
+                "train_script_path": train_script_path,
+            },
         )
         process.start()
         list_process.append(process)
