@@ -64,7 +64,12 @@ def semver_sort(items, reverse: bool = True):
 
 
 def _add_jinja_filters(app) -> None:  # pragma: no cover
-    app.builder.templates.environment.filters["semver_sort"] = semver_sort
+    # Not all builders expose a Jinja templates environment (e.g. SpellingBuilder).
+    templates = getattr(app.builder, "templates", None)
+    env = getattr(templates, "environment", None) if templates is not None else None
+    if env is None:
+        return
+    env.filters["semver_sort"] = semver_sort
 
 
 def setup(app):  # pragma: no cover
