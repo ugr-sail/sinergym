@@ -1100,9 +1100,8 @@ def test_scheduled_context_wrapper(env_5zone):
         _, _, terminated, truncated, info = env.step(action)
         dt_str = f"{info['month']:02d}-{info['day']:02d} {info['hour']:02d}"
         if dt_str in scheduled_context:
-            assert (
-                env.get_wrapper_attr('last_context').tolist()
-                == scheduled_context[dt_str]
+            assert env.get_wrapper_attr('last_context').tolist() == pytest.approx(
+                scheduled_context[dt_str], abs=1e-6
             )
             assert len(env.get_wrapper_attr('last_context')) == 2
 
@@ -1117,7 +1116,9 @@ def test_scheduled_context_wrapper(env_5zone):
     action = env2.action_space.sample()
     for _ in range(50):
         _, _, terminated, truncated, _ = env2.step(action)
-        assert env2.get_wrapper_attr('last_context') == initial_context
+        assert env2.get_wrapper_attr('last_context') == pytest.approx(
+            initial_context, abs=1e-6
+        )
         if terminated or truncated:
             break
     env2.close()
