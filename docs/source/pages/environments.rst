@@ -210,7 +210,7 @@ Context
 
 The argument called ``context`` is a dictionary where actuators are also specified in the same way as in :ref:`Actuators`. However, the internal processing differs for the actuators defined here.
 
-These values will not be changed by the actions sent from the agent to the environment using ``step(a)`` method, as happens in Gymnasium's interaction flow. Instead, these actuators can be modified at any time, outside the control flow, using the ``update_context(List[float])`` method whenever needed.
+These values will not be changed by the actions sent from the agent to the environment using ``step(a)`` method, as happens in Gymnasium's interaction flow. Instead, these actuators can be modified at any time, outside the control flow, using the ``update_context(...)`` method whenever needed.
 
 This allows internal variables within the building to be configured in real time. For example, if we want to enforce either specific occupancy levels or lighting conditions or setpoints values that are not part of the building's control optimization process.
 
@@ -220,6 +220,20 @@ This allows internal variables within the building to be configured in real time
     # <custom_actuator_name> : (<actuator_type>,<actuator_value>,<actuator_original_name>),
     # ...
   }
+
+Context updates can be applied in two ways:
+
+- **Full update (vector)**: pass a ``list`` / ``np.ndarray`` with the same length and order as ``context``.
+- **Partial update (dict)**: pass a dictionary ``{context_variable_name: value}`` to update only a subset
+  of context variables (the rest keep their last applied values).
+
+.. code-block:: python
+
+  # Full update: [Occupancy, Clothing, ...] in the same order as defined in `context`
+  env.update_context([0.5, 0.8])
+
+  # Partial update: update only Occupancy by name
+  env.update_context({"Occupancy": 0.5})
 
 Initial context
 ===============
@@ -263,8 +277,8 @@ Seed
 
 *Sinergym* supports two levels of seed configuration for reproducibility:
 
-**Global Seed (Environment-level)**
------------------------------------
+Global seed (environment-level)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``seed`` parameter in the environment constructor sets a **global random seed** for the entire environment lifecycle. This ensures complete reproducibility across all episodes, including:
 
@@ -288,8 +302,8 @@ When a global seed is set, the same seed will produce identical results across d
     obs1, _ = env.reset()
     obs2, _ = env.reset()  # Different episode, but deterministic sequence
 
-**Episode-level Seed (Reset seed)**
------------------------------------
+Episode-level seed (reset seed)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When no global seed is specified (``seed=None``), you can control randomness **per episode** using the ``seed`` parameter in the ``reset()`` method. This allows for controlled variability between episodes while maintaining reproducibility within each episode.
 

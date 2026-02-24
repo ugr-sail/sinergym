@@ -488,6 +488,7 @@ class EplusEnv(gym.Env):
         """Update real-time building context (actuators which are not controlled by the agent).
 
         This method supports two input formats:
+
         - Full vector update (backwards-compatible): ``List[float]`` or ``np.ndarray`` with the same
           length and order than ``self.context_variables``.
         - Partial update by name: ``Dict[str, float]`` where keys are context variable names. Values
