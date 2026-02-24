@@ -9,7 +9,7 @@
         {%- if versions.tags %}
         <dl>
             <dt>Tags</dt>
-            {%- for item in versions.tags %}
+            {%- for item in versions.tags | semver_sort %}
             <dd><a href="{{ item.url }}">{{ item.name }}</a></dd>
             {%- endfor %}
         </dl>
