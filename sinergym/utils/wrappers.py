@@ -2177,18 +2177,32 @@ try:
 
         def save_artifact(self) -> None:
             """Save sinergym output as artifact in WandB platform."""
-            if self.wandb_run.name:
-                artifact = wandb.Artifact(
-                    name=self.wandb_run.name, type=self.artifact_type
+            if not self.wandb_run.name:
+                self.logger.warning(
+                    'WandB run name is not set, skipping artifact saving.'
                 )
+                return
+
+            # Artifact names have stricter validation than run names (e.g. ':' is invalid).
+            artifact_name = wandb.util.make_artifact_name_safe(self.wandb_run.name)
+            try:
+                artifact = wandb.Artifact(name=artifact_name, type=self.artifact_type)
                 artifact.add_dir(
                     local_path=self.get_wrapper_attr('workspace_path'),
                     name='Sinergym_output/',
                 )
-                self.wandb_run.log_artifact(artifact)
-            else:
-                self.logger.warning(
-                    'WandB run name is not set, skipping artifact saving.'
+                logged_artifact = self.wandb_run.log_artifact(artifact)
+                # Ensure the artifact is committed/uploaded before finishing the run.
+                try:
+                    logged_artifact.wait()
+                except Exception:
+                    self.logger.debug(
+                        'WandB artifact wait failed or unavailable, continuing.'
+                    )
+            except Exception as err:
+                self.logger.error(
+                    f'Error saving WandB artifact (name="{artifact_name}"): {err}',
+                    exc_info=True,
                 )
 
         def set_wandb_finish(self, wandb_finish: bool) -> None:
