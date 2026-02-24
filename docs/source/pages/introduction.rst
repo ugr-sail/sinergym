@@ -38,3 +38,8 @@
    - 📒  **Notebook examples**. Learn how to get the most out of *Sinergym* through our Jupyter notebooks.
 
    - 📚  **Extensive documentation, unit tests, and GitHub actions workflows**. *Sinergym* follows proper development practices facilitating community contributions.
+
+.. important::
+   Due to GitHub Pages size limits, the online documentation is published for a **curated set of versions**.
+   If you need the docs for a specific version that is not listed, please **checkout the corresponding Git tag or commit**
+   and build the documentation locally.
