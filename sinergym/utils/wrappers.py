@@ -379,6 +379,7 @@ class NormalizeObservation(gym.Wrapper):
         mean: Optional[Union[List[float], np.ndarray, str]] = None,
         var: Optional[Union[List[float], np.ndarray, str]] = None,
         count: Union[float, str] = 1e-4,
+        calibration_folder_name: str = 'norm_stats',
     ):
         """Initializes the NormalizationWrapper. Mean and var values can be None and being updated during interaction with environment.
 
@@ -389,6 +390,7 @@ class NormalizeObservation(gym.Wrapper):
             mean (Optional[Union[List[float], np.ndarray, str]]): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
             var (Optional[Union[List[float], np.ndarray, str]]): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
             count (Union[float, str]): The count value used for normalization, this value weighs the updates of the calibrations, so it is important to use if the environment has already been calibrated previously. It can be a count.txt path too. Defaults to 1e-4.
+            calibration_folder_name (str, optional): The name of the folder where the normalization calibration data will be saved. Defaults to 'norm_stats'.
         """
         super().__init__(env)
 
@@ -398,7 +400,7 @@ class NormalizeObservation(gym.Wrapper):
         self.num_envs = 1
         self.is_vector_env = False
         self.unwrapped_observation = None
-
+        self.calibration_folder_name = calibration_folder_name
         # Set mean, variance and count
         processed_mean = self._process_metric(mean, 'mean')
         processed_var = self._process_metric(var, 'var')
@@ -496,13 +498,13 @@ class NormalizeObservation(gym.Wrapper):
         """Saves the normalization calibration data in the output folder as txt files."""
         episode_path = self.get_wrapper_attr('episode_path')
         workspace_path = self.get_wrapper_attr('workspace_path')
-
-        np.savetxt(os.path.join(episode_path, 'mean.txt'), self.mean)
-        np.savetxt(os.path.join(episode_path, 'var.txt'), self.var)
-        np.savetxt(os.path.join(episode_path, 'count.txt'), [self.count])
-        np.savetxt(os.path.join(workspace_path, 'mean.txt'), self.mean)
-        np.savetxt(os.path.join(workspace_path, 'var.txt'), self.var)
-        np.savetxt(os.path.join(workspace_path, 'count.txt'), [self.count])
+        # save calibrations
+        for base_path in (episode_path, workspace_path):
+            calibration_path = os.path.join(base_path, 'norm_stats')
+            os.makedirs(calibration_path, exist_ok=True)
+            np.savetxt(os.path.join(calibration_path, 'mean.txt'), self.mean)
+            np.savetxt(os.path.join(calibration_path, 'var.txt'), self.var)
+            np.savetxt(os.path.join(calibration_path, 'count.txt'), [self.count])
 
         self.logger.info('Normalization calibration saved.')
 
@@ -2318,12 +2320,72 @@ class ReduceObservationWrapper(gym.Wrapper):
         self, seed: Optional[int] = None, options: Optional[Dict[str, Any]] = None
     ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """Sends action to the environment. Separating removed variables from observation values and adding it to info dict"""
+
+        previous_episode_path = self.get_wrapper_attr('episode_path')
+        previous_workspace_path = self.get_wrapper_attr('workspace_path')
+
         obs, info = self.env.reset(seed=seed, options=options)
+
+        # Filter normalization calibrations and save if is required
+        if self.get_wrapper_attr('episode') - 1 > 0:
+            self._filter_normalization_calibration_save(
+                previous_episode_path, previous_workspace_path
+            )
 
         # Filter removed variables from observation using precalculated index
         reduced_obs = obs[self.keep_index]
 
         return reduced_obs, info
+
+    def close(self):
+        """Close the environment and filter normalization calibrations and save if is required"""
+        self.env.close()
+
+        if self.get_wrapper_attr('episode') > 0:
+            self._filter_normalization_calibration_save(
+                self.get_wrapper_attr('episode_path'),
+                self.get_wrapper_attr('workspace_path'),
+            )
+
+    def _filter_normalization_calibration_save(
+        self, previous_episode_path: str, previous_workspace_path: str
+    ):
+        """
+        If environment has a NormalizeObservation wrapper,
+        save filtered normalization calibration data (mean, var)
+        with only the kept observation variables.
+        Args:
+            previous_episode_path (str): Path to the previous episode.
+            previous_workspace_path (str): Path to the previous workspace.
+        """
+        if not is_wrapped(self, NormalizeObservation):
+            return
+
+        keep_idx = self.keep_index
+        folder = self.get_wrapper_attr('calibration_folder_name')
+        paths = [
+            os.path.join(previous_episode_path, folder),
+            os.path.join(previous_workspace_path, folder),
+        ]
+        filtered_folder_name = 'filtered'
+
+        for calibration_path in paths:
+            # Read
+            mean_path = os.path.join(calibration_path, 'mean.txt')
+            var_path = os.path.join(calibration_path, 'var.txt')
+
+            mean = np.loadtxt(mean_path)
+            var = np.loadtxt(var_path)
+
+            # Filter
+            mean_filtered = mean[keep_idx]
+            var_filtered = var[keep_idx]
+
+            # Save
+            filtered_dir = os.path.join(calibration_path, filtered_folder_name)
+            os.makedirs(filtered_dir, exist_ok=True)
+            np.savetxt(os.path.join(filtered_dir, 'mean.txt'), mean_filtered)
+            np.savetxt(os.path.join(filtered_dir, 'var.txt'), var_filtered)
 
 
 # ---------------------------------------------------------------------------- #
