@@ -236,19 +236,20 @@ def test_normalize_observation_calibration(env_demo):
     assert (old_var == env.get_wrapper_attr('var')).all()
     assert old_count == env.get_wrapper_attr('count')
 
-    # Check calibration as been saved as txt
+    # Check calibration has been saved as txt in norm_stats folder
     env.close()
-    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/mean.txt')
-    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/var.txt')
-    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/count.txt')
+    calibration_dir = os.path.join(env.get_wrapper_attr('workspace_path'), 'norm_stats')
+    assert os.path.isfile(os.path.join(calibration_dir, 'mean.txt'))
+    assert os.path.isfile(os.path.join(calibration_dir, 'var.txt'))
+    assert os.path.isfile(os.path.join(calibration_dir, 'count.txt'))
     # Check that txt has the same lines than observation space shape
-    with open(env.get_wrapper_attr('workspace_path') + '/mean.txt', 'r') as f:
+    with open(os.path.join(calibration_dir, 'mean.txt'), 'r') as f:
         lines = f.readlines()
         assert len(lines) == env.observation_space.shape[0]  # type: ignore
-    with open(env.get_wrapper_attr('workspace_path') + '/var.txt', 'r') as f:
+    with open(os.path.join(calibration_dir, 'var.txt'), 'r') as f:
         lines = f.readlines()
         assert len(lines) == env.observation_space.shape[0]  # type: ignore
-    with open(env.get_wrapper_attr('workspace_path') + '/count.txt', 'r') as f:
+    with open(os.path.join(calibration_dir, 'count.txt'), 'r') as f:
         lines = f.readlines()
         assert len(lines) == 1
 
@@ -1014,6 +1015,59 @@ def test_reduced_observation_wrapper(env_demo):
     action = env.action_space.sample()
     obs2, _, _, _, _ = env.step(action)
     assert len(obs2) == len(reduced_observation_variables)
+
+
+def test_reduce_observation_filtered_normalization_calibration_save(env_demo):
+    """Test that ReduceObservationWrapper saves filtered normalization calibration
+    (mean, var) for kept variables only when wrapped with NormalizeObservation."""
+    obs_reduction = ['outdoor_temperature', 'outdoor_humidity', 'air_humidity']
+    env = ReduceObservationWrapper(
+        env=NormalizeObservation(env=env_demo, calibration_folder_name='norm_stats'),
+        obs_reduction=obs_reduction,
+    )
+    env.reset()
+    env.step(env.action_space.sample())
+    episode_path = env.get_wrapper_attr('episode_path')
+    workspace_path = env.get_wrapper_attr('workspace_path')
+    env.close()
+
+    # Full calibration is in norm_stats/; filtered (kept vars only) in norm_stats/filtered/
+    folder = env.get_wrapper_attr('calibration_folder_name')
+    filtered_folder = os.path.join(folder, 'filtered')
+    for base_path in (episode_path, workspace_path):
+        base = os.path.join(base_path, folder)
+        filtered_path = os.path.join(base_path, filtered_folder)
+        assert os.path.isdir(
+            filtered_path
+        ), f'Filtered calibration dir missing: {filtered_path}'
+        mean_path = os.path.join(filtered_path, 'mean.txt')
+        var_path = os.path.join(filtered_path, 'var.txt')
+        assert os.path.isfile(mean_path), f'Filtered mean.txt missing: {mean_path}'
+        assert os.path.isfile(var_path), f'Filtered var.txt missing: {var_path}'
+
+        full_mean = np.loadtxt(os.path.join(base, 'mean.txt'))
+        full_var = np.loadtxt(os.path.join(base, 'var.txt'))
+        filtered_mean = np.loadtxt(mean_path)
+        filtered_var = np.loadtxt(var_path)
+
+        keep_index = env.keep_index
+        expected_len = len(keep_index)
+        assert filtered_mean.shape == (
+            expected_len,
+        ), f'Filtered mean length {len(filtered_mean)} != kept vars {expected_len}'
+        assert filtered_var.shape == (
+            expected_len,
+        ), f'Filtered var length {len(filtered_var)} != kept vars {expected_len}'
+        np.testing.assert_array_almost_equal(
+            filtered_mean,
+            full_mean[keep_index],
+            err_msg='Filtered mean should equal full mean[keep_index]',
+        )
+        np.testing.assert_array_almost_equal(
+            filtered_var,
+            full_var[keep_index],
+            err_msg='Filtered var should equal full var[keep_index]',
+        )
 
 
 def test_reduced_observation_exceptions(env_demo):
