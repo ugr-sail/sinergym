@@ -12,7 +12,12 @@ from stable_baselines3.common.vec_env import VecEnv
 
 from sinergym.utils.constants import LOG_CALLBACK_LEVEL
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.wrappers import BaseLoggerWrapper, NormalizeObservation, WandBLogger
+from sinergym.utils.wrappers import (
+    BaseLoggerWrapper,
+    NormalizeObservation,
+    ReduceObservationWrapper,
+    WandBLogger,
+)
 
 
 class LoggerEvalCallback(EventCallback):
@@ -189,21 +194,40 @@ class LoggerEvalCallback(EventCallback):
             self.model.save(os.path.join(self.save_path, 'best_model.zip'))
             self.best_mean_reward = evaluation_summary['mean_reward']
 
-            # Save normalization calibration if exists
+            # Save normalization calibration if exists (full space and, if reduced, filtered)
             if is_wrapped(self.eval_env, NormalizeObservation):
                 self.logger.info('Save normalization calibration in evaluation folder')
+                get_attr = self.eval_env.get_wrapper_attr
+                folder_name = get_attr('calibration_folder_name')
+                full_dir = os.path.join(self.save_path, folder_name)
+                os.makedirs(full_dir, exist_ok=True)
                 np.savetxt(
-                    fname=os.path.join(self.save_path, 'mean.txt'),
-                    X=self.eval_env.get_wrapper_attr('mean'),
+                    fname=os.path.join(full_dir, 'mean.txt'),
+                    X=get_attr('mean'),
                 )
                 np.savetxt(
-                    fname=os.path.join(self.save_path, 'var.txt'),
-                    X=self.eval_env.get_wrapper_attr('var'),
+                    fname=os.path.join(full_dir, 'var.txt'),
+                    X=get_attr('var'),
                 )
                 np.savetxt(
-                    fname=os.path.join(self.save_path, 'count.txt'),
-                    X=[self.eval_env.get_wrapper_attr('count')],
+                    fname=os.path.join(full_dir, 'count.txt'),
+                    X=[get_attr('count')],
                 )
+                # If observation space is reduced, also save filtered calibration
+                if is_wrapped(self.eval_env, ReduceObservationWrapper):
+                    keep_index = get_attr('keep_index')
+                    mean_full = get_attr('mean')
+                    var_full = get_attr('var')
+                    filtered_dir = os.path.join(full_dir, 'filtered')
+                    os.makedirs(filtered_dir, exist_ok=True)
+                    np.savetxt(
+                        fname=os.path.join(filtered_dir, 'mean.txt'),
+                        X=mean_full[keep_index],
+                    )
+                    np.savetxt(
+                        fname=os.path.join(filtered_dir, 'var.txt'),
+                        X=var_full[keep_index],
+                    )
 
             # Save best model found summary in wandb if its active
             if self.wandb_log:
