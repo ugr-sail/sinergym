@@ -3,7 +3,7 @@ Gymnasium environment for simulation with EnergyPlus.
 """
 
 from queue import Empty, Full, Queue
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
@@ -11,6 +11,7 @@ import yaml
 
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
+from sinergym.simulators.eplus import VALID_CALLBACK_NAMES
 from sinergym.utils.constants import LOG_ENV_LEVEL
 from sinergym.utils.logger import SimpleLogger, TerminalLogger
 from sinergym.utils.rewards import *
@@ -548,6 +549,148 @@ class EplusEnv(gym.Env):
                 self.logger.warning(
                     f'Context queue is full, context update with values {context_values} will be skipped.'
                 )
+
+    # ---------------------------------------------------------------------------- #
+    #                    CUSTOM CALLBACK REGISTRATION (ISSUE #357)                  #
+    # ---------------------------------------------------------------------------- #
+
+    def register_callback(self, callback_name: str, callback_func: Callable) -> None:
+        """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
+
+        This method allows users to define and register their own callback functions at various
+        points in the EnergyPlus simulation lifecycle. The callback will be registered with the
+        EnergyPlus API and called at the specified simulation point.
+
+        **Note:** Custom callbacks are registered on the underlying simulator. These callbacks
+        will be active for all subsequent episodes after registration. To deactivate callbacks,
+        use :py:meth:`clear_callbacks` or restart the environment.
+
+        Args:
+            callback_name (str): The name of the EnergyPlus runtime callback method to register.
+                Valid callback names include:
+                - callback_begin_new_environment
+                - callback_after_new_environment_warmup_complete
+                - callback_begin_zone_timestep_before_init_heat_balance
+                - callback_begin_zone_timestep_after_init_heat_balance
+                - callback_begin_zone_timestep_before_set_current_weather
+                - callback_begin_system_timestep_before_predictor
+                - callback_end_zone_timestep_before_zone_reporting
+                - callback_end_zone_timestep_after_zone_reporting
+                - callback_end_system_timestep_before_hvac_reporting
+                - callback_end_system_timestep_after_hvac_reporting
+                - callback_inside_system_iteration_loop
+                - callback_after_predictor_before_hvac_managers
+                - callback_after_predictor_after_hvac_managers
+                - callback_end_zone_sizing
+                - callback_end_system_sizing
+                - callback_unitary_system_sizing
+                - callback_after_component_get_input
+                - callback_user_defined_component_model
+                - callback_register_external_hvac_manager
+                - callback_message
+                - callback_progress
+
+            callback_func (Callable): The callback function to register. This function will be
+                called with the EnergyPlus state as its only argument: ``callback_func(state)``.
+                The callback should accept one argument (the EnergyPlus state) and can perform
+                any custom logic such as reading sensors, setting actuators, or logging data.
+
+        Raises:
+            ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
+
+        Example:
+            Example with a custom callback that logs zone temperatures::
+
+                >>> def my_custom_callback(state):
+                ...     # Access the simulator's exchange API
+                ...     simulator = env.energyplus_simulator
+                ...     # Read a variable using its handler
+                ...     if simulator.var_handlers and 'Zone_Temperature' in simulator.var_handlers:
+                ...         temp = simulator.exchange.get_variable_value(
+                ...             state,
+                ...             simulator.var_handlers['Zone_Temperature']
+                ...         )
+                ...         print(f"Zone Temperature: {temp}")
+                ...
+                >>> # Register the callback at a specific simulation point
+                >>> env.register_callback(
+                ...     'callback_begin_system_timestep_before_predictor',
+                ...     my_custom_callback
+                ... )
+                INFO [ENVIRONMENT] Registered custom callback 'callback_begin_system_timestep_before_predictor' successfully.
+
+            Example with the callback mentioned in issue (UserDefined component)::
+
+                >>> def user_defined_callback(state):
+                ...     # Custom logic for UserDefined component
+                ...     pass
+                ...
+                >>> env.register_callback(
+                ...     'callback_user_defined_component_model',
+                ...     user_defined_callback
+                ... )
+
+        Note:
+            The callback registration is tracked by the simulator, and the actual
+            registration with EnergyPlus API happens when the simulation starts
+            (during :py:meth:`reset`). Multiple callbacks can be registered for
+            the same callback point by calling this method multiple times.
+        """
+        # Delegate to the underlying simulator
+        self.energyplus_simulator.register_simulator_callback(
+            callback_name, callback_func
+        )
+
+    def clear_callbacks(self) -> None:
+        """Clear all custom callbacks registered by the user.
+
+        This method removes all user-registered callbacks from the internal callback dictionary.
+        It does not affect the internal Sinergym callbacks used for environment communication
+        (observations, actions, context, warmup, progress).
+
+        **Note:** This method only clears the tracked callbacks. The EnergyPlus API's callbacks
+        are managed internally and will be cleared when the simulation stops.
+
+        Example:
+            >>> # After registering callbacks
+            >>> env.register_callback('callback_begin_system_timestep_before_predictor', my_callback)
+            >>> print(env.callbacks)
+            {'callback_begin_system_timestep_before_predictor': ['my_callback']}
+            >>> # Clear all callbacks
+            >>> env.clear_callbacks()
+            INFO [ENVIRONMENT] All custom callbacks have been cleared.
+            >>> print(env.callbacks)
+            {}
+        """
+        self.energyplus_simulator.clear_simulator_callbacks()
+
+    @property
+    def callbacks(self) -> Dict[str, List[str]]:
+        """Get a dictionary of currently registered custom callbacks.
+
+        This property provides an overview of all user-registered callbacks and their
+        registration points in the EnergyPlus simulation lifecycle.
+
+        Returns:
+            Dict[str, List[str]]: A dictionary where keys are callback names (EnergyPlus
+                callback points) and values are lists of callback function names
+                registered at each callback point.
+
+        Example:
+            >>> # After registering some callbacks
+            >>> def my_callback1(state): pass
+            >>> def my_callback2(state): pass
+            >>> def my_callback3(state): pass
+            >>> env.register_callback('callback_begin_system_timestep_before_predictor', my_callback1)
+            >>> env.register_callback('callback_end_zone_timestep_after_zone_reporting', my_callback2)
+            >>> env.register_callback('callback_end_zone_timestep_after_zone_reporting', my_callback3)
+            >>> env.callbacks
+            {
+                'callback_begin_system_timestep_before_predictor': ['my_callback1'],
+                'callback_end_zone_timestep_after_zone_reporting': ['my_callback2', 'my_callback3']
+            }
+        """
+        return self.energyplus_simulator.registered_callbacks
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
