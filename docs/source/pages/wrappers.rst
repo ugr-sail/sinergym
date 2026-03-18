@@ -162,6 +162,8 @@ If combined with the :ref:`LoggerWrapper` in subsequent layers, the removed vari
 
 Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, which can be observed in the info dictionary.
 
+When used together with :ref:`NormalizeObservation`, this wrapper also saves a **filtered** calibration (mean and variance for the kept variables only) in ``norm_stats/filtered/``, both in the episode directory and in the workspace. That allows loading normalization statistics that match the reduced observation space when evaluating an agent without this variables directly.
+
 ***************
 MultiObsWrapper
 ***************

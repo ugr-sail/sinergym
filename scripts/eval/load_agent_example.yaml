@@ -54,8 +54,8 @@ wrappers_yaml_config: Sinergym_output/wrappers_config.pyyaml
 # This overwrite wrappers in wrappers_yaml_config if defined
 wrappers:
   - sinergym.utils.wrappers:NormalizeObservation:
-      mean: Sinergym_output/evaluation/mean.txt
-      var: Sinergym_output/evaluation/var.txt
+      mean: Sinergym_output/evaluation/norm_stats/mean.txt
+      var: Sinergym_output/evaluation/norm_stats/var.txt
       automatic_update: false
 
 # -------------------------- GOOGLE CLOUD (OPTIONAL) ------------------------- #
