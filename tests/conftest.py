@@ -360,7 +360,8 @@ def env_demo(
         env_name='PYTESTGYM',
         building_config={'runperiod': (1, 1, 1991, 31, 1, 1991)},
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -389,7 +390,8 @@ def env_demo_energy_cost(
         env,
         energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -414,7 +416,8 @@ def env_demo_summer(
         env_name='PYTESTGYM',
         building_config={'runperiod': (7, 1, 1991, 31, 7, 1991)},
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -443,7 +446,8 @@ def env_demo_summer_energy_cost(
         env,
         energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -485,7 +489,8 @@ def env_5zone(
         env_name='PYTESTGYM',
         building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -511,7 +516,8 @@ def env_5zone_stochastic(
         env_name='PYTESTGYM',
         building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
     )
-    return env
+    yield env
+    env.close()
 
 
 @pytest.fixture(scope='function')
@@ -543,7 +549,8 @@ def env_datacenter(
         env_name='PYTESTGYM',
         building_config={'runperiod': (1, 1, 1991, 31, 3, 1991)},
     )
-    return env
+    yield env
+    env.close()
 
 
 # ---------------------------------------------------------------------------- #
