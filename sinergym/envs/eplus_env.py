@@ -602,8 +602,8 @@ class EplusEnv(gym.Env):
             Example with a custom callback that logs zone temperatures::
 
                 >>> def my_custom_callback(state):
-                ...     # Access the simulator's exchange API
-                ...     simulator = env.energyplus_simulator
+                ...     # Access the simulator's exchange API via wrapper attribute
+                ...     simulator = env.get_wrapper_attr('energyplus_simulator')
                 ...     # Read a variable using its handler
                 ...     if simulator.var_handlers and 'Zone_Temperature' in simulator.var_handlers:
                 ...         temp = simulator.exchange.get_variable_value(
@@ -613,7 +613,7 @@ class EplusEnv(gym.Env):
                 ...         print(f"Zone Temperature: {temp}")
                 ...
                 >>> # Register the callback at a specific simulation point
-                >>> env.register_callback(
+                >>> env.get_wrapper_attr('register_callback')(
                 ...     'callback_begin_system_timestep_before_predictor',
                 ...     my_custom_callback
                 ... )
@@ -625,7 +625,7 @@ class EplusEnv(gym.Env):
                 ...     # Custom logic for UserDefined component
                 ...     pass
                 ...
-                >>> env.register_callback(
+                >>> env.get_wrapper_attr('register_callback')(
                 ...     'callback_user_defined_component_model',
                 ...     user_defined_callback
                 ... )
@@ -653,11 +653,11 @@ class EplusEnv(gym.Env):
 
         Example:
             >>> # After registering callbacks
-            >>> env.register_callback('callback_begin_system_timestep_before_predictor', my_callback)
-            >>> print(env.callbacks)
+            >>> env.get_wrapper_attr('register_callback')('callback_begin_system_timestep_before_predictor', my_callback)
+            >>> print(env.get_wrapper_attr('callbacks'))
             {'callback_begin_system_timestep_before_predictor': ['my_callback']}
             >>> # Clear all callbacks
-            >>> env.clear_callbacks()
+            >>> env.get_wrapper_attr('clear_callbacks')()
             INFO [ENVIRONMENT] All custom callbacks have been cleared.
             >>> print(env.callbacks)
             {}
@@ -681,10 +681,10 @@ class EplusEnv(gym.Env):
             >>> def my_callback1(state): pass
             >>> def my_callback2(state): pass
             >>> def my_callback3(state): pass
-            >>> env.register_callback('callback_begin_system_timestep_before_predictor', my_callback1)
-            >>> env.register_callback('callback_end_zone_timestep_after_zone_reporting', my_callback2)
-            >>> env.register_callback('callback_end_zone_timestep_after_zone_reporting', my_callback3)
-            >>> env.callbacks
+            >>> env.get_wrapper_attr('register_callback')('callback_begin_system_timestep_before_predictor', my_callback1)
+            >>> env.get_wrapper_attr('register_callback')('callback_end_zone_timestep_after_zone_reporting', my_callback2)
+            >>> env.get_wrapper_attr('register_callback')('callback_end_zone_timestep_after_zone_reporting', my_callback3)
+            >>> env.get_wrapper_attr('callbacks')
             {
                 'callback_begin_system_timestep_before_predictor': ['my_callback1'],
                 'callback_end_zone_timestep_after_zone_reporting': ['my_callback2', 'my_callback3']

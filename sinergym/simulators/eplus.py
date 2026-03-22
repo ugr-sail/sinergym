@@ -16,7 +16,6 @@ from sinergym.utils.common import *
 from sinergym.utils.constants import LOG_SIM_LEVEL
 from sinergym.utils.logger import TerminalLogger
 
-
 # List of valid callback names that can be registered by users
 VALID_CALLBACK_NAMES = [
     'callback_after_component_get_input',
@@ -598,11 +597,19 @@ class EnergyPlus(object):
 
         Example:
             >>> def my_custom_callback(state):
+            ...     # Access the simulator via the wrapped env
+            ...     simulator = env.get_wrapper_attr('energyplus_simulator')
             ...     # Read a sensor value
             ...     temp = simulator.exchange.get_variable_value(state, temp_handle)
             ...     # Do something with the value
             ...     print(f"Temperature: {temp}")
             ...
+            >>> # Prefer registering via the env wrapper:
+            >>> env.get_wrapper_attr('register_callback')(
+            ...     'callback_begin_system_timestep_before_predictor',
+            ...     my_custom_callback
+            ... )
+            >>> # Or directly on the simulator:
             >>> simulator.register_simulator_callback(
             ...     'callback_begin_system_timestep_before_predictor',
             ...     my_custom_callback
@@ -620,9 +627,7 @@ class EnergyPlus(object):
             self._custom_callbacks[callback_name] = []
         self._custom_callbacks[callback_name].append(callback_func)
 
-        self.logger.info(
-            f"Registered custom callback '{callback_name}' successfully."
-        )
+        self.logger.info(f"Registered custom callback '{callback_name}' successfully.")
 
     def clear_simulator_callbacks(self) -> None:
         """Clear all custom callbacks registered by the user.
