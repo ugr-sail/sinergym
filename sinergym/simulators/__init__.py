@@ -1,3 +1,3 @@
 """Communication interface with simulators."""
 
-from .eplus import EnergyPlus, VALID_CALLBACK_NAMES
+from .eplus import VALID_CALLBACK_NAMES, EnergyPlus
