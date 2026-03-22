@@ -403,10 +403,8 @@ class EplusEnv(gym.Env):
 
         # check for simulation errors
         if self.energyplus_simulator.failed():
-            self.logger.critical(
-                f'EnergyPlus failed with exit code {
-                    self.energyplus_simulator.sim_results['exit_code']}'
-            )
+            self.logger.critical(f'EnergyPlus failed with exit code {
+                    self.energyplus_simulator.sim_results['exit_code']}')
             raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
@@ -708,23 +706,19 @@ class EplusEnv(gym.Env):
         # OBSERVATION
         assert self._observation_space.shape
         if len(self.observation_variables) != self._observation_space.shape[0]:
-            self.logger.error(
-                f'Observation space ({
+            self.logger.error(f'Observation space ({
                     self._observation_space.shape[0]} variables) has not the same length than specified variable names ({
                     len(
-                        self.observation_variables)}).'
-            )
+                        self.observation_variables)}).')
             raise ValueError
 
         # ACTION
         assert self._action_space.shape
         if len(self.action_variables) != self._action_space.shape[0]:
-            self.logger.error(
-                f'Action space defined in environment( with {
+            self.logger.error(f'Action space defined in environment( with {
                     self._action_space.shape[0]} variables) has not the same length than specified action variable names ({
                     len(
-                        self.action_variables)} variables).'
-            )
+                        self.action_variables)} variables).')
             raise ValueError
 
         # CONTEXT
@@ -970,8 +964,7 @@ class EplusEnv(gym.Env):
         return cls(**data)
 
     def to_str(self):  # pragma: no cover
-        print(
-            f"""
+        print(f"""
     #==================================================================================#
         ENVIRONMENT NAME: {self.name}
     #==================================================================================#
@@ -1019,5 +1012,4 @@ class EplusEnv(gym.Env):
     - Meters: {self.meter_handlers}
     - Internal Context: {self.context_handlers}
 
-    """
-        )
+    """)

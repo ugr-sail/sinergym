@@ -1969,12 +1969,9 @@ try:
                 raise ValueError
 
             # Define wandb run name if is not specified
-            run_name = (
-                run_name
-                or f'{
+            run_name = run_name or f'{
                 self.env.get_wrapper_attr('name')}_{
                 wandb.util.generate_id()}'
-            )
 
             # Init WandB session
             # If there is no active run and entity and project has been specified,
@@ -2037,10 +2034,8 @@ try:
 
             # Log step information if frequency is correct
             if self.global_timestep % self.dump_frequency == 0:
-                self.logger.debug(
-                    f'Dump frequency reached ({
-                        self.global_timestep}), logging to WandB.'
-                )
+                self.logger.debug(f'Dump frequency reached ({
+                        self.global_timestep}), logging to WandB.')
                 self.wandb_log()
 
             return obs, reward, terminated, truncated, info

@@ -26,25 +26,17 @@ def _check_obs(
     correspond to the declared one.
     """
     if not isinstance(observation_space, spaces.Tuple):
-        assert not isinstance(
-            obs, tuple
-        ), f"The observation returned by the `{
+        assert not isinstance(obs, tuple), f"The observation returned by the `{
             method_name}()` method should be a single value, not a tuple"
 
     if isinstance(observation_space, spaces.Discrete):
-        assert isinstance(
-            obs, int
-        ), f"The observation returned by `{
+        assert isinstance(obs, int), f"The observation returned by `{
             method_name}()` method must be an int"
     elif _is_numpy_array_space(observation_space):
-        assert isinstance(
-            obs, np.ndarray
-        ), f"The observation returned by `{
+        assert isinstance(obs, np.ndarray), f"The observation returned by `{
             method_name}()` method must be a numpy array"
 
-    assert observation_space.contains(
-        obs
-    ), f"The observation returned by the `{
+    assert observation_space.contains(obs), f"The observation returned by the `{
         method_name}()` method does not match the given observation space"
 
 

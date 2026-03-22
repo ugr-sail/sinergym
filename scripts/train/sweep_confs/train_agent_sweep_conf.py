@@ -114,10 +114,8 @@ def train():
 
         # ------- Update env params configuration with env yaml file if exists ------- #
         if wandb.config.get('env_yaml_config'):
-            logger.info(
-                f'Reading environment parameters from {
-                    wandb.config['env_yaml_config']}'
-            )
+            logger.info(f'Reading environment parameters from {
+                    wandb.config['env_yaml_config']}')
             with open(wandb.config['env_yaml_config'], 'r') as env_yaml_conf:
                 env_params.update(yaml.load(env_yaml_conf, Loader=yaml.FullLoader))
 
@@ -141,10 +139,8 @@ def train():
 
         # ------------------ Read wrappers from yaml file if exists ------------------ #
         if wandb.config.get('wrappers_yaml_config'):
-            logger.info(
-                f'Reading wrappers from {
-                    wandb.config['wrappers_yaml_config']}'
-            )
+            logger.info(f'Reading wrappers from {
+                    wandb.config['wrappers_yaml_config']}')
             with open(wandb.config['wrappers_yaml_config'], 'r') as f:
                 wrappers = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -250,10 +246,8 @@ def train():
 
             # ------------ Preparing the evaluation environment configuration ------------ #
             env_params['env_name'] = experiment_name + '_EVALUATION'
-            logger.info(
-                f'Evaluation enabled with environment name: {
-                    env_params["env_name"]}'
-            )
+            logger.info(f'Evaluation enabled with environment name: {
+                    env_params["env_name"]}')
 
             # By default, the evaluation environment does not use WandBLogger
             if wrappers:
@@ -304,10 +298,8 @@ def train():
             log_interval=wandb.config['log_interval'],
         )
         logger.info(f'Training completed')
-        logger.info(
-            f'Model saved to {
-                env.get_wrapper_attr("workspace_path")}/model'
-        )
+        logger.info(f'Model saved to {
+                env.get_wrapper_attr("workspace_path")}/model')
 
         # ---------------------------------------------------------------------------- #
         #                                Saving results                                #

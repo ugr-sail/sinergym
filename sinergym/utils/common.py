@@ -548,12 +548,9 @@ def convert_conf_to_env_parameters(conf: Dict[str, Any]) -> Dict[str, Dict[str, 
 
     # Check weathers configuration
     if len(weather_keys) != len(weather_files):
-        logger.error(
-            f'Weather files and id keys must have the same length: '
-            f'{
+        logger.error(f'Weather files and id keys must have the same length: ' f'{
                 len(weather_files)} weather files != {
-                len(weather_keys)} keys'
-        )
+                len(weather_keys)} keys')
         raise ValueError
 
     # Base ID and kwargs

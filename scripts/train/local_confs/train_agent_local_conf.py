@@ -121,10 +121,8 @@ try:
 
     # ------- Update env params configuration with env yaml file if exists ------- #
     if config.get('env_yaml_config'):
-        logger.info(
-            f'Reading environment parameters from {
-                config['env_yaml_config']}'
-        )
+        logger.info(f'Reading environment parameters from {
+                config['env_yaml_config']}')
         with open(config['env_yaml_config'], 'r') as env_yaml_conf:
             env_params.update(yaml.load(env_yaml_conf, Loader=yaml.FullLoader))
 
@@ -149,10 +147,8 @@ try:
 
     # ------------------ Read wrappers from yaml file if exists ------------------ #
     if config.get('wrappers_yaml_config'):
-        logger.info(
-            f'Reading wrappers from {
-                config['wrappers_yaml_config']}'
-        )
+        logger.info(f'Reading wrappers from {
+                config['wrappers_yaml_config']}')
         with open(config['wrappers_yaml_config'], 'r') as f:
             wrappers = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -263,10 +259,8 @@ try:
 
         # ------------ Preparing the evaluation environment configuration ------------ #
         env_params['env_name'] = experiment_name + '_EVALUATION'
-        logger.info(
-            f'Evaluation enabled with environment name: {
-                env_params["env_name"]}'
-        )
+        logger.info(f'Evaluation enabled with environment name: {
+                env_params["env_name"]}')
 
         # By default, the evaluation environment does not use WandBLogger
         if wrappers:
@@ -318,10 +312,8 @@ try:
     logger.info(f'Training completed')
 
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
-    logger.info(
-        f'Model saved to {
-            env.get_wrapper_attr("workspace_path")}/model'
-    )
+    logger.info(f'Model saved to {
+            env.get_wrapper_attr("workspace_path")}/model')
 
     # If the environment is not closed, this script will do it in
     # order to correctly log all the simulation data (Energyplus + Sinergym

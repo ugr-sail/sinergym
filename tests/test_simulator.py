@@ -204,7 +204,9 @@ def test_valid_callback_names_list():
         'callback_after_new_environment_warmup_complete',
     ]
     for callback in expected_callbacks:
-        assert callback in VALID_CALLBACK_NAMES, f"{callback} not found in VALID_CALLBACK_NAMES"
+        assert (
+            callback in VALID_CALLBACK_NAMES
+        ), f"{callback} not found in VALID_CALLBACK_NAMES"
 
 
 def test_register_simulator_callback_valid(simulator_5zone):
@@ -222,12 +224,21 @@ def test_register_simulator_callback_valid(simulator_5zone):
     )
 
     # Check that it's registered
-    assert 'callback_begin_system_timestep_before_predictor' in simulator_5zone.registered_callbacks
-    assert 'my_callback' in simulator_5zone.registered_callbacks['callback_begin_system_timestep_before_predictor']
+    assert (
+        'callback_begin_system_timestep_before_predictor'
+        in simulator_5zone.registered_callbacks
+    )
+    assert (
+        'my_callback'
+        in simulator_5zone.registered_callbacks[
+            'callback_begin_system_timestep_before_predictor'
+        ]
+    )
 
 
 def test_register_simulator_callback_multiple(simulator_5zone):
     """Test registering multiple callbacks at the same point."""
+
     def callback1(state):
         pass
 
@@ -235,11 +246,17 @@ def test_register_simulator_callback_multiple(simulator_5zone):
         pass
 
     # Register multiple callbacks at the same point
-    simulator_5zone.register_simulator_callback('callback_end_zone_timestep_after_zone_reporting', callback1)
-    simulator_5zone.register_simulator_callback('callback_end_zone_timestep_after_zone_reporting', callback2)
+    simulator_5zone.register_simulator_callback(
+        'callback_end_zone_timestep_after_zone_reporting', callback1
+    )
+    simulator_5zone.register_simulator_callback(
+        'callback_end_zone_timestep_after_zone_reporting', callback2
+    )
 
     # Check that both are registered
-    registered = simulator_5zone.registered_callbacks['callback_end_zone_timestep_after_zone_reporting']
+    registered = simulator_5zone.registered_callbacks[
+        'callback_end_zone_timestep_after_zone_reporting'
+    ]
     assert 'callback1' in registered
     assert 'callback2' in registered
     assert len(registered) == 2
@@ -247,17 +264,21 @@ def test_register_simulator_callback_multiple(simulator_5zone):
 
 def test_register_simulator_callback_invalid_name(simulator_5zone):
     """Test that registering an invalid callback name raises ValueError."""
+
     def my_callback(state):
         pass
 
     with pytest.raises(ValueError) as excinfo:
-        simulator_5zone.register_simulator_callback('invalid_callback_name', my_callback)
+        simulator_5zone.register_simulator_callback(
+            'invalid_callback_name', my_callback
+        )
 
     assert 'Invalid callback name' in str(excinfo.value)
 
 
 def test_clear_simulator_callbacks(simulator_5zone):
     """Test clearing all custom callbacks."""
+
     def my_callback1(state):
         pass
 
@@ -265,8 +286,12 @@ def test_clear_simulator_callbacks(simulator_5zone):
         pass
 
     # Register some callbacks
-    simulator_5zone.register_simulator_callback('callback_begin_system_timestep_before_predictor', my_callback1)
-    simulator_5zone.register_simulator_callback('callback_end_zone_timestep_after_zone_reporting', my_callback2)
+    simulator_5zone.register_simulator_callback(
+        'callback_begin_system_timestep_before_predictor', my_callback1
+    )
+    simulator_5zone.register_simulator_callback(
+        'callback_end_zone_timestep_after_zone_reporting', my_callback2
+    )
 
     # Verify they are registered
     assert len(simulator_5zone.registered_callbacks) == 2
@@ -280,6 +305,7 @@ def test_clear_simulator_callbacks(simulator_5zone):
 
 def test_registered_callbacks_property(simulator_5zone):
     """Test the registered_callbacks property returns correct format."""
+
     def my_callback(state):
         pass
 
@@ -287,7 +313,9 @@ def test_registered_callbacks_property(simulator_5zone):
     assert simulator_5zone.registered_callbacks == {}
 
     # Register a callback
-    simulator_5zone.register_simulator_callback('callback_user_defined_component_model', my_callback)
+    simulator_5zone.register_simulator_callback(
+        'callback_user_defined_component_model', my_callback
+    )
 
     # Check the property returns correct format
     result = simulator_5zone.registered_callbacks

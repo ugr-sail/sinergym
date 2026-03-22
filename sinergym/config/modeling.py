@@ -268,10 +268,8 @@ class ModelJSON(object):
                 'number_of_timesteps_per_hour'
             ] = self.building_config['timesteps_per_hour']
 
-            self.logger.debug(
-                f'Building configuration: timesteps_per_hour set up to {
-                    self.building_config['timesteps_per_hour']}'
-            )
+            self.logger.debug(f'Building configuration: timesteps_per_hour set up to {
+                    self.building_config['timesteps_per_hour']}')
 
         # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
         # end_day, end_month, end_year)
@@ -295,16 +293,12 @@ class ModelJSON(object):
             self.timestep_per_episode = int(self.episode_length / self.step_size)
 
             # Log updated values in terminal
-            self.logger.info(
-                f'Building configuration: runperiod updated to {
-                    self.runperiod}'
-            )
+            self.logger.info(f'Building configuration: runperiod updated to {
+                    self.runperiod}')
             self.logger.info(f'Updated episode length (seconds): {self.episode_length}')
             self.logger.info(f'Updated timestep size (seconds): {self.step_size}')
-            self.logger.info(
-                f'Updated timesteps per episode: {
-                    self.timestep_per_episode}'
-            )
+            self.logger.info(f'Updated timesteps per episode: {
+                    self.timestep_per_episode}')
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
