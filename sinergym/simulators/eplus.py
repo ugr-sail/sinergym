@@ -126,8 +126,10 @@ class EnergyPlus(object):
         self._output_path: Optional[str] = None
 
         # ------------------- Custom callbacks for user registration ------------------ #
-        # Dictionary to track user-registered callbacks: {callback_name: [list of callback functions]}
-        self._custom_callbacks: Dict[str, List[Callable]] = {}
+        # Dictionary to track user-registered callbacks:
+        # {callback_name: [list of (callback_func, component_type_name) tuples]}
+        # component_type_name is only used for 'callback_user_defined_component_model'; None otherwise.
+        self._custom_callbacks: Dict[str, List[Tuple[Callable, Optional[str]]]] = {}
 
         self.logger.debug('Energyplus simulator initialized.')
 
@@ -191,11 +193,14 @@ class EnergyPlus(object):
         # ------------------- Register user-defined custom callbacks ------------------ #
         # Register all user-registered custom callbacks with the EnergyPlus API
         for callback_name, callback_funcs in self._custom_callbacks.items():
-            for callback_func in callback_funcs:
+            for callback_func, component_type_name in callback_funcs:
                 # Get the callback method from the runtime API
                 callback_method = getattr(self.api.runtime, callback_name)
-                # Register the callback with the EnergyPlus state
-                callback_method(self.energyplus_state, callback_func)  # type: ignore
+                # callback_user_defined_component_model requires an extra component_type_name argument
+                if callback_name == 'callback_user_defined_component_model':
+                    callback_method(self.energyplus_state, callback_func, component_type_name)  # type: ignore
+                else:
+                    callback_method(self.energyplus_state, callback_func)  # type: ignore
                 self.logger.debug(
                     f"Registered custom callback '{callback_name}' with EnergyPlus API."
                 )
@@ -554,7 +559,10 @@ class EnergyPlus(object):
     # ---------------------------------------------------------------------------- #
 
     def register_simulator_callback(
-        self, callback_name: str, callback_func: Callable
+        self,
+        callback_name: str,
+        callback_func: Callable,
+        component_type_name: Optional[str] = None,
     ) -> None:
         """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
 
@@ -588,12 +596,22 @@ class EnergyPlus(object):
                 - callback_progress
 
             callback_func (Callable): The callback function to register. This function will be
-                called with the EnergyPlus state as its only argument: callback_func(state).
-                The callback should accept one argument (the EnergyPlus state) and can perform
-                any custom logic such as reading sensors, setting actuators, or logging data.
+                called with the EnergyPlus state as its first argument. For most callbacks the
+                signature is ``callback_func(state)``; for
+                ``callback_user_defined_component_model`` it is
+                ``callback_func(state)`` but the component model name is passed separately
+                via ``component_type_name``.
+            component_type_name (Optional[str]): **Required** when ``callback_name`` is
+                ``'callback_user_defined_component_model'``; must be ``None`` for all other
+                callbacks. This string identifies the UserDefined component model in the IDF
+                that the callback is associated with.
 
         Raises:
-            ValueError: If callback_name is not a valid EnergyPlus callback name.
+            ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
+            ValueError: If ``component_type_name`` is ``None`` when registering
+                ``callback_user_defined_component_model``.
+            ValueError: If ``component_type_name`` is provided for any callback other than
+                ``callback_user_defined_component_model``.
 
         Example:
             >>> def my_custom_callback(state):
@@ -601,18 +619,21 @@ class EnergyPlus(object):
             ...     simulator = env.get_wrapper_attr('energyplus_simulator')
             ...     # Read a sensor value
             ...     temp = simulator.exchange.get_variable_value(state, temp_handle)
-            ...     # Do something with the value
             ...     print(f"Temperature: {temp}")
             ...
-            >>> # Prefer registering via the env wrapper:
-            >>> env.get_wrapper_attr('register_callback')(
-            ...     'callback_begin_system_timestep_before_predictor',
-            ...     my_custom_callback
-            ... )
-            >>> # Or directly on the simulator:
+            >>> # Register a standard callback:
             >>> simulator.register_simulator_callback(
             ...     'callback_begin_system_timestep_before_predictor',
             ...     my_custom_callback
+            ... )
+            >>> # Register a UserDefined component model callback:
+            >>> def my_udcm_callback(state):
+            ...     pass
+            ...
+            >>> simulator.register_simulator_callback(
+            ...     'callback_user_defined_component_model',
+            ...     my_udcm_callback,
+            ...     component_type_name='MyUserDefinedCoil'
             ... )
         """
         # Validate callback name
@@ -622,10 +643,26 @@ class EnergyPlus(object):
                 f"Valid callback names are: {VALID_CALLBACK_NAMES}"
             )
 
-        # Store the callback in the custom callbacks dictionary
+        # Validate component_type_name usage
+        if callback_name == 'callback_user_defined_component_model':
+            if component_type_name is None:
+                raise ValueError(
+                    "'component_type_name' is required for 'callback_user_defined_component_model'. "
+                    "Provide the UserDefined component model name from the IDF."
+                )
+        else:
+            if component_type_name is not None:
+                raise ValueError(
+                    f"'component_type_name' is only valid for 'callback_user_defined_component_model', "
+                    f"not for '{callback_name}'."
+                )
+
+        # Store the callback as a (func, component_type_name) tuple
         if callback_name not in self._custom_callbacks:
             self._custom_callbacks[callback_name] = []
-        self._custom_callbacks[callback_name].append(callback_func)
+        self._custom_callbacks[callback_name].append(
+            (callback_func, component_type_name)
+        )
 
         self.logger.info(f"Registered custom callback '{callback_name}' successfully.")
 
@@ -668,7 +705,7 @@ class EnergyPlus(object):
             }
         """
         return {
-            callback_name: [func.__name__ for func in funcs]
+            callback_name: [func.__name__ for func, _ in funcs]
             for callback_name, funcs in self._custom_callbacks.items()
         }
 

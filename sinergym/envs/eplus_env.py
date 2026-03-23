@@ -403,8 +403,10 @@ class EplusEnv(gym.Env):
 
         # check for simulation errors
         if self.energyplus_simulator.failed():
-            self.logger.critical(f'EnergyPlus failed with exit code {
-                    self.energyplus_simulator.sim_results['exit_code']}')
+            self.logger.critical(
+                f'EnergyPlus failed with exit code {
+                    self.energyplus_simulator.sim_results['exit_code']}'
+            )
             raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
@@ -552,7 +554,12 @@ class EplusEnv(gym.Env):
     #                    CUSTOM CALLBACK REGISTRATION (ISSUE #357)                  #
     # ---------------------------------------------------------------------------- #
 
-    def register_callback(self, callback_name: str, callback_func: Callable) -> None:
+    def register_callback(
+        self,
+        callback_name: str,
+        callback_func: Callable,
+        component_type_name: Optional[str] = None,
+    ) -> None:
         """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
 
         This method allows users to define and register their own callback functions at various
@@ -588,13 +595,20 @@ class EplusEnv(gym.Env):
                 - callback_message
                 - callback_progress
 
-            callback_func (Callable): The callback function to register. This function will be
-                called with the EnergyPlus state as its only argument: ``callback_func(state)``.
-                The callback should accept one argument (the EnergyPlus state) and can perform
-                any custom logic such as reading sensors, setting actuators, or logging data.
+            callback_func (Callable): The callback function to register. For most callbacks
+                the signature is ``callback_func(state)``. For
+                ``callback_user_defined_component_model`` it is also ``callback_func(state)``
+                but the component model name must be supplied via ``component_type_name``.
+            component_type_name (Optional[str]): **Required** when ``callback_name`` is
+                ``'callback_user_defined_component_model'``; must be ``None`` (default) for
+                all other callbacks. This string must match the UserDefined component model
+                name as declared in the IDF (e.g. ``'MyUserDefinedCoil'``).
 
         Raises:
             ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
+            ValueError: If ``component_type_name`` is ``None`` when registering
+                ``'callback_user_defined_component_model'``.
+            ValueError: If ``component_type_name`` is provided for any other callback.
 
         Example:
             Example with a custom callback that logs zone temperatures::
@@ -617,7 +631,7 @@ class EplusEnv(gym.Env):
                 ... )
                 INFO [ENVIRONMENT] Registered custom callback 'callback_begin_system_timestep_before_predictor' successfully.
 
-            Example with the callback mentioned in issue (UserDefined component)::
+            Example registering a UserDefined component model callback::
 
                 >>> def user_defined_callback(state):
                 ...     # Custom logic for UserDefined component
@@ -625,7 +639,8 @@ class EplusEnv(gym.Env):
                 ...
                 >>> env.get_wrapper_attr('register_callback')(
                 ...     'callback_user_defined_component_model',
-                ...     user_defined_callback
+                ...     user_defined_callback,
+                ...     component_type_name='MyUserDefinedCoil'
                 ... )
 
         Note:
@@ -636,7 +651,7 @@ class EplusEnv(gym.Env):
         """
         # Delegate to the underlying simulator
         self.energyplus_simulator.register_simulator_callback(
-            callback_name, callback_func
+            callback_name, callback_func, component_type_name
         )
 
     def clear_callbacks(self) -> None:
@@ -706,19 +721,23 @@ class EplusEnv(gym.Env):
         # OBSERVATION
         assert self._observation_space.shape
         if len(self.observation_variables) != self._observation_space.shape[0]:
-            self.logger.error(f'Observation space ({
+            self.logger.error(
+                f'Observation space ({
                     self._observation_space.shape[0]} variables) has not the same length than specified variable names ({
                     len(
-                        self.observation_variables)}).')
+                        self.observation_variables)}).'
+            )
             raise ValueError
 
         # ACTION
         assert self._action_space.shape
         if len(self.action_variables) != self._action_space.shape[0]:
-            self.logger.error(f'Action space defined in environment( with {
+            self.logger.error(
+                f'Action space defined in environment( with {
                     self._action_space.shape[0]} variables) has not the same length than specified action variable names ({
                     len(
-                        self.action_variables)} variables).')
+                        self.action_variables)} variables).'
+            )
             raise ValueError
 
         # CONTEXT
@@ -964,7 +983,8 @@ class EplusEnv(gym.Env):
         return cls(**data)
 
     def to_str(self):  # pragma: no cover
-        print(f"""
+        print(
+            f"""
     #==================================================================================#
         ENVIRONMENT NAME: {self.name}
     #==================================================================================#
@@ -1012,4 +1032,5 @@ class EplusEnv(gym.Env):
     - Meters: {self.meter_handlers}
     - Internal Context: {self.context_handlers}
 
-    """)
+    """
+        )
