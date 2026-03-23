@@ -556,7 +556,7 @@ class EplusEnv(gym.Env):
         self,
         callback_name: str,
         callback_func: Callable,
-        component_type_name: Optional[str] = None,
+        component_program_name: Optional[str] = None,
     ) -> None:
         """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
 
@@ -596,17 +596,17 @@ class EplusEnv(gym.Env):
             callback_func (Callable): The callback function to register. For most callbacks
                 the signature is ``callback_func(state)``. For
                 ``callback_user_defined_component_model`` it is also ``callback_func(state)``
-                but the component model name must be supplied via ``component_type_name``.
-            component_type_name (Optional[str]): **Required** when ``callback_name`` is
+                but the component model name must be supplied via ``component_program_name``.
+            component_program_name (Optional[str]): **Required** when ``callback_name`` is
                 ``'callback_user_defined_component_model'``; must be ``None`` (default) for
                 all other callbacks. This string must match the UserDefined component model
                 name as declared in the IDF (e.g. ``'MyUserDefinedCoil'``).
 
         Raises:
             ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
-            ValueError: If ``component_type_name`` is ``None`` when registering
+            ValueError: If ``component_program_name`` is ``None`` when registering
                 ``'callback_user_defined_component_model'``.
-            ValueError: If ``component_type_name`` is provided for any other callback.
+            ValueError: If ``component_program_name`` is provided for any other callback.
 
         Example:
             Example with a custom callback that logs zone temperatures::
@@ -638,7 +638,7 @@ class EplusEnv(gym.Env):
                 >>> env.get_wrapper_attr('register_callback')(
                 ...     'callback_user_defined_component_model',
                 ...     user_defined_callback,
-                ...     component_type_name='MyUserDefinedCoil'
+                ...     component_program_name='MyUserDefinedCoil'
                 ... )
 
         Note:
@@ -649,7 +649,7 @@ class EplusEnv(gym.Env):
         """
         # Delegate to the underlying simulator
         self.energyplus_simulator.register_simulator_callback(
-            callback_name, callback_func, component_type_name
+            callback_name, callback_func, component_program_name
         )
 
     def clear_callbacks(self) -> None:

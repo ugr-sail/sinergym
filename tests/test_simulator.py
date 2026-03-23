@@ -316,7 +316,7 @@ def test_registered_callbacks_property(simulator_5zone):
     simulator_5zone.register_simulator_callback(
         'callback_user_defined_component_model',
         my_callback,
-        component_type_name='MyUserDefinedCoil'
+        component_program_name='MyUserDefinedCoil'
     )
 
     # Check the property returns correct format
