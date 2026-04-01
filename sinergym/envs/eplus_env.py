@@ -402,8 +402,10 @@ class EplusEnv(gym.Env):
 
         # check for simulation errors
         if self.energyplus_simulator.failed():
-            self.logger.critical(f'EnergyPlus failed with exit code {
-                    self.energyplus_simulator.sim_results['exit_code']}')
+            self.logger.critical(
+                f'EnergyPlus failed with exit code {
+                    self.energyplus_simulator.sim_results['exit_code']}'
+            )
             raise RuntimeError
 
         if self.energyplus_simulator.simulation_complete:
@@ -557,94 +559,24 @@ class EplusEnv(gym.Env):
         callback_func: Callable,
         component_program_name: Optional[str] = None,
     ) -> None:
-        """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
+        """Register a custom EnergyPlus runtime callback (delegates to the simulator).
 
-        This method allows users to define and register their own callback functions at various
-        points in the EnergyPlus simulation lifecycle. The callback will be registered with the
-        EnergyPlus API and called at the specified simulation point.
+        User callbacks are stored on the underlying simulator and apply from subsequent
+        episodes onward; use :py:meth:`clear_callbacks` or restart the environment to drop
+        them. Hooks are attached to EnergyPlus when the run starts (during :py:meth:`reset`).
 
-        **Note:** Custom callbacks are registered on the underlying simulator. These callbacks
-        will be active for all subsequent episodes after registration. To deactivate callbacks,
-        use :py:meth:`clear_callbacks` or restart the environment.
+        The full list of valid ``callback_name`` values, ``component_program_name`` rules,
+        lifecycle notes, and examples are in :ref:`Custom callbacks`.
 
         Args:
-            callback_name (str): The name of the EnergyPlus runtime callback method to register.
-                Valid callback names include:
-                - callback_begin_new_environment
-                - callback_after_new_environment_warmup_complete
-                - callback_begin_zone_timestep_before_init_heat_balance
-                - callback_begin_zone_timestep_after_init_heat_balance
-                - callback_begin_zone_timestep_before_set_current_weather
-                - callback_begin_system_timestep_before_predictor
-                - callback_end_zone_timestep_before_zone_reporting
-                - callback_end_zone_timestep_after_zone_reporting
-                - callback_end_system_timestep_before_hvac_reporting
-                - callback_end_system_timestep_after_hvac_reporting
-                - callback_inside_system_iteration_loop
-                - callback_after_predictor_before_hvac_managers
-                - callback_after_predictor_after_hvac_managers
-                - callback_end_zone_sizing
-                - callback_end_system_sizing
-                - callback_unitary_system_sizing
-                - callback_after_component_get_input
-                - callback_user_defined_component_model
-                - callback_register_external_hvac_manager
-                - callback_message
-                - callback_progress
-
-            callback_func (Callable): The callback function to register. For most callbacks
-                the signature is ``callback_func(state)``. For
-                ``callback_user_defined_component_model`` it is also ``callback_func(state)``
-                but the component model name must be supplied via ``component_program_name``.
-            component_program_name (Optional[str]): **Required** when ``callback_name`` is
-                ``'callback_user_defined_component_model'``; must be ``None`` (default) for
-                all other callbacks. This string must match the UserDefined component model
-                name as declared in the IDF (e.g. ``'MyUserDefinedCoil'``).
+            callback_name: EnergyPlus Python API runtime callback identifier.
+            callback_func: Usually ``callback_func(state)``; UserDefined callbacks also use
+                this signature—see :ref:`Custom callbacks`.
+            component_program_name: Required only for ``callback_user_defined_component_model``
+                (must match the UserDefined program name in the IDF); otherwise ``None``.
 
         Raises:
-            ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
-            ValueError: If ``component_program_name`` is ``None`` when registering
-                ``'callback_user_defined_component_model'``.
-            ValueError: If ``component_program_name`` is provided for any other callback.
-
-        Example:
-            Example with a custom callback that logs zone temperatures::
-
-                >>> def my_custom_callback(state):
-                ...     # Access the simulator's exchange API via wrapper attribute
-                ...     simulator = env.get_wrapper_attr('energyplus_simulator')
-                ...     # Read a variable using its handler
-                ...     if simulator.var_handlers and 'Zone_Temperature' in simulator.var_handlers:
-                ...         temp = simulator.exchange.get_variable_value(
-                ...             state,
-                ...             simulator.var_handlers['Zone_Temperature']
-                ...         )
-                ...         print(f"Zone Temperature: {temp}")
-                ...
-                >>> # Register the callback at a specific simulation point
-                >>> env.get_wrapper_attr('register_callback')(
-                ...     'callback_begin_system_timestep_before_predictor',
-                ...     my_custom_callback
-                ... )
-                INFO [ENVIRONMENT] Registered custom callback 'callback_begin_system_timestep_before_predictor' successfully.
-
-            Example registering a UserDefined component model callback::
-
-                >>> def user_defined_callback(state):
-                ...     # Custom logic for UserDefined component
-                ...     pass
-                ...
-                >>> env.get_wrapper_attr('register_callback')(
-                ...     'callback_user_defined_component_model',
-                ...     user_defined_callback,
-                ...     component_program_name='MyUserDefinedCoil'
-                ... )
-
-        Note:
-            The callback registration is tracked by the simulator, and the actual
-            registration with EnergyPlus API happens when the simulation starts
-            (during :py:meth:`reset`). Multiple callbacks can be registered for
-            the same callback point by calling this method multiple times.
+            ValueError: Invalid ``callback_name``, or invalid use of ``component_program_name``.
         """
         # Delegate to the underlying simulator
         self.energyplus_simulator.register_simulator_callback(
@@ -652,53 +584,19 @@ class EplusEnv(gym.Env):
         )
 
     def clear_callbacks(self) -> None:
-        """Clear all custom callbacks registered by the user.
+        """Clear all user-registered custom callbacks (delegates to the simulator).
 
-        This method removes all user-registered callbacks from the internal callback dictionary.
-        It does not affect the internal Sinergym callbacks used for environment communication
-        (observations, actions, context, warmup, progress).
-
-        **Note:** This method only clears the tracked callbacks. The EnergyPlus API's callbacks
-        are managed internally and will be cleared when the simulation stops.
-
-        Example:
-            >>> # After registering callbacks
-            >>> env.get_wrapper_attr('register_callback')('callback_begin_system_timestep_before_predictor', my_callback)
-            >>> print(env.get_wrapper_attr('callbacks'))
-            {'callback_begin_system_timestep_before_predictor': ['my_callback']}
-            >>> # Clear all callbacks
-            >>> env.get_wrapper_attr('clear_callbacks')()
-            INFO [ENVIRONMENT] All custom callbacks have been cleared.
-            >>> print(env.callbacks)
-            {}
+        Internal Sinergym callbacks (observations, actions, context, warmup, progress) are
+        unchanged. See :ref:`Custom callbacks` for semantics and interaction with EnergyPlus.
         """
         self.energyplus_simulator.clear_simulator_callbacks()
 
     @property
     def callbacks(self) -> Dict[str, List[str]]:
-        """Get a dictionary of currently registered custom callbacks.
+        """User-registered callbacks: mapping from callback point to ``__name__`` lists.
 
-        This property provides an overview of all user-registered callbacks and their
-        registration points in the EnergyPlus simulation lifecycle.
-
-        Returns:
-            Dict[str, List[str]]: A dictionary where keys are callback names (EnergyPlus
-                callback points) and values are lists of callback function names
-                registered at each callback point.
-
-        Example:
-            >>> # After registering some callbacks
-            >>> def my_callback1(state): pass
-            >>> def my_callback2(state): pass
-            >>> def my_callback3(state): pass
-            >>> env.get_wrapper_attr('register_callback')('callback_begin_system_timestep_before_predictor', my_callback1)
-            >>> env.get_wrapper_attr('register_callback')('callback_end_zone_timestep_after_zone_reporting', my_callback2)
-            >>> env.get_wrapper_attr('register_callback')('callback_end_zone_timestep_after_zone_reporting', my_callback3)
-            >>> env.get_wrapper_attr('callbacks')
-            {
-                'callback_begin_system_timestep_before_predictor': ['my_callback1'],
-                'callback_end_zone_timestep_after_zone_reporting': ['my_callback2', 'my_callback3']
-            }
+        Mirrors :attr:`~sinergym.simulators.eplus.EnergyPlus.registered_callbacks`. See
+        :ref:`Custom callbacks`.
         """
         return self.energyplus_simulator.registered_callbacks
 
@@ -718,19 +616,23 @@ class EplusEnv(gym.Env):
         # OBSERVATION
         assert self._observation_space.shape
         if len(self.observation_variables) != self._observation_space.shape[0]:
-            self.logger.error(f'Observation space ({
+            self.logger.error(
+                f'Observation space ({
                     self._observation_space.shape[0]} variables) has not the same length than specified variable names ({
                     len(
-                        self.observation_variables)}).')
+                        self.observation_variables)}).'
+            )
             raise ValueError
 
         # ACTION
         assert self._action_space.shape
         if len(self.action_variables) != self._action_space.shape[0]:
-            self.logger.error(f'Action space defined in environment( with {
+            self.logger.error(
+                f'Action space defined in environment( with {
                     self._action_space.shape[0]} variables) has not the same length than specified action variable names ({
                     len(
-                        self.action_variables)} variables).')
+                        self.action_variables)} variables).'
+            )
             raise ValueError
 
         # CONTEXT
@@ -976,7 +878,8 @@ class EplusEnv(gym.Env):
         return cls(**data)
 
     def to_str(self):  # pragma: no cover
-        print(f"""
+        print(
+            f"""
     #==================================================================================#
         ENVIRONMENT NAME: {self.name}
     #==================================================================================#
@@ -1024,4 +927,5 @@ class EplusEnv(gym.Env):
     - Meters: {self.meter_handlers}
     - Internal Context: {self.context_handlers}
 
-    """)
+    """
+        )

@@ -565,77 +565,14 @@ class EnergyPlus(object):
         callback_func: Callable,
         component_program_name: Optional[str] = None,
     ) -> None:
-        """Register a custom callback function to be called at a specific point in the EnergyPlus simulation.
+        """Validate and queue a user callback for EnergyPlus (applied when the run starts).
 
-        This method allows users to define and register their own callback functions at various
-        points in the EnergyPlus simulation lifecycle. The callback will be registered with the
-        EnergyPlus API and called at the specified simulation point.
-
-        Args:
-            callback_name (str): The name of the EnergyPlus runtime callback method to register.
-                Valid callback names include:
-                - callback_begin_new_environment
-                - callback_after_new_environment_warmup_complete
-                - callback_begin_zone_timestep_before_init_heat_balance
-                - callback_begin_zone_timestep_after_init_heat_balance
-                - callback_begin_zone_timestep_before_set_current_weather
-                - callback_begin_system_timestep_before_predictor
-                - callback_end_zone_timestep_before_zone_reporting
-                - callback_end_zone_timestep_after_zone_reporting
-                - callback_end_system_timestep_before_hvac_reporting
-                - callback_end_system_timestep_after_hvac_reporting
-                - callback_inside_system_iteration_loop
-                - callback_after_predictor_before_hvac_managers
-                - callback_after_predictor_after_hvac_managers
-                - callback_end_zone_sizing
-                - callback_end_system_sizing
-                - callback_unitary_system_sizing
-                - callback_after_component_get_input
-                - callback_user_defined_component_model
-                - callback_register_external_hvac_manager
-                - callback_message
-                - callback_progress
-
-            callback_func (Callable): The callback function to register. This function will be
-                called with the EnergyPlus state as its first argument. For most callbacks the
-                signature is ``callback_func(state)``; for
-                ``callback_user_defined_component_model`` it is
-                ``callback_func(state)`` but the component model name is passed separately
-                via ``component_program_name``.
-            component_program_name (Optional[str]): **Required** when ``callback_name`` is
-                ``'callback_user_defined_component_model'``; must be ``None`` for all other
-                callbacks. This string identifies the UserDefined component model in the IDF
-                that the callback is associated with.
+        Callables are stored until the simulation registers them at run start.
+        User-facing documentation, the full list of ``callback_name`` values, and examples
+        are in :ref:`Custom callbacks` section.
 
         Raises:
-            ValueError: If ``callback_name`` is not a valid EnergyPlus callback name.
-            ValueError: If ``component_program_name`` is ``None`` when registering
-                ``callback_user_defined_component_model``.
-            ValueError: If ``component_program_name`` is provided for any callback other than
-                ``callback_user_defined_component_model``.
-
-        Example:
-            >>> def my_custom_callback(state):
-            ...     # Access the simulator via the wrapped env
-            ...     simulator = env.get_wrapper_attr('energyplus_simulator')
-            ...     # Read a sensor value
-            ...     temp = simulator.exchange.get_variable_value(state, temp_handle)
-            ...     print(f"Temperature: {temp}")
-            ...
-            >>> # Register a standard callback:
-            >>> simulator.register_simulator_callback(
-            ...     'callback_begin_system_timestep_before_predictor',
-            ...     my_custom_callback
-            ... )
-            >>> # Register a UserDefined component model callback:
-            >>> def my_udcm_callback(state):
-            ...     pass
-            ...
-            >>> simulator.register_simulator_callback(
-            ...     'callback_user_defined_component_model',
-            ...     my_udcm_callback,
-            ...     component_program_name='MyUserDefinedCoil'
-            ... )
+            ValueError: Invalid ``callback_name`` or invalid ``component_program_name`` usage.
         """
         # Validate callback name
         if callback_name not in VALID_CALLBACK_NAMES:
@@ -668,42 +605,20 @@ class EnergyPlus(object):
         self.logger.info(f"Registered custom callback '{callback_name}' successfully.")
 
     def clear_simulator_callbacks(self) -> None:
-        """Clear all custom callbacks registered by the user.
+        """Clear tracked user callbacks (see :ref:`Custom callbacks`).
 
-        This method removes all user-registered callbacks from the internal callback dictionary.
-        It does not affect the internal Sinergym callbacks used for environment communication
-        (observations, actions, context, warmup, progress).
-
-        Note: This method only clears the tracked callbacks. The EnergyPlus API's callbacks
-        are managed internally and will be cleared when stop() is called.
-
-        Example:
-            >>> simulator.clear_simulator_callbacks()
-            >>> print(simulator.callbacks)
-            {}
+        Does not remove internal Sinergym communication callbacks. EnergyPlus runtime hooks
+        are torn down with the simulation lifecycle (e.g. when :meth:`stop` runs).
         """
         self._custom_callbacks.clear()
         self.logger.info("All custom callbacks have been cleared.")
 
     @property
     def registered_callbacks(self) -> Dict[str, List[str]]:
-        """Get a dictionary of currently registered custom callbacks.
+        """``{callback_point: [callable __name__, ...]}`` for user callbacks.
 
-        Returns:
-            Dict[str, List[str]]: A dictionary where keys are callback names and values
-                are lists of callback function names registered at each callback point.
-
-        Example:
-            >>> # After registering callbacks
-            >>> def my_callback1(state): pass
-            >>> def my_callback2(state): pass
-            >>> simulator.register_simulator_callback('callback_begin_system_timestep_before_predictor', my_callback1)
-            >>> simulator.register_simulator_callback('callback_end_zone_timestep_after_zone_reporting', my_callback2)
-            >>> print(simulator.registered_callbacks)
-            {
-                'callback_begin_system_timestep_before_predictor': ['my_callback1'],
-                'callback_end_zone_timestep_after_zone_reporting': ['my_callback2']
-            }
+        See :ref:`Custom callbacks`. The environment exposes the same data via its
+        ``callbacks`` property.
         """
         return {
             callback_name: [func.__name__ for func, _ in funcs]
