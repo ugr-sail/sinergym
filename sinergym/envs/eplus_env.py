@@ -11,7 +11,6 @@ import yaml
 
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
-from sinergym.simulators.eplus import VALID_CALLBACK_NAMES
 from sinergym.utils.constants import LOG_ENV_LEVEL
 from sinergym.utils.logger import SimpleLogger, TerminalLogger
 from sinergym.utils.rewards import *
@@ -549,7 +548,7 @@ class EplusEnv(gym.Env):
                 )
 
     # ---------------------------------------------------------------------------- #
-    #                    CUSTOM CALLBACK REGISTRATION (ISSUE #357)                  #
+    #                    CUSTOM CALLBACK REGISTRATION                              #
     # ---------------------------------------------------------------------------- #
 
     def register_callback(
