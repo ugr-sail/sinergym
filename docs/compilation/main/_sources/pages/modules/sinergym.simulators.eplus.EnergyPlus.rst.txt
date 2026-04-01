@@ -16,8 +16,10 @@
    .. autosummary::
    
       ~EnergyPlus.__init__
+      ~EnergyPlus.clear_simulator_callbacks
       ~EnergyPlus.failed
       ~EnergyPlus.make_eplus_args
+      ~EnergyPlus.register_simulator_callback
       ~EnergyPlus.start
       ~EnergyPlus.stop
    
@@ -31,5 +33,6 @@
    
       ~EnergyPlus.is_running
       ~EnergyPlus.logger
+      ~EnergyPlus.registered_callbacks
    
    

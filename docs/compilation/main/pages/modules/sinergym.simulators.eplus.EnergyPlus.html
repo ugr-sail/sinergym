@@ -61,6 +61,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_callbacks.html">Custom callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -82,6 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/custom_callbacks.html">Custom callback functions in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule-based controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
 </ul>
@@ -173,11 +175,17 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.__init__" title="sinergym.simulators.eplus.EnergyPlus.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(name, obs_queue, info_queue, ...[, ...])</p></td>
 <td><p>EnergyPlus runner class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.failed" title="sinergym.simulators.eplus.EnergyPlus.failed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">failed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.clear_simulator_callbacks" title="sinergym.simulators.eplus.EnergyPlus.clear_simulator_callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_simulator_callbacks</span></code></a>()</p></td>
+<td><p>Clear tracked user callbacks (see <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.failed" title="sinergym.simulators.eplus.EnergyPlus.failed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">failed</span></code></a>()</p></td>
 <td><p>Method to determine if simulation has failed.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.make_eplus_args" title="sinergym.simulators.eplus.EnergyPlus.make_eplus_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eplus_args</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.make_eplus_args" title="sinergym.simulators.eplus.EnergyPlus.make_eplus_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_eplus_args</span></code></a>()</p></td>
 <td><p>Transform attributes defined in class instance into energyplus bash command</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.register_simulator_callback" title="sinergym.simulators.eplus.EnergyPlus.register_simulator_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_simulator_callback</span></code></a>(callback_name, ...)</p></td>
+<td><p>Validate and queue a user callback for EnergyPlus (applied when the run starts).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.start" title="sinergym.simulators.eplus.EnergyPlus.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>(building_path, weather_path, ...)</p></td>
 <td><p>Initializes all callbacks and handlers using EnergyPlus API, prepare the simulation system</p></td>
@@ -196,8 +204,19 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.logger" title="sinergym.simulators.eplus.EnergyPlus.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.registered_callbacks" title="sinergym.simulators.eplus.EnergyPlus.registered_callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_callbacks</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{callback_point:</span> <span class="pre">[callable</span> <span class="pre">__name__,</span> <span class="pre">...]}</span></code> for user callbacks.</p></td>
+</tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.clear_simulator_callbacks">
+<span class="sig-name descname"><span class="pre">clear_simulator_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.clear_simulator_callbacks" title="Link to this definition"></a></dt>
+<dd><p>Clear tracked user callbacks (see <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>).</p>
+<p>Does not remove internal Sinergym communication callbacks. EnergyPlus runtime hooks
+are torn down with the simulation lifecycle (e.g. when <a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.stop" title="sinergym.simulators.eplus.EnergyPlus.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> runs).</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.failed">
 <span class="sig-name descname"><span class="pre">failed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.failed" title="Link to this definition"></a></dt>
@@ -234,6 +253,28 @@
 <dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.register_simulator_callback">
+<span class="sig-name descname"><span class="pre">register_simulator_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_program_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.register_simulator_callback" title="Link to this definition"></a></dt>
+<dd><p>Validate and queue a user callback for EnergyPlus (applied when the run starts).</p>
+<p>Callables are stored until the simulation registers them at run start.
+User-facing documentation, the full list of <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> values, and examples
+are in <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a> section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> or invalid <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> usage.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.registered_callbacks">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">registered_callbacks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.registered_callbacks" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">{callback_point:</span> <span class="pre">[callable</span> <span class="pre">__name__,</span> <span class="pre">...]}</span></code> for user callbacks.</p>
+<p>See <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>. The environment exposes the same data via its
+<code class="docutils literal notranslate"><span class="pre">callbacks</span></code> property.</p>
 </dd></dl>
 
 <dl class="py method">

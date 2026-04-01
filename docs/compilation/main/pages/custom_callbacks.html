@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom callbacks &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../_static/github_style.css?v=0a3c596a" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logging system overview" href="logging.html" />
+    <link rel="prev" title="Serialization and Configuration Management" href="serialization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Custom callbacks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-to-call-on-the-environment">What to call on the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#callback-function-signature">Callback function signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#valid-callback-name-values">Valid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userdefined-component-model-callback-user-defined-component-model">UserDefined component model (<code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-building-or-simulation-values-inside-a-callback">Reading building or simulation values inside a callback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#errors">Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-notebook">Example notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/custom_callbacks.html">Custom callback functions in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Custom callbacks</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/custom_callbacks.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="custom-callbacks">
+<h1>Custom callbacks<a class="headerlink" href="#custom-callbacks" title="Link to this heading"></a></h1>
+<p><em>Sinergym</em> lets you register <strong>custom EnergyPlus Python API runtime callbacks</strong> so your own Python code runs at chosen points in the EnergyPlus timestep loop. This is useful for logging or custom simulation control logic.</p>
+<p>By default, Sinergym uses callbacks to manage the control flow within the simulation layer. This mechanism allows users to attach any additional processes in parallel to any of the callback points provided by the EnergyPlus API, granting full flexibility to implement custom logic tailored to specific problems. A step-by-step Jupyter walkthrough is available in the <a class="reference internal" href="#example-notebook-custom-callbacks"><span class="std std-ref">example notebook</span></a> (also listed under <em>Examples</em> in the documentation sidebar).</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>When it takes effect:</strong> After you call <a class="reference internal" href="modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.register_callback" title="sinergym.envs.eplus_env.EplusEnv.register_callback"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_callback()</span></code></a>, your functions are queued until the next run. They are actually connected to EnergyPlus when the simulation <strong>starts</strong>, i.e. when you call <a class="reference internal" href="modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.reset" title="sinergym.envs.eplus_env.EplusEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a>.</p></li>
+<li><p><strong>Episodes:</strong> Once registered, your callbacks stay in place for <strong>later episodes</strong> until you remove them or create a fresh environment. <em>Sinergym</em>’s own callbacks (observations, actions, context, warmup, progress) are unrelated; clearing yours does not touch them.</p></li>
+<li><p><strong>Removing callbacks:</strong> <a class="reference internal" href="modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.clear_callbacks" title="sinergym.envs.eplus_env.EplusEnv.clear_callbacks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">clear_callbacks()</span></code></a> drops every user-registered callback you had added.</p></li>
+</ul>
+</section>
+<section id="what-to-call-on-the-environment">
+<h2>What to call on the environment<a class="headerlink" href="#what-to-call-on-the-environment" title="Link to this heading"></a></h2>
+<p>Typical Gymnasium usage wraps the base environment, so use <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> to reach these (or call them directly on an unwrapped <a class="reference internal" href="modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">EplusEnv</span></code></a>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Member</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">register_callback(callback_name,</span> <span class="pre">callback_func[,</span> <span class="pre">component_program_name])</span></code></p></td>
+<td><p>Queue a callback for the given EnergyPlus callback point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clear_callbacks()</span></code></p></td>
+<td><p>Remove all user-registered callbacks from the internal registry.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">callbacks</span></code> (property)</p></td>
+<td><p>Read-only view: mapping from callback point name to a list of registered <strong>function names</strong> (for debugging and introspection).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="callback-function-signature">
+<h2>Callback function signature<a class="headerlink" href="#callback-function-signature" title="Link to this heading"></a></h2>
+<p>For most callback points, the function must accept the EnergyPlus <strong>state</strong> handle:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_callback</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code>, the signature is still <code class="docutils literal notranslate"><span class="pre">callback_func(state)</span></code>; you must also pass <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> so EnergyPlus can associate the callback with the correct UserDefined component model in the IDF (see below).</p>
+</section>
+<section id="valid-callback-name-values">
+<h2>Valid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> values<a class="headerlink" href="#valid-callback-name-values" title="Link to this heading"></a></h2>
+<p>The string must match one of EnergyPlus’s runtime callback registration names (same names as in the EnergyPlus Python API):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_begin_new_environment</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_after_new_environment_warmup_complete</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_begin_zone_timestep_before_init_heat_balance</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_begin_zone_timestep_after_init_heat_balance</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_begin_zone_timestep_before_set_current_weather</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_begin_system_timestep_before_predictor</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_zone_timestep_before_zone_reporting</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_zone_timestep_after_zone_reporting</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_system_timestep_before_hvac_reporting</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_system_timestep_after_hvac_reporting</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_inside_system_iteration_loop</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_after_predictor_before_hvac_managers</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_after_predictor_after_hvac_managers</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_zone_sizing</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_end_system_sizing</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_unitary_system_sizing</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_after_component_get_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_register_external_hvac_manager</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_message</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback_progress</span></code></p></li>
+</ul>
+<p>You can register <strong>multiple</strong> Python callables for the same <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> by calling <code class="docutils literal notranslate"><span class="pre">register_callback</span></code> several times.</p>
+</section>
+<section id="userdefined-component-model-callback-user-defined-component-model">
+<h2>UserDefined component model (<code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code>)<a class="headerlink" href="#userdefined-component-model-callback-user-defined-component-model" title="Link to this heading"></a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> is <code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code>, you <strong>must</strong> set <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> to the program name of the UserDefined component model as declared in the IDF (for example <code class="docutils literal notranslate"><span class="pre">'MyUserDefinedCoil'</span></code>). For every other callback name, <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> must be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</section>
+<section id="reading-building-or-simulation-values-inside-a-callback">
+<h2>Reading building or simulation values inside a callback<a class="headerlink" href="#reading-building-or-simulation-values-inside-a-callback" title="Link to this heading"></a></h2>
+<p>Your callback receives EnergyPlus’s <strong>state</strong> handle. To read variables you have configured on the environment, get <code class="docutils literal notranslate"><span class="pre">energyplus_simulator</span></code> from the env and use <code class="docutils literal notranslate"><span class="pre">exchange</span></code> with <code class="docutils literal notranslate"><span class="pre">var_handlers</span></code> (or other handles you set up). The example below registers a callback and reads a zone temperature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_custom_callback</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">simulator</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;energyplus_simulator&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">simulator</span><span class="o">.</span><span class="n">var_handlers</span> <span class="ow">and</span> <span class="s2">&quot;Zone_Temperature&quot;</span> <span class="ow">in</span> <span class="n">simulator</span><span class="o">.</span><span class="n">var_handlers</span><span class="p">:</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">var_handlers</span><span class="p">[</span><span class="s2">&quot;Zone_Temperature&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zone temperature: </span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;register_callback&quot;</span><span class="p">)(</span>
+    <span class="s2">&quot;callback_begin_system_timestep_before_predictor&quot;</span><span class="p">,</span>
+    <span class="n">my_custom_callback</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>UserDefined registration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">user_defined_callback</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;register_callback&quot;</span><span class="p">)(</span>
+    <span class="s2">&quot;callback_user_defined_component_model&quot;</span><span class="p">,</span>
+    <span class="n">user_defined_callback</span><span class="p">,</span>
+    <span class="n">component_program_name</span><span class="o">=</span><span class="s2">&quot;MyUserDefinedCoil&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="errors">
+<h2>Errors<a class="headerlink" href="#errors" title="Link to this heading"></a></h2>
+<p>Invalid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code>, missing <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> for UserDefined callbacks, or passing <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> for any other callback raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. See the <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a> for full signatures.</p>
+</section>
+<section id="example-notebook">
+<span id="example-notebook-custom-callbacks"></span><h2>Example notebook<a class="headerlink" href="#example-notebook" title="Link to this heading"></a></h2>
+<p>The notebook <a class="reference external" href="notebooks/custom_callbacks.html">Custom callback functions in Sinergym</a> walks through creating an environment, registering EnergyPlus runtime callbacks, and reading values from the simulator inside a callback. It lives in the repository as <code class="docutils literal notranslate"><span class="pre">examples/custom_callbacks.ipynb</span></code> and appears in the toctree under <strong>Examples</strong> alongside the other notebooks.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="serialization.html" class="btn btn-neutral float-left" title="Serialization and Configuration Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral float-right" title="Logging system overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v3.11.0/index.html">v3.11.0</a></dd>
+            <dd><a href="../../v3.10.0/index.html">v3.10.0</a></dd>
+            <dd><a href="../../v3.9.0/index.html">v3.9.0</a></dd>
+            <dd><a href="../../v3.8.0/index.html">v3.8.0</a></dd>
+            <dd><a href="../../v3.7.0/index.html">v3.7.0</a></dd>
+            <dd><a href="../../v3.6.0/index.html">v3.6.0</a></dd>
+            <dd><a href="../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="custom_callbacks.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

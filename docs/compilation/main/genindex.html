@@ -58,6 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pages/environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/environments_registration.html">Environments configuration and registration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/custom_callbacks.html">Custom callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/rewards.html">Rewards</a></li>
@@ -79,6 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/custom_callbacks.html">Custom callback functions in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">Rule-based controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/drl.html">DRL usage example</a></li>
 </ul>
@@ -328,11 +330,17 @@
         <li><a href="pages/modules/sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper.calculate_custom_metrics">(sinergym.utils.wrappers.LoggerWrapper method)</a>
 </li>
       </ul></li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.callbacks">callbacks (sinergym.envs.eplus_env.EplusEnv property)</a>
+</li>
       <li><a href="pages/modules/sinergym.utils.env_checker.check_env.html#sinergym.utils.env_checker.check_env">check_env() (in module sinergym.utils.env_checker)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.serialization.class_constructor.html#sinergym.utils.serialization.class_constructor">class_constructor() (in module sinergym.utils.serialization)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.serialization.class_representer.html#sinergym.utils.serialization.class_representer">class_representer() (in module sinergym.utils.serialization)</a>
+</li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.clear_callbacks">clear_callbacks() (sinergym.envs.eplus_env.EplusEnv method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.clear_simulator_callbacks">clear_simulator_callbacks() (sinergym.simulators.eplus.EnergyPlus method)</a>
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.close">close() (sinergym.envs.eplus_env.EplusEnv method)</a>
 
@@ -770,6 +778,12 @@
       <li><a href="pages/modules/sinergym.utils.logger.CustomFormatter.html#sinergym.utils.logger.CustomFormatter.red">red (sinergym.utils.logger.CustomFormatter attribute)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.ReduceObservationWrapper.html#sinergym.utils.wrappers.ReduceObservationWrapper">ReduceObservationWrapper (class in sinergym.utils.wrappers)</a>
+</li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.register_callback">register_callback() (sinergym.envs.eplus_env.EplusEnv method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.register_simulator_callback">register_simulator_callback() (sinergym.simulators.eplus.EnergyPlus method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.registered_callbacks">registered_callbacks (sinergym.simulators.eplus.EnergyPlus property)</a>
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.render">render() (sinergym.envs.eplus_env.EplusEnv method)</a>
 </li>

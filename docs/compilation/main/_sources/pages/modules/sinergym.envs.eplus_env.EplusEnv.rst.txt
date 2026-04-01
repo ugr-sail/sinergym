@@ -16,11 +16,13 @@
    .. autosummary::
    
       ~EplusEnv.__init__
+      ~EplusEnv.clear_callbacks
       ~EplusEnv.close
       ~EplusEnv.from_dict
       ~EplusEnv.get_obs_dict
       ~EplusEnv.get_wrapper_attr
       ~EplusEnv.has_wrapper_attr
+      ~EplusEnv.register_callback
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.save_config
@@ -43,6 +45,7 @@
       ~EplusEnv.actuator_handlers
       ~EplusEnv.available_handlers
       ~EplusEnv.building_path
+      ~EplusEnv.callbacks
       ~EplusEnv.context_handlers
       ~EplusEnv.ddy_path
       ~EplusEnv.episode_length

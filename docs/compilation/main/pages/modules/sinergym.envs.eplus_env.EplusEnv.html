@@ -61,6 +61,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_callbacks.html">Custom callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
@@ -82,6 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/custom_callbacks.html">Custom callback functions in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule-based controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
 </ul>
@@ -218,20 +220,26 @@ Optional[Tuple[float, float]]</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="sinergym.envs.eplus_env.EplusEnv.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(building_file, weather_files[, ...])</p></td>
 <td><p>Environment with EnergyPlus simulator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.close" title="sinergym.envs.eplus_env.EplusEnv.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.clear_callbacks" title="sinergym.envs.eplus_env.EplusEnv.clear_callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_callbacks</span></code></a>()</p></td>
+<td><p>Clear all user-registered custom callbacks (delegates to the simulator).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.close" title="sinergym.envs.eplus_env.EplusEnv.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p>End simulation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.from_dict" title="sinergym.envs.eplus_env.EplusEnv.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.from_dict" title="sinergym.envs.eplus_env.EplusEnv.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(data)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.get_obs_dict" title="sinergym.envs.eplus_env.EplusEnv.get_obs_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obs_dict</span></code></a>(obs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.get_obs_dict" title="sinergym.envs.eplus_env.EplusEnv.get_obs_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obs_dict</span></code></a>(obs)</p></td>
 <td><p>Get the observation as a dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets the attribute <cite>name</cite> from the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_wrapper_attr</span></code>(name)</p></td>
 <td><p>Checks if the attribute <cite>name</cite> exists in the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.register_callback" title="sinergym.envs.eplus_env.EplusEnv.register_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_callback</span></code></a>(callback_name, callback_func)</p></td>
+<td><p>Register a custom EnergyPlus runtime callback (delegates to the simulator).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.render" title="sinergym.envs.eplus_env.EplusEnv.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>([mode])</p></td>
 <td><p>Environment rendering.</p></td>
@@ -277,79 +285,82 @@ Optional[Tuple[float, float]]</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.building_path" title="sinergym.envs.eplus_env.EplusEnv.building_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">building_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.context_handlers" title="sinergym.envs.eplus_env.EplusEnv.context_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">context_handlers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.callbacks" title="sinergym.envs.eplus_env.EplusEnv.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></p></td>
+<td><p>mapping from callback point to <code class="docutils literal notranslate"><span class="pre">__name__</span></code> lists.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.context_handlers" title="sinergym.envs.eplus_env.EplusEnv.context_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">context_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.ddy_path" title="sinergym.envs.eplus_env.EplusEnv.ddy_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddy_path</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.ddy_path" title="sinergym.envs.eplus_env.EplusEnv.ddy_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddy_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.episode_length" title="sinergym.envs.eplus_env.EplusEnv.episode_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">episode_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.episode_length" title="sinergym.envs.eplus_env.EplusEnv.episode_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">episode_length</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.episode_path" title="sinergym.envs.eplus_env.EplusEnv.episode_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">episode_path</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.episode_path" title="sinergym.envs.eplus_env.EplusEnv.episode_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">episode_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.idd_path" title="sinergym.envs.eplus_env.EplusEnv.idd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idd_path</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.idd_path" title="sinergym.envs.eplus_env.EplusEnv.idd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idd_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="sinergym.envs.eplus_env.EplusEnv.is_discrete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_discrete</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="sinergym.envs.eplus_env.EplusEnv.is_discrete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_discrete</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="sinergym.envs.eplus_env.EplusEnv.is_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_running</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="sinergym.envs.eplus_env.EplusEnv.is_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_running</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.logger" title="sinergym.envs.eplus_env.EplusEnv.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.logger" title="sinergym.envs.eplus_env.EplusEnv.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.metadata" title="sinergym.envs.eplus_env.EplusEnv.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.metadata" title="sinergym.envs.eplus_env.EplusEnv.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="sinergym.envs.eplus_env.EplusEnv.meter_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handlers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="sinergym.envs.eplus_env.EplusEnv.meter_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
 <td><p>Returns the environment's internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random_seed</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random_seed</span></code></p></td>
 <td><p>Returns the environment's internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random_seed</span></code> that if not set will first initialise with a random int as seed.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="sinergym.envs.eplus_env.EplusEnv.observation_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="sinergym.envs.eplus_env.EplusEnv.observation_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="sinergym.envs.eplus_env.EplusEnv.runperiod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runperiod</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="sinergym.envs.eplus_env.EplusEnv.runperiod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runperiod</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="sinergym.envs.eplus_env.EplusEnv.schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedulers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="sinergym.envs.eplus_env.EplusEnv.schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedulers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.simple_printer" title="sinergym.envs.eplus_env.EplusEnv.simple_printer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_printer</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.simple_printer" title="sinergym.envs.eplus_env.EplusEnv.simple_printer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_printer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base non-wrapped environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -373,6 +384,27 @@ Optional[Tuple[float, float]]</p></li>
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.building_path">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">building_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.building_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.callbacks">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">callbacks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.callbacks" title="Link to this definition"></a></dt>
+<dd><p>mapping from callback point to <code class="docutils literal notranslate"><span class="pre">__name__</span></code> lists.</p>
+<p>Mirrors <a class="reference internal" href="sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.registered_callbacks" title="sinergym.simulators.eplus.EnergyPlus.registered_callbacks"><code class="xref py py-attr docutils literal notranslate"><span class="pre">registered_callbacks</span></code></a>. See
+<a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User-registered callbacks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.clear_callbacks">
+<span class="sig-name descname"><span class="pre">clear_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.clear_callbacks" title="Link to this definition"></a></dt>
+<dd><p>Clear all user-registered custom callbacks (delegates to the simulator).</p>
+<p>Internal Sinergym callbacks (observations, actions, context, warmup, progress) are
+unchanged. See <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a> for semantics and interaction with EnergyPlus.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.close">
@@ -456,6 +488,31 @@ Optional[Tuple[float, float]]</p></li>
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.observation_space">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observation_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.register_callback">
+<span class="sig-name descname"><span class="pre">register_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_program_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.register_callback" title="Link to this definition"></a></dt>
+<dd><p>Register a custom EnergyPlus runtime callback (delegates to the simulator).</p>
+<p>User callbacks are stored on the underlying simulator and apply from subsequent
+episodes onward; use <a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.clear_callbacks" title="sinergym.envs.eplus_env.EplusEnv.clear_callbacks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">clear_callbacks()</span></code></a> or restart the environment to drop
+them. Hooks are attached to EnergyPlus when the run starts (during <a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.reset" title="sinergym.envs.eplus_env.EplusEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a>).</p>
+<p>The full list of valid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code> values, <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code> rules,
+lifecycle notes, and examples are in <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>callback_name</strong> – EnergyPlus Python API runtime callback identifier.</p></li>
+<li><p><strong>callback_func</strong> – Usually <code class="docutils literal notranslate"><span class="pre">callback_func(state)</span></code>; UserDefined callbacks also use
+this signature—see <a class="reference internal" href="../custom_callbacks.html#custom-callbacks"><span class="std std-ref">Custom callbacks</span></a>.</p></li>
+<li><p><strong>component_program_name</strong> – Required only for <code class="docutils literal notranslate"><span class="pre">callback_user_defined_component_model</span></code>
+(must match the UserDefined program name in the IDF); otherwise <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Invalid <code class="docutils literal notranslate"><span class="pre">callback_name</span></code>, or invalid use of <code class="docutils literal notranslate"><span class="pre">component_program_name</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.render">
