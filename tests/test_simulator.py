@@ -316,7 +316,7 @@ def test_registered_callbacks_property(simulator_5zone):
     simulator_5zone.register_simulator_callback(
         'callback_user_defined_component_model',
         my_callback,
-        component_program_name='MyUserDefinedCoil',
+        component_program_name='MyUserDefinedCoil'
     )
 
     # Check the property returns correct format
@@ -331,3 +331,29 @@ def test_custom_callbacks_attribute_initialized(simulator_5zone):
     assert hasattr(simulator_5zone, '_custom_callbacks')
     assert isinstance(simulator_5zone._custom_callbacks, dict)
     assert simulator_5zone._custom_callbacks == {}
+
+
+def test_custom_callback_registered_on_start(simulator_5zone, pkg_data_path):
+    """Test that start() runs successfully when a user-defined callback is registered."""
+
+    def my_callback(state):
+        pass
+
+    simulator_5zone.register_simulator_callback(
+        'callback_end_zone_timestep_before_zone_reporting', my_callback
+    )
+
+    simulator_5zone.start(
+        building_path=os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON'),
+        weather_path=os.path.join(
+            pkg_data_path, 'weather', 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'
+        ),
+        output_path='./PYTESTSIMULATOR/',
+        episode=1,
+    )
+
+    # Simulator thread should be running
+    assert simulator_5zone.energyplus_thread is not None
+    assert simulator_5zone.energyplus_state is not None
+
+    simulator_5zone.stop()
