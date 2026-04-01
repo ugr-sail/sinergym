@@ -106,10 +106,8 @@ try:
 
     # ------- Update env params configuration with env yaml file if exists ------- #
     if config.get('env_yaml_config'):
-        logger.info(
-            f'Reading environment parameters from {
-                config['env_yaml_config']}'
-        )
+        logger.info(f'Reading environment parameters from {
+                config['env_yaml_config']}')
         with open(config['env_yaml_config'], 'r') as env_yaml_conf:
             env_params.update(yaml.load(env_yaml_conf, Loader=yaml.FullLoader))
 
@@ -134,10 +132,8 @@ try:
 
     # ------------------ Read wrappers from yaml file if exists ------------------ #
     if config.get('wrappers_yaml_config'):
-        logger.info(
-            f'Reading wrappers from {
-                config['wrappers_yaml_config']}'
-        )
+        logger.info(f'Reading wrappers from {
+                config['wrappers_yaml_config']}')
         with open(config['wrappers_yaml_config'], 'r') as f:
             wrappers = yaml.load(f, Loader=yaml.FullLoader)
 

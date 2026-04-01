@@ -86,6 +86,7 @@ If you use *Sinergym* in your work, please, cite our `paper <https://www.science
    pages/environments.rst
    pages/environments_registration.rst
    pages/serialization.rst
+   pages/custom_callbacks.rst
    pages/logging.rst
    pages/output.rst
    pages/rewards.rst
@@ -110,6 +111,7 @@ If you use *Sinergym* in your work, please, cite our `paper <https://www.science
    pages/notebooks/wrappers_examples.nblink
    pages/notebooks/personalize_loggerwrapper.nblink
    pages/notebooks/logging_unused_variables.nblink
+   pages/notebooks/custom_callbacks.nblink
    pages/notebooks/rule_controller_example.nblink
    pages/notebooks/drl.nblink
    

@@ -339,18 +339,23 @@ def test_all_environments():
     # Select 10 environments randomly (test would be too large)
     samples_id = sample(envs_id, 5)
     for env_id in samples_id:
-        # Create env with TEST name
-        env = gym.make(env_id, env_name='PYTEST' + env_id)
+        # Create env
+        env = gym.make(env_id, env_name=env_id)
 
         check_env(env)
 
-        # Rename directory with name TEST for future remove
-        os.rename(
-            env.get_wrapper_attr('workspace_path'),
-            'PYTEST' + env.get_wrapper_attr('workspace_path').split('/')[-1],
-        )
+        workspace = env.get_wrapper_attr('workspace_path')
 
+        # Close before renaming so EnergyPlus releases any file handles
         env.close()
+
+        # Rename directory with PYTEST prefix for future cleanup (absolute path)
+        os.rename(
+            workspace,
+            os.path.join(
+                os.path.dirname(workspace), 'PYTEST' + os.path.basename(workspace)
+            ),
+        )
 
 
 # -------------------------- Exceptions or rare test cases ------------------------- #

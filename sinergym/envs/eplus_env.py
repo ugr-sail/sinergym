@@ -3,7 +3,7 @@ Gymnasium environment for simulation with EnergyPlus.
 """
 
 from queue import Empty, Full, Queue
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
@@ -551,6 +551,57 @@ class EplusEnv(gym.Env):
                 self.logger.warning(
                     f'Context queue is full, context update with values {context_values} will be skipped.'
                 )
+
+    # ---------------------------------------------------------------------------- #
+    #                    CUSTOM CALLBACK REGISTRATION                              #
+    # ---------------------------------------------------------------------------- #
+
+    def register_callback(
+        self,
+        callback_name: str,
+        callback_func: Callable,
+        component_program_name: Optional[str] = None,
+    ) -> None:
+        """Register a custom EnergyPlus runtime callback (delegates to the simulator).
+
+        User callbacks are stored on the underlying simulator and apply from subsequent
+        episodes onward; use :py:meth:`clear_callbacks` or restart the environment to drop
+        them. Hooks are attached to EnergyPlus when the run starts (during :py:meth:`reset`).
+
+        The full list of valid ``callback_name`` values, ``component_program_name`` rules,
+        lifecycle notes, and examples are in :ref:`Custom callbacks`.
+
+        Args:
+            callback_name: EnergyPlus Python API runtime callback identifier.
+            callback_func: Usually ``callback_func(state)``; UserDefined callbacks also use
+                this signature—see :ref:`Custom callbacks`.
+            component_program_name: Required only for ``callback_user_defined_component_model``
+                (must match the UserDefined program name in the IDF); otherwise ``None``.
+
+        Raises:
+            ValueError: Invalid ``callback_name``, or invalid use of ``component_program_name``.
+        """
+        # Delegate to the underlying simulator
+        self.energyplus_simulator.register_simulator_callback(
+            callback_name, callback_func, component_program_name
+        )
+
+    def clear_callbacks(self) -> None:
+        """Clear all user-registered custom callbacks (delegates to the simulator).
+
+        Internal Sinergym callbacks (observations, actions, context, warmup, progress) are
+        unchanged. See :ref:`Custom callbacks` for semantics and interaction with EnergyPlus.
+        """
+        self.energyplus_simulator.clear_simulator_callbacks()
+
+    @property
+    def callbacks(self) -> Dict[str, List[str]]:
+        """User-registered callbacks: mapping from callback point to ``__name__`` lists.
+
+        Mirrors :attr:`~sinergym.simulators.eplus.EnergyPlus.registered_callbacks`. See
+        :ref:`Custom callbacks`.
+        """
+        return self.energyplus_simulator.registered_callbacks
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #

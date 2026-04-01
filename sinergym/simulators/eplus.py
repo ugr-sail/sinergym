@@ -7,7 +7,7 @@ import threading
 from ctypes import c_void_p
 from pathlib import Path
 from queue import Empty, Queue
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pyenergyplus.api import EnergyPlusAPI
 from tqdm import tqdm
@@ -15,6 +15,31 @@ from tqdm import tqdm
 from sinergym.utils.common import *
 from sinergym.utils.constants import LOG_SIM_LEVEL
 from sinergym.utils.logger import TerminalLogger
+
+# List of valid callback names that can be registered by users
+VALID_CALLBACK_NAMES = [
+    'callback_after_component_get_input',
+    'callback_after_new_environment_warmup_complete',
+    'callback_after_predictor_after_hvac_managers',
+    'callback_after_predictor_before_hvac_managers',
+    'callback_begin_new_environment',
+    'callback_begin_system_timestep_before_predictor',
+    'callback_begin_zone_timestep_after_init_heat_balance',
+    'callback_begin_zone_timestep_before_init_heat_balance',
+    'callback_begin_zone_timestep_before_set_current_weather',
+    'callback_end_system_sizing',
+    'callback_end_system_timestep_after_hvac_reporting',
+    'callback_end_system_timestep_before_hvac_reporting',
+    'callback_end_zone_sizing',
+    'callback_end_zone_timestep_after_zone_reporting',
+    'callback_end_zone_timestep_before_zone_reporting',
+    'callback_inside_system_iteration_loop',
+    'callback_message',
+    'callback_progress',
+    'callback_register_external_hvac_manager',
+    'callback_unitary_system_sizing',
+    'callback_user_defined_component_model',
+]
 
 
 class EnergyPlus(object):
@@ -100,6 +125,12 @@ class EnergyPlus(object):
         self._weather_path: Optional[str] = None
         self._output_path: Optional[str] = None
 
+        # ------------------- Custom callbacks for user registration ------------------ #
+        # Dictionary to track user-registered callbacks:
+        # {callback_name: [list of (callback_func, component_program_name) tuples]}
+        # component_program_name is only used for 'callback_user_defined_component_model'; None otherwise.
+        self._custom_callbacks: Dict[str, List[Tuple[Callable, Optional[str]]]] = {}
+
         self.logger.debug('Energyplus simulator initialized.')
 
     # ---------------------------------------------------------------------------- #
@@ -133,6 +164,22 @@ class EnergyPlus(object):
 
         # ------------------------ Progress bar for simulation ----------------------- #
         self.progress_bar = None
+
+        # ------------------- Register user-defined custom callbacks ------------------ #
+        # Note: Custom callbacks are registered before the main Sinergym callbacks to ensure they don't override the main callbacks.
+        # Register all user-registered custom callbacks with the EnergyPlus API
+        for callback_name, callback_funcs in self._custom_callbacks.items():
+            for callback_func, component_program_name in callback_funcs:
+                # Get the callback method from the runtime API
+                callback_method = getattr(self.api.runtime, callback_name)
+                # callback_user_defined_component_model requires an extra component_program_name argument
+                if callback_name == 'callback_user_defined_component_model':
+                    callback_method(self.energyplus_state, callback_func, component_program_name)  # type: ignore
+                else:
+                    callback_method(self.energyplus_state, callback_func)  # type: ignore
+                self.logger.debug(
+                    f"Registered custom callback '{callback_name}' with EnergyPlus API."
+                )
 
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
@@ -507,6 +554,76 @@ class EnergyPlus(object):
             while not q.empty():
                 q.get()
         self.logger.debug('Simulator queues emptied.')
+
+    # ---------------------------------------------------------------------------- #
+    #                         Custom Callback Registration                          #
+    # ---------------------------------------------------------------------------- #
+
+    def register_simulator_callback(
+        self,
+        callback_name: str,
+        callback_func: Callable,
+        component_program_name: Optional[str] = None,
+    ) -> None:
+        """Validate and queue a user callback for EnergyPlus (applied when the run starts).
+
+        Callables are stored until the simulation registers them at run start.
+        User-facing documentation, the full list of ``callback_name`` values, and examples
+        are in :ref:`Custom callbacks` section.
+
+        Raises:
+            ValueError: Invalid ``callback_name`` or invalid ``component_program_name`` usage.
+        """
+        # Validate callback name
+        if callback_name not in VALID_CALLBACK_NAMES:
+            raise ValueError(
+                f"Invalid callback name: '{callback_name}'. "
+                f"Valid callback names are: {VALID_CALLBACK_NAMES}"
+            )
+
+        # Validate component_program_name usage
+        if callback_name == 'callback_user_defined_component_model':
+            if component_program_name is None:
+                raise ValueError(
+                    "'component_program_name' is required for 'callback_user_defined_component_model'. "
+                    "Provide the UserDefined component model name from the IDF."
+                )
+        else:
+            if component_program_name is not None:
+                raise ValueError(
+                    f"'component_program_name' is only valid for 'callback_user_defined_component_model', "
+                    f"not for '{callback_name}'."
+                )
+
+        # Store the callback as a (func, component_program_name) tuple
+        if callback_name not in self._custom_callbacks:
+            self._custom_callbacks[callback_name] = []
+        self._custom_callbacks[callback_name].append(
+            (callback_func, component_program_name)
+        )
+
+        self.logger.info(f"Registered custom callback '{callback_name}' successfully.")
+
+    def clear_simulator_callbacks(self) -> None:
+        """Clear tracked user callbacks (see :ref:`Custom callbacks`).
+
+        Does not remove internal Sinergym communication callbacks. EnergyPlus runtime hooks
+        are torn down with the simulation lifecycle (e.g. when :meth:`stop` runs).
+        """
+        self._custom_callbacks.clear()
+        self.logger.info("All custom callbacks have been cleared.")
+
+    @property
+    def registered_callbacks(self) -> Dict[str, List[str]]:
+        """``{callback_point: [callable __name__, ...]}`` for user callbacks.
+
+        See :ref:`Custom callbacks`. The environment exposes the same data via its
+        ``callbacks`` property.
+        """
+        return {
+            callback_name: [func.__name__ for func, _ in funcs]
+            for callback_name, funcs in self._custom_callbacks.items()
+        }
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
