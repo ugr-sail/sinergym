@@ -165,6 +165,22 @@ class EnergyPlus(object):
         # ------------------------ Progress bar for simulation ----------------------- #
         self.progress_bar = None
 
+        # ------------------- Register user-defined custom callbacks ------------------ #
+        # Note: Custom callbacks are registered before the main Sinergym callbacks to ensure they don't override the main callbacks.
+        # Register all user-registered custom callbacks with the EnergyPlus API
+        for callback_name, callback_funcs in self._custom_callbacks.items():
+            for callback_func, component_program_name in callback_funcs:
+                # Get the callback method from the runtime API
+                callback_method = getattr(self.api.runtime, callback_name)
+                # callback_user_defined_component_model requires an extra component_program_name argument
+                if callback_name == 'callback_user_defined_component_model':
+                    callback_method(self.energyplus_state, callback_func, component_program_name)  # type: ignore
+                else:
+                    callback_method(self.energyplus_state, callback_func)  # type: ignore
+                self.logger.debug(
+                    f"Registered custom callback '{callback_name}' with EnergyPlus API."
+                )
+
         # ------------------------- Main Callbacks definition ------------------------ #
         self.api.runtime.callback_progress(
             self.energyplus_state, self._progress_update  # type: ignore
@@ -189,21 +205,6 @@ class EnergyPlus(object):
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
             self.energyplus_state, self._process_context  # type: ignore
         )
-
-        # ------------------- Register user-defined custom callbacks ------------------ #
-        # Register all user-registered custom callbacks with the EnergyPlus API
-        for callback_name, callback_funcs in self._custom_callbacks.items():
-            for callback_func, component_program_name in callback_funcs:
-                # Get the callback method from the runtime API
-                callback_method = getattr(self.api.runtime, callback_name)
-                # callback_user_defined_component_model requires an extra component_program_name argument
-                if callback_name == 'callback_user_defined_component_model':
-                    callback_method(self.energyplus_state, callback_func, component_program_name)  # type: ignore
-                else:
-                    callback_method(self.energyplus_state, callback_func)  # type: ignore
-                self.logger.debug(
-                    f"Registered custom callback '{callback_name}' with EnergyPlus API."
-                )
 
         # ------------------- Run EnergyPlus in a non-blocking way ------------------- #
         def _run_energyplus(runtime, cmd_args, state, results):

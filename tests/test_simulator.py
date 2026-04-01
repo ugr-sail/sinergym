@@ -276,6 +276,38 @@ def test_register_simulator_callback_invalid_name(simulator_5zone):
     assert 'Invalid callback name' in str(excinfo.value)
 
 
+def test_register_user_defined_component_model_requires_program_name(simulator_5zone):
+    """Test that callback_user_defined_component_model raises ValueError when
+    component_program_name is not provided."""
+
+    def my_callback(state):
+        pass
+
+    with pytest.raises(ValueError) as excinfo:
+        simulator_5zone.register_simulator_callback(
+            'callback_user_defined_component_model', my_callback
+        )
+
+    assert 'component_program_name' in str(excinfo.value)
+
+
+def test_register_non_user_defined_callback_rejects_program_name(simulator_5zone):
+    """Test that providing component_program_name for a non-user-defined component
+    callback raises ValueError."""
+
+    def my_callback(state):
+        pass
+
+    with pytest.raises(ValueError) as excinfo:
+        simulator_5zone.register_simulator_callback(
+            'callback_end_zone_timestep_before_zone_reporting',
+            my_callback,
+            component_program_name='SomeProgramName',
+        )
+
+    assert 'component_program_name' in str(excinfo.value)
+
+
 def test_clear_simulator_callbacks(simulator_5zone):
     """Test clearing all custom callbacks."""
 
@@ -316,7 +348,7 @@ def test_registered_callbacks_property(simulator_5zone):
     simulator_5zone.register_simulator_callback(
         'callback_user_defined_component_model',
         my_callback,
-        component_program_name='MyUserDefinedCoil'
+        component_program_name='MyUserDefinedCoil',
     )
 
     # Check the property returns correct format
@@ -355,5 +387,18 @@ def test_custom_callback_registered_on_start(simulator_5zone, pkg_data_path):
     # Simulator thread should be running
     assert simulator_5zone.energyplus_thread is not None
     assert simulator_5zone.energyplus_state is not None
+
+    # Callback should still be tracked in the simulator's registry
+    assert simulator_5zone.registered_callbacks is not None
+    assert (
+        'callback_end_zone_timestep_before_zone_reporting'
+        in simulator_5zone.registered_callbacks
+    )
+    assert (
+        'my_callback'
+        in simulator_5zone.registered_callbacks[
+            'callback_end_zone_timestep_before_zone_reporting'
+        ]
+    )
 
     simulator_5zone.stop()
