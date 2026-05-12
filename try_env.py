@@ -21,7 +21,7 @@ terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Creating environment and applying wrappers for normalization and logging
-env = gym.make('Eplus-radiant_digital_twin_rl-madrid-continuous-stochastic-v1')
+env = gym.make('Eplus-radiant_digital_twin_rl_cooling-madrid-continuous-stochastic-v1')
 env = DatetimeWrapper(env)
 env = NormalizeObservation(env)
 env = ExtremeFlowControlWrapper(env)
@@ -53,8 +53,8 @@ env = ReduceObservationWrapper(
         'flow_rate_f1_bedroom3',
         'flow_rate_f1_bathroom-corridor',
         'flow_rate_f1_bathroom-dressing',
-        'heat_source_load_side_heat_transfer_rate',
-        'heat_source_load_side_mass_flow_rate',
+        'cooling_hp_load_side_heat_transfer_rate',
+        'cooling_hp_load_side_mass_flow_rate',
         'crf',
         'plr_current',
     ],
