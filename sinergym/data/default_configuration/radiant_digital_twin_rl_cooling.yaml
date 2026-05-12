@@ -327,7 +327,7 @@ context:
 
 # Order matches `context`: cooling radiant band + seven zone cooling/heating setpoint schedules (dual uses same value).
 initial_context:
-  - 20.0
+  - 28.0
   - 26.0
   - 26.0
   - 26.0
