@@ -11000,6 +11000,10 @@
         "Always_On": {
             "hourly_value": 1,
             "schedule_type_limits_name": "OnOff"
+        },
+        "Always_Off": {
+            "hourly_value": 0,
+            "schedule_type_limits_name": "OnOff"
         }
     },
     "Schedule:Day:Interval": {

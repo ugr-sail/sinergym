@@ -10724,7 +10724,7 @@
             ],
             "schedule_type_limits_name": "OnOff"
         },
-        "Radiant control temp 22 sizing then 30": {
+        "Radiant control temp 20 sizing then 30": {
             "data": [
                 {
                     "field": "Through: 12/31"
@@ -11016,6 +11016,10 @@
         },
         "Always_On": {
             "hourly_value": 1,
+            "schedule_type_limits_name": "OnOff"
+        },
+        "Always_Off": {
+            "hourly_value": 0,
             "schedule_type_limits_name": "OnOff"
         }
     },
@@ -15453,7 +15457,7 @@
             "cooling_water_inlet_node_name": "Node 41",
             "cooling_water_outlet_node_name": "Node 42",
             "design_object": "Low Temp Radiant Const Flow_P1_Aseo2-Vestidor Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15477,7 +15481,7 @@
             "cooling_water_inlet_node_name": "Node 6",
             "cooling_water_outlet_node_name": "Node 40",
             "design_object": "Low Temp Radiant Const Flow_P1_Aseo-Pasillo Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15501,7 +15505,7 @@
             "cooling_water_inlet_node_name": "Node 43",
             "cooling_water_outlet_node_name": "Node 44",
             "design_object": "Low Temp Radiant Const Flow_P1_Dormitorio1 Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15525,7 +15529,7 @@
             "cooling_water_inlet_node_name": "Node 45",
             "cooling_water_outlet_node_name": "Node 46",
             "design_object": "Low Temp Radiant Const Flow_P1_Dormitorio2 Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15549,7 +15553,7 @@
             "cooling_water_inlet_node_name": "Node 47",
             "cooling_water_outlet_node_name": "Node 48",
             "design_object": "Low Temp Radiant Const Flow_P1_Dormitorio3 Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15573,7 +15577,7 @@
             "cooling_water_inlet_node_name": "Node 49",
             "cooling_water_outlet_node_name": "Node 50",
             "design_object": "Low Temp Radiant Const Flow_PB_Aseo-Vestibulo Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
@@ -15597,7 +15601,7 @@
             "cooling_water_inlet_node_name": "Node 51",
             "cooling_water_outlet_node_name": "Node 52",
             "design_object": "Low Temp Radiant Const Flow_PB_Cocina Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
