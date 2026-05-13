@@ -241,6 +241,25 @@ variables:
       - LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO
       - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
 
+  # SimpleOff: seconds in the timestep the radiant was held off for condensation risk (0 = no cut).
+  Zone Radiant HVAC Moisture Condensation Time:
+    variable_names:
+      - radiant_condensation_time_f0_living-kitchen
+      - radiant_condensation_time_f0_bathroom-lobby
+      - radiant_condensation_time_f1_bedroom1
+      - radiant_condensation_time_f1_bedroom2
+      - radiant_condensation_time_f1_bedroom3
+      - radiant_condensation_time_f1_bathroom-corridor
+      - radiant_condensation_time_f1_bathroom-dressing
+    keys:
+      - LOW TEMP RADIANT CONST FLOW_PB_COCINA
+      - LOW TEMP RADIANT CONST FLOW_PB_ASEO-VESTIBULO
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO1
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO2
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO3
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
+
   System Node Setpoint Temperature:
     variable_names: water_temperature
     keys: Node 11
