@@ -81,7 +81,7 @@ weather_variability:
     - [0.0, 2.0]
     - 0.0
     - 24.0
-    - [-8.0, 40.0]
+    - [-8.0, 45.0]
   Relative Humidity:
     - [0.0, 5.0]
     - 0.0
