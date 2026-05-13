@@ -1,10 +1,10 @@
 {
     "AvailabilityManager:Scheduled": {
         "Availability Manager Scheduled 1": {
-            "schedule_name": "Always_On"
+            "schedule_name": "Heating Availability Manager"
         },
         "Availability Manager Scheduled 2": {
-            "schedule_name": "Always_On"
+            "schedule_name": "Cooling Availability Manager"
         }
     },
     "AvailabilityManagerAssignmentList": {
@@ -10642,6 +10642,88 @@
         }
     },
     "Schedule:Compact": {
+        "Heating Availability Manager": {
+            "data": [
+                {
+                    "field": "Through: 5/15"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1
+                },
+                {
+                    "field": "Through: 9/15"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0
+                },
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1
+                }
+            ],
+            "schedule_type_limits_name": "OnOff"
+        },
+        "Cooling Availability Manager": {
+            "data": [
+                {
+                    "field": "Through: 5/15"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0
+                },
+                {
+                    "field": "Through: 9/15"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1
+                },
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0
+                }
+            ],
+            "schedule_type_limits_name": "OnOff"
+        },
         "Setpoint Schedule PB_Salon": {
             "data": [
                 {
@@ -10900,6 +10982,10 @@
         },
         "Always_On": {
             "hourly_value": 1,
+            "schedule_type_limits_name": "OnOff"
+        },
+        "Always_Off": {
+            "hourly_value": 0,
             "schedule_type_limits_name": "OnOff"
         }
     },
