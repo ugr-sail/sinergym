@@ -261,8 +261,12 @@ variables:
       - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
 
   System Node Setpoint Temperature:
-    variable_names: water_temperature
-    keys: Node 11
+    variable_names:
+      - water_temperature
+      - water_temperature-cw
+    keys: 
+      - Node 11
+      - Node 2
   
   System Node Mass Flow Rate:
     variable_names:
@@ -273,6 +277,13 @@ variables:
       - flow_rate_f1_bedroom3
       - flow_rate_f1_bathroom-corridor
       - flow_rate_f1_bathroom-dressing
+      - flow_rate_f0_living-kitchen-cw
+      - flow_rate_f0_bathroom-lobby-cw
+      - flow_rate_f1_bedroom1-cw
+      - flow_rate_f1_bedroom2-cw
+      - flow_rate_f1_bedroom3-cw
+      - flow_rate_f1_bathroom-corridor-cw
+      - flow_rate_f1_bathroom-dressing-cw
     keys:
       - Node 38
       - Node 36
@@ -281,26 +292,53 @@ variables:
       - Node 34
       - Node 15
       - Node 28
+      - Node 51
+      - Node 49
+      - Node 43
+      - Node 45
+      - Node 47
+      - Node 6
+      - Node 41
 
   Heat Pump Load Side Outlet Temperature:
-    variable_names: heat_source_load_side_outlet_temp
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - heat_source_load_side_outlet_temp
+      - cool_source_load_side_outlet_temp
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
 
   Heat Pump Load Side Inlet Temperature:
-    variable_names: heat_source_load_side_inlet_temp
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - heat_source_load_side_inlet_temp
+      - cool_source_load_side_inlet_temp
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
 
   Heat Pump Load Side Heat Transfer Rate:
-    variable_names: heat_source_load_side_heat_transfer_rate
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - heat_source_load_side_heat_transfer_rate
+      - cool_source_load_side_heat_transfer_rate
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
 
   Heat Pump Load Side Mass Flow Rate:
-    variable_names: heat_source_load_side_mass_flow_rate
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - heat_source_load_side_mass_flow_rate
+      - cool_source_load_side_mass_flow_rate
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
   
   Heat Pump Cycling Ratio:
-    variable_names: crf
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - crf
+      - crf-cool
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
   # Performance Curve Output Value:
   #   variable_names:
   #     - heat_cap_mod
@@ -311,13 +349,21 @@ variables:
   #     - AQUAREA9KW_PLR
   #     - COPAQUAREA9KW
   Heat Pump Part Load Ratio:
-    variable_names: plr_current
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - plr_current
+      - plr_current-cool
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
 
   # # ---------------------------------- ENERGY ---------------------------------- #
   Heat Pump Electricity Rate:
-    variable_names: heat_source_electricity_rate
-    keys: ERGA08EAV3A 1
+    variable_names: 
+      - heat_source_electricity_rate
+      - cool_source_electricity_rate
+    keys: 
+      - ERGA08EAV3A 1
+      - ERGA08EAV3A
 
 # ------------------------------- OUTPUT:METERS ------------------------------ #
 meters: {}
