@@ -15584,7 +15584,7 @@
             "cooling_water_inlet_node_name": "Node 51",
             "cooling_water_outlet_node_name": "Node 52",
             "design_object": "Low Temp Radiant Const Flow_PB_Cocina Design",
-            "heating_high_control_temperature_schedule_name": "Radiant control temp 22 sizing then 30",
+            "heating_high_control_temperature_schedule_name": "Radiant control temp 20 sizing then 30",
             "heating_high_water_temperature_schedule_name": "Const Vol Rad Htg Hi Wtr Temp Sch",
             "heating_low_control_temperature_schedule_name": "Const Vol Rad Htg Low Air Temp Sch",
             "heating_low_water_temperature_schedule_name": "Const Vol Rad Htg Low Wtr Temp Sch",
