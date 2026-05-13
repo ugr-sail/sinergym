@@ -13756,13 +13756,21 @@
         }
     },
     "SetpointManager:OutdoorAirReset": {
+        "Daikin_EHVX08_Calefaccion": {
+            "control_variable": "Temperature",
+            "outdoor_high_temperature": 15,
+            "outdoor_low_temperature": -10,
+            "setpoint_at_outdoor_high_temperature": 25,
+            "setpoint_at_outdoor_low_temperature": 35,
+            "setpoint_node_or_nodelist_name": "Node 11"
+        },
         "Daikin_EHVX08_Refrigeracion": {
             "control_variable": "Temperature",
             "outdoor_high_temperature": 35,
             "outdoor_low_temperature": 20,
             "setpoint_at_outdoor_high_temperature": 18,
             "setpoint_at_outdoor_low_temperature": 22,
-            "setpoint_node_or_nodelist_name": "Node 1"
+            "setpoint_node_or_nodelist_name": "Node 2"
         }
     },
     "SetpointManager:Scheduled": {
