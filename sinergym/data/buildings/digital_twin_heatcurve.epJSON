@@ -13822,7 +13822,7 @@
             "outdoor_low_temperature": 20,
             "setpoint_at_outdoor_high_temperature": 18,
             "setpoint_at_outdoor_low_temperature": 22,
-            "setpoint_node_or_nodelist_name": "Node 1"
+            "setpoint_node_or_nodelist_name": "Node 2"
         }
     },
     "SetpointManager:Scheduled": {
