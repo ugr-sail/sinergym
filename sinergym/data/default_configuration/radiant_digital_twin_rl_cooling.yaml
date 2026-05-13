@@ -11,7 +11,7 @@ id_base: radiant_digital_twin_rl_cooling
 # ---------------------------------------------------------------------------- #
 #                         BUILDING AND WEATHER SETTINGS                        #
 # ---------------------------------------------------------------------------- #
-building_file: digital_twin_rl_cooling.epJSON
+building_file: digital_twin_rl.epJSON
 
 weather_specification:
   weather_files:
@@ -26,10 +26,10 @@ weather_specification:
 building_config:
   timesteps_per_hour: 2
   runperiod:
-    - 1
+    - 15
     - 5
     - 2006
-    - 30
+    - 15
     - 9
     - 2006
 
@@ -142,15 +142,15 @@ variables:
 
   # # ---------------------------------- SYSTEM ---------------------------------- #
 
-  Zone Thermostat Heating Setpoint Temperature:
+  Zone Thermostat Cooling Setpoint Temperature:
     variable_names:
-      - cooling_setpoint_f0_living-kitchen
-      - cooling_setpoint_f0_bathroom-lobby
-      - cooling_setpoint_f1_bedroom1
-      - cooling_setpoint_f1_bedroom2
-      - cooling_setpoint_f1_bedroom3
-      - cooling_setpoint_f1_bathroom-corridor
-      - cooling_setpoint_f1_bathroom-dressing
+      - heating_setpoint_f0_living-kitchen
+      - heating_setpoint_f0_bathroom-lobby
+      - heating_setpoint_f1_bedroom1
+      - heating_setpoint_f1_bedroom2
+      - heating_setpoint_f1_bedroom3
+      - heating_setpoint_f1_bathroom-corridor
+      - heating_setpoint_f1_bathroom-dressing
     keys:
       - PB_Cocina-Salon1-Salon2
       - PB_Aseo-Vestibulo
@@ -239,19 +239,19 @@ variables:
       - Node 41
 
   Heat Pump Load Side Outlet Temperature:
-    variable_names: cooling_hp_load_side_outlet_temp
+    variable_names: heat_source_load_side_outlet_temp
     keys: ERGA08EAV3A
 
   Heat Pump Load Side Inlet Temperature:
-    variable_names: cooling_hp_load_side_inlet_temp
+    variable_names: heat_source_load_side_inlet_temp
     keys: ERGA08EAV3A
 
   Heat Pump Load Side Heat Transfer Rate:
-    variable_names: cooling_hp_load_side_heat_transfer_rate
+    variable_names: heat_source_load_side_heat_transfer_rate
     keys: ERGA08EAV3A
 
   Heat Pump Load Side Mass Flow Rate:
-    variable_names: cooling_hp_load_side_mass_flow_rate
+    variable_names: heat_source_load_side_mass_flow_rate
     keys: ERGA08EAV3A
 
   Heat Pump Cycling Ratio:
@@ -263,7 +263,7 @@ variables:
     keys: ERGA08EAV3A
 
   Heat Pump Electricity Rate:
-    variable_names: cooling_hp_electricity_rate
+    variable_names: heat_source_electricity_rate
     keys: ERGA08EAV3A
 
 meters: {}
@@ -311,8 +311,8 @@ actuators:
 #                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
 # ---------------------------------------------------------------------------- #
 context:
-  Radiant cooling control high air summer:
-    variable_name: radiant_cooling_control_high_air
+  Radiant control temp 24 sizing then 17:
+    variable_name: radiant_control_temp_24_sizing_then_17
     element_type: Schedule:Compact
     value_type: Schedule Value
   Setpoint Schedule PB_Salon:
@@ -346,22 +346,22 @@ context:
 
 # Order matches `context`: cooling radiant band + seven zone cooling/heating setpoint schedules (dual uses same value).
 initial_context:
-  - 28.0
-  - 26.0
-  - 26.0
-  - 26.0
-  - 26.0
-  - 26.0
-  - 26.0
-  - 26.0
+  - 17.0
+  - 20.0
+  - 19.5
+  - 20.0
+  - 19.5
+  - 20.0
+  - 20.1
+  - 20.0
 
 # ---------------------------------------------------------------------------- #
 #                                 ACTIONS SPACE                                #
 # ---------------------------------------------------------------------------- #
 # Seven normalized mass-flow commands + CHW loop setpoint (°C). Plant loop allows ~5–15 °C on Cooling Plant Loop.
 action_space: gym.spaces.Box(
-  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 13.0], dtype=np.float32),
-  high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 25.0], dtype=np.float32),
+  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 18.0], dtype=np.float32),
+  high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 22.0], dtype=np.float32),
   shape=(8,), dtype=np.float32)
 
 only_discrete: false
@@ -374,15 +374,15 @@ reward: sinergym.utils.rewards:MultiZoneRewardV2
 reward_kwargs:
   comfort_threshold: 1
   energy_variables:
-    - cooling_hp_electricity_rate
+    - heat_source_electricity_rate
   energy_weight: 0.5
   lambda_energy: 0.001
   lambda_temperature: 1
   temperature_and_setpoints_conf:
-    air_temperature_f0_living-kitchen: cooling_setpoint_f0_living-kitchen
-    air_temperature_f0_bathroom-lobby: cooling_setpoint_f0_bathroom-lobby
-    air_temperature_f1_bedroom1: cooling_setpoint_f1_bedroom1
-    air_temperature_f1_bedroom2: cooling_setpoint_f1_bedroom2
-    air_temperature_f1_bedroom3: cooling_setpoint_f1_bedroom3
-    air_temperature_f1_bathroom-corridor: cooling_setpoint_f1_bathroom-corridor
-    air_temperature_f1_bathroom-dressing: cooling_setpoint_f1_bathroom-dressing
+    air_temperature_f0_living-kitchen: heating_setpoint_f0_living-kitchen
+    air_temperature_f0_bathroom-lobby: heating_setpoint_f0_bathroom-lobby
+    air_temperature_f1_bedroom1: heating_setpoint_f1_bedroom1
+    air_temperature_f1_bedroom2: heating_setpoint_f1_bedroom2
+    air_temperature_f1_bedroom3: heating_setpoint_f1_bedroom3
+    air_temperature_f1_bathroom-corridor: heating_setpoint_f1_bathroom-corridor
+    air_temperature_f1_bathroom-dressing: heating_setpoint_f1_bathroom-dressing
