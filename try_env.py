@@ -21,7 +21,7 @@ terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(name='MAIN', level=logging.INFO)
 
 # Creating environment and applying wrappers for normalization and logging
-env = gym.make('Eplus-radiant_digital_twin_rl_cooling-madrid-continuous-stochastic-v1')
+env = gym.make('Eplus-radiant_digital_twin_rl_heating-madrid-continuous-stochastic-v1')
 env = DatetimeWrapper(env)
 env = NormalizeObservation(env)
 env = ExtremeFlowControlWrapper(env)
