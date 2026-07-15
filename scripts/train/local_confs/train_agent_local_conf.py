@@ -264,9 +264,10 @@ try:
 
         # By default, the evaluation environment does not use WandBLogger
         if wrappers:
-            key_to_remove = [key for key in wrappers if 'WandBLogger' in key][0]
-            del wrappers[key_to_remove]
-            logger.info(f'Wrappers updated without WandBLogger for evaluations')
+            wandb_keys = [key for key in wrappers if 'WandBLogger' in key]
+            if wandb_keys:
+                del wrappers[wandb_keys[0]]
+                logger.info(f'Wrappers updated without WandBLogger for evaluations')
 
         # ----------------------- Create evaluation environment ---------------------- #
         eval_env = create_environment(
