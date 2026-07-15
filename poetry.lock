@@ -23,7 +23,7 @@ files = [
     {file = "annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"},
     {file = "annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [[package]]
 name = "asttokens"
@@ -36,7 +36,7 @@ files = [
     {file = "asttokens-3.0.2-py3-none-any.whl", hash = "sha256:9da13157f5b28becde0bd374fc677dcd3c290614264eff096f167c469cd9f933"},
     {file = "asttokens-3.0.2.tar.gz", hash = "sha256:3ecdbd8f2cc195f53ccada3a613538bb5f9ef6f6869129f13e03c30a677b8fe2"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.extras]
 astroid = ["astroid (>=2,<5)"]
@@ -285,7 +285,7 @@ files = [
     {file = "cffi-2.1.0-cp315-cp315t-win_arm64.whl", hash = "sha256:cbb7640ce37159548d2147b5b8c241f962143d4c71231431820783f4dc78f210"},
     {file = "cffi-2.1.0.tar.gz", hash = "sha256:efc1cdd798b1aaf39b4610bba7aad28c9bea9b910f25c784ccf9ec1fa719d1f9"},
 ]
-markers = {main = "(extra == \"gcloud\" or extra == \"extras\") and platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\"", dev = "platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\"", doc = "implementation_name == \"pypy\"", gcloud = "platform_python_implementation != \"PyPy\""}
+markers = {main = "(extra == \"extras\" or extra == \"gcloud\") and platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\"", dev = "platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\"", doc = "implementation_name == \"pypy\"", gcloud = "platform_python_implementation != \"PyPy\""}
 
 [package.dependencies]
 pycparser = {version = "*", markers = "implementation_name != \"PyPy\""}
@@ -404,7 +404,7 @@ files = [
     {file = "click-8.4.2-py3-none-any.whl", hash = "sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"},
     {file = "click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
@@ -534,7 +534,7 @@ files = [
     {file = "coverage-7.15.1-py3-none-any.whl", hash = "sha256:717d01e6e00bed56ad13306f19e0dd2f4f645ee8159d2c72c72301d6cfc7090c"},
     {file = "coverage-7.15.1.tar.gz", hash = "sha256:165e9949eaf222ef1f018635d0d7f368a23bfe0212af558534c40d8c04686d67"},
 ]
-markers = {main = "extra == \"test\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"test\""}
 
 [package.extras]
 toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
@@ -594,7 +594,7 @@ files = [
     {file = "cryptography-49.0.0-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:be9fcb48a55f023493482827d4f459bd263cc20efde64f204b97c123201850c6"},
     {file = "cryptography-49.0.0.tar.gz", hash = "sha256:f89660a348f4f78a92366240a61404e337586ef7f5909a2fef59ca88ef505493"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 cffi = {version = ">=2.0.0", markers = "platform_python_implementation != \"PyPy\""}
@@ -787,7 +787,7 @@ files = [
     {file = "execnet-2.1.2-py3-none-any.whl", hash = "sha256:67fba928dd5a544b783f6056f449e5e3931a5c378b128bc18501f7ea79e296ec"},
     {file = "execnet-2.1.2.tar.gz", hash = "sha256:63d83bfdd9a23e35b9c6a3261412324f964c2ec8dcd8d3c6916ee9373e0befcd"},
 ]
-markers = {main = "extra == \"test\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"test\""}
 
 [package.extras]
 testing = ["hatch", "pre-commit", "pytest", "tox"]
@@ -803,7 +803,7 @@ files = [
     {file = "executing-2.2.1-py2.py3-none-any.whl", hash = "sha256:760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017"},
     {file = "executing-2.2.1.tar.gz", hash = "sha256:3632cc370565f6648cc328b32435bd120a1e4ebb20c77e3fdde9a13cd1e533c4"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.extras]
 tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich ; python_version >= \"3.11\""]
@@ -912,7 +912,7 @@ files = [
     {file = "gitdb-4.0.12-py3-none-any.whl", hash = "sha256:67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf"},
     {file = "gitdb-4.0.12.tar.gz", hash = "sha256:5ef71f855d191a3326fcfbc0d5da835f26b13fbcba60c32c21091c349ffdb571"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 smmap = ">=3.0.1,<6"
@@ -928,7 +928,7 @@ files = [
     {file = "gitpython-3.1.51-py3-none-any.whl", hash = "sha256:d5b29685708f3c80a56db040b665bfd69492c8e150b5848532af8013b686c5a4"},
     {file = "gitpython-3.1.51.tar.gz", hash = "sha256:22c9c94bb6b0b9f3c7157c684fece45a414cea204586b600beae6cd4570dcd6d"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
@@ -948,7 +948,7 @@ files = [
     {file = "google_api_core-2.31.0-py3-none-any.whl", hash = "sha256:ef79fb3784c71cbac89cbd03301ba0c8fb8ad2aa95d7f9204dd9628f7adf59ab"},
     {file = "google_api_core-2.31.0.tar.gz", hash = "sha256:2be84ee0f584c48e6bde1b36766e23348b361fb7e55e56135fc76ce1c397f9c2"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-auth = ">=2.14.1,<3.0.0"
@@ -975,7 +975,7 @@ files = [
     {file = "google_api_python_client-2.198.0-py3-none-any.whl", hash = "sha256:fabac935474e817da5e662ff61bf7139439d6f92b32d332a7318a2d45931e03e"},
     {file = "google_api_python_client-2.198.0.tar.gz", hash = "sha256:dfe3e16fb241af6e9c460a33f65085b3450e05cea09364f6b5d8997fb7e43e2a"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-api-core = ">=1.31.5,<2.0.dev0 || >2.3.0,<3.0.0"
@@ -995,7 +995,7 @@ files = [
     {file = "google_auth-2.56.0-py3-none-any.whl", hash = "sha256:6e88c10217e07a92bfd01cac8ee99e32ccfb08414c3102e6c5b8d58f37a0d1e0"},
     {file = "google_auth-2.56.0.tar.gz", hash = "sha256:f90fa030b569a92654b9d690665a073841df33d57487be53db583a9a0867a553"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 cryptography = [
@@ -1028,7 +1028,7 @@ files = [
     {file = "google_auth_httplib2-0.4.0-py3-none-any.whl", hash = "sha256:8e55cfafa3358cba85f6cad4a886138e88e158d71e7e5c9ee5936a5c1507fb91"},
     {file = "google_auth_httplib2-0.4.0.tar.gz", hash = "sha256:d5b030a204b7a4b4d553ba9ca701b62481ee2b74419325580be70f7d85ffed35"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-auth = ">=1.32.0,<3.0.0"
@@ -1045,7 +1045,7 @@ files = [
     {file = "google_cloud_core-2.6.0-py3-none-any.whl", hash = "sha256:6d63ac8e5eca6d9e4319d0a1e2265fadcd7f1049904378caecfa01cf52dd869e"},
     {file = "google_cloud_core-2.6.0.tar.gz", hash = "sha256:e76149739f90fac1fc6757c09f47eaccb3145b54adbd7759b0f7c4b235f46c83"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-api-core = ">=2.11.0,<3.0.0"
@@ -1065,7 +1065,7 @@ files = [
     {file = "google_cloud_storage-3.13.0-py3-none-any.whl", hash = "sha256:648af3ef8a6acc674e1359d3c920c67eb89a7a5ab66b336bd3ac43fed6b5ab84"},
     {file = "google_cloud_storage-3.13.0.tar.gz", hash = "sha256:d11d8706ea1520fba0f21043bcb7897caf7015d76ce1ad9a4f60237e4d7a9f6c"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-api-core = ">=2.27.0,<3.0.0"
@@ -1123,7 +1123,7 @@ files = [
     {file = "google_crc32c-1.8.0-pp311-pypy311_pp73-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:f639065ea2042d5c034bf258a9f085eaa7af0cd250667c0635a3118e8f92c69c"},
     {file = "google_crc32c-1.8.0.tar.gz", hash = "sha256:a428e25fb7691024de47fecfbff7ff957214da51eddded0da0ae0e0f03a2cf79"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [[package]]
 name = "google-resumable-media"
@@ -1136,7 +1136,7 @@ files = [
     {file = "google_resumable_media-2.10.0-py3-none-any.whl", hash = "sha256:88152884bee37b2bf36a0ab81ad8c7fd12212c9803dd981d77c1b35b02d34e7c"},
     {file = "google_resumable_media-2.10.0.tar.gz", hash = "sha256:e324bc9d0fdae4c52a08ae90456edc4e71ece858399e1217ac0eb3a51d6bc6ee"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 google-crc32c = ">=1.0.0,<2.0.0"
@@ -1156,7 +1156,7 @@ files = [
     {file = "googleapis_common_protos-1.75.0-py3-none-any.whl", hash = "sha256:961ed60399c457ceb0ee8f285a84c870aabc9c6a832b9d37bb281b5bebde43ed"},
     {file = "googleapis_common_protos-1.75.0.tar.gz", hash = "sha256:53a062ff3c32552fbd62c11fe23768b78e4ddf0494d5e5fd97d3f4689c75fbbd"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 protobuf = ">=4.25.8,<8.0.0"
@@ -1206,7 +1206,7 @@ files = [
     {file = "httplib2-0.32.0-py3-none-any.whl", hash = "sha256:dc6705cacdf3fb0a2aba7629fa33c90fd93e30035db0c157325826be177e4816"},
     {file = "httplib2-0.32.0.tar.gz", hash = "sha256:48a0ef30a42db65d8f3399045e1d09ab0ba66e3b9efc360d07f80ea55d286025"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 pyparsing = ">=3.1,<4"
@@ -1275,7 +1275,7 @@ files = [
     {file = "ipython-9.15.0-py3-none-any.whl", hash = "sha256:515ad9c3cdf0c932a5a9f6245419e8aba706b7bd03c3e1d3a1c83d9351d6aa6e"},
     {file = "ipython-9.15.0.tar.gz", hash = "sha256:da2819ce2aa83135257df830660b1176d986c3d2876db24df01974fa955b2756"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 colorama = {version = ">=0.4.4", markers = "sys_platform == \"win32\""}
@@ -1309,7 +1309,7 @@ files = [
     {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
     {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 pygments = "*"
@@ -1325,7 +1325,7 @@ files = [
     {file = "jedi-0.20.0-py2.py3-none-any.whl", hash = "sha256:7bdd9c2634f56713299976f4cbd59cb3fa92165cc5e05ea811fb253480728b67"},
     {file = "jedi-0.20.0.tar.gz", hash = "sha256:c3f4ccbd276696f4b19c54618d4fb18f9fc24b0aef02acf704b23f487daa1011"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 parso = ">=0.8.6,<0.9.0"
@@ -1706,7 +1706,7 @@ files = [
     {file = "matplotlib_inline-0.2.2-py3-none-any.whl", hash = "sha256:3c821cf1c209f59fb2d2d64abbf5b23b67bcb2210d663f9918dd851c6da1fcf6"},
     {file = "matplotlib_inline-0.2.2.tar.gz", hash = "sha256:72f3fe8fce36b70d4a5b612f899090cd0401deddc4ea90e1572b9f4bfb058c79"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 traitlets = "*"
@@ -1801,7 +1801,7 @@ files = [
     {file = "narwhals-2.24.0-py3-none-any.whl", hash = "sha256:42fdedf44e5b2ca7505630d45b4ac3058f38d8485cba9fe1652ca23152df7489"},
     {file = "narwhals-2.24.0.tar.gz", hash = "sha256:b5c0f684ccd9d7475b564111e319a4964abcf2baf79d3cf6b1003d06ac9b828d"},
 ]
-markers = {main = "extra == \"plots\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"plots\""}
 
 [package.extras]
 cudf = ["cudf-cu12 (>=24.10.0) ; sys_platform == \"linux\""]
@@ -2335,7 +2335,7 @@ files = [
     {file = "oauth2client-4.1.3-py2.py3-none-any.whl", hash = "sha256:b8a81cc5d60e2d364f0b1b98f958dbd472887acaf1a5b05e21c28c31a2d6d3ac"},
     {file = "oauth2client-4.1.3.tar.gz", hash = "sha256:d486741e451287f69568a4d26d70d9acd73a2bbfa275746c535b4209891cccc6"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 httplib2 = ">=0.9.1"
@@ -2471,7 +2471,7 @@ files = [
     {file = "parso-0.8.7-py2.py3-none-any.whl", hash = "sha256:a8926eb2a1b915486941fdbd31e86a4baf88fe8c210f25f2f35ecec5b574ca1c"},
     {file = "parso-0.8.7.tar.gz", hash = "sha256:eaaac4c9fdd5e9e8852dc778d2d7405897ec510f2a298071453e5e3a07914bb1"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.extras]
 qa = ["flake8 (==5.0.4)", "types-setuptools (==67.2.0.1)", "zuban (==0.5.1)"]
@@ -2505,7 +2505,7 @@ files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
 ]
-markers = {main = "(extra == \"notebooks\" or extra == \"extras\") and sys_platform != \"win32\" and sys_platform != \"emscripten\"", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", doc = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", format = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", notebooks = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
+markers = {main = "(extra == \"extras\" or extra == \"notebooks\") and sys_platform != \"win32\" and sys_platform != \"emscripten\"", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", doc = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", format = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", notebooks = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
 
 [package.dependencies]
 ptyprocess = ">=0.5"
@@ -2554,7 +2554,7 @@ files = [
     {file = "plotly-6.9.0-py3-none-any.whl", hash = "sha256:36bebe2f1bb13884774fe61689c329071446f6ce4a8927fb1f0d6fb24f581236"},
     {file = "plotly-6.9.0.tar.gz", hash = "sha256:967ad33e8c704fed051800d11d985eb206a9c795c14206b30a6f463ed9c67d0d"},
 ]
-markers = {main = "extra == \"plots\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"plots\""}
 
 [package.dependencies]
 narwhals = ">=1.15.1"
@@ -2598,7 +2598,7 @@ files = [
     {file = "prompt_toolkit-3.0.52-py3-none-any.whl", hash = "sha256:9aac639a3bbd33284347de5ad8d68ecc044b91a762dc39b7c21095fcd6a19955"},
     {file = "prompt_toolkit-3.0.52.tar.gz", hash = "sha256:28cde192929c8e7321de85de1ddbe736f1375148b02f2e17edd840042b1be855"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 wcwidth = "*"
@@ -2614,7 +2614,7 @@ files = [
     {file = "proto_plus-1.28.1-py3-none-any.whl", hash = "sha256:6660f5f1970874bdcfc3088b435188a36a37bd3596668f7d726417c4ae8cfbed"},
     {file = "proto_plus-1.28.1.tar.gz", hash = "sha256:832e68e7fe064cf90ab153b6e5eb935b27891bb89aaeb68b115e9b702f6cb168"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 protobuf = ">=4.25.8,<8.0.0"
@@ -2639,7 +2639,7 @@ files = [
     {file = "protobuf-7.35.1-py3-none-any.whl", hash = "sha256:4bc97768d8fe4ad6743c8a19403e314511ed9f6d13205b687e52421c023ac1b9"},
     {file = "protobuf-7.35.1.tar.gz", hash = "sha256:ce115a26fe0c39a2c29973d914d327e516a6455464489fe3cd1e51a1b354f81a"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\" or extra == \"wandb\" or extra == \"test\" or extra == \"drl\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\" or extra == \"drl\" or extra == \"test\" or extra == \"wandb\""}
 
 [[package]]
 name = "psutil"
@@ -2671,7 +2671,7 @@ files = [
     {file = "psutil-7.2.2-cp37-abi3-win_arm64.whl", hash = "sha256:8c233660f575a5a89e6d4cb65d9f938126312bca76d8fe087b947b3a1aaac9ee"},
     {file = "psutil-7.2.2.tar.gz", hash = "sha256:0746f5f8d406af344fd547f1c8daa5f5c33dbc293bb8d6a16d80b4bb88f59372"},
 ]
-markers = {main = "(extra == \"notebooks\" or extra == \"extras\") and (sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\")", dev = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", doc = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", format = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", notebooks = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\""}
+markers = {main = "(extra == \"extras\" or extra == \"notebooks\") and (sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\")", dev = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", doc = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", format = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\"", notebooks = "sys_platform == \"linux\" or sys_platform == \"win32\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\""}
 
 [package.extras]
 dev = ["abi3audit", "black", "check-manifest", "colorama ; os_name == \"nt\"", "coverage", "packaging", "psleak", "pylint", "pyperf", "pypinfo", "pyreadline3 ; os_name == \"nt\"", "pytest", "pytest-cov", "pytest-instafail", "pytest-xdist", "pywin32 ; os_name == \"nt\" and implementation_name != \"pypy\"", "requests", "rstcheck", "ruff", "setuptools", "sphinx", "sphinx_rtd_theme", "toml-sort", "twine", "validate-pyproject[all]", "virtualenv", "vulture", "wheel", "wheel ; os_name == \"nt\" and implementation_name != \"pypy\"", "wmi ; os_name == \"nt\" and implementation_name != \"pypy\""]
@@ -2688,7 +2688,7 @@ files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
 ]
-markers = {main = "(extra == \"notebooks\" or extra == \"extras\") and sys_platform != \"win32\" and sys_platform != \"emscripten\"", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", doc = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", format = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", notebooks = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
+markers = {main = "(extra == \"extras\" or extra == \"notebooks\") and sys_platform != \"win32\" and sys_platform != \"emscripten\"", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", doc = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", format = "sys_platform != \"win32\" and sys_platform != \"emscripten\"", notebooks = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
 
 [[package]]
 name = "pure-eval"
@@ -2701,7 +2701,7 @@ files = [
     {file = "pure_eval-0.2.3-py3-none-any.whl", hash = "sha256:1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0"},
     {file = "pure_eval-0.2.3.tar.gz", hash = "sha256:5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.extras]
 tests = ["pytest"]
@@ -2717,7 +2717,7 @@ files = [
     {file = "pyasn1-0.6.4-py3-none-any.whl", hash = "sha256:deda9277cfd454080ec40b207fb6df82206a3a2688735233cdcd8d3d565f088b"},
     {file = "pyasn1-0.6.4.tar.gz", hash = "sha256:9c447d8431c947fe4c8febc4ed9e760bc29011a5b01e5c74b67025bd9fb8ce81"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [[package]]
 name = "pyasn1-modules"
@@ -2730,7 +2730,7 @@ files = [
     {file = "pyasn1_modules-0.4.2-py3-none-any.whl", hash = "sha256:29253a9207ce32b64c3ac6600edc75368f98473906e8fd1043bd6b5b1de2c14a"},
     {file = "pyasn1_modules-0.4.2.tar.gz", hash = "sha256:677091de870a80aae844b1ca6134f54652fa2c8c5a52aa396440ac3106e941e6"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [package.dependencies]
 pyasn1 = ">=0.6.1,<0.7.0"
@@ -2746,7 +2746,7 @@ files = [
     {file = "pycparser-3.0-py3-none-any.whl", hash = "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"},
     {file = "pycparser-3.0.tar.gz", hash = "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29"},
 ]
-markers = {main = "(extra == \"gcloud\" or extra == \"extras\") and platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\" or implementation_name == \"pypy\"", dev = "(platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\") and implementation_name != \"PyPy\"", doc = "implementation_name == \"pypy\"", gcloud = "platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\""}
+markers = {main = "(extra == \"extras\" or extra == \"gcloud\") and platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\" or implementation_name == \"pypy\"", dev = "(platform_python_implementation != \"PyPy\" or implementation_name == \"pypy\") and implementation_name != \"PyPy\"", doc = "implementation_name == \"pypy\"", gcloud = "platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\""}
 
 [[package]]
 name = "pydantic"
@@ -2759,7 +2759,7 @@ files = [
     {file = "pydantic-2.13.4-py3-none-any.whl", hash = "sha256:45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba"},
     {file = "pydantic-2.13.4.tar.gz", hash = "sha256:c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 annotated-types = ">=0.6.0"
@@ -2900,7 +2900,7 @@ files = [
     {file = "pydantic_core-2.46.4-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:d51026d73fcfd93610abc7b27789c26b313920fcfb20e27462d74a7f8b06e983"},
     {file = "pydantic_core-2.46.4.tar.gz", hash = "sha256:62f875393d7f270851f20523dd2e29f082bcc82292d66db2b64ea71f64b6e1c1"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 typing-extensions = ">=4.14.1"
@@ -3025,7 +3025,7 @@ files = [
     {file = "pytest_cov-7.1.0-py3-none-any.whl", hash = "sha256:a0461110b7865f9a271aa1b51e516c9a95de9d696734a2f71e3e78f46e1d4678"},
     {file = "pytest_cov-7.1.0.tar.gz", hash = "sha256:30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2"},
 ]
-markers = {main = "extra == \"test\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"test\""}
 
 [package.dependencies]
 coverage = {version = ">=7.10.6", extras = ["toml"]}
@@ -3046,7 +3046,7 @@ files = [
     {file = "pytest_xdist-3.8.0-py3-none-any.whl", hash = "sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88"},
     {file = "pytest_xdist-3.8.0.tar.gz", hash = "sha256:7e578125ec9bc6050861aa93f2d59f1d8d085595d6551c2c90b6f4fad8d3a9f1"},
 ]
-markers = {main = "extra == \"test\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"test\""}
 
 [package.dependencies]
 execnet = ">=2.1"
@@ -3517,7 +3517,7 @@ groups = ["main", "dev", "gcloud"]
 files = [
     {file = "rsa-4.2.tar.gz", hash = "sha256:aaefa4b84752e3e99bd8333a2e1e3e7a7da64614042bd66f775573424370108a"},
 ]
-markers = {main = "python_version >= \"3.14\" and (extra == \"gcloud\" or extra == \"extras\")", dev = "python_version >= \"3.14\"", gcloud = "python_version >= \"3.14\""}
+markers = {main = "python_version >= \"3.14\" and (extra == \"extras\" or extra == \"gcloud\")", dev = "python_version >= \"3.14\"", gcloud = "python_version >= \"3.14\""}
 
 [package.dependencies]
 pyasn1 = ">=0.1.3"
@@ -3533,7 +3533,7 @@ files = [
     {file = "rsa-4.9.1-py3-none-any.whl", hash = "sha256:68635866661c6836b8d39430f97a996acbd61bfa49406748ea243539fe239762"},
     {file = "rsa-4.9.1.tar.gz", hash = "sha256:e7bdbfdb5497da4c07dfd35530e1a902659db6ff241e39d9953cad06ebd0ae75"},
 ]
-markers = {main = "python_version < \"3.14\" and (extra == \"gcloud\" or extra == \"extras\")", dev = "python_version < \"3.14\"", gcloud = "python_version < \"3.14\""}
+markers = {main = "python_version < \"3.14\" and (extra == \"extras\" or extra == \"gcloud\")", dev = "python_version < \"3.14\"", gcloud = "python_version < \"3.14\""}
 
 [package.dependencies]
 pyasn1 = ">=0.1.3"
@@ -3593,7 +3593,7 @@ files = [
     {file = "sentry_sdk-2.65.0-py3-none-any.whl", hash = "sha256:3595169677a808e4d0e1ea6ffb89443459549c7a98392ed71c77c847182ab6bf"},
     {file = "sentry_sdk-2.65.0.tar.gz", hash = "sha256:c94dc945d54bad49d4f20448b1e6b217ca2f92f46d05c3e83d41764af685c3d1"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 certifi = "*"
@@ -3692,7 +3692,7 @@ files = [
     {file = "smmap-5.0.3-py3-none-any.whl", hash = "sha256:c106e05d5a61449cf6ba9a1e650227ecfb141590d2a98412103ff35d89fc7b2f"},
     {file = "smmap-5.0.3.tar.gz", hash = "sha256:4d9debb8b99007ae47165abc08670bd74cb74b5227dda7f643eccc4e9eb5642c"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [[package]]
 name = "snowballstemmer"
@@ -3980,7 +3980,7 @@ files = [
     {file = "stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695"},
     {file = "stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [package.dependencies]
 asttokens = ">=2.1.0"
@@ -4215,7 +4215,7 @@ files = [
     {file = "typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7"},
     {file = "typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 typing-extensions = ">=4.12.0"
@@ -4244,7 +4244,7 @@ files = [
     {file = "uritemplate-4.2.0-py3-none-any.whl", hash = "sha256:962201ba1c4edcab02e60f9a0d3821e82dfc5d2d6662a21abd533879bdb8a686"},
     {file = "uritemplate-4.2.0.tar.gz", hash = "sha256:480c2ed180878955863323eea31b0ede668795de182617fef9c6ca09e6ec9d0e"},
 ]
-markers = {main = "extra == \"gcloud\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"gcloud\""}
 
 [[package]]
 name = "urllib3"
@@ -4283,7 +4283,7 @@ files = [
     {file = "wandb-0.28.0-py3-none-win_arm64.whl", hash = "sha256:c5b0faf1b84cf79ebabed77538c1940a4c6053e815f767a4004e877a1354bed1"},
     {file = "wandb-0.28.0.tar.gz", hash = "sha256:b20e5af0fe80e2e2a466b0466a1d60cedcc578dce0f036eca04f4a0adcad95b6"},
 ]
-markers = {main = "extra == \"wandb\" or extra == \"test\" or extra == \"drl\" or extra == \"extras\""}
+markers = {main = "extra == \"drl\" or extra == \"extras\" or extra == \"test\" or extra == \"wandb\""}
 
 [package.dependencies]
 click = ">=8.2.0"
@@ -4322,7 +4322,7 @@ files = [
     {file = "wcwidth-0.8.2-py3-none-any.whl", hash = "sha256:d63947694a0539a1d51e01eda7caf800c291020e6cdd7e28ad7b14dd33ad4f85"},
     {file = "wcwidth-0.8.2.tar.gz", hash = "sha256:91fbef97204b96a3d4d421609b80340b760cf33e26da123ff243d76b1fda8dda"},
 ]
-markers = {main = "extra == \"notebooks\" or extra == \"extras\""}
+markers = {main = "extra == \"extras\" or extra == \"notebooks\""}
 
 [[package]]
 name = "webencodings"
