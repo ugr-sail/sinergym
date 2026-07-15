@@ -22,6 +22,8 @@
         "xml:cov.xml"
     ],
 
+    "python.languageServer": "Pylance",
+
     "files.associations": {
         "*.pyyaml": "yaml"
     },
