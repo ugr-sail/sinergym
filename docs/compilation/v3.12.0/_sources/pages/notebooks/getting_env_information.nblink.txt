@@ -1,0 +1,3 @@
+{
+    "path": "../../../../examples/getting_env_information.ipynb"
+}

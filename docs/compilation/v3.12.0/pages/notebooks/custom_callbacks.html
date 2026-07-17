@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom callback functions in Sinergym &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=23b407c1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/github_style.css?v=0a3c596a" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Rule-based controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="Logging unused variables" href="logging_unused_variables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../serialization.html">Serialization and Configuration Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_callbacks.html">Custom callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Custom callback functions in Sinergym</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Define-custom-callbacks">Define custom callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Log-avg_zone_temperature-with-CSVLogger">Log avg_zone_temperature with CSVLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Register-callbacks-to-environment">Register callbacks to environment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">DRL usage example</a></li>
+</ul>
+
+  <div class="sidebar-block github-block">
+    <h3><i class="fa fa-github"></i> GitHub</h3>
+    <ul class="simple">
+      <li><a href="https://github.com/ugr-sail/sinergym" target="_blank">
+        <i class="fa fa-book"></i> Repository
+      </a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/issues" target="_blank">🐞 Issues</a></li>
+      <li><a href="https://github.com/ugr-sail/sinergym/releases" target="_blank">🚀 Releases</a></li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Custom callback functions in Sinergym</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ugr-sail/sinergym/blob/main/docs/source/pages/notebooks/custom_callbacks.nblink" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Custom-callback-functions-in-Sinergym">
+<h1>Custom callback functions in Sinergym<a class="headerlink" href="#Custom-callback-functions-in-Sinergym" title="Link to this heading"></a></h1>
+<p>First let’s import the <code class="docutils literal notranslate"><span class="pre">5zone</span></code> environment as an example for custom callbacks. We need add new variables to be used by the callback function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sinergym</span>
+
+<span class="n">new_variables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;outdoor_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Outdoor Air Drybulb Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;outdoor_humidity&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Outdoor Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Wind Speed&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Wind Direction&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;diffuse_solar_radiation&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;Site Diffuse Solar Radiation Rate per Area&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Environment&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">&#39;direct_solar_radiation&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;Site Direct Solar Radiation Rate per Area&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Environment&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">&#39;air_temperature_SPACE1-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE1-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_temperature_SPACE2-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE2-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_temperature_SPACE3-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE3-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_temperature_SPACE4-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE4-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE5-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_relative_humidity_SPACE1-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE1-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_relative_humidity_SPACE2-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE2-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_relative_humidity_SPACE3-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE3-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_relative_humidity_SPACE4-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE4-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;air_relative_humidity_SPACE5-1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;SPACE5-1&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;HVAC_electricity_demand_rate&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Whole Building&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;Eplus-5zone-hot-continuous-stochastic-v1&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="n">new_variables</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;The current observation variables are:: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: Eplus-5zone-hot-continuous-stochastic-v1
+#==============================================================================================#
+[MODEL] (INFO) : Working directory created: /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-stochastic-v1-res16
+[MODEL] (INFO) : Model Config is correct.
+[MODEL] (INFO) : Building model Output:Variable updated with defined variable names.
+[MODEL] (INFO) : Updated building model Output:Meter with meter names.
+[MODEL] (INFO) : Runperiod established.
+[MODEL] (INFO) : Episode length (seconds): 31536000.0
+[MODEL] (INFO) : timestep size (seconds): 900.0
+[MODEL] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+The current observation variables are:: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;air_temperature_SPACE1-1&#39;, &#39;air_temperature_SPACE2-1&#39;, &#39;air_temperature_SPACE3-1&#39;, &#39;air_temperature_SPACE4-1&#39;, &#39;air_temperature&#39;, &#39;air_relative_humidity_SPACE1-1&#39;, &#39;air_relative_humidity_SPACE2-1&#39;, &#39;air_relative_humidity_SPACE3-1&#39;, &#39;air_relative_humidity_SPACE4-1&#39;, &#39;air_relative_humidity_SPACE5-1&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
+</pre></div></div>
+</div>
+<section id="Define-custom-callbacks">
+<h2>Define custom callbacks<a class="headerlink" href="#Define-custom-callbacks" title="Link to this heading"></a></h2>
+<p>The callback <code class="docutils literal notranslate"><span class="pre">_avg_zone_timestep</span></code> computes a <strong>volume-weighted average air temperature</strong> across all five thermal zones of the building (<code class="docutils literal notranslate"><span class="pre">SPACE1-1</span></code> through <code class="docutils literal notranslate"><span class="pre">SPACE5-1</span></code>) at every zone timestep and stores the result in <code class="docutils literal notranslate"><span class="pre">_avg[&quot;value&quot;]</span></code>.</p>
+<p><strong>How it works:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>State dict ``_avg``</strong> — A module-level dictionary holds EnergyPlus variable handles (<code class="docutils literal notranslate"><span class="pre">T1</span></code>–<code class="docutils literal notranslate"><span class="pre">T5</span></code>) and zone air volumes (<code class="docutils literal notranslate"><span class="pre">vol1</span></code>–<code class="docutils literal notranslate"><span class="pre">vol5</span></code>), plus a <code class="docutils literal notranslate"><span class="pre">need_handles</span></code> flag and the running <code class="docutils literal notranslate"><span class="pre">value</span></code>. This avoids re-fetching handles every timestep.</p></li>
+<li><p><strong>Handle initialisation (first call only)</strong> — On the first timestep where the EnergyPlus API data is fully ready, the callback retrieves:</p>
+<ul class="simple">
+<li><p><em>Variable handles</em> for <code class="docutils literal notranslate"><span class="pre">Zone</span> <span class="pre">Air</span> <span class="pre">Temperature</span></code> in each zone via <code class="docutils literal notranslate"><span class="pre">get_variable_handle</span></code>.</p></li>
+<li><p><em>Internal variable values</em> for <code class="docutils literal notranslate"><span class="pre">Zone</span> <span class="pre">Air</span> <span class="pre">Volume</span></code> in each zone via <code class="docutils literal notranslate"><span class="pre">get_internal_variable_handle</span></code> / <code class="docutils literal notranslate"><span class="pre">get_internal_variable_value</span></code>. Zone volumes are static for a given building model, so they are read once and cached.</p></li>
+</ul>
+</li>
+<li><p><strong>Volume-weighted mean temperature</strong> — Each subsequent timestep the callback reads the current zone temperatures and computes:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\bar{T} = \frac{\sum_{i=1}^{5} T_i \cdot V_i}{\sum_{i=1}^{5} V_i}\]</div>
+<p>The result is written to <code class="docutils literal notranslate"><span class="pre">_avg[&quot;value&quot;]</span></code>, making it available to the logger wrapper.</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Callback hook</strong> — The function is registered on the <code class="docutils literal notranslate"><span class="pre">callback_end_zone_timestep_before_zone_reporting</span></code> hook, so it runs at the end of each zone timestep before zone-level reporting occurs, ensuring the temperature values are fresh for that timestep.</p></li>
+</ol>
+<p>We first define the <code class="docutils literal notranslate"><span class="pre">_avg</span></code> dict to store handles and the computed value, then define the callback function that uses the EnergyPlus runtime API.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_avg</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;need_handles&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;T1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;T2&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;T3&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;T4&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;T5&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;vol1&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;vol2&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;vol3&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;vol4&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;vol5&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># define a callback function to compute the average zone air temperature at each timestep</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_avg_zone_timestep</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+
+    <span class="c1"># get the energyplus simulator wrapper to access the exchange API</span>
+    <span class="n">simulator</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;energyplus_simulator&quot;</span><span class="p">)</span>
+
+    <span class="c1"># check if the API data is fully ready before trying to access it</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">api_data_fully_ready</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="c1"># if we haven&#39;t already, get the variable handles and zone volumes to compute the average temperature</span>
+    <span class="k">if</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;need_handles&quot;</span><span class="p">]:</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_handle</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE1-1&quot;</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_handle</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE2-1&quot;</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_handle</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE3-1&quot;</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_handle</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE4-1&quot;</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T5&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_handle</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE5-1&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_handle</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Volume&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE1-1&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_handle</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Volume&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE2-1&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_handle</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Volume&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE3-1&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_handle</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Volume&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE4-1&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol5&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_value</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_internal_variable_handle</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">,</span> <span class="s2">&quot;Zone Air Volume&quot;</span><span class="p">,</span> <span class="s2">&quot;SPACE5-1&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># we only need to get the variable handles and zone volumes once, so we can set this flag to False</span>
+        <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;need_handles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># now we can compute the average zone air temperature using the variable handles and zone volumes</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T1&quot;</span><span class="p">])</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T2&quot;</span><span class="p">])</span>
+    <span class="n">T3</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T3&quot;</span><span class="p">])</span>
+    <span class="n">T4</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T4&quot;</span><span class="p">])</span>
+    <span class="n">T5</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">get_variable_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;T5&quot;</span><span class="p">])</span>
+
+    <span class="c1"># compute the weighted average of the zone air temperatures using the zone volumes as weights</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">T1</span> <span class="o">*</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol1&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">T2</span> <span class="o">*</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol2&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">T3</span> <span class="o">*</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol3&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">T4</span> <span class="o">*</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol4&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">T5</span> <span class="o">*</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol5&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">den</span> <span class="o">=</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol2&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol3&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol4&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;vol5&quot;</span><span class="p">]</span>
+    <span class="n">_avg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Log-avg_zone_temperature-with-CSVLogger">
+<h2>Log avg_zone_temperature with CSVLogger<a class="headerlink" href="#Log-avg_zone_temperature-with-CSVLogger" title="Link to this heading"></a></h2>
+<p>To record <code class="docutils literal notranslate"><span class="pre">_avg[&quot;value&quot;]</span></code> into a CSV file, wrap the environment with a custom <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> subclass that overrides <code class="docutils literal notranslate"><span class="pre">calculate_custom_metrics</span></code>, then apply <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code>. The value will be saved per-timestep to <code class="docutils literal notranslate"><span class="pre">custom_metrics.csv</span></code> inside the episode folder.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sinergym.utils.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVLogger</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
+
+
+<span class="c1"># define a custom LoggerWrapper to log the average zone temperature computed by the _avg_zone_timestep callback into CSVLogger&#39;s custom_metrics.csv</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AvgTempLoggerWrapper</span><span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom LoggerWrapper that records the volume-weighted average zone temperature</span>
+<span class="sd">    computed by the _avg_zone_timestep callback into CSVLogger&#39;s custom_metrics.csv.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;avg_zone_temperature&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_custom_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_avg</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Now we can wrap our environment with the AvgTempLoggerWrapper and CSVLogger to log the average zone temperature at each timestep into a custom_metrics.csv file</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">AvgTempLoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Environment wrapped with AvgTempLoggerWrapper and CSVLogger.&#39;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+[WRAPPER CSVLogger] (INFO) : Wrapper initialized.
+Environment wrapped with AvgTempLoggerWrapper and CSVLogger.
+</pre></div></div>
+</div>
+</section>
+<section id="Register-callbacks-to-environment">
+<h2>Register callbacks to environment<a class="headerlink" href="#Register-callbacks-to-environment" title="Link to this heading"></a></h2>
+<p>We provide an API in the env called <code class="docutils literal notranslate"><span class="pre">env.register_callback</span></code>. The callback name should match the runtime method. Otherwise, the simulator will throw a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. You can clear the callbacks using <code class="docutils literal notranslate"><span class="pre">clear_callbacks</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;register_callback&#39;</span><span class="p">)(</span>
+    <span class="s1">&#39;callback_end_zone_timestep_before_zone_reporting&#39;</span><span class="p">,</span> <span class="n">_avg_zone_timestep</span>
+<span class="p">)</span>
+
+<span class="c1"># print the current callbacks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The current callbacks are:: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;callbacks&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Registered custom callback &#39;callback_end_zone_timestep_before_zone_reporting&#39; successfully.
+The current callbacks are:: {&#39;callback_end_zone_timestep_before_zone_reporting&#39;: [&#39;_avg_zone_timestep&#39;]}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+
+<span class="c1"># close() flushes all CSVLogger files (including custom_metrics.csv) for the last episode</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: Eplus-5zone-hot-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODEL] (INFO) : Episode directory created.
+[MODEL] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
+[MODEL] (INFO) : Adapting weather to building model.
+[MODEL] (INFO) : Weather noise applied to columns: [&#39;Dry Bulb Temperature&#39;, &#39;Relative Humidity&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path in /workspaces/sinergym/examples/Eplus-5zone-hot-continuous-stochastic-v1-res16/episode-1/output.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+Reward:  -0.04287902203346494 {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [16.848060607910156, 26.069730758666992], &#39;timestep&#39;: 1, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: -0.03698164416285543, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: -0.07396328832571086, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0.07396328832571086, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  10%|█         | 10/100 [00:02&lt;00:26,  3.41%/s, 10% completed] Reward:  -1480.2231924196765 {&#39;time_elapsed(hours)&#39;: 744.25, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.97361946105957, 24.608291625976562], &#39;timestep&#39;: 2976, &#39;energy_term&#39;: -0.09904933431744359, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -1980.9866863488717, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 1980.9866863488717, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  17%|█▋        | 17/100 [00:04&lt;00:20,  4.05%/s, 17% completed]Reward:  -2646.2258305344885 {&#39;time_elapsed(hours)&#39;: 1416.375, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [14.753031730651855, 29.141185760498047], &#39;timestep&#39;: 5664, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  26%|██▌       | 26/100 [00:06&lt;00:20,  3.66%/s, 26% completed]Reward:  -4017.263983592177 {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [13.849004745483398, 27.945350646972656], &#39;timestep&#39;: 8640, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  34%|███▍      | 34/100 [00:09&lt;00:21,  3.12%/s, 34% completed]Reward:  -5631.547684178791 {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.14965057373047, 26.190317153930664], &#39;timestep&#39;: 11520, &#39;energy_term&#39;: -0.1083457587514961, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -2166.915175029922, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 2166.915175029922, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  42%|████▏     | 42/100 [00:12&lt;00:17,  3.32%/s, 42% completed]Reward:  -7449.764901747518 {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.538137435913086, 29.186525344848633], &#39;timestep&#39;: 14496, &#39;energy_term&#39;: -0.03644927670930085, &#39;comfort_term&#39;: -0.21133938304344824, &#39;energy_penalty&#39;: -728.9855341860169, &#39;comfort_penalty&#39;: -0.4226787660868965, &#39;total_power_demand&#39;: 728.9855341860169, &#39;total_temperature_violation&#39;: 0.4226787660868965, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:14&lt;00:18,  2.60%/s, 51% completed]Reward:  -8466.010635863455 {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.533937454223633, 24.87399673461914], &#39;timestep&#39;: 17376, &#39;energy_term&#39;: -0.0360937122820931, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -721.874245641862, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 721.874245641862, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  59%|█████▉    | 59/100 [00:17&lt;00:14,  2.85%/s, 59% completed]Reward:  -9575.308902929375 {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.66809844970703, 27.539033889770508], &#39;timestep&#39;: 20352, &#39;energy_term&#39;: -0.04008009651105924, &#39;comfort_term&#39;: -0.09550297102558858, &#39;energy_penalty&#39;: -801.6019302211847, &#39;comfort_penalty&#39;: -0.19100594205117716, &#39;total_power_demand&#39;: 801.6019302211847, &#39;total_temperature_violation&#39;: 0.19100594205117716, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  67%|██████▋   | 67/100 [00:20&lt;00:10,  3.03%/s, 67% completed]Reward:  -10673.964106430458 {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.86484146118164, 28.4190673828125], &#39;timestep&#39;: 23328, &#39;energy_term&#39;: -0.030015891611737705, &#39;comfort_term&#39;: -0.18425733973388425, &#39;energy_penalty&#39;: -600.3178322347541, &#39;comfort_penalty&#39;: -0.3685146794677685, &#39;total_power_demand&#39;: 600.3178322347541, &#39;total_temperature_violation&#39;: 0.3685146794677685, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  76%|███████▌  | 76/100 [00:22&lt;00:06,  3.74%/s, 76% completed]Reward:  -11840.48791261703 {&#39;time_elapsed(hours)&#39;: 6552.25, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.76607322692871, 29.912328720092773], &#39;timestep&#39;: 26208, &#39;energy_term&#39;: -0.03488829934324132, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -697.7659868648265, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 697.7659868648265, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  84%|████████▍ | 84/100 [00:25&lt;00:05,  2.75%/s, 84% completed]Reward:  -13412.57832706892 {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.970210075378418, 26.904888153076172], &#39;timestep&#39;: 29184, &#39;energy_term&#39;: -0.010556678414792702, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -211.13356829585402, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 211.13356829585402, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+Simulation Progress [Episode 1]:  92%|█████████▏| 92/100 [00:27&lt;00:02,  3.95%/s, 92% completed]Reward:  -14757.808355656342 {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [12.337260246276855, 24.085851669311523], &#39;timestep&#39;: 32064, &#39;energy_term&#39;: -0.005897377870609513, &#39;comfort_term&#39;: 0.0, &#39;energy_penalty&#39;: -117.94755741219025, &#39;comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.94755741219025, &#39;total_temperature_violation&#39;: 0, &#39;reward_weight&#39;: 0.5}
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:33&lt;00:00,  2.99%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [Eplus-5zone-hot-continuous-stochastic-v1]
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="logging_unused_variables.html" class="btn btn-neutral float-left" title="Logging unused variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="Rule-based controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.12.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="custom_callbacks.html">v3.12.0</a></dd>
+            <dd><a href="../../../v3.11.0/index.html">v3.11.0</a></dd>
+            <dd><a href="../../../v3.10.0/index.html">v3.10.0</a></dd>
+            <dd><a href="../../../v3.9.0/index.html">v3.9.0</a></dd>
+            <dd><a href="../../../v3.8.0/index.html">v3.8.0</a></dd>
+            <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/index.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -51,7 +51,10 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#docker-container">Docker container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-container">Docker container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multi-stage-architecture">Multi-stage architecture</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#manual-installation">Manual installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configure-python-environment">Configure Python Environment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-energyplus">Install EnergyPlus</a></li>
@@ -223,6 +226,44 @@
 </pre></div>
 </div>
 <p>These optional dependencies allow you to use <code class="docutils literal notranslate"><span class="pre">stable-baselines3</span></code>, <code class="docutils literal notranslate"><span class="pre">wandb</span></code>, <code class="docutils literal notranslate"><span class="pre">notebooks</span></code> or <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> directly. For more information, please refer to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file at the root of the repository (<code class="docutils literal notranslate"><span class="pre">[tool.poetry.extras]</span></code> section). If you desire to install all optional packages, you can use <code class="docutils literal notranslate"><span class="pre">extras</span></code> directly in the <code class="docutils literal notranslate"><span class="pre">SINERGYM_EXTRAS</span></code> argument.</p>
+<section id="multi-stage-architecture">
+<h3>Multi-stage architecture<a class="headerlink" href="#multi-stage-architecture" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> in the repository root uses a <a class="reference external" href="https://docs.docker.com/build/building/multi-stage/">multi-stage build</a> with three stages. Knowing which one you are building helps you pick the right one for your use case:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 55.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Stage</strong></p></th>
+<th class="head"><p><strong>What it contains</strong></p></th>
+<th class="head"><p><strong>When to use it</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">builder</span></code></p></td>
+<td><p>EnergyPlus, Python venv with Poetry and all deps. Intermediate stage, source of artifacts copied into the other two.</p></td>
+<td><p>Internal — not built directly.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
+<td><p>Everything in <code class="docutils literal notranslate"><span class="pre">builder</span></code> plus the development dependency groups (<code class="docutils literal notranslate"><span class="pre">format</span></code>, <code class="docutils literal notranslate"><span class="pre">typing</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">doc</span></code>, <code class="docutils literal notranslate"><span class="pre">drl</span></code>, <code class="docutils literal notranslate"><span class="pre">gcloud</span></code>, <code class="docutils literal notranslate"><span class="pre">plots</span></code>).</p></td>
+<td><p>Local development and devcontainer. Build with <code class="docutils literal notranslate"><span class="pre">--target</span> <span class="pre">dev</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">runtime</span></code></p></td>
+<td><p>Minimal image: EnergyPlus + venv with only the packages from <code class="docutils literal notranslate"><span class="pre">SINERGYM_EXTRAS</span></code>. No Poetry, no build tools, no <code class="docutils literal notranslate"><span class="pre">dev</span></code> dependencies.</p></td>
+<td><p>Running simulations and tests in CI. This is the default target when no <code class="docutils literal notranslate"><span class="pre">--target</span></code> is specified.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Runtime image (default) — minimal, only SINERGYM_EXTRAS packages</span>
+$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>sinergym:runtime<span class="w"> </span>.
+
+<span class="c1"># Dev image — adds format/typing/test/doc/drl/gcloud/plots groups</span>
+$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>dev<span class="w"> </span>-t<span class="w"> </span>sinergym:dev<span class="w"> </span>.
+</pre></div>
+</div>
+<p>A fourth file, <code class="docutils literal notranslate"><span class="pre">.devcontainer/Dockerfile_lite</span></code>, does not build from source but instead pulls a pre-built image from the <a class="reference external" href="https://hub.docker.com/repository/docker/sailugr/sinergym">Docker Hub repository</a>. It is useful when you want a devcontainer without paying the cost of a local build.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Our container can also be directly installed from the
@@ -236,8 +277,18 @@ It contains all the project’s releases with secondary dependencies or lite ver
 <p>By default, the command executed is <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/try_env.py</span></code>, which is a minimal working example.</p>
 <p>If you want to run a sample DRL experiment, you can do it as follows:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>example/sinergym:latest<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">SINERGYM_EXTRAS</span><span class="o">=</span><span class="s2">&quot;drl&quot;</span><span class="w"> </span>.
-$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">WANDB_API_KEY</span><span class="o">=</span><span class="nv">$WANDB_API_KEY</span><span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>example/sinergym:latest<span class="w"> </span>python<span class="w"> </span>scripts/train/train_agent.py<span class="w"> </span>-conf<span class="w"> </span>scripts/train/train_agent_PPO.yaml
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">WANDB_API_KEY</span><span class="o">=</span><span class="nv">$WANDB_API_KEY</span><span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>example/sinergym:latest<span class="w"> </span>python<span class="w"> </span>scripts/train/local_confs/train_agent_local_conf.py<span class="w"> </span>-conf<span class="w"> </span>scripts/train/local_confs/conf_examples/train_agent_PPO.yaml
 </pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">WANDB_API_KEY</span></code> is <strong>not</strong> baked into the image at build time
+(to avoid leaking your token in <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">history</span></code>). You must pass it
+at runtime with <code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">WANDB_API_KEY=$WANDB_API_KEY</span></code> (or <code class="docutils literal notranslate"><span class="pre">--env-file</span></code>)
+on every <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> that executes code using Weights &amp; Biases. The
+same applies to the devcontainer: <code class="docutils literal notranslate"><span class="pre">.devcontainer/devcontainer.json</span></code>
+forwards the variable from your local environment via <code class="docutils literal notranslate"><span class="pre">containerEnv</span></code>,
+so make sure it is exported in your shell before opening the container.</p>
 </div>
 <p>If the script requires a WandB account, remember to include the environment variable in the container with the token.</p>
 <p>It is also possible to keep a session open in the image to copy and run your own scripts. For more information, please refer to the Docker documentation. This can be useful if you want to run your own scripts within the container.</p>
@@ -252,6 +303,7 @@ This action will automatically install all dependencies and enable you to run <e
 in an isolated environment. For more details on this feature,
 refer to the <a class="reference external" href="https://code.visualstudio.com/docs/remote/containers">VSCode Containers extension documentation</a>.</p>
 </div>
+</section>
 </section>
 <section id="manual-installation">
 <h2>Manual installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
@@ -289,12 +341,14 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 <h2>Develop in Sinergym<a class="headerlink" href="#develop-in-sinergym" title="Link to this heading"></a></h2>
 <p>Whether you have chosen to use Docker or a manual installation, we offer facilities for developing and extending Sinergym.</p>
 <p>If you have chosen the Docker container installation, Visual Studio Code will set up a development environment with all the necessary packages automatically, including documentation, tests, DRL, etc integrated in the IDE.</p>
-<p>If you have opted to use a container without Visual Studio Code, you can use the Dockerfile available in the <code class="docutils literal notranslate"><span class="pre">.devcontainer</span></code> folder instead of the one in the root of the repository. If you are creating your own Dockerfile, make sure to perform the following installation so that all development modules are available:</p>
-<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--with<span class="w"> </span>dev
+<p>The devcontainer (<code class="docutils literal notranslate"><span class="pre">.devcontainer/devcontainer.json</span></code>) targets the <code class="docutils literal notranslate"><span class="pre">dev</span></code> stage of the root <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> (see <a class="reference internal" href="#multi-stage-architecture"><span class="std std-ref">Multi-stage architecture</span></a> above). This means the same Dockerfile serves both development and production — there is no longer a separate <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> inside <code class="docutils literal notranslate"><span class="pre">.devcontainer</span></code>. If you are building a development image manually (without VS Code), use:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>dev<span class="w"> </span>-t<span class="w"> </span>sinergym:dev<span class="w"> </span>.
 </pre></div>
 </div>
-<p>This command includes all development packages. To avoid this, you should specify without <code class="docutils literal notranslate"><span class="pre">--with</span> <span class="pre">dev</span></code>. The development groups can also be found
-in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+<p>This installs the <code class="docutils literal notranslate"><span class="pre">dev</span></code> Poetry group, which includes <code class="docutils literal notranslate"><span class="pre">format</span></code>, <code class="docutils literal notranslate"><span class="pre">typing</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">doc</span></code>, <code class="docutils literal notranslate"><span class="pre">drl</span></code>, <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> and <code class="docutils literal notranslate"><span class="pre">plots</span></code> (see <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>). To get only a subset, drop <code class="docutils literal notranslate"><span class="pre">--with</span> <span class="pre">dev</span></code> and use <code class="docutils literal notranslate"><span class="pre">--extras</span></code> instead:</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--extras<span class="w"> </span><span class="s2">&quot;test drl&quot;</span>
+</pre></div>
+</div>
 <p>If you have manually installed the project, you can install the development packages from Poetry in the same way. Once the repository is cloned, run the same command we explained earlier, adding the following:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--with<span class="w"> </span>dev
 </pre></div>
@@ -354,6 +408,7 @@ in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</
     <div class="rst-other-versions">
         <dl>
             <dt>Tags</dt>
+            <dd><a href="../../v3.12.0/pages/installation.html">v3.12.0</a></dd>
             <dd><a href="../../v3.11.0/pages/installation.html">v3.11.0</a></dd>
             <dd><a href="../../v3.10.0/pages/installation.html">v3.10.0</a></dd>
             <dd><a href="../../v3.9.0/pages/installation.html">v3.9.0</a></dd>
