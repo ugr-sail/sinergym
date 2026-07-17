@@ -26,8 +26,8 @@ weather_specification:
 building_config:
   timesteps_per_hour: 2
   runperiod:
-    - 15
-    - 5
+    - 10
+    - 7
     - 2006
     - 15
     - 9
@@ -95,9 +95,9 @@ variables:
   Site Wind Direction:
     variable_names: wind_direction
     keys: Environment
-  # Site Diffuse Solar Radiation Rate per Area:
-  #   variable_names: diffuse_solar_radiation
-  #   keys: Environment
+  Site Diffuse Solar Radiation Rate per Area:
+    variable_names: diffuse_solar_radiation
+    keys: Environment
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
@@ -144,13 +144,13 @@ variables:
 
   Zone Thermostat Cooling Setpoint Temperature:
     variable_names:
-      - heating_setpoint_f0_living-kitchen
-      - heating_setpoint_f0_bathroom-lobby
-      - heating_setpoint_f1_bedroom1
-      - heating_setpoint_f1_bedroom2
-      - heating_setpoint_f1_bedroom3
-      - heating_setpoint_f1_bathroom-corridor
-      - heating_setpoint_f1_bathroom-dressing
+      - cooling_setpoint_f0_living-kitchen
+      - cooling_setpoint_f0_bathroom-lobby
+      - cooling_setpoint_f1_bedroom1
+      - cooling_setpoint_f1_bedroom2
+      - cooling_setpoint_f1_bedroom3
+      - cooling_setpoint_f1_bathroom-corridor
+      - cooling_setpoint_f1_bathroom-dressing
     keys:
       - PB_Cocina-Salon1-Salon2
       - PB_Aseo-Vestibulo
@@ -311,10 +311,6 @@ actuators:
 #                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
 # ---------------------------------------------------------------------------- #
 context:
-  Radiant control temp 24 sizing then 17:
-    variable_name: radiant_control_temp_24_sizing_then_17
-    element_type: Schedule:Compact
-    value_type: Schedule Value
   Setpoint Schedule PB_Salon:
     variable_name: cooling_setpoint_f0_living-kitchen
     element_type: Schedule:Compact
@@ -346,22 +342,21 @@ context:
 
 # Order matches `context`: cooling radiant band + seven zone cooling/heating setpoint schedules (dual uses same value).
 initial_context:
-  - 17.0
-  - 20.0
-  - 19.5
-  - 20.0
-  - 19.5
-  - 20.0
-  - 20.1
-  - 20.0
+ - 23.5
+ - 24.5
+ - 24.0
+ - 23.5
+ - 24.5
+ - 24.0
+ - 24.5
 
 # ---------------------------------------------------------------------------- #
 #                                 ACTIONS SPACE                                #
 # ---------------------------------------------------------------------------- #
-# Seven normalized mass-flow commands + CHW loop setpoint (°C). Plant loop allows ~5–15 °C on Cooling Plant Loop.
+# Seven normalized mass-flow commands + CHW loop setpoint (°C).
 action_space: gym.spaces.Box(
-  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 18.0], dtype=np.float32),
-  high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 22.0], dtype=np.float32),
+  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 14.0], dtype=np.float32),
+  high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 20.0], dtype=np.float32),
   shape=(8,), dtype=np.float32)
 
 only_discrete: false
@@ -369,20 +364,20 @@ only_discrete: false
 # ---------------------------------------------------------------------------- #
 #                                REWARD FUNCTION                               #
 # ---------------------------------------------------------------------------- #
-reward: sinergym.utils.rewards:MultiZoneRewardV2
+reward: sinergym.utils.rewards:MultiZoneRewardV1
 
 reward_kwargs:
   comfort_threshold: 1
   energy_variables:
     - heat_source_electricity_rate
-  energy_weight: 0.5
+  energy_weight: 0.25
   lambda_energy: 0.001
   lambda_temperature: 1
   temperature_and_setpoints_conf:
-    air_temperature_f0_living-kitchen: heating_setpoint_f0_living-kitchen
-    air_temperature_f0_bathroom-lobby: heating_setpoint_f0_bathroom-lobby
-    air_temperature_f1_bedroom1: heating_setpoint_f1_bedroom1
-    air_temperature_f1_bedroom2: heating_setpoint_f1_bedroom2
-    air_temperature_f1_bedroom3: heating_setpoint_f1_bedroom3
-    air_temperature_f1_bathroom-corridor: heating_setpoint_f1_bathroom-corridor
-    air_temperature_f1_bathroom-dressing: heating_setpoint_f1_bathroom-dressing
+    air_temperature_f0_living-kitchen: cooling_setpoint_f0_living-kitchen
+    air_temperature_f0_bathroom-lobby: cooling_setpoint_f0_bathroom-lobby
+    air_temperature_f1_bedroom1: cooling_setpoint_f1_bedroom1
+    air_temperature_f1_bedroom2: cooling_setpoint_f1_bedroom2
+    air_temperature_f1_bedroom3: cooling_setpoint_f1_bedroom3
+    air_temperature_f1_bathroom-corridor: cooling_setpoint_f1_bathroom-corridor
+    air_temperature_f1_bathroom-dressing: cooling_setpoint_f1_bathroom-dressing
