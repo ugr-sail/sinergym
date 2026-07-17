@@ -74,6 +74,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libexpat1 \
         git \
         wget \
+        openssh-client \
         python3 \
         python3-venv \
         python3-enchant \
