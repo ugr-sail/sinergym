@@ -71,9 +71,11 @@ dec
 DEC
 DeltaTempWrapper
 Deprecations
+deps
 deserialization
 deserialize
 deserialized
+devcontainer
 dicts
 dir
 DiscreteIncrementalWrapper

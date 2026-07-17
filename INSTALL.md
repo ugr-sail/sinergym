@@ -45,6 +45,26 @@ These optional dependencies allow you to use `stable-baselines3`, `wandb`, `note
 
 If you want to install all optional packages, use `extras` in the `SINERGYM_EXTRAS` argument.
 
+### Multi-stage architecture
+
+The `Dockerfile` in the repository root uses a [multi-stage build](https://docs.docker.com/build/building/multi-stage/) with three stages. Knowing which one you are building helps you pick the right one for your use case:
+
+| **Stage**   | **What it contains** | **When to use it** |
+| ----------- | -------------------- | ----------------- |
+| `builder`   | EnergyPlus, Python venv with Poetry and all deps. Intermediate stage, source of artifacts copied into the other two. | Internal — not built directly. |
+| `dev`       | Everything in `builder` plus the development dependency groups (`format`, `typing`, `test`, `doc`, `drl`, `gcloud`, `plots`). | Local development and devcontainer. Build with `--target dev`. |
+| `runtime`   | Minimal image: EnergyPlus + venv with only the packages from `SINERGYM_EXTRAS`. No Poetry, no build tools, no `dev` dependencies. | Running simulations and tests in CI. This is the **default** target when no `--target` is specified. |
+
+```bash
+# Runtime image (default) — minimal, only SINERGYM_EXTRAS packages
+$ docker build -t sinergym:runtime .
+
+# Dev image — adds format/typing/test/doc/drl/gcloud/plots groups
+$ docker build --target dev -t sinergym:dev .
+```
+
+A fourth file, `.devcontainer/Dockerfile_lite`, does not build from source but instead pulls a pre-built image from the [Docker Hub repository](https://hub.docker.com/repository/docker/sailugr/sinergym). It is useful when you want a devcontainer without paying the cost of a local build.
+
 > :memo: **Note:** the container can also be directly installed from the [Docker Hub repository](https://hub.docker.com/repository/docker/sailugr/sinergym). It contains all the project's releases with secondary dependencies or lite versions.
 
 Once the container image is ready, you can execute any command as follows:
@@ -59,8 +79,16 @@ If you want to run a DRL experiment, for example, you can do it like this:
 
 ```bash
 $ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS="drl" .
-$ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/train_agent.py -conf scripts/train/train_agent_PPO.json
+$ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/local_confs/train_agent_local_conf.py -conf scripts/train/local_confs/conf_examples/train_agent_PPO.yaml
 ```
+
+> :warning: **Important:** The `WANDB_API_KEY` is **not** baked into the image at build time
+> (to avoid leaking your token in `docker history`). You must pass it
+> at runtime with `-e WANDB_API_KEY=$WANDB_API_KEY` (or `--env-file`)
+> on every `docker run` that executes code using Weights & Biases. The
+> same applies to the devcontainer: `.devcontainer/devcontainer.json`
+> forwards the variable from your local environment via `containerEnv`,
+> so make sure it is exported in your shell before opening the container.
 
 If the script you want to use requires a Weights and Biases account, remember to include the corresponding API token in a container environment variable.
 
@@ -122,14 +150,17 @@ Whether you have chosen to use Docker or a manual installation, we offer facilit
 
 - If you have used a container, Visual Studio Code will set up a development environment with all the necessary packages automatically configured, including documentation, tests, etc.
 
-- If you have decided to use a container without Visual Studio Code, you can use the Dockerfile available in the `.devcontainer` folder instead of the one in the root of the repository. If you create your own Dockerfile, make sure to perform the following installation so that all development modules are available:
+The devcontainer (`.devcontainer/devcontainer.json`) targets the `dev` stage of the root `Dockerfile` (see [Multi-stage architecture](#multi-stage-architecture) above). This means the same Dockerfile serves both development and production — there is no longer a separate `Dockerfile` inside `.devcontainer`. If you are building a development image manually (without VS Code), use:
 
-```dockerfile
-RUN poetry install --no-interaction --with dev
+```bash
+$ docker build --target dev -t sinergym:dev .
 ```
 
-This command includes all development packages. To avoid this, you should specify without `--with dev`. The development groups can also be found 
-in `pyproject.toml`.
+This installs the `dev` Poetry group, which includes `format`, `typing`, `test`, `doc`, `drl`, `gcloud` and `plots` (see `pyproject.toml`). To get only a subset, drop `--with dev` and use `--extras` instead:
+
+```dockerfile
+RUN poetry install --no-interaction --extras "test drl"
+```
 
 If you have manually installed the project, you can install the development packages from **poetry** in the same way. Once the repository is cloned, run:
 
