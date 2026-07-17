@@ -6,18 +6,20 @@
 		"NODE_EXTRA_CA_CERTS": "/etc/ssl/certs/ca-certificates.crt"
 	},
 	"build": {
+		"target": "dev",
 		"args": {
 			"ENERGYPLUS_VERSION": "25.1.0",
 			"ENERGYPLUS_INSTALL_VERSION": "25-1-0",
-			"ENERGYPLUS_SHA": "1c11a3d85f",
-			"WANDB_API_KEY": "${localEnv:WANDB_API_KEY}"
+			"ENERGYPLUS_SHA": "1c11a3d85f"
 		}
 	},
-	"dockerFile": "./Dockerfile",
+	"dockerFile": "../Dockerfile",
 	"context": "..",
 	"customizations": {
 		"vscode": {
 			"settings": {
+				"python.defaultInterpreterPath": "/opt/venv/bin/python",
+				"python.terminal.activateEnvironment": true,
 				"terminal.integrated.profiles.linux": {
 					"bash": {
 						"path": "bash",
