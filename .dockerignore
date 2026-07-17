@@ -1,0 +1,36 @@
+# Version control
+.git
+.gitignore
+
+# CI / GitHub
+.github
+
+# Documentation (not needed for Docker builds or tests)
+docs
+
+# IDE configs
+.vscode
+.idea
+*.swp
+*.swo
+
+# Python caches
+**/__pycache__
+**/*.pyc
+**/*.pyo
+*.egg-info
+*.egg
+
+# Virtual environments
+.venv
+venv
+
+# Coverage / test artifacts
+cov.xml
+coverage.xml
+.coverage
+htmlcov
+
+# OS files
+.DS_Store
+Thumbs.db
