@@ -26,7 +26,7 @@ weather_specification:
 building_config:
   timesteps_per_hour: 2
   runperiod:
-    - 10
+    - 1
     - 7
     - 2006
     - 15
@@ -95,9 +95,9 @@ variables:
   Site Wind Direction:
     variable_names: wind_direction
     keys: Environment
-  Site Diffuse Solar Radiation Rate per Area:
-    variable_names: diffuse_solar_radiation
-    keys: Environment
+  # Site Diffuse Solar Radiation Rate per Area:
+  #   variable_names: diffuse_solar_radiation
+  #   keys: Environment
   Site Direct Solar Radiation Rate per Area:
     variable_names: direct_solar_radiation
     keys: Environment
@@ -355,7 +355,7 @@ initial_context:
 # ---------------------------------------------------------------------------- #
 # Seven normalized mass-flow commands + CHW loop setpoint (°C).
 action_space: gym.spaces.Box(
-  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 14.0], dtype=np.float32),
+  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 13.0], dtype=np.float32),
   high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 20.0], dtype=np.float32),
   shape=(8,), dtype=np.float32)
 
