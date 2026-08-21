@@ -10,7 +10,7 @@ from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.noise import NormalActionNoise
-from wandb.util import generate_id
+from wandb.sdk.lib.runid import generate_id
 
 import sinergym
 import sinergym.utils.gcloud as gcloud

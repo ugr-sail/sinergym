@@ -2075,6 +2075,7 @@ class CSVLogger(gym.Wrapper):
 try:
     import wandb
     import wandb.util
+    from wandb.sdk.lib.runid import generate_id
 
     @store_init_metadata
     class WandBLogger(  # type: ignore[reportRedeclaration]
@@ -2141,7 +2142,7 @@ try:
             # Define wandb run name if is not specified
             run_name = run_name or f'{
                 self.env.get_wrapper_attr('name')}_{
-                wandb.util.generate_id()}'
+                generate_id()}'
 
             # Init WandB session
             # If there is no active run and entity and project has been specified,
