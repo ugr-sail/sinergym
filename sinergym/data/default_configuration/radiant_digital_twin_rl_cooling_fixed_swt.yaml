@@ -1,0 +1,383 @@
+# Documentation: https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html
+#
+# In digital_twin_rl_cooling.epJSON, zone thermostat setpoint schedules (Setpoint Schedule …) use 20 C
+# on disk so EnergyPlus sizing (heating/humidity design days) matches the stable base model. Summer
+# comfort targets (e.g. 26 C) come from `initial_context` / context actuators during the weather run.
+# ---------------------------------------------------------------------------- #
+#                        ID BASE FROM ENVIRONMENT NAMES                        #
+# ---------------------------------------------------------------------------- #
+id_base: radiant_digital_twin_rl_cooling_fixed_swt
+
+# ---------------------------------------------------------------------------- #
+#                         BUILDING AND WEATHER SETTINGS                        #
+# ---------------------------------------------------------------------------- #
+building_file: digital_twin_rl.epJSON
+
+weather_specification:
+  weather_files:
+  - ESP_Madrid.082210_IWEC.epw
+
+  keys:
+    - madrid
+
+# ---------------------------------------------------------------------------- #
+#                         BUILDING EXTRA CONFIGURATION                         #
+# ---------------------------------------------------------------------------- #
+building_config:
+  timesteps_per_hour: 2
+  runperiod:
+    - 10
+    - 7
+    - 2006
+    - 15
+    - 9
+    - 2006
+
+# ---------------------------------------------------------------------------- #
+#                        WEATHER VARIABILITY (OPTIONAL)                        #
+# ---------------------------------------------------------------------------- #
+weather_variability:
+  Dry Bulb Temperature:
+    - [0.0, 2.0]
+    - 0.0
+    - 24.0
+    - [10.0, 45.0]
+  Relative Humidity:
+    - [0.0, 5.0]
+    - 0.0
+    - 24.0
+    - [0.0, 100.0]
+  Wind Speed:
+    - [0.0, 5.0]
+    - 0.0
+    - 24.0
+    - [0.0, 20.0]
+  Wind Direction:
+    - [0.0, 45.0]
+    - 0.0
+    - 24.0
+    - [0.0, 360.0]
+  Direct Normal Radiation:
+    - [0.0, 80.0]
+    - 0.0
+    - 24.0
+    - [0.0, 1000.0]
+
+# ---------------------------------------------------------------------------- #
+#                          EPISODES FOLDER GENERATION                          #
+# ---------------------------------------------------------------------------- #
+max_ep_store: 3
+
+# ---------------------------------------------------------------------------- #
+#                             OBSERVATION VARIABLES                            #
+# ---------------------------------------------------------------------------- #
+
+# --------------- TIME VARIABLES (same name as EnergyPlus API) --------------- #
+time_variables:
+  - month
+  - day_of_month
+  - hour
+  # More variables in Data Transfer API: https://energyplus.readthedocs.io/en/latest/datatransfer.html
+
+# ----------------------------- OUTPUT:VARIABLES ----------------------------- #
+variables:
+
+  # ---------------------------------- OUTDOOR --------------------------------- #
+  Site Outdoor Air DryBulb Temperature:
+    variable_names: outdoor_temperature
+    keys: Environment
+  Site Outdoor Air Relative Humidity:
+    variable_names: outdoor_humidity
+    keys: Environment
+  Site Wind Speed:
+    variable_names: wind_speed
+    keys: Environment
+  Site Wind Direction:
+    variable_names: wind_direction
+    keys: Environment
+  # Site Diffuse Solar Radiation Rate per Area:
+  #   variable_names: diffuse_solar_radiation
+  #   keys: Environment
+  Site Direct Solar Radiation Rate per Area:
+    variable_names: direct_solar_radiation
+    keys: Environment
+
+  # -------------------------------- ZONE INDOOR ------------------------------- #
+  Zone Mean Air Temperature:
+    variable_names:
+      - air_temperature_f0_living-kitchen
+      - air_temperature_f0_bathroom-lobby
+      - air_temperature_f1_bedroom1
+      - air_temperature_f1_bedroom2
+      - air_temperature_f1_bedroom3
+      - air_temperature_f1_bathroom-corridor
+      - air_temperature_f1_bathroom-dressing
+    keys:
+      - PB_Cocina-Salon1-Salon2
+      - PB_Aseo-Vestibulo
+      - P1_Dormitorio1
+      - P1_Dormitorio2
+      - P1_Dormitorio3
+      - P1_Aseo-Pasillo
+      - P1_Aseo2-Vestidor
+
+  Zone Air Relative Humidity:
+    variable_names:
+      - air_humidity_f0_living-kitchen
+      - air_humidity_f0_bathroom-lobby
+      - air_humidity_f1_bedroom1
+      - air_humidity_f1_bedroom2
+      - air_humidity_f1_bedroom3
+      - air_humidity_f1_bathroom-corridor
+      - air_humidity_f1_bathroom-dressing
+    keys:
+      - PB_Cocina-Salon1-Salon2
+      - PB_Aseo-Vestibulo
+      - P1_Dormitorio1
+      - P1_Dormitorio2
+      - P1_Dormitorio3
+      - P1_Aseo-Pasillo
+      - P1_Aseo2-Vestidor
+      
+
+  # # ---------------------------------- SYSTEM ---------------------------------- #
+
+  Zone Thermostat Cooling Setpoint Temperature:
+    variable_names:
+      - cooling_setpoint_f0_living-kitchen
+      - cooling_setpoint_f0_bathroom-lobby
+      - cooling_setpoint_f1_bedroom1
+      - cooling_setpoint_f1_bedroom2
+      - cooling_setpoint_f1_bedroom3
+      - cooling_setpoint_f1_bathroom-corridor
+      - cooling_setpoint_f1_bathroom-dressing
+    keys:
+      - PB_Cocina-Salon1-Salon2
+      - PB_Aseo-Vestibulo
+      - P1_Dormitorio1
+      - P1_Dormitorio2
+      - P1_Dormitorio3
+      - P1_Aseo-Pasillo
+      - P1_Aseo2-Vestidor
+  
+  Zone Radiant HVAC Outlet Temperature:
+    variable_names:
+      - radiant_hvac_outlet_temperature_f0_living-kitchen
+      - radiant_hvac_outlet_temperature_f0_bathroom-lobby
+      - radiant_hvac_outlet_temperature_f1_bedroom1
+      - radiant_hvac_outlet_temperature_f1_bedroom2
+      - radiant_hvac_outlet_temperature_f1_bedroom3
+      - radiant_hvac_outlet_temperature_f1_bathroom-corridor
+      - radiant_hvac_outlet_temperature_f1_bathroom-dressing
+    keys:
+      - LOW TEMP RADIANT CONST FLOW_PB_COCINA
+      - LOW TEMP RADIANT CONST FLOW_PB_ASEO-VESTIBULO
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO1
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO2
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO3
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
+
+  Zone Radiant HVAC Inlet Temperature:
+    variable_names:
+      - radiant_hvac_inlet_temperature_f0_living-kitchen
+      - radiant_hvac_inlet_temperature_f0_bathroom-lobby
+      - radiant_hvac_inlet_temperature_f1_bedroom1
+      - radiant_hvac_inlet_temperature_f1_bedroom2
+      - radiant_hvac_inlet_temperature_f1_bedroom3
+      - radiant_hvac_inlet_temperature_f1_bathroom-corridor
+      - radiant_hvac_inlet_temperature_f1_bathroom-dressing
+    keys:
+      - LOW TEMP RADIANT CONST FLOW_PB_COCINA
+      - LOW TEMP RADIANT CONST FLOW_PB_ASEO-VESTIBULO
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO1
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO2
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO3
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
+
+  # SimpleOff: seconds in the timestep the radiant was held off for condensation risk (0 = no cut).
+  Zone Radiant HVAC Moisture Condensation Time:
+    variable_names:
+      - radiant_condensation_time_f0_living-kitchen
+      - radiant_condensation_time_f0_bathroom-lobby
+      - radiant_condensation_time_f1_bedroom1
+      - radiant_condensation_time_f1_bedroom2
+      - radiant_condensation_time_f1_bedroom3
+      - radiant_condensation_time_f1_bathroom-corridor
+      - radiant_condensation_time_f1_bathroom-dressing
+    keys:
+      - LOW TEMP RADIANT CONST FLOW_PB_COCINA
+      - LOW TEMP RADIANT CONST FLOW_PB_ASEO-VESTIBULO
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO1
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO2
+      - LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO3
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO
+      - LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR
+
+  System Node Setpoint Temperature:
+    variable_names: water_temperature
+    keys: Node 2
+
+  # Cooling-water inlet branch nodes (demand side of Cooling Plant Loop → radiant)
+  System Node Mass Flow Rate:
+    variable_names:
+      - flow_rate_f0_living-kitchen
+      - flow_rate_f0_bathroom-lobby
+      - flow_rate_f1_bedroom1
+      - flow_rate_f1_bedroom2
+      - flow_rate_f1_bedroom3
+      - flow_rate_f1_bathroom-corridor
+      - flow_rate_f1_bathroom-dressing
+    keys:
+      - Node 51
+      - Node 49
+      - Node 43
+      - Node 45
+      - Node 47
+      - Node 6
+      - Node 41
+
+  Heat Pump Load Side Outlet Temperature:
+    variable_names: heat_source_load_side_outlet_temp
+    keys: ERGA08EAV3A
+
+  Heat Pump Load Side Inlet Temperature:
+    variable_names: heat_source_load_side_inlet_temp
+    keys: ERGA08EAV3A
+
+  Heat Pump Load Side Heat Transfer Rate:
+    variable_names: heat_source_load_side_heat_transfer_rate
+    keys: ERGA08EAV3A
+
+  Heat Pump Load Side Mass Flow Rate:
+    variable_names: heat_source_load_side_mass_flow_rate
+    keys: ERGA08EAV3A
+
+  Heat Pump Cycling Ratio:
+    variable_names: crf
+    keys: ERGA08EAV3A
+
+  Heat Pump Part Load Ratio:
+    variable_names: plr_current
+    keys: ERGA08EAV3A
+
+  Heat Pump Electricity Rate:
+    variable_names: heat_source_electricity_rate
+    keys: ERGA08EAV3A
+
+meters: {}
+
+# ---------------------------------------------------------------------------- #
+#                               ACTION VARIABLES                               #
+# ---------------------------------------------------------------------------- #
+actuators:
+
+  LOW TEMP RADIANT CONST FLOW_PB_COCINA:
+    variable_name: flow_rate_f0_living-kitchen
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_PB_ASEO-VESTIBULO:
+    variable_name: flow_rate_f0_bathroom-lobby
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO1:
+    variable_name: flow_rate_f1_bedroom1
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO2:
+    variable_name: flow_rate_f1_bedroom2
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_P1_DORMITORIO3:
+    variable_name: flow_rate_f1_bedroom3
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_P1_ASEO-PASILLO:
+    variable_name: flow_rate_f1_bathroom-corridor
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+  LOW TEMP RADIANT CONST FLOW_P1_ASEO2-VESTIDOR:
+    variable_name: flow_rate_f1_bathroom-dressing
+    element_type: Constant Flow Low Temp Radiant
+    value_type: Water Mass Flow Rate
+
+  CHW Temperature Schedule:
+    variable_name: water_temperature
+    element_type: Schedule:Year
+    value_type: Schedule Value
+
+# ---------------------------------------------------------------------------- #
+#                   DYNAMIC CONTEXT CONFIGURABLE IN REAL-TIME                  #
+# ---------------------------------------------------------------------------- #
+context:
+  Setpoint Schedule PB_Salon:
+    variable_name: cooling_setpoint_f0_living-kitchen
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule PB_Aseo-Vestibulo:
+    variable_name: cooling_setpoint_f0_bathroom-lobby
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule P1_Dormitorio1:
+    variable_name: cooling_setpoint_f1_bedroom1
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule P1_Dormitorio2:
+    variable_name: cooling_setpoint_f1_bedroom2
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule P1_Dormitorio3:
+    variable_name: cooling_setpoint_f1_bedroom3
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule P1_Aseo-Pasillo:
+    variable_name: cooling_setpoint_f1_bathroom-corridor
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+  Setpoint Schedule P1_Aseo2-Vestidor:
+    variable_name: cooling_setpoint_f1_bathroom-dressing
+    element_type: Schedule:Compact
+    value_type: Schedule Value
+
+# Order matches `context`: cooling radiant band + seven zone cooling/heating setpoint schedules (dual uses same value).
+initial_context:
+ - 23.5
+ - 24.5
+ - 24.0
+ - 23.5
+ - 24.5
+ - 24.0
+ - 24.5
+
+# ---------------------------------------------------------------------------- #
+#                                 ACTIONS SPACE                                #
+# ---------------------------------------------------------------------------- #
+# Seven normalized mass-flow commands + CHW loop setpoint (°C).
+action_space: gym.spaces.Box(
+  low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 14.0], dtype=np.float32),
+  high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 14.0], dtype=np.float32),
+  shape=(8,), dtype=np.float32)
+
+only_discrete: false
+
+# ---------------------------------------------------------------------------- #
+#                                REWARD FUNCTION                               #
+# ---------------------------------------------------------------------------- #
+reward: sinergym.utils.rewards:MultiZoneRewardV1
+
+reward_kwargs:
+  comfort_threshold: 1
+  energy_variables:
+    - heat_source_electricity_rate
+  energy_weight: 0.25
+  lambda_energy: 0.001
+  lambda_temperature: 1
+  temperature_and_setpoints_conf:
+    air_temperature_f0_living-kitchen: cooling_setpoint_f0_living-kitchen
+    air_temperature_f0_bathroom-lobby: cooling_setpoint_f0_bathroom-lobby
+    air_temperature_f1_bedroom1: cooling_setpoint_f1_bedroom1
+    air_temperature_f1_bedroom2: cooling_setpoint_f1_bedroom2
+    air_temperature_f1_bedroom3: cooling_setpoint_f1_bedroom3
+    air_temperature_f1_bathroom-corridor: cooling_setpoint_f1_bathroom-corridor
+    air_temperature_f1_bathroom-dressing: cooling_setpoint_f1_bathroom-dressing
