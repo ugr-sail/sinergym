@@ -25,6 +25,8 @@ Installation
 +----------------------+--------------------+--------------------+------------------------+----------------------------------+
 | **3.11.0**           | 24.04 LTS          | 3.12.3             | **25.1.0**             | epJSON                           |
 +----------------------+--------------------+--------------------+------------------------+----------------------------------+
+| **3.12.3**           | 24.04 LTS          | 3.12.3             | **26.1.0**             | epJSON                           |
++----------------------+--------------------+--------------------+------------------------+----------------------------------+
 
 .. important:: Starting from version 3.6.0, Sinergym dependencies are managed using **Poetry**, although installation using **pip** is still available.
 
@@ -159,9 +161,9 @@ You now have the correct Python version and the necessary modules to run *Sinerg
 Install EnergyPlus
 ~~~~~~~~~~~~~~~~~~
 
-In order to proceed, please install **EnergyPlus**. We have **tested and confirmed compatibility** with version ``24.1.0``. While the code may be compatible with other versions, we have not tested them.
+In order to proceed, please install **EnergyPlus**. We have **tested and confirmed compatibility** with version ``26.1.0``. While the code may be compatible with other versions, we have not tested them.
 
-To install it for Linux (only **Ubuntu** is tested and supported), please follow the instructions `here <https://energyplus.net/downloads>`__. You can choose any location for the installation. After installation, a folder named ``Energyplus-24-1-0`` should appear in the chosen location.
+To install it for Linux (only **Ubuntu** is tested and supported), please follow the instructions `here <https://energyplus.net/downloads>`__. You can choose any location for the installation. After installation, a folder named ``Energyplus-26-1-0`` should appear in the chosen location.
 
 Include EnergyPlus Python API in Python path
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
