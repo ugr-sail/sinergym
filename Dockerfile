@@ -19,16 +19,16 @@ FROM --platform=linux/amd64 ubuntu:${UBUNTU_VERSION} AS builder
 # -------------------------------- ENERGYPLUS -------------------------------- #
 
 # VERSION ARGUMENTS
-ARG ENERGYPLUS_VERSION=25.1.0
-ARG ENERGYPLUS_INSTALL_VERSION=25-1-0
-ARG ENERGYPLUS_SHA=1c11a3d85f
+ARG ENERGYPLUS_VERSION=26.1.0
+ARG ENERGYPLUS_INSTALL_VERSION=26-1-0
+ARG ENERGYPLUS_SHA=6f2e40d102
 
 # ENV CONFIGURATION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 # Downloading from Github
-# e.g. https://github.com/NREL/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh
-ENV ENERGYPLUS_DOWNLOAD_BASE_URL=https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG-WithDSOASpaceListFixes
+# e.g. https://github.com/NatLabRockies/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh
+ENV ENERGYPLUS_DOWNLOAD_BASE_URL=https://github.com/NatLabRockies/EnergyPlus/releases/download/$ENERGYPLUS_TAG
 ENV ENERGYPLUS_DOWNLOAD_FILENAME=EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu24.04-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_URL=$ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
 # Python add pyenergyplus path in order to detect API package
@@ -160,7 +160,7 @@ CMD ["/bin/bash"]
 # build tools, no test/doc dependencies.
 FROM --platform=linux/amd64 ubuntu:${UBUNTU_VERSION} AS runtime
 
-ARG ENERGYPLUS_INSTALL_VERSION=25-1-0
+ARG ENERGYPLUS_INSTALL_VERSION=26-1-0
 
 # Minimal runtime env — venv bin is on PATH so python/pytest/etc. resolve.
 ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}" \
