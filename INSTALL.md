@@ -17,6 +17,7 @@ The table below provides a summary of the dependencies versions supported by *Si
 | **3.3.6**            | **24.04 LTS**      | **3.12.3**         | 23.1.0                 | epJSON                  |
 | **3.5.8**            | 24.04 LTS          | 3.12.3             | **24.1.0**             | epJSON                  |
 | **3.11.0**           | 24.04 LTS          | 3.12.3             | **25.1.0**             | epJSON                  |
+| **3.12.3**           | 24.04 LTS          | 3.12.3             | **26.1.0**             | epJSON                  |
 
 
 We recommend to always use the latest version of *Sinergym* that is supported by the container. This will help you to avoid the complexities of manual installation.
@@ -134,11 +135,11 @@ Let's now proceed with the installation of external software.
 
 ### Install EnergyPlus
 
-We have tested and confirmed compatibility with **EnergyPlus** version `24.1.0`. *Sinergym* might not work with other non-tested versions.
+We have tested and confirmed compatibility with **EnergyPlus** version `26.1.0`. *Sinergym* might not work with other non-tested versions.
 
 Follow the instructions detailed [here](https://energyplus.net/downloads) to install it in Linux (we only guarantee proper testing and support for **Ubuntu**). 
 
-After installation, the folder `Energyplus-24-1-0` should appear in the selected location.
+After installation, the folder `Energyplus-26-1-0` should appear in the selected location.
 
 ### Include EnergyPlus Python API in Python path
 

@@ -8,19 +8,13 @@
 	"build": {
 		"target": "dev",
 		"args": {
-			"ENERGYPLUS_VERSION": "25.1.0",
-			"ENERGYPLUS_INSTALL_VERSION": "25-1-0",
-			"ENERGYPLUS_SHA": "1c11a3d85f"
+			"ENERGYPLUS_VERSION": "26.1.0",
+			"ENERGYPLUS_INSTALL_VERSION": "26-1-0",
+			"ENERGYPLUS_SHA": "6f2e40d102"
 		}
 	},
 	"dockerFile": "../Dockerfile",
 	"context": "..",
-	"mounts": [
-		"source=${localEnv:SSH_AUTH_SOCK},target=/tmp/ssh-agent.sock,type=bind"
-	],
-	"remoteEnv": {
-		"SSH_AUTH_SOCK": "/tmp/ssh-agent.sock"
-	},
 	"customizations": {
 		"vscode": {
 			"settings": {
