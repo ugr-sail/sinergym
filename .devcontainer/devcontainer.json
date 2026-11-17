@@ -18,6 +18,7 @@
 	"customizations": {
 		"vscode": {
 			"settings": {
+				"terminal.integrated.inheritEnv": true,
 				"python.defaultInterpreterPath": "/opt/venv/bin/python",
 				"python.terminal.activateEnvironment": true,
 				"terminal.integrated.profiles.linux": {
